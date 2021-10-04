@@ -1,4 +1,4 @@
-package com.dockerforjavadevelopers.hello;
+package ch.unisg.tapas.example.unit;
 
 import static org.junit.Assert.*;
 
