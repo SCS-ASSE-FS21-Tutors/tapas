@@ -3,10 +3,10 @@ package ch.unisg.tapasexecutorpool.executorpool.domain;
 
 public class NewExecutorAddedEvent {
     public String executorName;
-    public String executorListName;
+    public String executorPoolName;
 
-    public NewExecutorAddedEvent(String executorName, String executorListName) {
+    public NewExecutorAddedEvent(String executorName, String executorPoolName) {
         this.executorName = executorName;
-        this.executorListName = executorListName;
+        this.executorPoolName = executorPoolName;
     }
 }
