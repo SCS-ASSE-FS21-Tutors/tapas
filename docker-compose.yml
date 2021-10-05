@@ -49,12 +49,12 @@ services:
       - ./:/data/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tapas-tasks.rule=Host(`tapas-tasks.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.tapas-tasks.service=tapas-tasks"
-      - "traefik.http.services.tapas-tasks.loadbalancer.server.port=8082"
-      - "traefik.http.routers.tapas-tasks.tls=true"
-      - "traefik.http.routers.tapas-tasks.entryPoints=web,websecure"
-      - "traefik.http.routers.tapas-tasks.tls.certresolver=le"
+      - "traefik.http.routers.tapas-executor-pool.rule=Host(`tapas-executor-pool.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-pool.service=tapas-executor-pool"
+      - "traefik.http.services.tapas-executor-pool.loadbalancer.server.port=8082"
+      - "traefik.http.routers.tapas-executor-pool.tls=true"
+      - "traefik.http.routers.tapas-executor-pool.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-pool.tls.certresolver=le"
 
   app:
     image: openjdk
