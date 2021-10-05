@@ -41,6 +41,21 @@ services:
       - "traefik.http.routers.tapas-tasks.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-tasks.tls.certresolver=le"
 
+  tapas-executor-pool:
+    image: openjdk
+    command: "java -jar /data/tapas-executor-pool-0.0.1-SNAPSHOT.jar"
+    restart: unless-stopped
+    volumes:
+      - ./:/data/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tapas-tasks.rule=Host(`tapas-tasks.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-tasks.service=tapas-tasks"
+      - "traefik.http.services.tapas-tasks.loadbalancer.server.port=8082"
+      - "traefik.http.routers.tapas-tasks.tls=true"
+      - "traefik.http.routers.tapas-tasks.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-tasks.tls.certresolver=le"
+
   app:
     image: openjdk
     command: "java -jar /data/app-0.1.0.jar"
