@@ -1,0 +1,62 @@
+version: "3.6"
+services:
+  tapas-tasks:
+    container_name: tapas-tasks
+    build:
+      context: "./tapas-tasks"
+      dockerfile: "Dockerfile"
+      target: development
+    ports:
+      - "8081:8081"
+      - "5005:5005"
+    volumes:
+      - ./tapas-tasks/src:/opt/app/src
+      - ./tapas-tasks/target:/opt/app/target
+  assignment:
+    container_name: assignment
+    build:
+      context: "./assignment"
+      dockerfile: "Dockerfile"
+      target: development
+    ports:
+      - "8082:8081"
+      - "5006:5005"
+    volumes:
+      - ./assignment/src:/opt/app/src
+      - ./assignment/target:/opt/app/target
+  executor-pool:
+    container_name: executor-pool
+    build:
+      context: "./executor-pool"
+      dockerfile: "Dockerfile"
+      target: development
+    ports:
+      - "8083:8081"
+      - "5007:5005"
+    volumes:
+      - ./executor-pool/src:/opt/app/src
+      - ./executor-pool/target:/opt/app/target
+  executor1:
+    container_name: executor1
+    build:
+      context: "./executor1"
+      dockerfile: "Dockerfile"
+      target: development
+    ports:
+      - "8084:8081"
+      - "5008:5005"
+    volumes:
+      - ./executor1/src:/opt/app/src
+      - ./executor1/target:/opt/app/target
+  executor2:
+    container_name: executor2
+    build:
+      context: "./executor2"
+      dockerfile: "Dockerfile"
+      target: development
+    ports:
+      - "8085:8081"
+      - "5009:5005"
+    volumes:
+      - ./executor2/src:/opt/app/src
+      - ./executor2/target:/opt/app/target
