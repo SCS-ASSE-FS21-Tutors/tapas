@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @RequestMapping("/")
     public String index() {
+        System.out.println("TEST");
         return "Hello World! Executor Pool";
     }
 }
