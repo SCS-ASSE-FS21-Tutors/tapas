@@ -1,4 +1,4 @@
-package ch.executor.executor;
+package ch.unisg.tapas.executor;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
