@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TapasAdditionExecutorApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TapasAdditionExecutorApplication.class, args);
+		SpringApplication tapasAdditionExecutor = new SpringApplication(TapasAdditionExecutorApplication.class);
+		tapasAdditionExecutor.run(args);
 	}
 
 }
