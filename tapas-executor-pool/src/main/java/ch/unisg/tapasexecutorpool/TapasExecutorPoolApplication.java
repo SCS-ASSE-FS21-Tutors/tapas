@@ -7,8 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class TapasExecutorPoolApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TapasExecutorPoolApplication.class, args);
-		System.out.println("Hello Jonas");
+		SpringApplication tapasExecutorPoolApp = new SpringApplication(TapasExecutorPoolApplication.class);
+		tapasExecutorPoolApp.run(args);
 	}
 
 }

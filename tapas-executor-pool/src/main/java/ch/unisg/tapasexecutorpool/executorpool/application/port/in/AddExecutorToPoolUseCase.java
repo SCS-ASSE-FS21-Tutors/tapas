@@ -1,6 +1,7 @@
 package ch.unisg.tapasexecutorpool.executorpool.application.port.in;
 
+import ch.unisg.tapasexecutorpool.executorpool.domain.Executor;
+
 public interface AddExecutorToPoolUseCase {
-    // Add an executor to the existing pool and return whether the operation was successful
-    boolean addExecutorToPool(AddExecutorToPoolCommand command);
+    Executor addNewExecutorToExecutorPool(AddExecutorToPoolCommand command);
 }

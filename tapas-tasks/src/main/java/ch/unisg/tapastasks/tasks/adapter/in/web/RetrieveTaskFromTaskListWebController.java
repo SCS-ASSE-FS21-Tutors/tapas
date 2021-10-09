@@ -21,6 +21,7 @@ public class RetrieveTaskFromTaskListWebController {
 
     @GetMapping(path = "/tasks/{taskId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskId") String taskId) {
+
         RetrieveTaskFromTaskListCommand command = new RetrieveTaskFromTaskListCommand(new Task.TaskId(taskId));
         Optional<Task> updatedTaskOpt = retrieveTaskFromTaskListUseCase.retrieveTaskFromTaskList(command);
 
