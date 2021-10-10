@@ -55,6 +55,13 @@ public class TaskList {
         return Optional.empty();
     }
 
+    public boolean changeTaskStatusToExecuted(Task.TaskId id) {
+        Optional<Task> t = retrieveTaskById(id);
+        Task task = t.get();
+        task.setTaskState(new Task.TaskState(Task.State.EXECUTED));
+        return true;
+    }
+
     @Value
     public static class TaskListName {
         private String value;

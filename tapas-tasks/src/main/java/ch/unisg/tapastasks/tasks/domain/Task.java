@@ -22,6 +22,7 @@ public class Task {
     private final TaskType taskType;
 
     @Getter
+    @Setter
     private TaskState taskState;
 
     public Task(TaskName taskName, TaskType taskType) {
