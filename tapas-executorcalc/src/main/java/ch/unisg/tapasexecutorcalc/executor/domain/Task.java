@@ -1,4 +1,4 @@
-package ch.unisg.tapasroster.roster.domain;
+package ch.unisg.tapasexecutorcalc.executor.domain;
 
 import lombok.Getter;
 import lombok.Setter;

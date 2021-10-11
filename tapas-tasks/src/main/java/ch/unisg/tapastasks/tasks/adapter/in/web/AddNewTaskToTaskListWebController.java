@@ -25,7 +25,9 @@ public class AddNewTaskToTaskListWebController {
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody Task task) {
         try {
             AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(
-                    task.getTaskName(), task.getTaskType()
+                task.getTaskName(),
+                task.getTaskType(),
+                task.getTaskPayload()
             );
 
             Task newTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);

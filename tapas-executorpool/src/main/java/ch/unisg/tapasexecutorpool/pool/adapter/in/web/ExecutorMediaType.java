@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutorpool.pool.adapter.web;
+package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;

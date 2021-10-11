@@ -1,8 +1,8 @@
-package ch.unisg.tapasroster.roster.adapter.in.web;
+package ch.unisg.tapasexecutorcalc.executor.adapter.in.web;
 
-import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskCommand;
-import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskUseCase;
-import ch.unisg.tapasroster.roster.domain.Task;
+import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskCommand;
+import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskUseCase;
+import ch.unisg.tapasexecutorcalc.executor.domain.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,18 +14,19 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.ConstraintViolationException;
 
 @RestController
-public class ScheduleNewTaskWebController {
-    private final ScheduleTaskUseCase scheduleTaskUseCase;
+public class ExecuteTaskWebController {
+    private final ExecuteTaskUseCase executeTaskUseCase;
 
-    public ScheduleNewTaskWebController(ScheduleTaskUseCase scheduleTaskUseCase) {
-        this.scheduleTaskUseCase = scheduleTaskUseCase;
+    public ExecuteTaskWebController(ExecuteTaskUseCase executeTaskUseCase) {
+        this.executeTaskUseCase = executeTaskUseCase;
     }
 
-    @PostMapping(path = "/roster/schedule-task/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
-    public ResponseEntity<String> scheduleNewTask(@RequestBody Task task) {
+    @PostMapping(path = "/executor/execute-task/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    public ResponseEntity<String> executeTask(@RequestBody Task task) {
         try {
-            var command = new ScheduleTaskCommand(task);
-            Task newTask = scheduleTaskUseCase.scheduleTask(command);
+            var command = new ExecuteTaskCommand(task);
+
+            Task newTask = executeTaskUseCase.executeTask(command);
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();

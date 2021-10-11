@@ -3,6 +3,7 @@ package ch.unisg.tapastasks.tasks.application.port.in;
 import ch.unisg.tapastasks.common.SelfValidating;
 import ch.unisg.tapastasks.tasks.domain.Task.TaskType;
 import ch.unisg.tapastasks.tasks.domain.Task.TaskName;
+import ch.unisg.tapastasks.tasks.domain.Task.TaskPayload;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
@@ -15,9 +16,13 @@ public class AddNewTaskToTaskListCommand extends SelfValidating<AddNewTaskToTask
     @NotNull
     private final TaskType taskType;
 
-    public AddNewTaskToTaskListCommand(TaskName taskName, TaskType taskType) {
+    @NotNull
+    private final TaskPayload taskPayload;
+
+    public AddNewTaskToTaskListCommand(TaskName taskName, TaskType taskType, TaskPayload taskPayload) {
         this.taskName = taskName;
         this.taskType = taskType;
+        this.taskPayload = taskPayload;
         this.validateSelf();
     }
 }

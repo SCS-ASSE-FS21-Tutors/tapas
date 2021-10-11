@@ -1,4 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.application.port.in;
 
-public class ExecuteTaskUseCase {
+import ch.unisg.tapasexecutorpool.pool.domain.Task;
+
+public interface ExecuteTaskUseCase {
+    Task executeTask(ExecuteTaskCommand command);
 }

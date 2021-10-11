@@ -44,12 +44,11 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         var payload = TaskMediaType.serialize(event.task);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create(server+"/roster/schedule-task/"))
+            .uri(URI.create(server + "/roster/schedule-task/"))
             .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
             .POST(HttpRequest.BodyPublishers.ofString(payload))
             .build();
 
-        //Needs the other service running
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {

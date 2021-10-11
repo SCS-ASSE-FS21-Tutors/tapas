@@ -14,6 +14,7 @@ final public class TaskMediaType {
         payload.put("taskName", task.getTaskName().getValue());
         payload.put("taskType", task.getTaskType().getValue());
         payload.put("taskState", task.getTaskState().getValue());
+        payload.put("taskPayload", task.getTaskPayload().getValue());
         payload.put("taskListName", TaskList.getTapasTaskList().getTaskListName().getValue());
 
         return payload.toString();

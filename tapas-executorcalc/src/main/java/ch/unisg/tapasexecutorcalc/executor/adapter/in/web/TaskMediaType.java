@@ -1,6 +1,6 @@
-package ch.unisg.tapasroster.roster.adapter.in.web;
+package ch.unisg.tapasexecutorcalc.executor.adapter.in.web;
 
-import ch.unisg.tapasroster.roster.domain.Task;
+import ch.unisg.tapasexecutorcalc.executor.domain.Task;
 import org.json.JSONObject;
 
 final public class TaskMediaType {
@@ -14,7 +14,7 @@ final public class TaskMediaType {
         payload.put("taskType", task.getTaskType().getValue());
         payload.put("taskState", task.getTaskState().getValue());
         payload.put("taskPayload", task.getTaskPayload().getValue());
-
+        
         return payload.toString();
     }
 

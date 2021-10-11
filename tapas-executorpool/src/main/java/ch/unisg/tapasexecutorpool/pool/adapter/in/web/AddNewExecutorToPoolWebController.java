@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutorpool.pool.adapter.web;
+package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolUseCase;

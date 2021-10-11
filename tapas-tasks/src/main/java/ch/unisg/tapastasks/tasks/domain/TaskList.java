@@ -3,13 +3,10 @@ package ch.unisg.tapastasks.tasks.domain;
 import lombok.Getter;
 import lombok.Value;
 
-import javax.swing.text.html.Option;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
-
-/**This is our aggregate root**/
 public class TaskList {
 
     @Getter
@@ -18,10 +15,7 @@ public class TaskList {
     @Getter
     private final ListOfTasks listOfTasks;
 
-    //Note: We do not care about the management of task lists, there is only one within this service
-    //--> using the Singleton pattern here to make lives easy; we will later load it from a repo
-    //TODO change "tutors" to your group name ("groupx")
-    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-tutors"));
+    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-group4"));
 
     private TaskList(TaskListName taskListName) {
         this.taskListName = taskListName;
@@ -32,16 +26,17 @@ public class TaskList {
         return taskList;
     }
 
-    //Only the aggregate root is allowed to create new tasks and add them to the task list.
-    //Note: Here we could add some sophisticated invariants/business rules that the aggregate root checks
-    public Task addNewTaskWithNameAndType(Task.TaskName name, Task.TaskType type) {
+    /*public Task addNewTaskWithNameAndType(Task.TaskName name, Task.TaskType type) {
         Task newTask = Task.createTaskWithNameAndType(name,type);
         listOfTasks.value.add(newTask);
-        //This is a simple debug message to see that the task list is growing with each new request
-        System.out.println("Number of tasks: "+listOfTasks.value.size());
-        //Here we would also publish a domain event to other entities in the core interested in this event.
-        //However, we skip this here as it makes the core even more complex (e.g., we have to implement a light-weight
-        //domain event publisher and subscribers (see "Implementing Domain-Driven Design by V. Vernon, pp. 296ff).
+        System.out.println("Number of tasks: " + listOfTasks.value.size());
+        return newTask;
+    }*/
+
+    public Task addNewTaskWithPayload(Task.TaskName name, Task.TaskType type, Task.TaskPayload payload) {
+        Task newTask = Task.createTaskWithPayload(name, type, payload);
+        listOfTasks.value.add(newTask);
+        System.out.println("Number of tasks: " + listOfTasks.value.size());
         return newTask;
     }
 
@@ -64,5 +59,4 @@ public class TaskList {
     public static class ListOfTasks {
         private List<Task> value;
     }
-
 }

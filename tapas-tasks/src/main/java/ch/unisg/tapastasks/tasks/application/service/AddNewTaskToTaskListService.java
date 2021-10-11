@@ -21,7 +21,7 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
     @Override
     public Task addNewTaskToTaskList(AddNewTaskToTaskListCommand command) {
         TaskList taskList = TaskList.getTapasTaskList();
-        Task newTask = taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
+        Task newTask = taskList.addNewTaskWithPayload(command.getTaskName(), command.getTaskType(), command.getTaskPayload());
 
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.
