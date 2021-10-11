@@ -29,6 +29,6 @@ public class AddNumbersController {
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");
-        return new ResponseEntity<>(payload.toString(), responseHeaders, HttpStatus.CREATED);
+        return new ResponseEntity<>(payload.toString(), responseHeaders, HttpStatus.OK);
     }
 }
