@@ -10,8 +10,8 @@ public class TapasTasksApplication {
 
 	public static void main(String[] args) {
 
-		SpringApplication tapasTasksApp = new SpringApplication(TapasTasksApplication.class);
-		tapasTasksApp.run(args);
+        SpringApplication tapasTasksApp = new SpringApplication(TapasTasksApplication.class);
+        tapasTasksApp.run(args);
 	}
 
 }
