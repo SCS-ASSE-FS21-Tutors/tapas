@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class ExecutorListMediaType {
+final public class ExecutorListMediaType {
     public static final String EXECUTOR_LIST_MEDIA_TYPE = "application/json";
 
     public static JSONObject toJSON(List<Executor> executorList) throws JSONException {
