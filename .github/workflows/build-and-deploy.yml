@@ -40,7 +40,7 @@ jobs:
 
     - name: Build Executor Pool with Maven
       run: mvn -f tapas-executor-pool/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./tapas-tasks/target/tapas-executor-pool-0.0.1-SNAPSHOT.jar ./target
+    - run: cp ./tapas-executor-pool/target/tapas-executor-pool-0.0.1-SNAPSHOT.jar ./target
 
     - run: cp docker-compose.yml ./target
     - name: Archive artifacts
