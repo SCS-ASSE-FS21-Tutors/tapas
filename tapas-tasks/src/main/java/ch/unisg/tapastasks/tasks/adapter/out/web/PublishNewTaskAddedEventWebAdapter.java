@@ -1,10 +1,12 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
+import ch.unisg.tapastasks.tasks.adapter.in.web.TaskMediaType;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -26,7 +28,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
 
-        var values = new HashMap<String, String>() {{
+        /*var values = new HashMap<String, String>() {{
             put("taskname",event.taskName);
             put("tasklist",event.taskListName);
         }};
@@ -37,15 +39,17 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
             requestBody = objectMapper.writeValueAsString(values);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        var payload = TaskMediaType.serialize(event.task);
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/roster/newtask/"))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+            .uri(URI.create(server+"/roster/schedule-task/"))
+            .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
+            .POST(HttpRequest.BodyPublishers.ofString(payload))
+            .build();
 
-        /** Needs the other service running
+        //Needs the other service running
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
@@ -53,6 +57,5 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-         **/
     }
 }

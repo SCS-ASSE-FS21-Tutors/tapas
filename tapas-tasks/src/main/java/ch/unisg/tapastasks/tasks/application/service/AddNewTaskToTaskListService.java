@@ -29,8 +29,7 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
         //not recommended to emit a domain event via an application service! You should first emit the domain event in
         //the core and then the integration event in the application layer.
         if (newTask != null) {
-            NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(newTask.getTaskName().getValue(),
-                    taskList.getTaskListName().getValue());
+            NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(newTask);
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
 

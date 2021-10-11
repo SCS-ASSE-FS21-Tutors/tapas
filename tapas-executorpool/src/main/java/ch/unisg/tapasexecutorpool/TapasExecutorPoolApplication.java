@@ -1,13 +1,13 @@
-package ch.unisg.tapasroster;
+package ch.unisg.tapasexecutorpool;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TapasrosterApplication {
+public class TapasExecutorPoolApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TapasrosterApplication.class, args);
+		SpringApplication.run(TapasExecutorPoolApplication.class, args);
 	}
 
 }

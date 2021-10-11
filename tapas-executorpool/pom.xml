@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.unisg</groupId>
-	<artifactId>tapasexecutorpool</artifactId>
+	<artifactId>tapas-executorpool</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tapasexecutorpool</name>
-	<description>Executor Pool</description>
+	<name>tapas-executorpool</name>
+	<description>TAPAS Executor Pool Service</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>

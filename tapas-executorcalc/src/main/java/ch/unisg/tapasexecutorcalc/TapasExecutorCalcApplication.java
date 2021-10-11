@@ -1,13 +1,13 @@
-package ch.unisg.tapasexecutorrobot;
+package ch.unisg.tapasexecutorcalc;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class TapasexecutorrobotApplication {
+public class TapasExecutorCalcApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(TapasexecutorrobotApplication.class, args);
+		SpringApplication.run(TapasExecutorCalcApplication.class, args);
 	}
 
 }

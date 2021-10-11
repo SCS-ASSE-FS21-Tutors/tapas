@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.unisg</groupId>
-	<artifactId>tapasexecutorrobot</artifactId>
+	<artifactId>tapas-executorrobot</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>tapasexecutorrobot</name>
-	<description>Executor Robot</description>
+	<name>tapas-executorrobot</name>
+	<description>TAPAS Executor Robot Service</description>
 	<properties>
 		<java.version>11</java.version>
 	</properties>
