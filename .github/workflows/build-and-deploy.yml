@@ -31,7 +31,7 @@ jobs:
     - run: mkdir ./target
 
     - name: Build Tasks with Maven
-      run: mvn clean install -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
+      run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-tasks/target/tapas-tasks-0.0.2-SNAPSHOT.jar ./target
 
     - name: Build App with Maven
