@@ -13,7 +13,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import ch.unisg.executor1.executor.application.port.out.ExecutionFinishedEventPort;
 import ch.unisg.executor1.executor.domain.ExecutionFinishedEvent;
 
-public class ExecutionFinishedAdapter implements ExecutionFinishedEventPort {
+public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
     String server = "http://127.0.0.1:8082";
@@ -51,7 +51,7 @@ public class ExecutionFinishedAdapter implements ExecutionFinishedEventPort {
         }
          **/
 
-        System.out.println("Finish execution event sent");
+        System.out.println("Finish execution event sent with result:" + event.getResult());
         
     }
     

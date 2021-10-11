@@ -12,6 +12,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.executor1.executor.application.port.out.NotifyExecutorPoolPort;
+import ch.unisg.executor1.executor.domain.ExecutorType;
 
 @Component
 @Primary
@@ -21,12 +22,12 @@ public class NotifyExecutorPoolAdapter implements NotifyExecutorPoolPort {
     String server = "http://127.0.0.1:8083";
 
     @Override
-    public boolean notifyExecutorPool(String ip, int port, String executorType) {
+    public boolean notifyExecutorPool(String ip, int port, ExecutorType executorType) {
 
         var values = new HashMap<String, String>() {{
             put("ip", ip);
             put("port", Integer.toString(port));
-            put("executorType", executorType);
+            put("executorType", executorType.toString());
         }};
 
         var objectMapper = new ObjectMapper();

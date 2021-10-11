@@ -19,7 +19,7 @@ public class TaskAvailableService implements TaskAvailableUseCase {
     public void newTaskAvailable(TaskAvailableCommand command) {
         Executor executor = Executor.getExecutor();
 
-        if (executor.getExecutorType().equalsIgnoreCase(command.getTaskType()) && 
+        if (executor.getExecutorType() == command.getTaskType() && 
             executor.getStatus() == ExecutorStatus.IDLING) {
             executor.getAssignment();
         }

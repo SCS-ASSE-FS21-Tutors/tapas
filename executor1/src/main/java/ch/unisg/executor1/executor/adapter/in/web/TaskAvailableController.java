@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ch.unisg.executor1.executor.application.port.in.TaskAvailableCommand;
 import ch.unisg.executor1.executor.application.port.in.TaskAvailableUseCase;
+import ch.unisg.executor1.executor.domain.ExecutorType;
 
 @RestController
 public class TaskAvailableController {
@@ -20,10 +21,13 @@ public class TaskAvailableController {
 
     @GetMapping(path = "/newtask/{taskType}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskType") String taskType) {
-        TaskAvailableCommand command = new TaskAvailableCommand(taskType);
         
-        taskAvailableUseCase.newTaskAvailable(command);
-        
+        if (ExecutorType.contains(taskType.toUpperCase())) {
+            TaskAvailableCommand command = new TaskAvailableCommand(
+                ExecutorType.valueOf(taskType.toUpperCase()));
+            taskAvailableUseCase.newTaskAvailable(command);
+        }
+
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
 

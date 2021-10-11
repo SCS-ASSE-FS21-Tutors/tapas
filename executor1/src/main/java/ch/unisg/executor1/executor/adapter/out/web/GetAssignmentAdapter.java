@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.executor1.executor.application.port.out.GetAssignmentPort;
+import ch.unisg.executor1.executor.domain.ExecutorType;
 import ch.unisg.executor1.executor.domain.Task;
 
 @Component
@@ -18,7 +19,7 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
     String server = "http://127.0.0.1:8082";
 
     @Override
-    public Task getAssignment(String executorType) {
+    public Task getAssignment(ExecutorType executorType) {
         
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -38,7 +39,7 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
 
          // TODO return null or a new Task here depending on the response of the http call
 
-         return new Task("1234");
+         return null;
     }
     
 }
