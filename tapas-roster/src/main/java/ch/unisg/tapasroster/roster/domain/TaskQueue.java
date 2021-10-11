@@ -2,7 +2,9 @@ package ch.unisg.tapasroster.roster.domain;
 
 import lombok.Getter;
 import lombok.Value;
+import lombok.val;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public class TaskQueue {
@@ -17,11 +19,20 @@ public class TaskQueue {
     }
 
     public void addTaskToQueue(Task task){
-        this.queueOfTasks.value.add(task);
+        ArrayList<String> allIds = new ArrayList<String>();
+        for(Task t:this.queueOfTasks.value){
+            allIds.add(t.getTaskId().getValue());
+        }
+        if(!(allIds.contains(task.getTaskId().getValue()))){
+            this.queueOfTasks.value.add(task);
+        }
+
     }
 
-    public Task getNextTask(){
-        return this.queueOfTasks.value.getFirst();
+    public Task retrieveNextTask(){
+        Task nextTask = this.queueOfTasks.value.getFirst();
+        this.queueOfTasks.value.removeFirst();
+        return nextTask;
     }
 
     @Value
