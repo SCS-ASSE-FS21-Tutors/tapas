@@ -1,4 +1,4 @@
 package ch.unisg.tapasroster.roster.application.port.in;
 
-public class AddTaskToTaskListCommand {
+public class AddTaskToTaskQueueCommand {
 }
