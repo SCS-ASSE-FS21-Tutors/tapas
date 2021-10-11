@@ -21,7 +21,7 @@ public class TaskList {
     //Note: We do not care about the management of task lists, there is only one within this service
     //--> using the Singleton pattern here to make lives easy; we will later load it from a repo
     //TODO change "tutors" to your group name ("groupx")
-    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-tutors"));
+    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-group2"));
 
     private TaskList(TaskListName taskListName) {
         this.taskListName = taskListName;
