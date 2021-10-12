@@ -1,6 +1,6 @@
-# 12. Coordination Style
+# 12. Roster ExecutorPool synchronouse communication
 
-Date: 2021-09-27
+Date: 2021-10-12
 
 ## Status
 
@@ -8,13 +8,16 @@ Accepted
 
 ## Context
 
-We are building a multi-component system which needs to handle a workflow among all components. Therefore, we need to consider how to coordinate such workflows among components.
-
+As elaborated in ADR #10 asynchronouse communication is used among most of the components due to the partially long
+execution times and the resulting component coupling. Furthermore, we elaborated that we use synchronous
+communication wherever feasible to decrease complexity of implementation.
 ## Decision
 
-Our systems coordination is based on choreography, since our most important characteristics (responsiveness, fault tolerance, scalability) are supported by that style.
-
+We decided to use synchronous communication between the Roster and the ExecutorPool. This is due to the simplicity 
+of this information exchange resulting from the separation of concerns. The Roster assigns the tasks based on the
+executors registered in the ExecutorPool. To do so, it just needs to query the currently available Executors.
+This is a straightforward process, not introducing the necessity of asynchronous communication.
 
 ## Consequences
 
-Since we have no orchestrator in place, the communication needs to be coordinated by the components themselves. Therefore, services are coupled more heavily.
+By doing so, we are able to reduce the implementation and communication complexity in this part of the application.

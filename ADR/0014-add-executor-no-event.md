@@ -1,4 +1,4 @@
-# 12. Coordination Style
+# 12. Add Executor No Event
 
 Date: 2021-09-27
 
@@ -8,13 +8,17 @@ Accepted
 
 ## Context
 
-We are building a multi-component system which needs to handle a workflow among all components. Therefore, we need to consider how to coordinate such workflows among components.
+In ADR #1 we stated that our system is based on events. Therefore, every major process in our system emits an event,
+which may be processed by its listeners. Nevertheless, there may be cases, where it is superfluent to emit events, since
+the process is not relevant for the rest of the system. This must be reasoned.
 
 ## Decision
 
-Our systems coordination is based on choreography, since our most important characteristics (responsiveness, fault tolerance, scalability) are supported by that style.
-
+We decided not to emit an event if an executor is added to the ExecutorPool. It is irrelevant, since the Roster queries
+anyways for all available Executors prior to the assignment process. Furthermore, a new Executor is just relevant 
+if there is a corresponding task. If this case never occurs, there is no need to inform other components about its 
+existence.
 
 ## Consequences
 
-Since we have no orchestrator in place, the communication needs to be coordinated by the components themselves. Therefore, services are coupled more heavily.
+By avoiding the event propagation, we are able to reduce the communication complexity in this part of the system.
