@@ -1,4 +1,4 @@
-package ch.unisg.tapasrobotexecutor;
+package ch.unisg.tapasrobotexecutor.tasks;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
