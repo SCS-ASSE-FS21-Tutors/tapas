@@ -3,7 +3,6 @@ package ch.unisg.tapastasks.tasks.domain;
 import lombok.Getter;
 import lombok.Value;
 
-import javax.swing.text.html.Option;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -55,11 +54,27 @@ public class TaskList {
         return Optional.empty();
     }
 
-    public boolean changeTaskStatusToExecuted(Task.TaskId id) {
-        Optional<Task> t = retrieveTaskById(id);
-        Task task = t.get();
-        task.setTaskState(new Task.TaskState(Task.State.EXECUTED));
-        return true;
+    public Task changeTaskStatusToAssigned(Task.TaskId id) {
+        return changeTaskStatus(id, new Task.TaskState(Task.State.ASSIGNED));
+    }
+
+    public Task changeTaskStatusToRunning(Task.TaskId id) {
+        return changeTaskStatus(id, new Task.TaskState(Task.State.RUNNING));
+    }
+
+    public Task changeTaskStatusToExecuted(Task.TaskId id) throws TaskNotFoundException {
+        return changeTaskStatus(id, new Task.TaskState(Task.State.EXECUTED));
+    }
+
+    private Task changeTaskStatus(Task.TaskId id, Task.TaskState state) {
+        Optional<Task> task = retrieveTaskById(id);
+
+        if (task.isEmpty()) {
+            throw new TaskNotFoundException();
+        }
+
+        task.get().setTaskState(state);
+        return task.get();
     }
 
     @Value
@@ -71,5 +86,4 @@ public class TaskList {
     public static class ListOfTasks {
         private List<Task> value;
     }
-
 }
