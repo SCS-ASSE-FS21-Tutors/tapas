@@ -1,19 +1,20 @@
-# 8. Executor Pool Microservice
+# 8. Adaptable Executor Pool
 
-Date: 2021-09-28
+Date: 2021-10-12
 
 ## Status
 
 Accepted
 
-Supercedes [4. Executor Pool Microkernel Microservices Architecture](0004-executor-pool-microkernel-microservices-architecture.md)
+Supersedes [4. Executor Pool Microkernel Microservices Architecture](0004-executor-pool-microkernel-microservices-architecture.md)
+
 
 ## Context
+We need to be able to add Executors to the ExecutorPool, as well as remove them on a regular basis.
 
-We need to extend the executor pool on a regulary basis.
 ## Decision
+Since we do not want to redeploy the ExecutorPool everytime the available Executors change,
+Executors and the ExecutorPool must be implemented as separate components.
 
-We implement the pool as a microservice, since a more complex architecture like microcernel would be overengineered for a lookup service.
 ## Consequences
-
-We spare the effort to implement a common interface for the microcernel system.
+Interfaces for adding and removing Executors need to be implemented in the ExecutorPool.

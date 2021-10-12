@@ -4,11 +4,12 @@ Date: 2021-09-27
 
 ## Status
 
-Superceded by [10. Executor Pool Microservice](0010-executor-pool-microservice.md)
+Superseded by [8. Adaptable Executor Pool](0008-executor-pool-microservice.md)
 
 ## Context
 
-The executor pool needs to be able to adapt to extension and removal of executors at runtime. It should additionally be available regardless of the amount of available executors
+The executor pool needs to be able to adapt to extension and removal of executors at runtime.
+It should additionally be available regardless of the amount of available executors
 
 ## Decision
 

@@ -1,18 +1,18 @@
 # 2. Executor Microservices
 
-Date: 2021-09-27
+Date: 2021-10-12
 
 ## Status
 
 Accepted
 
 ## Context
+Our application must be able to support multiple Executors which have different properties 
+(i.e., certain tasks can only be completed by certain executors).
+Therefore, we need to separate different executor functionalities to work independently.
 
-We need a useful separation for the different exuctor functionalities to work independently and be able to evolve the component without redeploying it.
 ## Decision
-
-Executors will be implemented as microservices.
+Separating the responsibilities of multiple Executors will be done by implementing multiple Executors as microservices.
 
 ## Consequences
-
-Each executor has its own data environment. Consequently, it will be difficult for executors to work on a task together. However, since this is not required, it is not an issue.
+Each executor has its own data environment. Synchronizing data between executors would become difficult.
