@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
+import ch.unisg.tapastasks.tasks.adapter.TaskMediaType;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;

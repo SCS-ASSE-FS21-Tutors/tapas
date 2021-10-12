@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
+import ch.unisg.tapastasks.tasks.adapter.TaskMediaType;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,9 +27,10 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
 
+        /*
         var values = new HashMap<String, String>() {{
-            put("taskname",event.taskName);
-            put("tasklist",event.taskListName);
+            put("taskName", event.taskName);
+            put("taskList", event.taskListName);
         }};
 
         var objectMapper = new ObjectMapper();
@@ -38,6 +40,8 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
+         */
+        String requestBody = TaskMediaType.serialize(event.task);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
@@ -45,14 +49,12 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        /** Needs the other service running
+
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-         **/
+
     }
 }
