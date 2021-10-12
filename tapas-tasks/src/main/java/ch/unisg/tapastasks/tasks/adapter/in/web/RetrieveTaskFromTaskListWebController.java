@@ -21,8 +21,8 @@ public class RetrieveTaskFromTaskListWebController {
 
     @GetMapping(path = "/tasks/{taskId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskId") String taskId) {
-        RetrieveTaskFromTaskListQuery command = new RetrieveTaskFromTaskListQuery(new Task.TaskId(taskId));
-        Optional<Task> updatedTaskOpt = retrieveTaskFromTaskListUseCase.retrieveTaskFromTaskList(command);
+        RetrieveTaskFromTaskListQuery query = new RetrieveTaskFromTaskListQuery(new Task.TaskId(taskId));
+        Optional<Task> updatedTaskOpt = retrieveTaskFromTaskListUseCase.retrieveTaskFromTaskList(query);
 
         // Check if the task with the given identifier exists
         if (updatedTaskOpt.isEmpty()) {
