@@ -32,7 +32,8 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
             NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(
                 newTask.getTaskName().getValue(),
                 taskList.getTaskListName().getValue(),
-                newTask.getTaskType().getValue()
+                newTask.getTaskType().getValue(),
+                newTask.getTaskId().getValue()
             );
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
