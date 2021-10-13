@@ -12,28 +12,34 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.Locale;
 
 @Component
 @Primary
 public class ForwardTaskToExecutorEventWebAdapter implements ForwardTaskToExecutorEventPort {
 
-    String server = "http://127.0.0.1:8084";
+    private final String EXECUTOR_API_CALC = "http://127.0.0.1:8084/executor-calc/execute-task/";
+    private final String EXECUTOR_API_ROBOT = "http://127.0.0.1:8085/executor-robot/execute-task/";
 
     @Override
     public void forwardTaskToPoolEvent(ForwardTaskToExecutorEvent event) {
         var payload = TaskMediaType.serialize(event.task);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/executor/execute-task/"))
-                .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
+        var client = HttpClient.newHttpClient();
+        var requestBuilder = HttpRequest.newBuilder();
+
+        if (event.task.getTaskType().getValue().toLowerCase(Locale.ROOT).equals("calc")) {
+            requestBuilder.uri(URI.create(EXECUTOR_API_CALC));
+        } else if (event.task.getTaskType().getValue().toLowerCase(Locale.ROOT).equals("robot")) {
+            requestBuilder.uri(URI.create(EXECUTOR_API_ROBOT));
+        }
+
+        var request = requestBuilder.setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .build();
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }

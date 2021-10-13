@@ -1,8 +1,8 @@
-package ch.unisg.tapasexecutorcalc.executor.adapter.in.web;
+package ch.unisg.tapasexecutorrobot.executor.adapter.in.web;
 
-import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskCommand;
-import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskUseCase;
-import ch.unisg.tapasexecutorcalc.executor.domain.Task;
+import ch.unisg.tapasexecutorrobot.executor.application.port.in.ExecuteTaskCommand;
+import ch.unisg.tapasexecutorrobot.executor.application.port.in.ExecuteTaskUseCase;
+import ch.unisg.tapasexecutorrobot.executor.domain.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,7 @@ public class ExecuteTaskWebController {
         this.executeTaskUseCase = executeTaskUseCase;
     }
 
-    @PostMapping(path = "/executor-calc/execute-task/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    @PostMapping(path = "/executor-robot/execute-task/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
     public ResponseEntity<String> executeTask(@RequestBody Task task) {
         try {
             var command = new ExecuteTaskCommand(task);
