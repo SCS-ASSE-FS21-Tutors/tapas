@@ -1,4 +1,4 @@
-package ch.unisg.executor1;
+package ch.unisg.executorBase;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
