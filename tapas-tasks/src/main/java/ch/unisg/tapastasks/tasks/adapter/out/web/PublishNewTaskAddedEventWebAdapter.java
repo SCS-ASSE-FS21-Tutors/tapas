@@ -37,7 +37,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         }};
 
         var objectMapper = new ObjectMapper();
-        String requestBody = null;
+        String requestBody = "";
         try {
             requestBody = objectMapper.writeValueAsString(values);
         } catch (JsonProcessingException e) {
@@ -54,11 +54,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
          //Needs the other service running
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            System.out.println(response.body());
-            System.out.println(requestBody);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 
