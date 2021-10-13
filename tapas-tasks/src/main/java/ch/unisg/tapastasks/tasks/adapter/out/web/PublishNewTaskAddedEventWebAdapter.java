@@ -19,6 +19,8 @@ import java.util.HashMap;
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
+    //@org.springframework.beans.factory.annotation.Value("${newTaskEventServer}")
+    //private String server;
     String server = "http://127.0.0.1:8082";
 
     @Override
@@ -29,6 +31,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         var values = new HashMap<String, String>() {{
             put("taskname",event.taskName);
             put("tasklist",event.taskListName);
+            put("taskType", event.taskType);
         }};
 
         var objectMapper = new ObjectMapper();

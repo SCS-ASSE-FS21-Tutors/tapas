@@ -1,10 +1,10 @@
 package ch.unisg.tapasroster.roster.adapter.in.web;
 
-import ch.unisg.tapasroster.roster.application.port.in.AddTaskToTaskQueueCommand;
 import ch.unisg.tapasroster.roster.application.port.in.AssignTaskToExecutorInExecutorPoolCommand;
 import ch.unisg.tapasroster.roster.application.port.in.AssignTaskToExecutorInExecutorPoolUseCase;
 import ch.unisg.tapasroster.roster.domain.Task;
 import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,14 +30,16 @@ public class AssignTaskToExecutorInExecutorPoolWebAdapter {
                     task.getTaskId(), task.getTaskType()
             );
 
-            //Not clear yet what it is supposed to return
-            Task newTask = assignTaskToExecutorInExecutorPoolUseCase.assignTaskToExecutor(command);
+            boolean newTaskCreated = assignTaskToExecutorInExecutorPoolUseCase.assignTaskToExecutor(command);
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
 
-            return new ResponseEntity<>(TaskMediaType.serialize(newTask), responseHeaders, HttpStatus.CREATED);
+            JSONObject response = new JSONObject();
+            response.put("Task assigned", newTaskCreated);
+
+            return new ResponseEntity<>(response.toString(), responseHeaders, HttpStatus.CREATED);
         } catch (ConstraintViolationException | JSONException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
