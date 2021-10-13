@@ -36,12 +36,8 @@ public class AddExecutorToPoolWebController {
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
 
             return new ResponseEntity<>(ExecutorMediaType.serialize(newExecutor), responseHeaders, HttpStatus.CREATED);
-        } catch (ConstraintViolationException e) {
+        } catch (ConstraintViolationException | JSONException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-        }
-        catch (JSONException e){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
-
         }
     }
 }

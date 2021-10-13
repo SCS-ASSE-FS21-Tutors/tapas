@@ -1,6 +1,7 @@
 package ch.unisg.tapasexecutorpool.executorpool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.executorpool.domain.Executor;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -13,9 +14,9 @@ final public class ExecutorListMediaType {
     public static JSONObject toJSON(List<Executor> executorList) throws JSONException {
         JSONObject payload = new JSONObject();
 
-        List<JSONObject> executorsAsJSONObjects = new ArrayList<>();
+        JSONArray executorsAsJSONObjects = new JSONArray();
         for (Executor executor: executorList){
-            executorsAsJSONObjects.add(ExecutorMediaType.toJSON(executor));
+            executorsAsJSONObjects.put(ExecutorMediaType.toJSON(executor));
         }
         payload.put("executorList", executorsAsJSONObjects);
         return payload;

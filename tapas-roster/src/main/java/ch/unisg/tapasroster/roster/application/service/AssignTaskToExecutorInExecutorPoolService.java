@@ -32,7 +32,7 @@ public class AssignTaskToExecutorInExecutorPoolService implements AssignTaskToEx
         System.out.println("TaskId:" + command.getTaskId().getValue());
         System.out.println("TaskType:" + typeOfNewTask);
         // get executors via port
-        String executorPoolURL = "http://localhost:8083";
+        String executorPoolURL = "http://localhost:8081";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(executorPoolURL+"/executors/"))
@@ -41,6 +41,7 @@ public class AssignTaskToExecutorInExecutorPoolService implements AssignTaskToEx
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             JSONObject responseJSON = new JSONObject(response.body());
+            System.out.println(response.body());
             JSONArray executorJSONArray = responseJSON.getJSONArray("executorList");
 
             List<Executor> parsedExecutorList = new ArrayList<>();

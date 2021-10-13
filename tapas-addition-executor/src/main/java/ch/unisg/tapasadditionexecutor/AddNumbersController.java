@@ -14,7 +14,7 @@ import java.util.Random;
 @RestController
 public class AddNumbersController {
 
-    @GetMapping(path = "/addition")
+    @GetMapping(path = "/executeTask/")
     public ResponseEntity<String> addNumbers() {
         Random rand = new Random(123);
         float operator1 = rand.nextFloat();
@@ -29,6 +29,8 @@ public class AddNumbersController {
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");
+
+        System.out.println(payload);
         return new ResponseEntity<>(payload.toString(), responseHeaders, HttpStatus.OK);
     }
 }
