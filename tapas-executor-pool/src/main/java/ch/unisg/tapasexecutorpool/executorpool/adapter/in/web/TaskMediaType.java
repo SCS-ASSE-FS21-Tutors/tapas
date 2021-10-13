@@ -1,7 +1,6 @@
-package ch.unisg.tapastasks.tasks.adapter.in.web;
+package ch.unisg.tapasexecutorpool.executorpool.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.domain.Task;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
+import ch.unisg.tapasexecutorpool.executorpool.domain.Task;
 import org.json.JSONObject;
 
 final public class TaskMediaType {
@@ -14,7 +13,7 @@ final public class TaskMediaType {
         payload.put("taskName", task.getTaskName().getValue());
         payload.put("taskType", task.getTaskType().getValue());
         payload.put("taskState", task.getTaskState().getValue());
-        payload.put("taskListName", TaskList.getTapasTaskList().getTaskListName().getValue());
+        payload.put("taskListName", task.getTaskListName().getValue());
 
         return payload.toString();
     }
