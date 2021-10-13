@@ -1,17 +1,20 @@
 package ch.unisg.tapasrobotexecutor.tasks.adapter.out.web;
 
+import ch.unisg.tapasrobotexecutor.tasks.application.port.out.InitializeRobotPositionPort;
+
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-public class InitializeRobotPositionWebAdapter {
-    
-    public static void backToInitialPosition(String authKey) {
+public class InitializeRobotPositionWebAdapter implements InitializeRobotPositionPort {
+
+    @Override
+    public void initializeRobotPosition(String authKey) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EndpointHandler.server+EndpointHandler.initializeEndpoint))
+                .uri(URI.create(EndpointHandler.server + EndpointHandler.initializeEndpoint))
                 .PUT(HttpRequest.BodyPublishers.ofString("requestBody"))
                 .setHeader("accept", "*/*")
                 .setHeader("Content-Type", "application/json")

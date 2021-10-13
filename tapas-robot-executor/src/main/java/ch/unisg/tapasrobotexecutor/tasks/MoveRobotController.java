@@ -9,22 +9,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.context.annotation.Primary;
-import org.springframework.stereotype.Component;
-
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.TimeUnit;
 
@@ -48,22 +34,27 @@ public class MoveRobotController {
     public ResponseEntity<String> move() {
         JSONObject payload = new JSONObject();
 
-        Optional<String> authKey = RegisterNewOperatorWebAdapter.authorizeOperator();
-        if (authKey.isPresent()){
+        RegisterNewOperatorWebAdapter authorizeOperator = new RegisterNewOperatorWebAdapter();
+        Optional<String> authKey = authorizeOperator.authorizeOperator();
+
+        if (authKey.isPresent()) {
             String authKeyValue = authKey.get();
             payload.put("authKey", authKeyValue);
 
             waitSeconds(waitTimeBetweenRequests);
 
-            MoveBallOutOfSightWebAdapter.moveBall(authKeyValue);
+            MoveBallOutOfSightWebAdapter moveBallOutOfSightWebAdapter = new MoveBallOutOfSightWebAdapter();
+            moveBallOutOfSightWebAdapter.moveBallOutOfSight(authKeyValue);
 
             waitSeconds(waitTimeToReachApogee);
 
-            InitializeRobotPositionWebAdapter.backToInitialPosition(authKeyValue);
+            InitializeRobotPositionWebAdapter initializeRobotPositionWebAdapter = new InitializeRobotPositionWebAdapter();
+            initializeRobotPositionWebAdapter.initializeRobotPosition(authKeyValue);
 
             waitSeconds(waitTimeBetweenRequests);
 
-            DeleteOperatorWebAdapter.deleteOperator(authKeyValue);
+            DeleteOperatorWebAdapter deleteOperatorWebAdapter = new DeleteOperatorWebAdapter();
+            deleteOperatorWebAdapter.deleteOperator(authKeyValue);
 
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");

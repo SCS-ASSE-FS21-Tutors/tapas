@@ -1,5 +1,6 @@
 package ch.unisg.tapasrobotexecutor.tasks.adapter.out.web;
 
+import ch.unisg.tapasrobotexecutor.tasks.application.port.out.RegisterNewOperatorPort;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -13,11 +14,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-public class RegisterNewOperatorWebAdapter {
-    public static Optional<String> authorizeOperator() {
+public class RegisterNewOperatorWebAdapter implements RegisterNewOperatorPort {
+
+    @Override
+    public Optional<String> authorizeOperator() {
         var values = new HashMap<String, String>() {{
-            put("name",EndpointHandler.name);
-            put("email",EndpointHandler.email);
+            put("name", EndpointHandler.name);
+            put("email", EndpointHandler.email);
         }};
 
         var objectMapper = new ObjectMapper();
@@ -30,7 +33,7 @@ public class RegisterNewOperatorWebAdapter {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(EndpointHandler.server+EndpointHandler.operatorEndpoint))
+                .uri(URI.create(EndpointHandler.server + EndpointHandler.operatorEndpoint))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .setHeader("accept", "*/*")
                 .setHeader("Content-Type", "application/json")
