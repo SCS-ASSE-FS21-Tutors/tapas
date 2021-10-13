@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutors.executors.domain;
 
+import lombok.Getter;
 import lombok.Value;
 import org.springframework.stereotype.Component;
 
@@ -7,7 +8,7 @@ import org.springframework.stereotype.Component;
 public interface Executors {
 
     public enum State {
-        OPEN, BUSY
+        IDLE, BUSY
     }
 
     /* execution of executor specific task capability */
