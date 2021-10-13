@@ -12,7 +12,11 @@ Should the Roster or the TaskList ever fail, we need to be able to access the in
 executor assignment.
 
 ## Decision
-We save data which needs to be recovered upon possible failure in a database.
+We save data:
+ - in case of the Roster the tasks queued for assignment
+ - in case of the task list the list of tasks and their status
+
+which needs to be recovered upon possible failure in a database.
 
 ## Consequences
 When starting the Roster or TaskList the database needs to be searched by those components for already existing data.

@@ -15,5 +15,5 @@ For this to work, we need the AuctionHouse to be available and to respond to bid
 Therefore, the AuctionHouse will be part of an event based architecture.
 
 ## Consequences
-The AuctionHouse needs to be able to react to incoming events and notifies the respective executors.
+The AuctionHouse needs to be able to notify the respective executors which tasks need to be executed.
 Executors need to expose interfaces on which they can be notified by the AuctionHouse.

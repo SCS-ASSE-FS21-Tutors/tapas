@@ -1,1 +1,4 @@
 Adr for eventual consistency
+
+Not using a pull system for ROster-Tasklist commnication makes sense since fault tolerance in case of task list failure
+-> Roster is able to complete assignements for queued tasks since queue is in roster

@@ -17,4 +17,5 @@ Since we do not want to redeploy the ExecutorPool everytime the available Execut
 Executors and the ExecutorPool must be implemented as separate components.
 
 ## Consequences
-Interfaces for adding and removing Executors need to be implemented in the ExecutorPool.
+We need to enable communication between the ExecutorPool and Executors so that Executors can be dynamically
+added and removed.
