@@ -1,40 +1,44 @@
 package ch.unisg.tapasexecutors.executors.domain;
 
-import lombok.Getter;
 import lombok.Value;
 import org.springframework.stereotype.Component;
 
+/**
+ * Interface for individual Executors with different execution approaches
+ */
 @Component
 public interface Executors {
 
-    public enum State {
+    enum State {
         IDLE, BUSY
     }
 
-    /* execution of executor specific task capability */
-    public void startTask();
+    // start of execution of executor specific task capability
+    void startTask();
 
-    /* completion of task results in event notification */
-    public void completeTask();
+    // completion of task results in event notification
+    void completeTask();
 
+    // execution of task type
+    void execute();
 
     @Value
-    public static class ExecutorId {
+    class ExecutorId {
         private String value;
     }
 
     @Value
-    public static class ExecutorName {
+    class ExecutorName {
         private String value;
     }
 
     @Value
-    public static class ExecutorState {
+    class ExecutorState {
         private State value;
     }
 
     @Value
-    public static class ExecutorType {
+    class ExecutorType {
         private String value;
     }
 }
