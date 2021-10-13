@@ -5,5 +5,5 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import java.util.Optional;
 
 public interface RetrieveTaskFromTaskListUseCase {
-    Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListCommand command);
+    Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListQuery command);
 }
