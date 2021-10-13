@@ -22,18 +22,16 @@ public class ForwardTaskToPoolEventWebAdapter implements ExecuteTaskOnPoolEventP
     @Override
     public void forwardTaskToPoolEvent(ForwardTaskToPoolEvent event) {
         var payload = TaskMediaType.serialize(event.task);
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
+        var client = HttpClient.newHttpClient();
+        var request = HttpRequest.newBuilder()
                 .uri(URI.create(server + "/executor-pool/execute-task/"))
                 .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .build();
 
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+            var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
