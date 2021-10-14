@@ -28,7 +28,7 @@ services:
   
   tapas-tasks:
     image: openjdk
-    command: "java -jar /data/tapas-tasks-0.0.2-SNAPSHOT.jar"
+    command: "java -jar /data/tapas-tasks-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
       - ./:/data/

@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>ch.unisg</groupId>
 	<artifactId>tapas-tasks</artifactId>
-	<version>0.0.2-SNAPSHOT</version>
+	<version>0.0.1-SNAPSHOT</version>
 	<name>tapas-tasks</name>
 	<description>TAPAS Tasks</description>
 	<properties>
