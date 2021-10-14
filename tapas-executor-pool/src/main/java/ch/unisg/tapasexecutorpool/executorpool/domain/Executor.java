@@ -31,7 +31,7 @@ public class Executor {
         this.executorId = new ExecutorId(UUID.randomUUID().toString());
     }
 
-    protected static Executor createTaskWithNameAndType(ExecutorName name, Task.TaskType type) {
+    protected static Executor createExecutorWithNameAndType(ExecutorName name, Task.TaskType type) {
         //This is a simple debug message to see that the request has reached the right method in the core
         System.out.println("New Executor: " + name.getValue() + " " + type.getValue());
         return new Executor(name, type);
@@ -43,16 +43,16 @@ public class Executor {
 
     @Value
     public static class ExecutorId {
-        private String value;
+        String value;
     }
 
     @Value
     public static class ExecutorName {
-        private String value;
+        String value;
     }
 
     @Value
     public static class ExecutorState {
-        private State value;
+        State value;
     }
 }

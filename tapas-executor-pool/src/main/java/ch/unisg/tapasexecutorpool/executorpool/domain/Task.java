@@ -3,8 +3,6 @@ package ch.unisg.tapasexecutorpool.executorpool.domain;
 import lombok.Getter;
 import lombok.Value;
 
-import java.util.UUID;
-
 /**This is a domain entity**/
 public class Task {
     public enum State {
@@ -24,14 +22,25 @@ public class Task {
     private TaskState taskState;
 
     @Getter
-    private TaskListName taskListName;
+    private final TaskListName taskListName;
 
-    public Task(TaskName taskName, TaskType taskType, TaskId taskId, TaskState taskState, TaskListName taskListName) {
+    public Task(TaskName taskName, TaskType taskType, TaskId taskId, TaskListName taskListName, String taskState) {
         this.taskName = taskName;
         this.taskType = taskType;
-        this.taskState = taskState;
         this.taskId = taskId;
         this.taskListName = taskListName;
+        this.taskState = new TaskState(State.valueOf(taskState));
+    }
+
+    @Override
+    public String toString() {
+        return "Task{" +
+                "taskId=" + taskId +
+                ", taskName=" + taskName +
+                ", taskType=" + taskType +
+                ", taskState=" + taskState +
+                ", taskListName=" + taskListName +
+                '}';
     }
 
     @Value

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.HashMap;
 import java.util.Optional;
 
 @RestController
@@ -27,13 +26,18 @@ public class AssignTaskToRosterWebController {
     @PostMapping(path = "/roster/newtask/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
     public ResponseEntity<String> assignTaskToRoster(@RequestBody Task task) {
         try {
+            System.out.println(task);
+
             AssignTaskToRosterCommand command = new AssignTaskToRosterCommand(task);
 
             Optional<TaskAssignmentReply> reply = assignTaskToRosterUseCase.assignTaskToRoster(command);
 
             if (reply.isEmpty()) {
+                System.out.println("Reply is empty!");
                 return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
             }
+
+            System.out.println(reply.get());
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
