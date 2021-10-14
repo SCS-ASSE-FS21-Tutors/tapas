@@ -1,7 +1,7 @@
-package ch.unisg.tapasroster.roster.adapter.in.web;
+package ch.unisg.tapasroster.executorpool.adapter.in.web;
 
-import ch.unisg.tapasroster.roster.domain.Executor;
-import ch.unisg.tapasroster.roster.domain.ExecutorPool;
+import ch.unisg.tapasroster.executorpool.domain.Executor;
+import ch.unisg.tapasroster.executorpool.domain.ExecutorPool;
 import org.json.JSONObject;
 
 final public class ExecutorMediaType {

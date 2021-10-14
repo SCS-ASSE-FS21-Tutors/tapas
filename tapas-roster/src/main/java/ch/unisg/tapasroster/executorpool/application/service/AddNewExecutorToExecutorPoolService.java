@@ -1,9 +1,9 @@
-package ch.unisg.tapasroster.roster.application.service;
+package ch.unisg.tapasroster.executorpool.application.service;
 
-import ch.unisg.tapasroster.roster.application.port.in.AddNewExecutorToExecutorPoolCommand;
-import ch.unisg.tapasroster.roster.application.port.in.AddNewExecutorToExecutorPoolUseCase;
-import ch.unisg.tapasroster.roster.domain.Executor;
-import ch.unisg.tapasroster.roster.domain.ExecutorPool;
+import ch.unisg.tapasroster.executorpool.application.port.in.AddNewExecutorToExecutorPoolCommand;
+import ch.unisg.tapasroster.executorpool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
+import ch.unisg.tapasroster.executorpool.domain.Executor;
+import ch.unisg.tapasroster.executorpool.domain.ExecutorPool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

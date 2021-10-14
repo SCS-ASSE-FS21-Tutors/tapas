@@ -1,5 +1,6 @@
-package ch.unisg.tapasroster.roster.domain;
+package ch.unisg.tapasroster.executorpool.domain;
 
+import ch.unisg.tapasroster.roster.domain.Task;
 import lombok.Getter;
 import lombok.Value;
 

@@ -1,8 +1,8 @@
-package ch.unisg.tapasroster.roster.adapter.in.web;
+package ch.unisg.tapasroster.executorpool.adapter.in.web;
 
-import ch.unisg.tapasroster.roster.application.port.in.AddNewExecutorToExecutorPoolCommand;
-import ch.unisg.tapasroster.roster.application.port.in.AddNewExecutorToExecutorPoolUseCase;
-import ch.unisg.tapasroster.roster.domain.Executor;
+import ch.unisg.tapasroster.executorpool.application.port.in.AddNewExecutorToExecutorPoolCommand;
+import ch.unisg.tapasroster.executorpool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
+import ch.unisg.tapasroster.executorpool.domain.Executor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

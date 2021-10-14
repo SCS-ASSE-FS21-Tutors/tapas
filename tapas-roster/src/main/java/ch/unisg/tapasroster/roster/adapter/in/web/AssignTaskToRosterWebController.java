@@ -6,6 +6,7 @@ import ch.unisg.tapasroster.roster.domain.Task;
 import ch.unisg.tapasroster.roster.domain.TaskAssignmentReply;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,7 @@ public class AssignTaskToRosterWebController {
         this.assignTaskToRosterUseCase = assignTaskToRosterUseCase;
     }
 
-    @PostMapping(path = "/roster/newtask/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    @PostMapping(path = "/roster/newtask/", consumes = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseEntity<String> assignTaskToRoster(@RequestBody Task task) {
         try {
             System.out.println(task);
