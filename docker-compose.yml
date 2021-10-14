@@ -41,21 +41,6 @@ services:
       - "traefik.http.routers.tapas-tasks.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-tasks.tls.certresolver=le"
 
-  tapas-executor-pool:
-    image: openjdk
-    command: "java -jar /data/tapas-executor-pool-0.0.1-SNAPSHOT.jar"
-    restart: unless-stopped
-    volumes:
-      - ./:/data/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.tapas-executor-pool.rule=Host(`tapas-executor-pool.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.tapas-executor-pool.service=tapas-executor-pool"
-      - "traefik.http.services.tapas-executor-pool.loadbalancer.server.port=8082"
-      - "traefik.http.routers.tapas-executor-pool.tls=true"
-      - "traefik.http.routers.tapas-executor-pool.entryPoints=web,websecure"
-      - "traefik.http.routers.tapas-executor-pool.tls.certresolver=le"
-
   tapas-roster:
     image: openjdk
     command: "java -jar /data/tapas-roster-0.0.1-SNAPSHOT.jar"
@@ -66,7 +51,7 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-roster.rule=Host(`tapas-roster.${PUB_IP}.nip.io`)"
       - "traefik.http.routers.tapas-roster.service=tapas-roster"
-      - "traefik.http.services.tapas-roster.loadbalancer.server.port=8083"
+      - "traefik.http.services.tapas-roster.loadbalancer.server.port=8082"
       - "traefik.http.routers.tapas-roster.tls=true"
       - "traefik.http.routers.tapas-roster.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-roster.tls.certresolver=le"
