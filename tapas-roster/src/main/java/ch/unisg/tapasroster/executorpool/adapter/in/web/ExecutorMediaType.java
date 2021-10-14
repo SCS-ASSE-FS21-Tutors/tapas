@@ -12,7 +12,9 @@ final public class ExecutorMediaType {
 
         payload.put("executorId", executor.getExecutorId().getValue());
         payload.put("executorName", executor.getExecutorName().getValue());
-        payload.put("executorType", executor.getTaskType().getValue());
+        payload.put("executorServer", executor.getExecutorServer().getValue());
+        payload.put("executorPort", executor.getExecutorPort().getValue());
+        payload.put("taskType", executor.getTaskType().getValue());
         payload.put("executorState", executor.getExecutorState().getValue());
         payload.put("executorPoolName", ExecutorPool.getTapasExecutorPool().getExecutorPoolName().getValue());
 

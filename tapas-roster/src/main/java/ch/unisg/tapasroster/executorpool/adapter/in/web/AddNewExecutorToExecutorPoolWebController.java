@@ -25,7 +25,8 @@ public class AddNewExecutorToExecutorPoolWebController {
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody Executor executor) {
         try {
             AddNewExecutorToExecutorPoolCommand command = new AddNewExecutorToExecutorPoolCommand(
-                    executor.getExecutorName(), executor.getTaskType()
+                    executor.getExecutorName(), executor.getExecutorServer(),
+                    executor.getExecutorPort(), executor.getTaskType()
             );
 
             Executor newExecutor = addNewExecutorToExecutorPoolUseCase.addNewExecutorToExecutorPool(command);
