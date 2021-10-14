@@ -26,26 +26,12 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
-
-        /*
-        var values = new HashMap<String, String>() {{
-            put("taskName", event.taskName);
-            put("taskList", event.taskListName);
-        }};
-
-        var objectMapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = objectMapper.writeValueAsString(values);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-         */
         String requestBody = TaskMediaType.serialize(event.task);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(server+"/roster/newtask/"))
+                .header("Content-Type", TaskMediaType.TASK_MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 

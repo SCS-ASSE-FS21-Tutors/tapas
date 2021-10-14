@@ -24,7 +24,7 @@ public class AssignTaskToRosterWebController {
         this.assignTaskToRosterUseCase = assignTaskToRosterUseCase;
     }
 
-    @PostMapping(path = "/roster/newtask/", consumes = {MediaType.APPLICATION_JSON_VALUE})
+    @PostMapping(path = "/roster/newtask/", consumes = {TaskAssignmentMediaType.MEDIA_TYPE})
     public ResponseEntity<String> assignTaskToRoster(@RequestBody Task task) {
         try {
             System.out.println(task);
@@ -38,7 +38,7 @@ public class AssignTaskToRosterWebController {
                 return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
             }
 
-            System.out.println(reply.get());
+            System.out.println("TaskAssignmentReply: " + reply.get());
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
