@@ -1,11 +1,13 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;
 
 import java.util.UUID;
 
 /**This is a domain entity**/
+@EqualsAndHashCode
 public class Executor {
     public enum State {
         OPEN, ASSIGNED, RUNNING, EXECUTED
