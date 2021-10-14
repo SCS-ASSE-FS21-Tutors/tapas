@@ -1,9 +1,8 @@
-package ch.unisg.tapasexecutordigital.executordigital.domain;
+package ch.unisg.tapasexecutors.executors.domain;
 
+import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.Value;
-import org.apache.tomcat.jni.Time;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -16,11 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 
-/**This is a domain entity**/
-public class Executor {
-    public enum State {
-        IDLE, RUNNING
-    }
+public class DigitalExecutor implements Executors {
 
     private final static String WORDS_BASE_API = "https://random-word-api.herokuapp.com/word?number=";
     private final static String[] VERBS = new String[] {"hits", "exaggerates", "boasts", "scurries", "warps", "saunters", "flutters"};
@@ -30,43 +25,39 @@ public class Executor {
     private final ExecutorName executorName = new ExecutorName("RandomWordExecutor");
 
     @Getter
-    private final TaskType taskType = new TaskType("DigitalTask");
+    private final Task.TaskType taskType = new Task.TaskType("DigitalTask");
 
     @Getter
     @Setter
     private ExecutorState executorState;
 
     @Getter
-    private Task assignedTask;
+    private Task assignedTask; // is this necessary
 
-    // Singleton pattern
-    private static final Executor executor = new Executor();
+//    public Executor() {
+//        executorState = new ExecutorState(State.IDLE);
+//    }
 
-    public Executor() {
+//    public static Executor getExecutor() {
+//        return executor;
+//    }
+
+    public DigitalExecutor() {
         executorState = new ExecutorState(State.IDLE);
     }
 
-    public static Executor getExecutor() {
-        return executor;
-    }
-
-    public void assignTask(Task task) {
-        assignedTask = task;
-        task.setTaskState(new Task.TaskState(Task.State.ASSIGNED));
-    }
-
+    @Override
     public void startTask() {
+        executorState = new ExecutorState(State.BUSY);
         try {
             TimeUnit.SECONDS.sleep(1);
         } catch (InterruptedException e) {
             // silence
         }
-        constructSentence();
-        executorState = new ExecutorState(State.IDLE);
-        // TODO: what happens when the Executor is done?
+        execute();
     }
 
-    private String constructSentence() {
+    private static String constructSentence() {
         int nWords = 3;
         Random rand = new Random();
         String[] randomWordList = getRandomWordsArray(nWords);
@@ -77,7 +68,7 @@ public class Executor {
         return sb.toString();
     }
 
-    private String[] getRandomWordsArray(int nWords) {
+    private static String[] getRandomWordsArray(int nWords) {
         String randomWordsString = getRandomWordsFromAPI(nWords);
         if (!randomWordsString.equals("")) {
             randomWordsString = randomWordsString.replace("[", "");
@@ -87,7 +78,7 @@ public class Executor {
         } else return new String[] {""};
     }
 
-    private String getRandomWordsFromAPI(int nWords) {
+    private static String getRandomWordsFromAPI(int nWords) {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(WORDS_BASE_API + nWords))
@@ -105,23 +96,14 @@ public class Executor {
         return responseContent;
     }
 
-    @Value
-    public static class ExecutorId {
-        private String value;
+    @Override
+    public void completeTask() {
+        // TODO
     }
 
-    @Value
-    public static class ExecutorName {
-        private String value;
-    }
-
-    @Value
-    public static class ExecutorState {
-        private State value;
-    }
-
-    @Value
-    public static class TaskType {
-        private String value;
+    @Override
+    public void execute() {
+        constructSentence();
+        executorState = new ExecutorState(State.IDLE);
     }
 }
