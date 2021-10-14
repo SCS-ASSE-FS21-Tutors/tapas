@@ -3,56 +3,62 @@ package ch.unisg.tapasexecutorpool.executorpool.domain;
 import lombok.Getter;
 import lombok.Value;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 
 public class Roster {
 
     @Getter
-    private final Roster.RosterName rosterName;
+    private final RosterName rosterName;
 
     @Getter
-    private final ExecutorPool executorPool;
-
-    @Getter
-    private final ListOfNewTasks listOfNewTasks;
+    private final TaskAssignment taskAssignment;
 
     private static final Roster roster = new Roster(new Roster.RosterName("tapas-roster-group2"));
 
     private Roster(Roster.RosterName rosterName) {
         this.rosterName = rosterName;
-        this.executorPool = ExecutorPool.getTapasExecutorPool();
-        this.listOfNewTasks = new ListOfNewTasks(new ArrayList<Task>());
+        this.taskAssignment = new TaskAssignment(new HashMap<>());
     }
 
     public static Roster getTapasRoster() {
         return roster;
     }
 
-    private Boolean assignTaskToInternalExecutor(Task task) {
+    private Executor searchInternalExecutor(Task task) {
+        List<Executor> executorsOfTaskType = ExecutorPool.getTapasExecutorPool().getExecutorsOfType(task.getTaskType());
 
-        for (Executor executor : executorPool.getPoolOfExecutors().getValue()) {
-            if (executor.getTaskType().getValue().equalsIgnoreCase(task.getTaskType().getValue())) {
-                return assign(task, executor);
+        // TODO: More sophisticated assignment
+        for (Executor executor : executorsOfTaskType) {
+            if (executor.getExecutorState().getValue().equals(Executor.State.IDLE)) {
+                return executor;
             }
         }
-        return false;
+        return null;
     }
 
-    private Boolean assign(Task task, Executor executor) {
+    private TaskAssignmentReply assign(Task task, Executor executor) {
         // TODO: Change task state
 
         // TODO: Change executor state
 
+        taskAssignment.value.put(task.getTaskId(), executor);
 
-        return true;
+        return new TaskAssignmentReply(executor.getExecutorName().getValue(), "internal");
     }
 
-    public Task assignTask(Task task) {
+    public Optional<TaskAssignmentReply> assignTask(Task task) {
         System.out.println("Task is ready to be assigned: " + task.getTaskName().getValue());
 
-        return task;
+        Executor internalExecutor = searchInternalExecutor(task);
+        if (internalExecutor != null) {
+            return Optional.of(assign(task, internalExecutor));
+        }
+
+        return Optional.empty();
     }
 
     @Value
@@ -61,8 +67,8 @@ public class Roster {
     }
 
     @Value
-    public static class ListOfNewTasks {
-        List<Task> value;
+    public static class TaskAssignment {
+        Map<Task.TaskId, Executor> value;
     }
 
 }

@@ -1,7 +1,7 @@
 package ch.unisg.tapasexecutorpool.executorpool.adapter.out.web;
 
 import ch.unisg.tapasexecutorpool.executorpool.application.port.out.NewExecutorAddedEventPort;
-import ch.unisg.tapasexecutorpool.executorpool.domain.NewExecutorAddedEvent;
+import ch.unisg.tapasexecutorpool.executorpool.domain.TaskAssignmentReply;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
@@ -20,7 +20,7 @@ public class PublishNewExecutorAddedEventWebAdapter implements NewExecutorAddedE
     String server = "http://127.0.0.1:8082";
 
     @Override
-    public void publishNewExecutorAddedEvent(NewExecutorAddedEvent event) {
+    public void publishNewExecutorAddedEvent(TaskAssignmentReply event) {
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
 

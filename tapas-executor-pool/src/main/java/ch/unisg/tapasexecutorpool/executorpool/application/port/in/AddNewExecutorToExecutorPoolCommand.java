@@ -1,8 +1,8 @@
 package ch.unisg.tapasexecutorpool.executorpool.application.port.in;
 
 import ch.unisg.tapasexecutorpool.common.SelfValidating;
-import ch.unisg.tapasexecutorpool.executorpool.domain.Executor.TaskType;
 import ch.unisg.tapasexecutorpool.executorpool.domain.Executor.ExecutorName;
+import ch.unisg.tapasexecutorpool.executorpool.domain.Task;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
@@ -13,9 +13,9 @@ public class AddNewExecutorToExecutorPoolCommand extends SelfValidating<AddNewEx
     private final ExecutorName executorName;
 
     @NotNull
-    private final TaskType taskType;
+    private final Task.TaskType taskType;
 
-    public AddNewExecutorToExecutorPoolCommand(ExecutorName executorName, TaskType taskType) {
+    public AddNewExecutorToExecutorPoolCommand(ExecutorName executorName, Task.TaskType taskType) {
         this.executorName = executorName;
         this.taskType = taskType;
         this.validateSelf();

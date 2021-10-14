@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
@@ -14,7 +15,7 @@ import javax.transaction.Transactional;
 public class AssignTaskToRosterService implements AssignTaskToRosterUseCase {
 
     @Override
-    public Task assignTaskToRoster(AssignTaskToRosterCommand command) {
+    public Optional<TaskAssignmentReply> assignTaskToRoster(AssignTaskToRosterCommand command) {
         Roster roster = Roster.getTapasRoster();
 
         return roster.assignTask(command.getTask());
