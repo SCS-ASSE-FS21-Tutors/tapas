@@ -32,7 +32,7 @@ jobs:
 
     - name: Build Tasks with Maven
       run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target  
+    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.2-SNAPSHOT.jar ./target
 
     - name: Build App with Maven
       run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
@@ -41,6 +41,10 @@ jobs:
     - name: Build Roster with Maven
       run: mvn -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-roster/target/tapas-roster-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build with Maven
+      run: mvn -f tapas-executors/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executors/target/tapas-executors-0.0.1-SNAPSHOT.jar ./target
 
     - run: cp docker-compose.yml ./target
     - name: Archive artifacts
@@ -85,7 +89,7 @@ jobs:
           touch acme.json
           sudo chmod 0600 acme.json
           sudo echo "PUB_IP=$(wget -qO- http://ipecho.net/plain | xargs echo)" | sed -e 's/\./-/g' > .env
-          sudo docker-compose up -d
+          sudo docker-compose up -d --force-recreate
     
     
         

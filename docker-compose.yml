@@ -28,7 +28,7 @@ services:
   
   tapas-tasks:
     image: openjdk
-    command: "java -jar /data/tapas-tasks-0.0.1-SNAPSHOT.jar"
+    command: "java -jar /data/tapas-tasks-0.0.2-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
       - ./:/data/
@@ -40,6 +40,21 @@ services:
       - "traefik.http.routers.tapas-tasks.tls=true"
       - "traefik.http.routers.tapas-tasks.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-tasks.tls.certresolver=le"
+
+  tapas-executors:
+    image: openjdk
+    command: "java -jar /data/tapas-executors-0.0.1-SNAPSHOT.jar"
+    restart: unless-stopped
+    volumes:
+      - ./:/data/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tapas-executors.rule=Host(`tapas-executors.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executors.service=tapas-executors"
+      - "traefik.http.services.tapas-executors.loadbalancer.server.port=8086"
+      - "traefik.http.routers.tapas-executors.tls=true"
+      - "traefik.http.routers.tapas-executors.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executors.tls.certresolver=le"
 
   tapas-roster:
     image: openjdk
