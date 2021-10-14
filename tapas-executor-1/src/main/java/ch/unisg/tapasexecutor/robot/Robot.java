@@ -1,4 +1,4 @@
-package ch.unisg.tapas.executor.robot;
+package ch.unisg.tapasexecutor.robot;
 
 public class Robot {
     private int elbowValue;
