@@ -1,13 +1,13 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Value;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.UUID;
 
 /**This is a domain entity**/
 @EqualsAndHashCode
+@NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Executor {
     public enum State {
         OPEN, ASSIGNED, RUNNING, EXECUTED
@@ -43,26 +43,36 @@ public class Executor {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ExecutorId {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ExecutorName {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ExecutorState {
         private State value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ExecutorType {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ExecutorPort {
         private String value;
     }
