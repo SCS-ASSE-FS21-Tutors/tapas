@@ -3,8 +3,6 @@ package ch.unisg.tapastasks.tasks.adapter.out.web;
 import ch.unisg.tapastasks.tasks.adapter.TaskMediaType;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +11,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
 
 @Component
 @Primary
