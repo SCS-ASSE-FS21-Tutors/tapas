@@ -1,4 +1,4 @@
-package ch.unisg.tapas.example.unit;
+package ch.unisg.tapas.roster.web.unit;
 
 import static org.junit.Assert.*;
 

@@ -1,4 +1,4 @@
-package ch.unisg.tapas.example.integration;
+package ch.unisg.tapas.roster.web.integration;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
