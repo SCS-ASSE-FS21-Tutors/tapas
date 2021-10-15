@@ -3,19 +3,24 @@ package ch.unisg.tapasexecutors.executors.domain;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Value;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Random;
+import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 
-public class DigitalExecutor implements Executors {
+public class DigitalExecutor {
+    public enum State {
+        IDLE, BUSY
+    }
 
     private final static String WORDS_BASE_API = "https://random-word-api.herokuapp.com/word?number=";
     private final static String[] VERBS = new String[] {"hits", "exaggerates", "boasts", "scurries", "warps", "saunters", "flutters"};
@@ -32,21 +37,13 @@ public class DigitalExecutor implements Executors {
     private ExecutorState executorState;
 
     @Getter
-    private Task assignedTask; // is this necessary
-
-//    public Executor() {
-//        executorState = new ExecutorState(State.IDLE);
-//    }
-
-//    public static Executor getExecutor() {
-//        return executor;
-//    }
+    private ExecutorId executorId;
 
     public DigitalExecutor() {
-        executorState = new ExecutorState(State.IDLE);
+        this.executorState = new ExecutorState(State.IDLE);
+        this.executorId = new DigitalExecutor.ExecutorId(UUID.randomUUID().toString());
     }
 
-    @Override
     public void startTask() {
         executorState = new ExecutorState(State.BUSY);
         try {
@@ -96,14 +93,28 @@ public class DigitalExecutor implements Executors {
         return responseContent;
     }
 
-    @Override
-    public void completeTask() {
-        // TODO
-    }
-
-    @Override
     public void execute() {
         constructSentence();
         executorState = new ExecutorState(State.IDLE);
+    }
+
+    @Value
+    class ExecutorId {
+        private String value;
+    }
+
+    @Value
+    class ExecutorName {
+        private String value;
+    }
+
+    @Value
+    class ExecutorState {
+        private State value;
+    }
+
+    @Value
+    class ExecutorType {
+        private String value;
     }
 }

@@ -8,7 +8,7 @@ public class TapasExecutorsApplication {
 
 	public static void main(String[] args) {
 		// SpringApplication.run(TapasExecutorsApplication.class, args);
-		SpringApplication tapasTasksApp = new SpringApplication(TapasExecutorsApplication.class);
-		tapasTasksApp.run(args);
+		SpringApplication tapasExecutorsApp = new SpringApplication(TapasExecutorsApplication.class);
+		tapasExecutorsApp.run(args);
 	}
 }

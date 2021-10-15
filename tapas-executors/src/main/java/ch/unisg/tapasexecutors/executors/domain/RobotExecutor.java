@@ -3,6 +3,7 @@ package ch.unisg.tapasexecutors.executors.domain;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.Value;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -16,7 +17,10 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class RobotExecutor implements Executors {
+public class RobotExecutor {
+    public enum State {
+        IDLE, BUSY
+    }
 
     @Getter
     private final ExecutorName executorName = new ExecutorName("CherrybotExecutor");
@@ -143,7 +147,6 @@ public class RobotExecutor implements Executors {
         System.out.println(response.statusCode());
     }
 
-    @Override
     public void startTask() throws IOException, InterruptedException {
         executorState = new ExecutorState(State.BUSY);
         execute();
@@ -156,7 +159,7 @@ public class RobotExecutor implements Executors {
             // ignore
         }
     }
-    @Override
+
     public void execute() throws IOException, InterruptedException {
         String deleteurl = registerOperator();
         sleeper();
@@ -164,11 +167,6 @@ public class RobotExecutor implements Executors {
         makeRobotDoStuff(token);
         sleeper();
         delete(deleteurl);
-    }
-
-    @Override
-    public void completeTask() {
-        // TODO
     }
 
     private static void getCurrent() throws IOException, InterruptedException {
@@ -212,4 +210,24 @@ public class RobotExecutor implements Executors {
 //        }
 //        delete(deleteurl);
 //    }
+
+    @Value
+    class ExecutorId {
+        private String value;
+    }
+
+    @Value
+    class ExecutorName {
+        private String value;
+    }
+
+    @Value
+    class ExecutorState {
+        private RobotExecutor.State value;
+    }
+
+    @Value
+    class ExecutorType {
+        private String value;
+    }
 }
