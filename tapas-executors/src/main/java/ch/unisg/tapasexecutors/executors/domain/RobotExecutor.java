@@ -5,12 +5,8 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Component;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -48,14 +44,13 @@ public class RobotExecutor implements Executors {
     /**
      * Sends POST /operator request to gain access to the robot
      */
-    public static String registerOperator() throws IOException, InterruptedException {
+    public String registerOperator() throws IOException, InterruptedException {
         String json = "{\"name\":\"Tapas Team 2\",\"email\":\"team2@unisg.ch\"}";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create("https://api.interactions.ics.unisg.ch/cherrybot/operator"))
                 .setHeader("Content-Type", "application/json")
-                //.header("X-API-KEY", "opensesame")
                 .build();
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
@@ -70,7 +65,7 @@ public class RobotExecutor implements Executors {
     /**
      * Sends PUT /tcp/target to set the robot's point target to which it will move
      */
-    public static void makeRobotDoStuff(String token) throws IOException, InterruptedException {
+    public void makeRobotDoStuff(String token) throws IOException, InterruptedException {
         // json formatted data
         String json = new StringBuilder()
                 .append("{")
@@ -105,7 +100,7 @@ public class RobotExecutor implements Executors {
     /**
      * Sends PUT /initialize to reset the robot
      */
-    public static void initRob(String token) throws IOException, InterruptedException {
+    public void initRob(String token) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.noBody())
                 .uri(URI.create("https://api.interactions.ics.unisg.ch/cherrybot/initialize"))
@@ -118,7 +113,7 @@ public class RobotExecutor implements Executors {
         System.out.println(response.statusCode());
     }
 
-    public static void getRobotStatus(String token) throws IOException, InterruptedException {
+    public void getRobotStatus(String token) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .GET()
                 .uri(URI.create("https://api.interactions.ics.unisg.ch/cherrybot/tcp"))
@@ -136,7 +131,7 @@ public class RobotExecutor implements Executors {
      * Sends DELETE /operator request to delete the current operator
      * @param deleteurl
      */
-    public static void delete(String deleteurl) throws IOException, InterruptedException {
+    public void delete(String deleteurl) throws IOException, InterruptedException {
         HttpRequest request = HttpRequest.newBuilder()
                 .DELETE()
                 .uri(URI.create(deleteurl))
@@ -149,13 +144,8 @@ public class RobotExecutor implements Executors {
     }
 
     @Override
-    public void startTask() {
+    public void startTask() throws IOException, InterruptedException {
         executorState = new ExecutorState(State.BUSY);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
         execute();
     }
 
@@ -167,13 +157,13 @@ public class RobotExecutor implements Executors {
         }
     }
     @Override
-    public void execute() {
-//        String deleteurl = registerOperator();
-//        sleeper();
-//        String token = deleteurl.substring(deleteurl.lastIndexOf("/") + 1);
-//        makeRobotDoStuff(token);
-//        sleeper();
-//        delete(deleteurl);
+    public void execute() throws IOException, InterruptedException {
+        String deleteurl = registerOperator();
+        sleeper();
+        String token = deleteurl.substring(deleteurl.lastIndexOf("/") + 1);
+        makeRobotDoStuff(token);
+        sleeper();
+        delete(deleteurl);
     }
 
     @Override
@@ -195,47 +185,31 @@ public class RobotExecutor implements Executors {
         System.out.println(response.body());
     }
 
-
-    /* simple getter connection to robot as example */
-    private static void getCurrentOperator() throws IOException {
-        URL url = new URL("https://api.interactions.ics.unisg.ch/cherrybot/operator");
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("GET");
-
-        StringBuilder res = new StringBuilder();
-        try (BufferedReader buf = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            for (String line; (line = buf.readLine()) != null;) {
-                res.append(line);
-            }
-        }
-        System.out.println(res);
-    }
-
     /**
      * Main method for quick terminal debugging purposes
      */
-    public static void main(String[] args) throws IOException, InterruptedException {
-        // getCurrent();
-        String deleteurl = registerOperator();
-        System.out.println(deleteurl);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        String token = deleteurl.substring(deleteurl.lastIndexOf("/") + 1);
-        getRobotStatus(token);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        makeRobotDoStuff(token);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            // ignore
-        }
-        delete(deleteurl);
-    }
+//    public static void main(String[] args) throws IOException, InterruptedException {
+//        // getCurrent();
+//        String deleteurl = registerOperator();
+//        System.out.println(deleteurl);
+//        try {
+//            TimeUnit.SECONDS.sleep(1);
+//        } catch (InterruptedException e) {
+//            // ignore
+//        }
+//        String token = deleteurl.substring(deleteurl.lastIndexOf("/") + 1);
+//        getRobotStatus(token);
+//        try {
+//            TimeUnit.SECONDS.sleep(1);
+//        } catch (InterruptedException e) {
+//            // ignore
+//        }
+//        makeRobotDoStuff(token);
+//        try {
+//            TimeUnit.SECONDS.sleep(1);
+//        } catch (InterruptedException e) {
+//            // ignore
+//        }
+//        delete(deleteurl);
+//    }
 }

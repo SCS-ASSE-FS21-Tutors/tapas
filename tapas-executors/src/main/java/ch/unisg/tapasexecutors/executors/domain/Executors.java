@@ -3,6 +3,8 @@ package ch.unisg.tapasexecutors.executors.domain;
 import lombok.Value;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 /**
  * Interface for individual Executors with different execution approaches
  */
@@ -14,13 +16,13 @@ public interface Executors {
     }
 
     // start of execution of executor specific task capability
-    void startTask();
+    void startTask() throws IOException, InterruptedException;
 
     // completion of task results in event notification
     void completeTask();
 
     // execution of task type
-    void execute();
+    void execute() throws IOException, InterruptedException;
 
     @Value
     class ExecutorId {
