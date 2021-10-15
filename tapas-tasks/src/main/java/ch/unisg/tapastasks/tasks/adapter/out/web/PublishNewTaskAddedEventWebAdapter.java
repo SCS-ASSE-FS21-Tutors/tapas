@@ -5,6 +5,7 @@ import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -19,6 +20,8 @@ import java.util.HashMap;
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
+    //    @org.springframework.beans.factory.annotation.Value("${newTaskEventServer}")
+    //    private String server;
     String server = "http://127.0.0.1:8082";
 
     @Override
@@ -27,12 +30,14 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
 
         var values = new HashMap<String, String>() {{
-            put("taskname",event.taskName);
-            put("tasklist",event.taskListName);
+            put("taskname", event.taskName);
+            put("tasklist", event.taskListName);
+            put("taskType", event.taskType);
+            put("taskId", event.taskId);
         }};
 
         var objectMapper = new ObjectMapper();
-        String requestBody = null;
+        String requestBody = "";
         try {
             requestBody = objectMapper.writeValueAsString(values);
         } catch (JsonProcessingException e) {
@@ -43,16 +48,15 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(server+"/roster/newtask/"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .build();
 
-        /** Needs the other service running
+         //Needs the other service running
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
-         **/
+
     }
 }
