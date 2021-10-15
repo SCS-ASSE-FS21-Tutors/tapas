@@ -10,7 +10,7 @@ import java.util.UUID;
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Executor {
     public enum State {
-        OPEN, ASSIGNED, RUNNING, EXECUTED
+        AVAILABLE, OCCUPIED
     }
 
     @Getter
@@ -31,7 +31,7 @@ public class Executor {
     public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorPort executorPort) {
         this.executorName = executorName;
         this.executorType = executorType;
-        this.executorState = new ExecutorState(State.OPEN);
+        this.executorState = new ExecutorState(State.AVAILABLE);
         this.executorId = new ExecutorId(UUID.randomUUID().toString());
         this.executorPort = executorPort;
     }
@@ -75,5 +75,10 @@ public class Executor {
     @AllArgsConstructor
     public static class ExecutorPort {
         private String value;
+    }
+
+    @Override
+    public String toString() {
+        return executorName.value+ " | "+ executorState.value;
     }
 }

@@ -2,7 +2,10 @@ package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskCommand;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,27 +17,27 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.ConstraintViolationException;
 
 @RestController
-public class AddNewExecutorToExecutorPoolWebController {
-    private final AddNewExecutorToExecutorPoolUseCase addNewExecutorToExecutorPoolUseCase;
+public class AssignTaskToExecutorWebController {
+    private final AssignTaskUseCase assignTaskUseCase;
 
-    public AddNewExecutorToExecutorPoolWebController(AddNewExecutorToExecutorPoolUseCase addNewExecutorToExecutorPoolUseCase) {
-        this.addNewExecutorToExecutorPoolUseCase = addNewExecutorToExecutorPoolUseCase;
+    public AssignTaskToExecutorWebController(AssignTaskUseCase assignTaskUseCase) {
+        this.assignTaskUseCase = assignTaskUseCase;
     }
 
-    @PostMapping(path = "/executors/", consumes = {ExecutorMediaType.EXECUTOR_MEDIA_TYPE})
-    public ResponseEntity<String> addNewExecutorToExecutorPool(@RequestBody Executor executor) {
+    @PostMapping(path = "/assignment/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    public ResponseEntity<String> assignTaskToExecutor(@RequestBody Task task) {
         try {
-            AddNewExecutorToExecutorPoolCommand command = new AddNewExecutorToExecutorPoolCommand(
-                    executor.getExecutorName(), executor.getExecutorType()
+            AssignTaskCommand command = new AssignTaskCommand(
+                    task.getTaskId(), task.getTaskName(), task.getTaskType()
             );
 
-            Executor newExecutor = addNewExecutorToExecutorPoolUseCase.addNewExecutorToExecutorPool(command);
+            Executor assignedExecutor = assignTaskUseCase.assignTask(command);
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
 
-            return new ResponseEntity<>(ExecutorMediaType.serialize(newExecutor), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>(ExecutorMediaType.serialize(assignedExecutor), responseHeaders, HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

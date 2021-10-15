@@ -7,10 +7,13 @@ import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCase {
 
-    private ExecutorRepository repository;
+    public ExecutorRepository repository;
 
     @Autowired
     public AddNewExecutorService(ExecutorRepository repository) {
@@ -22,6 +25,9 @@ public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCas
 
         Executor executor = new Executor(command.getExecutorName(), command.getExecutorType(), null);
         repository.addExecutor(executor);
+        System.out.println("Current Executor Repository: "+ repository.getExecutors());
         return executor;
     }
+
+
 }
