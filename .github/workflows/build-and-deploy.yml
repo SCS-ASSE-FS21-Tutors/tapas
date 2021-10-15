@@ -32,7 +32,7 @@ jobs:
 
     - name: Build Tasks with Maven
       run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.2-SNAPSHOT.jar ./target
+    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target
 
     - name: Build App with Maven
       run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
