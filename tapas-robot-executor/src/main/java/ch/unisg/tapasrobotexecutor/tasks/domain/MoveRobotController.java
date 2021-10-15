@@ -1,4 +1,4 @@
-package ch.unisg.tapasrobotexecutor.tasks;
+package ch.unisg.tapasrobotexecutor.tasks.domain;
 
 import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.DeleteOperatorWebAdapter;
 import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.InitializeRobotPositionWebAdapter;
@@ -30,7 +30,7 @@ public class MoveRobotController {
         }
     }
 
-    @GetMapping(path = "/move")
+    @GetMapping(path = "/executeTask/")
     public ResponseEntity<String> move() {
         JSONObject payload = new JSONObject();
 

@@ -13,8 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 public class RegisterNewOperatorWebAdapter implements RegisterNewOperatorPort {
+    private static final Integer waitTimeBetweenRequests = 1;
 
     @Override
     public Optional<String> authorizeOperator() {
@@ -41,6 +43,14 @@ public class RegisterNewOperatorWebAdapter implements RegisterNewOperatorPort {
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            while (response.statusCode() == 403) {
+                try {
+                    TimeUnit.SECONDS.sleep(waitTimeBetweenRequests);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            }
             Map<String, List<String>> map = response.headers().map();
             if (response.statusCode() != 200 || !map.keySet().contains("location")) {
                 return Optional.empty();
