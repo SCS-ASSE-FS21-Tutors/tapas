@@ -57,10 +57,8 @@ public class RobotController {
         return robotService.addUser();
     }
 
-
-
     @RequestMapping("/moveRobot")
-    public void setupRobot() {
+    public void moveRobot() {
         Optional<String> apiKey = robotService.addUser();
 
         if (apiKey.isPresent()) {
