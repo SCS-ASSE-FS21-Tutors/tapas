@@ -26,12 +26,28 @@ jobs:
     - run: mkdir ./target
 
     - name: Build with Maven
-      run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target  
+      run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./app/target/app-0.1.0.jar ./target
 
     - name: Build with Maven
-      run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./app/target/app-0.1.0.jar ./target  
+      run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build with Maven
+      run: mvn -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-roster/target/tapas-roster-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build with Maven
+      run: mvn -f tapas-executorpool/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executorpool/target/tapas-executorpool-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build with Maven
+      run: mvn -f tapas-executorcalc/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executorcalc/target/tapas-executorcalc-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build with Maven
+      run: mvn -f tapas-executorrobot/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executorrobot/target/tapas-executorrobot-0.0.1-SNAPSHOT.jar ./target
 
     - run: cp docker-compose.yml ./target
     - name: Archive artifacts
