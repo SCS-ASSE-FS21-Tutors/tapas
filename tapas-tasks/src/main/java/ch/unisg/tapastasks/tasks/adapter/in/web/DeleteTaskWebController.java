@@ -32,6 +32,7 @@ public class DeleteTaskWebController {
 
             // Check if the task with the given identifier exists
             if (deleteATask.isEmpty()) {
+                
                 // If not, through a 404 Not Found status code
                 throw new ResponseStatusException(HttpStatus.NOT_FOUND);
             }
