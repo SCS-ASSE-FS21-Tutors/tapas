@@ -42,16 +42,6 @@ public class DigitalExecutor {
         this.executorId = new DigitalExecutor.ExecutorId(UUID.randomUUID().toString());
     }
 
-    public void startTask() {
-        executorState = new ExecutorState(State.BUSY);
-        try {
-            TimeUnit.SECONDS.sleep(1);
-        } catch (InterruptedException e) {
-            // silence
-        }
-        runTask();
-    }
-
     private static String constructSentence() {
         int nWords = 3;
         Random rand = new Random();
@@ -90,6 +80,7 @@ public class DigitalExecutor {
     }
 
     public String runTask() {
+        executorState = new ExecutorState(State.BUSY);
         String sentence = constructSentence();
         executorState = new ExecutorState(State.IDLE);
 

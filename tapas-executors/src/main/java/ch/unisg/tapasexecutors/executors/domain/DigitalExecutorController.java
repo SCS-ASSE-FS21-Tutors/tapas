@@ -25,9 +25,7 @@ public class DigitalExecutorController {
     @PostMapping("runtask")
     public ResponseEntity<String> runTaskInDigitalExecutor(@RequestBody Task task) {
         try {
-            System.out.println("Before async call");
             digitalExecutorService.runTaskAsync(task);
-            System.out.println("After async call");
 
             return new ResponseEntity<>("Task is being run!", HttpStatus.ACCEPTED);
         } catch (ConstraintViolationException e) {
