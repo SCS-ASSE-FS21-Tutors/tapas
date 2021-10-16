@@ -1,7 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
-import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import org.json.JSONObject;
 
 final public class ExecutorMediaType {

@@ -7,9 +7,6 @@ import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Component
 public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCase {
 
@@ -26,6 +23,7 @@ public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCas
 
         Executor executor = new Executor(command.getExecutorName(), command.getExecutorType(), command.getExecutorUrl());
         repository.addExecutor(executor);
+        System.out.println("Executor added...");
         System.out.println("Current Executor Repository: "+ repository.getExecutors());
         return executor;
     }

@@ -16,8 +16,8 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
+
 
 @Component
 public class AssignTaskService implements AssignTaskUseCase {
@@ -42,7 +42,7 @@ public class AssignTaskService implements AssignTaskUseCase {
                 assignedExecutor = executor;
             }
         }
-        System.out.println("Assigned Executor: "+ assignedExecutor.toString());
+        System.out.println("Assigned Executor: " + assignedExecutor.getExecutorName().getValue());
         if (assignedExecutor != null) {
             // Calls the /start/ endpoint of the assigned executor
             String endpoint = assignedExecutor.getExecutorUrl().getValue() + "/start/";
@@ -66,14 +66,18 @@ public class AssignTaskService implements AssignTaskUseCase {
             postMethod.setEntity(requestEntity);
             try {
                 HttpResponse rawResponse = httpclient.execute(postMethod);
-                System.out.println(rawResponse);
-            } catch (Exception e){
+                // Check if request is accepted by executor
+                if (rawResponse.getStatusLine().getStatusCode() == 200) {
+                    // Set the state and assigned Task of the executor to occupied until notified of completion
+                    assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
+                    assignedExecutor.setAssignedTask(new Task(command.getTaskId(), command.getTaskName(), command.getTaskType()));
+                } else {
+                    throw new IOException("Executor did not accept request");
+                }
+            } catch (Exception e) {
                 System.out.println(e);
             }
 
-            // Set the state and assigned Task of the executor to occupied until notified of completion
-            assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
-            assignedExecutor.setAssignedTask(new Task(command.getTaskId(),command.getTaskName(),command.getTaskType()));
         }
         return assignedExecutor;
     }

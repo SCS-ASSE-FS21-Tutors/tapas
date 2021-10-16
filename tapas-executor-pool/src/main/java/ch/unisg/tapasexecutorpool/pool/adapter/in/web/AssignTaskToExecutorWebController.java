@@ -1,7 +1,5 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
-import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolCommand;
-import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
