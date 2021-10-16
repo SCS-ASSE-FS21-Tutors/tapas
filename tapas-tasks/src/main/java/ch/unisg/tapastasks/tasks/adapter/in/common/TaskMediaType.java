@@ -1,4 +1,4 @@
-package ch.unisg.tapastasks.tasks.adapter.in.web;
+package ch.unisg.tapastasks.tasks.adapter.in.common;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;

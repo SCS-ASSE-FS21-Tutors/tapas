@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapastasks.tasks.adapter.in.web.TaskMediaType;
+import ch.unisg.tapastasks.tasks.adapter.in.common.TaskMediaType;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
