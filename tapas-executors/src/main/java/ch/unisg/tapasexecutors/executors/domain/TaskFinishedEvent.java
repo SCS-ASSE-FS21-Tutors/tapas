@@ -13,9 +13,9 @@ public class TaskFinishedEvent {
     @Getter
     private final String result;
 
-    public TaskFinishedEvent(Task task, String result){
-        this.taskId = task.getTaskId().getValue();
-        this.taskListName = task.getTaskListName().getValue();
-        this.result = result == null ? "" : result;
+    public TaskFinishedEvent(String taskId, String taskListName, String result){
+        this.taskId = taskId;
+        this.taskListName = taskListName;
+        this.result = result;
     }
 }

@@ -63,6 +63,10 @@ public class Roster {
         return Optional.empty();
     }
 
+    public void taskExecutionFinished(TaskFinishedReply reply) {
+        System.out.println("Task execution finished: " + reply.getTaskId());
+    }
+
     @Value
     public static class RosterName {
         String value;
