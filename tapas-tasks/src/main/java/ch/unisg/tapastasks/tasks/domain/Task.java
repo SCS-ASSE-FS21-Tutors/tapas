@@ -22,13 +22,18 @@ public class Task {
     private final TaskType taskType;
 
     @Getter
-    private TaskState taskState;
+    public TaskState taskState; // had to make public for CompleteTaskService
+
+    @Getter
+    public TaskResult taskResult; // same as above
+
 
     public Task(TaskName taskName, TaskType taskType) {
         this.taskName = taskName;
         this.taskType = taskType;
         this.taskState = new TaskState(State.OPEN);
         this.taskId = new TaskId(UUID.randomUUID().toString());
+        this.taskResult = new TaskResult("");
     }
 
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
@@ -54,6 +59,11 @@ public class Task {
 
     @Value
     public static class TaskType {
+        private String value;
+    }
+
+    @Value
+    public static class TaskResult{
         private String value;
     }
 }

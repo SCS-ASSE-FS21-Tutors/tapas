@@ -20,8 +20,7 @@ public class TaskList {
 
     //Note: We do not care about the management of task lists, there is only one within this service
     //--> using the Singleton pattern here to make lives easy; we will later load it from a repo
-    //TODO change "tutors" to your group name ("groupx")
-    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-tutors"));
+    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-group1"));
 
     private TaskList(TaskListName taskListName) {
         this.taskListName = taskListName;
@@ -48,6 +47,17 @@ public class TaskList {
     public Optional<Task> retrieveTaskById(Task.TaskId id) {
         for (Task task : listOfTasks.value) {
             if (task.getTaskId().getValue().equalsIgnoreCase(id.getValue())) {
+                return Optional.of(task);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    public Optional<Task> deleteTaskById(Task.TaskId id) {
+        for (Task task: listOfTasks.value){
+            if(task.getTaskId().getValue().equalsIgnoreCase(id.getValue())){
+                listOfTasks.value.remove(task);
                 return Optional.of(task);
             }
         }
