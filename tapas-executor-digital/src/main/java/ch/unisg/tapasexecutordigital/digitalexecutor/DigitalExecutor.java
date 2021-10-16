@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutors.executors.domain;
+package ch.unisg.tapasexecutordigital.digitalexecutor;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -35,7 +35,7 @@ public class DigitalExecutor {
     private ExecutorState executorState;
 
     @Getter
-    private ExecutorId executorId;
+    private final ExecutorId executorId;
 
     public DigitalExecutor() {
         this.executorState = new ExecutorState(State.IDLE);

@@ -1,6 +1,5 @@
 package ch.unisg.tapasexecutors.executors.domain;
 
-import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
@@ -24,9 +23,6 @@ public class RobotExecutor {
 
     @Getter
     private final ExecutorName executorName = new ExecutorName("CherrybotExecutor");
-
-    @Getter
-    private final Task.TaskType taskType = new Task.TaskType("RobotTask");
 
     @Getter
     @Setter

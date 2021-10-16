@@ -65,12 +65,6 @@
 			<artifactId>json-patch</artifactId>
 			<version>1.13</version>
 		</dependency>
-        <dependency>
-            <groupId>ch.unisg</groupId>
-            <artifactId>tapas-tasks</artifactId>
-            <version>0.0.2-SNAPSHOT</version>
-            <scope>compile</scope>
-        </dependency>
     </dependencies>
 
 

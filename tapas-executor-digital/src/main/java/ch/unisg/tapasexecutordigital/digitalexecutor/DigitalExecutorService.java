@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutors.executors.domain;
+package ch.unisg.tapasexecutordigital.digitalexecutor;
 
 
 import org.springframework.beans.factory.annotation.Autowired;

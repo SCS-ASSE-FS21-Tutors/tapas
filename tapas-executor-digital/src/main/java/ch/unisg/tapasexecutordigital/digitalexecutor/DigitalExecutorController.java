@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutors.executors.domain;
+package ch.unisg.tapasexecutordigital.digitalexecutor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
+
 
 @RestController
 @RequestMapping("digital")
