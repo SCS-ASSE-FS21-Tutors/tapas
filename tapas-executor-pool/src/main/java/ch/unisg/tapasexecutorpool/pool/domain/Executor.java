@@ -5,7 +5,9 @@ import lombok.*;
 
 import java.util.UUID;
 
-/**This is a domain entity**/
+/**
+ * This is a domain entity
+ **/
 @EqualsAndHashCode
 @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
 public class Executor {
@@ -23,23 +25,30 @@ public class Executor {
     private final ExecutorType executorType;
 
     @Getter
+    @Setter
     private ExecutorState executorState;
 
     @Getter
-    private final ExecutorPort executorPort;
+    @Setter
+    private Task assignedTask;
 
-    public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorPort executorPort) {
+
+    @Getter
+    private final ExecutorUrl executorUrl;
+
+    public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorUrl executorUrl) {
         this.executorName = executorName;
         this.executorType = executorType;
         this.executorState = new ExecutorState(State.AVAILABLE);
+        this.assignedTask = null;
         this.executorId = new ExecutorId(UUID.randomUUID().toString());
-        this.executorPort = executorPort;
+        this.executorUrl = executorUrl;
     }
 
-    protected static Executor createExecutor(ExecutorName name, ExecutorType type, ExecutorPort port) {
+    protected static Executor createExecutor(ExecutorName name, ExecutorType type, ExecutorUrl url) {
         //This is a simple debug message to see that the request has reached the right method in the core
-        System.out.println("New Executor: " + name.getValue() + " " + type.getValue()+ " " + port.getValue());
-        return new Executor(name,type, port);
+        System.out.println("New Executor: " + name.getValue() + " " + type.getValue() + " " + url.getValue());
+        return new Executor(name, type, url);
     }
 
     @Value
@@ -73,12 +82,12 @@ public class Executor {
     @Value
     @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
     @AllArgsConstructor
-    public static class ExecutorPort {
+    public static class ExecutorUrl {
         private String value;
     }
 
     @Override
     public String toString() {
-        return executorName.value+ " | "+ executorState.value;
+        return executorName.value + " | " + executorState.value + " | " + executorUrl.value;
     }
 }

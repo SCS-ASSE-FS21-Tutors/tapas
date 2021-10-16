@@ -30,7 +30,7 @@ public class AddNewExecutorIntegrationTest {
         Executor executor = new Executor(
                 new Executor.ExecutorName("Name"),
                 new Executor.ExecutorType("Type"),
-                new Executor.ExecutorPort("Port"));
+                new Executor.ExecutorUrl("Url"));
 
         ObjectMapper om = new ObjectMapper();
         String requestBody = om.writeValueAsString(executor);

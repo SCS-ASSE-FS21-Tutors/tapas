@@ -13,6 +13,7 @@ import java.util.List;
 @Component
 public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCase {
 
+    @Autowired
     public ExecutorRepository repository;
 
     @Autowired
@@ -23,7 +24,7 @@ public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCas
     @Override
     public Executor addNewExecutorToExecutorPool(AddNewExecutorToExecutorPoolCommand command) {
 
-        Executor executor = new Executor(command.getExecutorName(), command.getExecutorType(), null);
+        Executor executor = new Executor(command.getExecutorName(), command.getExecutorType(), command.getExecutorUrl());
         repository.addExecutor(executor);
         System.out.println("Current Executor Repository: "+ repository.getExecutors());
         return executor;

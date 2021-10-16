@@ -4,6 +4,15 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.client.methods.HttpPut;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +40,16 @@ public class Calculation {
             sum+= values[i];
         }
         try {
-            TimeUnit.SECONDS.sleep(4);
+            TimeUnit.SECONDS.sleep(10);
+            // Calls the /completion/ endpoint of the executor pool
+            String url = "http://127.0.0.1:8082/completion/?taskId="+taskID;
+            CloseableHttpClient httpclient = HttpClients.createDefault();
+
+            // Executes request
+            HttpPut putMethod = new HttpPut(url);
+            HttpResponse rawResponse = httpclient.execute(putMethod);
+            System.out.println(rawResponse);
+
         }catch (Exception e){
             System.out.println(e);
         }
