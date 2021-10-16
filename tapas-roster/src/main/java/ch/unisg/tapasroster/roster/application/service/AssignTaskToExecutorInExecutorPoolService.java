@@ -26,13 +26,12 @@ public class AssignTaskToExecutorInExecutorPoolService implements AssignTaskToEx
 
     @Override
     public boolean assignTaskToExecutor(AssignTaskToExecutorInExecutorPoolCommand command) {
-        System.out.println("It works");
         // IN:Task from TaskList
         String typeOfNewTask = command.getTaskType().getValue();
         System.out.println("TaskId:" + command.getTaskId().getValue());
         System.out.println("TaskType:" + typeOfNewTask);
         // get executors via port
-        String executorPoolURL = "http://localhost:8081";
+        String executorPoolURL = "http://tapas-executor-pool.86-119-35-72.nip.io";
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(executorPoolURL+"/executors/"))

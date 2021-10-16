@@ -22,7 +22,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
     //    @org.springframework.beans.factory.annotation.Value("${newTaskEventServer}")
     //    private String server;
-    String server = "http://127.0.0.1:8082";
+    String server = "http://tapas-roster.86-119-35-72.nip.io";
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
