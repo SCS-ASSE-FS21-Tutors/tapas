@@ -13,7 +13,7 @@ import javax.validation.ConstraintViolationException;
 
 
 @RestController
-@RequestMapping("digital")
+@RequestMapping("cherrybot")
 public class CherrybotExecutorController {
 
     private final CherrybotExecutorService cherrybotExecutorService;
