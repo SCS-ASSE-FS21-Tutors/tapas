@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutors.executors.domain;
+package ch.unisg.tapasexecutorcherrybot.cherrybot;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -16,7 +16,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Component
-public class RobotExecutor {
+public class CherrybotExecutor {
     public enum State {
         IDLE, BUSY
     }
@@ -36,7 +36,7 @@ public class RobotExecutor {
             .connectTimeout(Duration.ofSeconds(10))
             .build();
 
-    public RobotExecutor() {
+    public CherrybotExecutor() {
         this.executorState = new ExecutorState(State.IDLE);
         this.executorId = new ExecutorId(UUID.randomUUID().toString());
     }
@@ -67,22 +67,21 @@ public class RobotExecutor {
      */
     public void makeRobotDoStuff(String token) throws IOException, InterruptedException {
         // json formatted data
-        String json = new StringBuilder()
-                .append("{")
-                .append("\"target\": {")
-                .append("\"coordinate\": {")
-                .append("\"x\": 600,")
-                .append("\"y\": 0,")
-                .append("\"z\": 600")
-                .append("},")
-                .append("\"rotation\": {")
-                .append("\"roll\": 0,")
-                .append(" \"pitch\": 0,")
-                .append("\"yaw\": 180")
-                .append("}")
-                .append("},")
-                .append("\"speed\": 50")
-                .append("}").toString();
+        String json = "{" +
+                "\"target\": {" +
+                "\"coordinate\": {" +
+                "\"x\": 600," +
+                "\"y\": 0," +
+                "\"z\": 600" +
+                "}," +
+                "\"rotation\": {" +
+                "\"roll\": 0," +
+                " \"pitch\": 0," +
+                "\"yaw\": 180" +
+                "}" +
+                "}," +
+                "\"speed\": 50" +
+                "}";
 
         HttpRequest request = HttpRequest.newBuilder()
                 .PUT(HttpRequest.BodyPublishers.ofString(json))
@@ -145,7 +144,7 @@ public class RobotExecutor {
 
     public void startTask() throws IOException, InterruptedException {
         executorState = new ExecutorState(State.BUSY);
-        execute();
+        runTask();
     }
 
     private void sleeper() {
@@ -156,7 +155,7 @@ public class RobotExecutor {
         }
     }
 
-    public void execute() throws IOException, InterruptedException {
+    public void runTask() throws IOException, InterruptedException {
         String deleteurl = registerOperator();
         sleeper();
         String token = deleteurl.substring(deleteurl.lastIndexOf("/") + 1);
@@ -219,7 +218,7 @@ public class RobotExecutor {
 
     @Value
     class ExecutorState {
-        private RobotExecutor.State value;
+        private CherrybotExecutor.State value;
     }
 
     @Value
