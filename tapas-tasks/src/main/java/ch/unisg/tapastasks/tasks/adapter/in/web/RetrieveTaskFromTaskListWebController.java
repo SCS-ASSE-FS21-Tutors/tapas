@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListCommand;
+import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import org.springframework.http.HttpHeaders;
@@ -21,7 +21,7 @@ public class RetrieveTaskFromTaskListWebController {
 
     @GetMapping(path = "/tasks/{taskId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskId") String taskId) {
-        RetrieveTaskFromTaskListCommand command = new RetrieveTaskFromTaskListCommand(new Task.TaskId(taskId));
+        RetrieveTaskFromTaskListQuery command = new RetrieveTaskFromTaskListQuery(new Task.TaskId(taskId));
         Optional<Task> updatedTaskOpt = retrieveTaskFromTaskListUseCase.retrieveTaskFromTaskList(command);
 
         // Check if the task with the given identifier exists

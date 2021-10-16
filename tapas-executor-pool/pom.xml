@@ -66,7 +66,7 @@
     </dependencies>
 
     <properties>
-        <start-class>ch.unisg.tapas.example.Application</start-class>
+        <start-class>ch.unisg.tapas.example.CalculatorApplication</start-class>
     </properties>
 
     <build>

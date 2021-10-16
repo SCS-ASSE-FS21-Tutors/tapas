@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.application.service;
 
-import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListCommand;
+import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
@@ -15,7 +15,7 @@ import java.util.Optional;
 @Transactional
 public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskListUseCase {
     @Override
-    public Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListCommand command) {
+    public Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListQuery command) {
         TaskList taskList = TaskList.getTapasTaskList();
         return taskList.retrieveTaskById(command.getTaskId());
     }
