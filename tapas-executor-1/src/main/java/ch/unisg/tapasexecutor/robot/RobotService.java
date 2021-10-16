@@ -75,4 +75,125 @@ public class RobotService {
         return restCall;
     }
 
+    public void deleteUser(String apiKey){
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/user" + "/" + apiKey;
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.delete(url, map);
+        log.info("User deleted successfully");
+    }
+
+    public void moveElbow(int value, String apiKey){
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        map.put("X-API-KEY", apiKey);
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/elbow";
+
+        headers.setAll(map);
+
+        Map req_payload = new HashMap();
+        req_payload.put("value", value);
+
+
+        HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.put(url, request, String.class);
+        log.info("Elbow moved");
+    }
+
+    public void moveWristAngle(int value, String apiKey){
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        map.put("X-API-KEY", apiKey);
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/wrist/angle";
+
+        headers.setAll(map);
+
+        Map req_payload = new HashMap();
+        req_payload.put("value", value);
+
+
+        HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.put(url, request, String.class);
+        log.info("Wrist angle moved");
+    }
+
+    public void moveWristRotation(int value, String apiKey){
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        map.put("X-API-KEY", apiKey);
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/wrist/rotation";
+
+        headers.setAll(map);
+
+        Map req_payload = new HashMap();
+        req_payload.put("value", value);
+
+
+        HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.put(url, request, String.class);
+        log.info("Wrist rotation moved");
+    }
+
+    public void moveGripper(int value, String apiKey){
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        map.put("X-API-KEY", apiKey);
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/gripper";
+
+        headers.setAll(map);
+
+        Map req_payload = new HashMap();
+        req_payload.put("value", value);
+
+
+        HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.put(url, request, String.class);
+        log.info("Gripper moved");
+    }
+
+    public void moveReset(int value, String apiKey){
+
+        MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+        Map map = new HashMap<String, String>();
+        map.put("Content-Type", "application/json");
+        map.put("X-API-KEY", apiKey);
+        String url = "https://api.interactions.ics.unisg.ch/leubot1/v1.3.0/reset";
+
+        headers.setAll(map);
+
+        Map req_payload = new HashMap();
+        req_payload.put("value", value);
+
+
+        HttpEntity<?> request = new HttpEntity<>(req_payload, headers);
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        restTemplate.put(url, request, String.class);
+        log.info("Robot reset");
+    }
+
 }

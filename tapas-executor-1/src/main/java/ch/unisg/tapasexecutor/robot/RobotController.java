@@ -31,6 +31,7 @@ import java.net.http.HttpHeaders;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
 @Log
@@ -57,7 +58,8 @@ public class RobotController {
     }
 
 
-    @RequestMapping("/setupRobot")
+
+    @RequestMapping("/moveRobot")
     public void setupRobot() {
         Optional<String> apiKey = robotService.addUser();
 
@@ -66,7 +68,43 @@ public class RobotController {
 
             System.out.println(apiKeyValue);
 
+            waitAndSleep();
+
+            robotService.moveElbow(450, apiKeyValue);
+
+            waitAndSleep();
+
+            robotService.moveWristAngle(550, apiKeyValue);
+
+            waitAndSleep();
+
+            robotService.moveWristRotation(550, apiKeyValue);
+
+            waitAndSleep();
+
+            robotService.moveGripper(200, apiKeyValue);
+
+            waitAndSleep();
+
+            robotService.moveReset(0, apiKeyValue);
+
+            waitAndSleep();
+
+            robotService.deleteUser(apiKeyValue);
+
         }
     }
 
+    public void waitAndSleep() {
+        try
+        {
+            Thread.sleep(8000);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
+    }
 }
+
+
