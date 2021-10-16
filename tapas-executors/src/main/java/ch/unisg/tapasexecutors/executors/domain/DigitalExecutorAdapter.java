@@ -15,15 +15,14 @@ public class DigitalExecutorAdapter {
     private static final String TASK_FINISHED_PATH = "/roster/taskfinished/";
 
     public static void publishTaskFinishedEvent(TaskFinishedEvent event) {
-        String requestBody = TaskMediaType.serialize(event.getTask());
+        String requestBody = TaskFinishedEventMediaType.serialize(event);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(SERVER + TASK_FINISHED_PATH))
-                .header("Content-Type", TaskMediaType.TASK_MEDIA_TYPE)
+                .header("Content-Type", TaskFinishedEventMediaType.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
-
 
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

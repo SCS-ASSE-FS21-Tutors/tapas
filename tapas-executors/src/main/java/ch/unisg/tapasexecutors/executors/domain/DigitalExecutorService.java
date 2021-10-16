@@ -35,6 +35,6 @@ public class DigitalExecutorService {
     }
 
     private void publishTaskFinishedEvent(Task task, String result) {
-        DigitalExecutorAdapter.publishTaskFinishedEvent(new TaskFinishedEvent(task));
+        DigitalExecutorAdapter.publishTaskFinishedEvent(new TaskFinishedEvent(task, result));
     }
 }
