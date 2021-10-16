@@ -1,9 +1,9 @@
 package ch.unisg.tapasexecutors.executors.domain;
 
-import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
+import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -17,6 +17,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 
+@Component
 public class DigitalExecutor {
     public enum State {
         IDLE, BUSY
@@ -28,9 +29,6 @@ public class DigitalExecutor {
 
     @Getter
     private final ExecutorName executorName = new ExecutorName("RandomWordExecutor");
-
-    @Getter
-    private final Task.TaskType taskType = new Task.TaskType("DigitalTask");
 
     @Getter
     @Setter
@@ -51,18 +49,16 @@ public class DigitalExecutor {
         } catch (InterruptedException e) {
             // silence
         }
-        execute();
+        runTask();
     }
 
     private static String constructSentence() {
         int nWords = 3;
         Random rand = new Random();
         String[] randomWordList = getRandomWordsArray(nWords);
-        StringBuilder sb = new StringBuilder();
-        sb.append(randomWordList[0] + VERBS[rand.nextInt(VERBS.length)]); // objective with verb
-        sb.append(randomWordList[1] + ARTICLES[rand.nextInt(ARTICLES.length)]); // second word with article
-        sb.append(randomWordList[2]); // subjective
-        return sb.toString();
+        return randomWordList[0] + VERBS[rand.nextInt(VERBS.length)] + // objective with verb
+                randomWordList[1] + ARTICLES[rand.nextInt(ARTICLES.length)] + // second word with article
+                randomWordList[2];
     }
 
     private static String[] getRandomWordsArray(int nWords) {
@@ -93,28 +89,30 @@ public class DigitalExecutor {
         return responseContent;
     }
 
-    public void execute() {
-        constructSentence();
+    public String runTask() {
+        String sentence = constructSentence();
         executorState = new ExecutorState(State.IDLE);
+
+        return sentence;
     }
 
     @Value
-    class ExecutorId {
-        private String value;
+    static class ExecutorId {
+        String value;
     }
 
     @Value
-    class ExecutorName {
-        private String value;
+    static class ExecutorName {
+        String value;
     }
 
     @Value
-    class ExecutorState {
-        private State value;
+    static class ExecutorState {
+        State value;
     }
 
     @Value
-    class ExecutorType {
-        private String value;
+    static class ExecutorType {
+        String value;
     }
 }
