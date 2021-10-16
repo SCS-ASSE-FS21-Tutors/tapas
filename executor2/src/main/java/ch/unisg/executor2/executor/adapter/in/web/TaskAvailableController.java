@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.executor.adapter.in.web;
+package ch.unisg.executor2.executor.adapter.in.web;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

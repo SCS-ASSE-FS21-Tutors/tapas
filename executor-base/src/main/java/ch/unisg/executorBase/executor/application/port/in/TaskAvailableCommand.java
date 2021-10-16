@@ -9,7 +9,7 @@ import lombok.Value;
 
 @Value
 public class TaskAvailableCommand extends SelfValidating<TaskAvailableCommand> {
-    
+
     @NotNull
     private final ExecutorType taskType;
 

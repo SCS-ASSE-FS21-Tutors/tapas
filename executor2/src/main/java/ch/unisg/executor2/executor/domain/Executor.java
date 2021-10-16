@@ -5,7 +5,7 @@ import ch.unisg.executorBase.executor.domain.ExecutorBase;
 import ch.unisg.executorBase.executor.domain.ExecutorType;
 
 public class Executor extends ExecutorBase {
-    
+
     private static final Executor executor = new Executor(ExecutorType.ADDITION);
 
     public static Executor getExecutor() {
@@ -19,7 +19,7 @@ public class Executor extends ExecutorBase {
     @Override
     protected
     String execution() {
-        
+
         int a = 20;
         int b = 20;
         try {

@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.common;
+package ch.unisg.assignment.common;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -7,11 +7,11 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import java.util.Set;
 
-public class SelfValidating<T> {
+public abstract class SelfValidating<T> {
 
     private Validator validator;
 
-    public SelfValidating() {
+    protected SelfValidating() {
         ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
         validator = factory.getValidator();
     }
@@ -28,3 +28,4 @@ public class SelfValidating<T> {
         }
     }
 }
+

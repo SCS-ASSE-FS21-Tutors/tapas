@@ -8,6 +8,9 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.json.JSONObject;
+
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ch.unisg.executorBase.executor.application.port.out.ExecutionFinishedEventPort;
@@ -20,39 +23,30 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
 
     @Override
     public void publishExecutionFinishedEvent(ExecutionFinishedEvent event) {
-        ///Here we would need to work with DTOs in case the payload of calls becomes more complex
 
-        var values = new HashMap<String, String>() {{
-            put("result",event.getResult());
-            put("status",event.getStatus());
-        }};
-
-        var objectMapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = objectMapper.writeValueAsString(values);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String body = new JSONObject()
+        .put("taskID", event.getTaskID())
+        .put("result", event.getResult())
+        .put("status", event.getStatus())
+        .toString();
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(server+"/task/"+event.getTaskID()))
-                .PUT(HttpRequest.BodyPublishers.ofString(requestBody))
+                .header("Content-Type", "application/json")
+                .PUT(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
-        /** Needs the other service running
         try {
-            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
         }
-         **/
 
         System.out.println("Finish execution event sent with result:" + event.getResult());
-        
+
     }
-    
+
 }
