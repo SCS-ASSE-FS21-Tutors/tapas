@@ -7,11 +7,11 @@ import lombok.Value;
 import javax.validation.constraints.NotNull;
 
 @Value
-public class RetrieveTaskFromTaskListCommand extends SelfValidating<RetrieveTaskFromTaskListCommand> {
+public class RetrieveTaskFromTaskListQuery extends SelfValidating<RetrieveTaskFromTaskListQuery> {
     @NotNull
     private final TaskId taskId;
 
-    public RetrieveTaskFromTaskListCommand(TaskId taskId) {
+    public RetrieveTaskFromTaskListQuery(TaskId taskId) {
         this.taskId = taskId;
         this.validateSelf();
     }
