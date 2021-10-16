@@ -14,7 +14,7 @@ public class TaskStartedEventListenerHttpAdapter extends TaskEventListener {
 
     public Task handleTaskEvent(String taskId, JsonNode payload) {
         TaskJsonPatchRepresentation representation = new TaskJsonPatchRepresentation(payload);
-        Optional<Task.ServiceProvider> serviceProvider = representation.extractServiceProvider();
+        Optional<Task.ServiceProvider> serviceProvider = representation.extractFirstServiceProviderChange();
 
         TaskStartedEvent taskStartedEvent = new TaskStartedEvent(new TaskId(taskId), serviceProvider);
         TaskStartedEventHandler taskStartedEventHandler = new TaskStartedHandler();

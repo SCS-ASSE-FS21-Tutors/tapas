@@ -4,6 +4,7 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
+import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
@@ -14,27 +15,41 @@ public class TaskJsonPatchRepresentation {
         this.patch = patch;
     }
 
-    public Optional<Task.ServiceProvider> extractServiceProvider() {
-        Stream<JsonNode> stream = StreamSupport.stream(patch.spliterator(), false);
+    public Optional<Task.Status> extractFirstTaskStatusChange() {
+        Optional<JsonNode> status = extractFirst(node ->
+            isPatchReplaceOperation(node) && hasPath(node, "/taskStatus")
+        );
 
-        Optional<JsonNode> output = stream
-            .filter(node -> (isPatchReplaceOperation(node) || isPatchAddOperation(node))
-                && hasPath(node, "/serviceProvider"))
-            .findFirst();
+        if (status.isPresent()) {
+            String taskStatus = status.get().get("value").asText();
+            return Optional.of(Task.Status.valueOf(taskStatus));
+        }
 
-        return (output.isEmpty()) ? Optional.empty()
-            : Optional.of(new Task.ServiceProvider(output.get().get("value").asText()));
+        return Optional.empty();
     }
 
-    public Optional<Task.OutputData> extractOutput() {
-        Stream<JsonNode> stream = StreamSupport.stream(patch.spliterator(), false);
+    public Optional<Task.ServiceProvider> extractFirstServiceProviderChange() {
+        Optional<JsonNode> serviceProvider = extractFirst(node ->
+                (isPatchReplaceOperation(node) || isPatchAddOperation(node))
+                && hasPath(node, "/serviceProvider")
+        );
 
-        Optional<JsonNode> output = stream
-            .filter(node -> isPatchAddOperation(node) && hasPath(node, "/outputData"))
-            .findFirst();
+        return (serviceProvider.isEmpty()) ? Optional.empty()
+            : Optional.of(new Task.ServiceProvider(serviceProvider.get().get("value").asText()));
+    }
+
+    public Optional<Task.OutputData> extractFirstOutputDataAddition() {
+        Optional<JsonNode> output = extractFirst(node ->
+            isPatchAddOperation(node) && hasPath(node, "/outputData")
+        );
 
         return (output.isEmpty()) ? Optional.empty()
             : Optional.of(new Task.OutputData(output.get().get("value").asText()));
+    }
+
+    private Optional<JsonNode> extractFirst(Predicate<? super JsonNode> predicate) {
+        Stream<JsonNode> stream = StreamSupport.stream(patch.spliterator(), false);
+        return stream.filter(predicate).findFirst();
     }
 
     private boolean isPatchAddOperation(JsonNode node) {

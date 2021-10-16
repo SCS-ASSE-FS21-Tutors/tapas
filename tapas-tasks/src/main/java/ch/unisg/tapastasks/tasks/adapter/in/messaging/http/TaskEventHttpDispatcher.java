@@ -1,6 +1,8 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapastasks.tasks.adapter.in.messaging.UnknownEventException;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
+import java.util.Optional;
 
 
 /**
@@ -32,66 +35,50 @@ public class TaskEventHttpDispatcher {
 
     @PatchMapping(path = "/tasks/{" + TASKID_PATH_PARAMETER + "}", consumes = {JSON_PATCH_MEDIA_TYPE})
     public ResponseEntity<String> dispatchTaskEvents(@PathVariable(TASKID_PATH_PARAMETER) String taskId,
-                                                     @RequestBody JsonNode payload) {
+            @RequestBody JsonNode payload) {
         try {
             // Throw an exception if the JSON Patch format is invalid. This call is only used to
             // validate the JSON PATCH syntax.
             JsonPatch.fromJson(payload);
 
             // Check for known events and route the events to appropriate listeners
-            if (payload.isArray()) {
-                for (JsonNode node : payload) {
-                    if (node.isObject() && node.get("op") != null && node.get("path") != null
-                            && node.get("value") != null) {
+            TaskJsonPatchRepresentation representation = new TaskJsonPatchRepresentation(payload);
+            Optional<Task.Status> status = representation.extractFirstTaskStatusChange();
 
-                        String op = node.get("op").asText();
-                        String path = node.get("path").asText();
-                        String value = node.get("value").asText();
+            TaskEventListener listener = null;
 
-                        TaskEventListener listener = null;
-
-                        // Route events related to task states
-                        if (op.equalsIgnoreCase("replace") && path.equals("/taskState")) {
-                            // TODO: extract service provider from payload
-
-                            switch (Task.Status.valueOf(value.toUpperCase())) {
-                                case ASSIGNED:
-                                    listener = new TaskAssignedEventListenerHttpAdapter();
-                                    break;
-                                case RUNNING:
-                                    listener = new TaskStartedEventListenerHttpAdapter();
-                                    break;
-                                case EXECUTED:
-                                    listener = new TaskExecutedEventListenerHttpAdapter();
-                                    break;
-                            }
-                        }
-
-                        if (listener == null) {
-                            // The HTTP PATCH request is valid, but the patch does not match any
-                            // known event
-                            // TODO: throw custom exception?
-                            throw new RuntimeException("Unknown event for patch: "
-                                + payload.toPrettyString());
-                        }
-
-                        Task task = listener.handleTaskEvent(taskId, payload);
-
-                        // Add the content type as a response header
-                        HttpHeaders responseHeaders = new HttpHeaders();
-                        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
-
-                        return new ResponseEntity<>(TaskJsonRepresentation.serialize(task), responseHeaders,
-                            HttpStatus.OK);
-                    }
+            // Route events related to task status changes
+            if (status.isPresent()) {
+                switch (status.get()) {
+                    case ASSIGNED:
+                        listener = new TaskAssignedEventListenerHttpAdapter();
+                        break;
+                    case RUNNING:
+                        listener = new TaskStartedEventListenerHttpAdapter();
+                        break;
+                    case EXECUTED:
+                        listener = new TaskExecutedEventListenerHttpAdapter();
+                        break;
                 }
             }
+
+            if (listener == null) {
+                // The HTTP PATCH request is valid, but the patch does not match any known event
+                throw new UnknownEventException();
+            }
+
+            Task task = listener.handleTaskEvent(taskId, payload);
+
+            // Add the content type as a response header
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
+
+            return new ResponseEntity<>(TaskJsonRepresentation.serialize(task), responseHeaders,
+                HttpStatus.OK);
         } catch (TaskNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         } catch (IOException | RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
-
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }

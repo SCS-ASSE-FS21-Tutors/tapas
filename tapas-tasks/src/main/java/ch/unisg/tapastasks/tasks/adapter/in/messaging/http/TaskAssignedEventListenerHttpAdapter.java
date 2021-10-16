@@ -14,7 +14,7 @@ public class TaskAssignedEventListenerHttpAdapter extends TaskEventListener {
 
     public Task handleTaskEvent(String taskId, JsonNode payload) {
         TaskJsonPatchRepresentation representation = new TaskJsonPatchRepresentation(payload);
-        Optional<Task.ServiceProvider> serviceProvider = representation.extractServiceProvider();
+        Optional<Task.ServiceProvider> serviceProvider = representation.extractFirstServiceProviderChange();
 
         TaskAssignedEvent taskAssignedEvent = new TaskAssignedEvent(new TaskId(taskId), serviceProvider);
         TaskAssignedEventHandler taskAssignedEventHandler = new TaskAssignedHandler();
