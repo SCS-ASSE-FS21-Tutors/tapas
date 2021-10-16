@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapastasks.tasks.adapter.in.common.TaskMediaType;
+import ch.unisg.tapastasks.tasks.adapter.in.common.TaskRepresentation;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -77,9 +77,9 @@ public class TaskEventHttpDispatcher {
 
                         // Add the content type as a response header
                         HttpHeaders responseHeaders = new HttpHeaders();
-                        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
+                        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskRepresentation.TASK_MEDIA_TYPE);
 
-                        return new ResponseEntity<>(TaskMediaType.serialize(task), responseHeaders,
+                        return new ResponseEntity<>(TaskRepresentation.serialize(task), responseHeaders,
                             HttpStatus.OK);
                     }
                 }

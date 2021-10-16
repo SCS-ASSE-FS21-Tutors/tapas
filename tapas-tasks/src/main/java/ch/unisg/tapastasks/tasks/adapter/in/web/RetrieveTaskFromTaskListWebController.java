@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.common.TaskMediaType;
+import ch.unisg.tapastasks.tasks.adapter.in.common.TaskRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
@@ -33,9 +33,9 @@ public class RetrieveTaskFromTaskListWebController {
 
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
+        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskRepresentation.TASK_MEDIA_TYPE);
 
-        return new ResponseEntity<>(TaskMediaType.serialize(updatedTaskOpt.get()), responseHeaders,
+        return new ResponseEntity<>(TaskRepresentation.serialize(updatedTaskOpt.get()), responseHeaders,
                 HttpStatus.OK);
     }
 }
