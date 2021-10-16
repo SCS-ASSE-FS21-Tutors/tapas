@@ -1,19 +1,25 @@
 package ch.unisg.tapastasks.tasks.application.port.in;
 
 import ch.unisg.tapastasks.common.SelfValidating;
-import ch.unisg.tapastasks.tasks.domain.Task.TaskId;
+import ch.unisg.tapastasks.tasks.domain.Task;
+import lombok.Getter;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
 @Value
 public class TaskStartedEvent extends SelfValidating<TaskStartedEvent> {
-
     @NotNull
-    private final TaskId taskId;
+    private final Task.TaskId taskId;
 
-    public TaskStartedEvent(TaskId taskId) {
+    @Getter
+    private final Optional<Task.ServiceProvider> serviceProvider;
+
+    public TaskStartedEvent(Task.TaskId taskId, Optional<Task.ServiceProvider> serviceProvider) {
         this.taskId = taskId;
+        this.serviceProvider = serviceProvider;
+
         this.validateSelf();
     }
 

@@ -13,6 +13,7 @@ public class TaskStartedHandler implements TaskStartedEventHandler {
     @Override
     public Task handleTaskStarted(TaskStartedEvent taskStartedEvent) throws TaskNotFoundException {
         TaskList taskList = TaskList.getTapasTaskList();
-        return taskList.changeTaskStatusToRunning(taskStartedEvent.getTaskId());
+        return taskList.changeTaskStatusToRunning(taskStartedEvent.getTaskId(),
+            taskStartedEvent.getServiceProvider());
     }
 }

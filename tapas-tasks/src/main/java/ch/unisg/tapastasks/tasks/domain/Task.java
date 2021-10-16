@@ -8,7 +8,7 @@ import java.util.UUID;
 
 /**This is a domain entity**/
 public class Task {
-    public enum State {
+    public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED
     }
 
@@ -43,7 +43,7 @@ public class Task {
         this.taskType = taskType;
         this.originalTaskUri = taskUri;
 
-        this.taskStatus = new TaskStatus(State.OPEN);
+        this.taskStatus = new TaskStatus(Status.OPEN);
 
         this.inputData = null;
         this.outputData = null;
@@ -82,7 +82,7 @@ public class Task {
 
     @Value
     public static class TaskStatus {
-        State value;
+        Status value;
     }
 
     @Value

@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.common.TaskRepresentation;
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
@@ -23,8 +23,8 @@ public class AddNewTaskToTaskListWebController {
         this.addNewTaskToTaskListUseCase = addNewTaskToTaskListUseCase;
     }
 
-    @PostMapping(path = "/tasks/", consumes = {TaskRepresentation.TASK_MEDIA_TYPE})
-    public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskRepresentation payload) {
+    @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.TASK_MEDIA_TYPE})
+    public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
             Task.TaskName taskName = new Task.TaskName(payload.getTaskName());
             Task.TaskType taskType = new Task.TaskType(payload.getTaskType());
@@ -47,9 +47,9 @@ public class AddNewTaskToTaskListWebController {
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskRepresentation.TASK_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
 
-            return new ResponseEntity<>(TaskRepresentation.serialize(createdTask), responseHeaders,
+            return new ResponseEntity<>(TaskJsonRepresentation.serialize(createdTask), responseHeaders,
                 HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

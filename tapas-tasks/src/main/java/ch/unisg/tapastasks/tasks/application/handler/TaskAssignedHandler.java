@@ -13,6 +13,7 @@ public class TaskAssignedHandler implements TaskAssignedEventHandler {
     @Override
     public Task handleTaskAssigned(TaskAssignedEvent taskAssignedEvent) throws TaskNotFoundException {
         TaskList taskList = TaskList.getTapasTaskList();
-        return taskList.changeTaskStatusToAssigned(taskAssignedEvent.getTaskId());
+        return taskList.changeTaskStatusToAssigned(taskAssignedEvent.getTaskId(),
+            taskAssignedEvent.getServiceProvider());
     }
 }

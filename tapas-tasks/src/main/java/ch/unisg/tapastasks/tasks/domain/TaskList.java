@@ -67,27 +67,41 @@ public class TaskList {
         return Optional.empty();
     }
 
-    public Task changeTaskStatusToAssigned(Task.TaskId id) {
-        return changeTaskStatus(id, new Task.TaskStatus(Task.State.ASSIGNED));
+    public Task changeTaskStatusToAssigned(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
+            throws TaskNotFoundException {
+        return changeTaskStatus(id, new Task.TaskStatus(Task.Status.ASSIGNED), serviceProvider, Optional.empty());
     }
 
-    public Task changeTaskStatusToRunning(Task.TaskId id) {
-        return changeTaskStatus(id, new Task.TaskStatus(Task.State.RUNNING));
+    public Task changeTaskStatusToRunning(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
+            throws TaskNotFoundException {
+        return changeTaskStatus(id, new Task.TaskStatus(Task.Status.RUNNING), serviceProvider, Optional.empty());
     }
 
-    public Task changeTaskStatusToExecuted(Task.TaskId id) throws TaskNotFoundException {
-        return changeTaskStatus(id, new Task.TaskStatus(Task.State.EXECUTED));
+    public Task changeTaskStatusToExecuted(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider,
+            Optional<Task.OutputData> outputData) throws TaskNotFoundException {
+        return changeTaskStatus(id, new Task.TaskStatus(Task.Status.EXECUTED), serviceProvider, outputData);
     }
 
-    private Task changeTaskStatus(Task.TaskId id, Task.TaskStatus status) {
-        Optional<Task> task = retrieveTaskById(id);
+    private Task changeTaskStatus(Task.TaskId id, Task.TaskStatus status, Optional<Task.ServiceProvider> serviceProvider,
+            Optional<Task.OutputData> outputData) {
+        Optional<Task> taskOpt = retrieveTaskById(id);
 
-        if (task.isEmpty()) {
+        if (taskOpt.isEmpty()) {
             throw new TaskNotFoundException();
         }
 
-        task.get().setTaskStatus(status);
-        return task.get();
+        Task task = taskOpt.get();
+        task.setTaskStatus(status);
+
+        if (serviceProvider.isPresent()) {
+            task.setProvider(serviceProvider.get());
+        }
+
+        if (outputData.isPresent()) {
+            task.setOutputData(outputData.get());
+        }
+
+        return task;
     }
 
     @Value

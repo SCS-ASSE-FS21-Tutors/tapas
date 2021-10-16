@@ -13,6 +13,7 @@ public class TaskExecutedHandler implements TaskExecutedEventHandler {
     @Override
     public Task handleTaskExecuted(TaskExecutedEvent taskExecutedEvent) throws TaskNotFoundException {
         TaskList taskList = TaskList.getTapasTaskList();
-        return taskList.changeTaskStatusToExecuted(taskExecutedEvent.getTaskId());
+        return taskList.changeTaskStatusToExecuted(taskExecutedEvent.getTaskId(),
+            taskExecutedEvent.getServiceProvider(), taskExecutedEvent.getOutputData());
     }
 }

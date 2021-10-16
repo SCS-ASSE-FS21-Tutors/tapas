@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapastasks.tasks.adapter.in.common.TaskRepresentation;
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -52,7 +52,9 @@ public class TaskEventHttpDispatcher {
 
                         // Route events related to task states
                         if (op.equalsIgnoreCase("replace") && path.equals("/taskState")) {
-                            switch (Task.State.valueOf(value.toUpperCase())) {
+                            // TODO: extract service provider from payload
+
+                            switch (Task.Status.valueOf(value.toUpperCase())) {
                                 case ASSIGNED:
                                     listener = new TaskAssignedEventListenerHttpAdapter();
                                     break;
@@ -77,9 +79,9 @@ public class TaskEventHttpDispatcher {
 
                         // Add the content type as a response header
                         HttpHeaders responseHeaders = new HttpHeaders();
-                        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskRepresentation.TASK_MEDIA_TYPE);
+                        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
 
-                        return new ResponseEntity<>(TaskRepresentation.serialize(task), responseHeaders,
+                        return new ResponseEntity<>(TaskJsonRepresentation.serialize(task), responseHeaders,
                             HttpStatus.OK);
                     }
                 }

@@ -6,6 +6,7 @@ import ch.unisg.tapastasks.tasks.application.port.in.TaskExecutedEventHandler;
 import ch.unisg.tapastasks.tasks.domain.Task.*;
 import org.eclipse.paho.client.mqttv3.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class TaskExecutedEventMqttListenerAdapter {
@@ -40,7 +41,8 @@ public class TaskExecutedEventMqttListenerAdapter {
         public void messageArrived(String topic, MqttMessage message) throws Exception {
             String taskId = new String(message.getPayload());
             System.out.println("New message received: " + taskId);
-            TaskExecutedEvent taskExecutedEvent = new TaskExecutedEvent(new TaskId(taskId));
+            TaskExecutedEvent taskExecutedEvent = new TaskExecutedEvent(new TaskId(taskId),
+                Optional.empty(), Optional.empty());
             TaskExecutedEventHandler taskExecutedEventHandler = new TaskExecutedHandler();
             taskExecutedEventHandler.handleTaskExecuted(taskExecutedEvent);
         }
