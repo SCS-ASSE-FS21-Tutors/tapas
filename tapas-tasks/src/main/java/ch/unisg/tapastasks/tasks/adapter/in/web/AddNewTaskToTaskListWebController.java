@@ -32,8 +32,8 @@ public class AddNewTaskToTaskListWebController {
             // If the created task is a delegated task, the representation contains a URI reference
             // to the original task
             Optional<Task.OriginalTaskUri> originalTaskUriOptional =
-                (payload.getOriginalTaskUri().isEmpty()) ? Optional.empty()
-                : Optional.of(new Task.OriginalTaskUri(payload.getOriginalTaskUri().get()));
+                (payload.getOriginalTaskUri() == null) ? Optional.empty()
+                : Optional.of(new Task.OriginalTaskUri(payload.getOriginalTaskUri()));
 
             AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType,
                 originalTaskUriOptional);
@@ -41,8 +41,8 @@ public class AddNewTaskToTaskListWebController {
             Task createdTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);
 
             // When creating a task, the task's representation may include optional input data
-            if (payload.getInputData().isPresent()) {
-                createdTask.setInput(new Task.Input(payload.getInputData().get()));
+            if (payload.getInputData() != null) {
+                createdTask.setInputData(new Task.InputData(payload.getInputData()));
             }
 
             // Add the content type as a response header

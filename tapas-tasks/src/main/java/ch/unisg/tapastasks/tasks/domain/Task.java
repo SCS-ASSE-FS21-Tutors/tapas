@@ -31,10 +31,10 @@ public class Task {
     private ServiceProvider provider;
 
     @Getter @Setter
-    private Input input;
+    private InputData inputData;
 
     @Getter @Setter
-    private Output output;
+    private OutputData outputData;
 
     public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
         this.taskId = new TaskId(UUID.randomUUID().toString());
@@ -45,8 +45,8 @@ public class Task {
 
         this.taskStatus = new TaskStatus(State.OPEN);
 
-        this.input = null;
-        this.output = null;
+        this.inputData = null;
+        this.outputData = null;
     }
 
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
@@ -62,41 +62,41 @@ public class Task {
 
     @Value
     public static class TaskId {
-        private String value;
+        String value;
     }
 
     @Value
     public static class TaskName {
-        private String value;
+        String value;
     }
 
     @Value
     public static class TaskType {
-        private String value;
+        String value;
     }
 
     @Value
     public static class OriginalTaskUri {
-        private String value;
+        String value;
     }
 
     @Value
     public static class TaskStatus {
-        private State value;
+        State value;
     }
 
     @Value
     public static class ServiceProvider {
-        private String value;
+        String value;
     }
 
     @Value
-    public static class Input {
-        private String value;
+    public static class InputData {
+        String value;
     }
 
     @Value
-    public static class Output {
-        private String value;
+    public static class OutputData {
+        String value;
     }
 }

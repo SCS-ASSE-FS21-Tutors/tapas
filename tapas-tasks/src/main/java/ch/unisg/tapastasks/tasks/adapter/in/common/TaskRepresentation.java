@@ -1,12 +1,9 @@
 package ch.unisg.tapastasks.tasks.adapter.in.common;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.Getter;
 import lombok.Setter;
 import org.json.JSONObject;
-
-import java.util.Optional;
 
 /**
  * TODO Andrei: add comments
@@ -24,73 +21,41 @@ final public class TaskRepresentation {
     private final String taskType;
 
     @Getter @Setter
-    private Optional<String> originalTaskUri;
+    private String originalTaskUri;
     @Getter @Setter
-    private Optional<String> serviceProvider;
+    private String serviceProvider;
 
     @Getter @Setter
-    private Optional<String> inputData;
+    private String inputData;
     @Getter @Setter
-    private Optional<String> outputData;
+    private String outputData;
 
     public TaskRepresentation(String taskName, String taskType) {
         this.taskName = taskName;
         this.taskType = taskType;
 
-        this.originalTaskUri = Optional.empty();
-        this.serviceProvider = Optional.empty();
-        this.inputData = Optional.empty();
-        this.outputData = Optional.empty();
+        this.originalTaskUri = null;
+        this.serviceProvider = null;
+        this.inputData = null;
+        this.outputData = null;
     }
 
-//    public static TaskRepresentation deserialize(String payload) {
-//        JSONObject taskObj = new JSONObject(payload);
-//
-//        String taskName = taskObj.getString("taskName");
-//        String taskType = taskObj.getString("taskType");
-//
-//        // If the task is a delegated task, then it contains a reference to the original task
-//        Task.OriginalTaskUri originalTaskUri = null;
-//        try {
-//            String shadowOf = taskObj.getString("originalTaskUri");
-//            originalTaskUri = new Task.OriginalTaskUri(shadowOf);
-//        } catch (JSONException e) { }
-//
-//        // A task may have a domain-specific input string
-//        Task.Input input = null;
-//        try {
-//            String inputString = taskObj.getString("input");
-//            input = new Task.Input(inputString);
-//        } catch (JSONException e) { }
-//
-//        Task task = new Task(new Task.TaskName((taskName)), new Task.TaskType(taskType),
-//            originalTaskUri, input);
-//
-//        // A task may have a service provider, but not necessarily in all states (e.g., before a task
-//        // is assigned)
-//        try {
-//            String serviceProvider = taskObj.getString("serviceProvider");
-//            task.setProvider(new Task.ServiceProvider(serviceProvider));
-//        } catch (JSONException e) { }
-//
-//        // A task may have a domain-specific output string
-//        try {
-//            String outputString = taskObj.getString("output");
-//            task.setOutput(new Task.Output(outputString));
-//        } catch (JSONException e) { }
-//
-//        return task;
-//    }
+    public TaskRepresentation(Task task) {
+        this(task.getTaskName().getValue(), task.getTaskType().getValue());
 
-    // TODO: refactor task serialization
+        this.taskId = task.getTaskId().getValue();
+
+        this.originalTaskUri = (task.getOriginalTaskUri() == null) ?
+            null : task.getOriginalTaskUri().getValue();
+
+        this.serviceProvider = (task.getProvider() == null) ? null : task.getProvider().getValue();
+        this.inputData = (task.getInputData() == null) ? null : task.getInputData().getValue();
+        this.outputData = (task.getOutputData() == null) ? null : task.getOutputData().getValue();
+    }
+
     public static String serialize(Task task) {
-        JSONObject payload = new JSONObject();
-
-        payload.put("taskId", task.getTaskId().getValue());
-        payload.put("taskName", task.getTaskName().getValue());
-        payload.put("taskType", task.getTaskType().getValue());
-        payload.put("taskState", task.getTaskStatus().getValue());
-        payload.put("taskListName", TaskList.getTapasTaskList().getTaskListName().getValue());
+        TaskRepresentation representation = new TaskRepresentation(task);
+        JSONObject payload = new JSONObject(representation);
 
         return payload.toString();
     }
