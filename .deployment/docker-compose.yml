@@ -43,7 +43,7 @@ services:
 
     assignment:
         image: openjdk
-        command: "java -jar /data/assignment-0.0.1.jar"
+        command: "java -jar /data/assignment-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         volumes:
             - ./:/data/
@@ -58,7 +58,7 @@ services:
 
     executor-pool:
         image: openjdk
-        command: "java -jar /data/executor-pool-0.0.1.jar"
+        command: "java -jar /data/executor-pool-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         volumes:
             - ./:/data/
@@ -73,7 +73,7 @@ services:
 
     executor1:
         image: openjdk
-        command: "java -jar /data/executor1-0.0.1.jar"
+        command: "java -jar /data/executor1-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         depends_on:
             - executor-pool
@@ -91,7 +91,7 @@ services:
 
     executor2:
         image: openjdk
-        command: "java -jar /data/executor2-0.0.1.jar"
+        command: "java -jar /data/executor2-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         depends_on:
             - executor-pool
