@@ -13,7 +13,7 @@ import java.util.Optional;
 /**
  * Listener for task started events. A task started event corresponds to a JSON Patch that attempts
  * to change the task's status to RUNNING and may also add/replace a service provider. This
- * implementation does not impose that a task assigned event includes the service provider (i.e.,
+ * implementation does not impose that a task started event includes the service provider (i.e.,
  * can be null).
  *
  * See also {@link TaskStartedEvent}, {@link Task}, and {@link TaskEventHttpDispatcher}.

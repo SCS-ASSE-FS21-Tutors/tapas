@@ -11,9 +11,9 @@ import java.util.Optional;
 
 /**
  * Listener for task executed events. A task executed event corresponds to a JSON Patch that attempts
- * to change the task's status to EXECUTED and may also add/replace a service provider. This
- * implementation does not impose that a task assigned event includes the service provider (i.e.,
- * can be null).
+ * to change the task's status to EXECUTED, may add/replace a service provider, and may also add an
+ * output result. This implementation does not impose that a task executed event includes either the
+ * service provider or an output result (i.e., both can be null).
  *
  * See also {@link TaskExecutedEvent}, {@link Task}, and {@link TaskEventHttpDispatcher}.
  */
