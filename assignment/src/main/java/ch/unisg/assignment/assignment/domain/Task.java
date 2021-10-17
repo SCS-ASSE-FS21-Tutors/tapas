@@ -30,6 +30,6 @@ public class Task {
         this.taskType = taskType;
     }
 
-    public Task() {};
+    public Task() {}
 
 }
