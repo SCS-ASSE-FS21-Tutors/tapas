@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -19,8 +21,9 @@ import org.json.JSONObject;
 @Primary
 public class GetAssignmentAdapter implements GetAssignmentPort {
 
-    //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
     String server = "http://127.0.0.1:8082";
+
+    Logger logger = Logger.getLogger(GetAssignmentAdapter.class.getName());
 
     @Override
     public Task getAssignment(ExecutorType executorType, String ip, int port) {
@@ -47,7 +50,7 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
             return new Task(new JSONObject(response.body()).getString("taskID"));
 
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
             // Restore interrupted state...
             Thread.currentThread().interrupt();
         }
