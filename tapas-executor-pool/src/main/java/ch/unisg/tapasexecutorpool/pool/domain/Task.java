@@ -1,7 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
 
 
 /**This is a domain entity**/
@@ -23,16 +22,22 @@ public class Task {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskId {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskName {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskType {
         private String value;
     }

@@ -78,10 +78,6 @@
 
     </dependencies>
 
-    <properties>
-        <start-class>ch.unisg.tapas.example.CalculatorApplication</start-class>
-    </properties>
-
     <build>
         <plugins>
             <plugin>

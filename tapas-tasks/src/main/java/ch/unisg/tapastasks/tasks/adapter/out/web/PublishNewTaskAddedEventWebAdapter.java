@@ -4,6 +4,7 @@ import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -13,46 +14,51 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
 
 @Component
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
-    String server = "http://127.0.0.1:8082";
+    @Value( "${ch.unisg.tapas.roster-url}" )
+    private String server;
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
+        try{
 
-        var values = new HashMap<String, String>() {{
-            put("taskname",event.taskName);
-            put("tasklist",event.taskListName);
-        }};
+            var values = new HashMap<String, String>() {{
+                put("taskname",event.taskName);
+                put("tasklist",event.taskListName);
+            }};
 
-        var objectMapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = objectMapper.writeValueAsString(values);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+            var objectMapper = new ObjectMapper();
+            String requestBody = null;
+            try {
+                requestBody = objectMapper.writeValueAsString(values);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/roster/newtask/"))
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+            HttpClient client = HttpClient.newHttpClient();
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(server+"/roster/newtask/"))
+                    .headers("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .build();
 
-        /** Needs the other service running
-        try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+
+            if(response.statusCode() != 201){
+                throw new RuntimeException("Roster responded with unexpected status code " + response.statusCode() + " instead of 201");
+            }
+
         }
-         **/
+        catch (Exception ex){
+            throw new RuntimeException("Failed to send new Task event to roster");
+        }
     }
 }

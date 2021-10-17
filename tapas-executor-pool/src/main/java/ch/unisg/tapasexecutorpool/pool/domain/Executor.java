@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
 import java.util.UUID;
@@ -27,6 +28,7 @@ public class Executor {
     @Setter
     private ExecutorState executorState;
 
+    @JsonIgnore
     @Getter
     @Setter
     private Task assignedTask;

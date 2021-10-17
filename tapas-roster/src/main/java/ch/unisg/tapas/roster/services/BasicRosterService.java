@@ -36,7 +36,7 @@ public class BasicRosterService implements RosterService {
             // Send task to executor pool
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(executorPoolUrl+"/executorPool/newtask/"))
+                    .uri(URI.create(executorPoolUrl+"assignment/"))
                     .headers("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
