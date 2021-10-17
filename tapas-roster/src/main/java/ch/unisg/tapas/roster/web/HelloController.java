@@ -1,4 +1,4 @@
-package ch.unisg.tapas.example;
+package ch.unisg.tapas.roster.web;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.java.Log;
@@ -14,9 +14,6 @@ public class HelloController {
 
     @RequestMapping("/")
     String index() {
-
-        ExampleEnitity exampleEnitity = new ExampleEnitity("Foo", "Bar");
-        exampleEnitity.setAge(5);
 
         log.info("Hello Request");
         return "<html><body>" +
