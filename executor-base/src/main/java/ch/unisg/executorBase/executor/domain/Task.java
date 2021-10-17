@@ -1,11 +1,10 @@
 package ch.unisg.executorBase.executor.domain;
 
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 public class Task {
-    
+
     @Getter
     private String taskID;
 

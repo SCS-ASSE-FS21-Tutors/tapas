@@ -4,13 +4,6 @@ import ch.unisg.executorBase.executor.application.port.out.ExecutionFinishedEven
 import ch.unisg.executorBase.executor.application.port.out.GetAssignmentPort;
 import ch.unisg.executorBase.executor.application.port.out.NotifyExecutorPoolPort;
 
-import java.util.concurrent.TimeUnit;
-
-import javax.transaction.Transactional;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-
 import ch.unisg.executorBase.executor.adapter.out.web.ExecutionFinishedEventAdapter;
 import ch.unisg.executorBase.executor.adapter.out.web.GetAssignmentAdapter;
 import ch.unisg.executorBase.executor.adapter.out.web.NotifyExecutorPoolAdapter;
@@ -44,23 +37,19 @@ public abstract class ExecutorBase {
         this.ip = "localhost";
         this.port = 8084;
         this.executorType = executorType;
-    
+
         this.status = ExecutorStatus.STARTING_UP;
         if(!notifyExecutorPoolService.notifyExecutorPool(this.ip, this.port, this.executorType)) {
             System.exit(0);
         } else {
-            System.out.println(true);
             this.status = ExecutorStatus.IDLING;
             getAssignment();
         }
     }
 
-    // public static ExecutorBase getExecutor() {
-    //     return executor;
-    // }
-
     public void getAssignment() {
-        Task newTask = getAssignmentPort.getAssignment(this.getExecutorType());
+        Task newTask = getAssignmentPort.getAssignment(this.getExecutorType(), this.getIp(),
+            this.getPort());
         if (newTask != null) {
             this.executeTask(newTask);
         } else {
@@ -71,15 +60,16 @@ public abstract class ExecutorBase {
     private void executeTask(Task task) {
         System.out.println("Starting execution");
         this.status = ExecutorStatus.EXECUTING;
-        
+
         task.setResult(execution());
 
-        executionFinishedEventPort.publishExecutionFinishedEvent(new ExecutionFinishedEvent(task.getTaskID(), task.getResult(), "SUCCESS"));
+        executionFinishedEventPort.publishExecutionFinishedEvent(
+            new ExecutionFinishedEvent(task.getTaskID(), task.getResult(), "SUCCESS"));
 
         System.out.println("Finish execution");
         getAssignment();
     }
 
     protected abstract String execution();
-    
+
 }

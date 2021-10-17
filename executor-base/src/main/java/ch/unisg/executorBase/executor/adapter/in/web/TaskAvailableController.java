@@ -21,7 +21,7 @@ public class TaskAvailableController {
 
     @GetMapping(path = "/newtask/{taskType}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskType") String taskType) {
-        
+
         if (ExecutorType.contains(taskType.toUpperCase())) {
             TaskAvailableCommand command = new TaskAvailableCommand(
                 ExecutorType.valueOf(taskType.toUpperCase()));

@@ -4,5 +4,5 @@ import ch.unisg.executorBase.executor.domain.ExecutorType;
 import ch.unisg.executorBase.executor.domain.Task;
 
 public interface GetAssignmentPort {
-    Task getAssignment(ExecutorType executorType);
+    Task getAssignment(ExecutorType executorType, String ip, int port);
 }

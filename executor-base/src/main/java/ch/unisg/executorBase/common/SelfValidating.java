@@ -21,6 +21,7 @@ public class SelfValidating<T> {
      * instance.
      */
     protected void validateSelf() {
+        @SuppressWarnings("unchecked")
         Set<ConstraintViolation<T>> violations = validator.validate((T) this);
         if (!violations.isEmpty()) {
             throw new ConstraintViolationException(violations);
