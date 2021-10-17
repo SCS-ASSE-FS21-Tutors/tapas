@@ -31,7 +31,7 @@ services:
             dockerfile: "Dockerfile"
             target: development
         ports:
-            - "8083:8081"
+            - "8083:8083"
             - "5007:5005"
         volumes:
             - ./executor-pool/src:/opt/app/src
@@ -43,7 +43,7 @@ services:
             dockerfile: "Dockerfile"
             target: development
         ports:
-            - "8084:8081"
+            - "8084:8084"
             - "5008:5005"
         volumes:
             - ./executor1/src:/opt/app/src
