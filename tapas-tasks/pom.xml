@@ -15,6 +15,8 @@
 	<description>TAPAS Tasks</description>
 	<properties>
 		<java.version>11</java.version>
+		<sonar.organization>scs-asse-fs21-group1</sonar.organization>
+		<sonar.host.url>https://sonarcloud.io</sonar.host.url>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -58,6 +60,13 @@
 			<groupId>com.github.java-json-tools</groupId>
 			<artifactId>json-patch</artifactId>
 			<version>1.13</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<scope>runtime</scope>
+			<optional>true</optional>
 		</dependency>
 
     </dependencies>

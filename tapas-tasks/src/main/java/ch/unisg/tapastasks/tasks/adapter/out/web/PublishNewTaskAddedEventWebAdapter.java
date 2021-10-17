@@ -27,8 +27,8 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
 
         var values = new HashMap<String, String>() {{
-            put("taskname",event.taskName);
-            put("tasklist",event.taskListName);
+            put("taskID", event.taskId);
+            put("taskType", event.taskType);
         }};
 
         var objectMapper = new ObjectMapper();
@@ -41,11 +41,11 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/roster/newtask/"))
+                .uri(URI.create(server+"/task"))
+                .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
-        /** Needs the other service running
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException e) {
@@ -53,6 +53,5 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-         **/
     }
 }
