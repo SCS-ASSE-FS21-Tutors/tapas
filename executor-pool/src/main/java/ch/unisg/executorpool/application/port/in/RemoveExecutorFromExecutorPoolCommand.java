@@ -1,7 +1,7 @@
 package ch.unisg.executorpool.application.port.in;
 
 import ch.unisg.executorpool.domain.ExecutorClass;
-import ch.unisg.tapastasks.common.SelfValidating;
+import ch.unisg.common.SelfValidating;
 import ch.unisg.executorpool.domain.ExecutorClass.ExecutorIp;
 import ch.unisg.executorpool.domain.ExecutorClass.ExecutorPort;
 import lombok.Value;

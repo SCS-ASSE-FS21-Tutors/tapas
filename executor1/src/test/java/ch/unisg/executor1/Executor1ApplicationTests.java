@@ -1,10 +1,10 @@
-package ch.unisg.executor2;
+package ch.unisg.executor1;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class Executor2ApplicationTests {
+class Executor1ApplicationTests {
 
 	@Test
 	void contextLoads() {
