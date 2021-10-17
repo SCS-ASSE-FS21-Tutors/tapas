@@ -8,13 +8,32 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
 
+/**
+ * This class is used to process JSON Patch operations for tasks: given a
+ * <a href="http://jsonpatch.com/">JSON Patch</a> for updating the representational state of a task,
+ * this class provides methods for extracting various operations of interest for our domain (e.g.,
+ * changing the status of a task).
+ */
 public class TaskJsonPatchRepresentation {
+    public static final String MEDIA_TYPE = "application/json-patch+json";
+
     private final JsonNode patch;
 
+    /**
+     * Constructs the JSON Patch representation.
+     *
+     * @param patch a JSON Patch as JsonNode
+     */
     public TaskJsonPatchRepresentation(JsonNode patch) {
         this.patch = patch;
     }
 
+    /**
+     * Extracts the first task status replaced in this patch.
+     *
+     * @return the first task status changed in this patch or an empty {@link Optional} if none is
+     * found
+     */
     public Optional<Task.Status> extractFirstTaskStatusChange() {
         Optional<JsonNode> status = extractFirst(node ->
             isPatchReplaceOperation(node) && hasPath(node, "/taskStatus")
@@ -28,6 +47,12 @@ public class TaskJsonPatchRepresentation {
         return Optional.empty();
     }
 
+    /**
+     * Extracts the first service provider added or replaced in this patch.
+     *
+     * @return the first service provider changed in this patch or an empty {@link Optional} if none
+     * is found
+     */
     public Optional<Task.ServiceProvider> extractFirstServiceProviderChange() {
         Optional<JsonNode> serviceProvider = extractFirst(node ->
                 (isPatchReplaceOperation(node) || isPatchAddOperation(node))
@@ -38,6 +63,11 @@ public class TaskJsonPatchRepresentation {
             : Optional.of(new Task.ServiceProvider(serviceProvider.get().get("value").asText()));
     }
 
+    /**
+     * Extracts the first output data addition in this patch.
+     *
+     * @return the output data added in this patch or an empty {@link Optional} if none is found
+     */
     public Optional<Task.OutputData> extractFirstOutputDataAddition() {
         Optional<JsonNode> output = extractFirst(node ->
             isPatchAddOperation(node) && hasPath(node, "/outputData")

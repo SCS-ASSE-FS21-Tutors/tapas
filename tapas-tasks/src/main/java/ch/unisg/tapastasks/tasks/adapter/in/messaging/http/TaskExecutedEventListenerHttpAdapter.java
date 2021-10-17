@@ -9,6 +9,14 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;
 
+/**
+ * Listener for task executed events. A task executed event corresponds to a JSON Patch that attempts
+ * to change the task's status to EXECUTED and may also add/replace a service provider. This
+ * implementation does not impose that a task assigned event includes the service provider (i.e.,
+ * can be null).
+ *
+ * See also {@link TaskExecutedEvent}, {@link Task}, and {@link TaskEventHttpDispatcher}.
+ */
 public class TaskExecutedEventListenerHttpAdapter extends TaskEventListener {
 
     public Task handleTaskEvent(String taskId, JsonNode payload) {

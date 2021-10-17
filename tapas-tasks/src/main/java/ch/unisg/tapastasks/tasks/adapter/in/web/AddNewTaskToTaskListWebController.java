@@ -4,8 +4,9 @@ import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,15 +18,32 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.validation.ConstraintViolationException;
 import java.util.Optional;
 
+/**
+ * Controller that handles HTTP requests for creating new tasks. This controller implements the
+ * {@link AddNewTaskToTaskListUseCase} use case using the {@link AddNewTaskToTaskListCommand}.
+ *
+ * A new task is created via an HTTP POST request to the /tasks/ endpoint. The body of the request
+ * contains a JSON-based representation with the "application/task+json" media type defined for this
+ * project. This custom media type allows to capture the semantics of our JSON representations for
+ * tasks.
+ *
+ * If the request is successful, the controller returns an HTTP 201 Created status code and a
+ * representation of the created task with Content-Type "application/task+json". The HTTP response
+ * also include a Location header field that points to the URI of the created task.
+ */
 @RestController
 public class AddNewTaskToTaskListWebController {
     private final AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase;
+
+    // Used to retrieve properties from application.properties
+    @Autowired
+    private Environment environment;
 
     public AddNewTaskToTaskListWebController(AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase) {
         this.addNewTaskToTaskListUseCase = addNewTaskToTaskListUseCase;
     }
 
-    @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.TASK_MEDIA_TYPE})
+    @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
             Task.TaskName taskName = new Task.TaskName(payload.getTaskName());
@@ -49,7 +67,11 @@ public class AddNewTaskToTaskListWebController {
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
+            // Construct and advertise the URI of the newly created task; we retrieve the base URI
+            // from the application.properties file
+            responseHeaders.add(HttpHeaders.LOCATION, environment.getProperty("baseuri")
+                + "tasks/" + createdTask.getTaskId().getValue());
 
             return new ResponseEntity<>(TaskJsonRepresentation.serialize(createdTask), responseHeaders,
                 HttpStatus.CREATED);

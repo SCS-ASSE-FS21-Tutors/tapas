@@ -13,6 +13,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
+/**
+ * Controller that handles HTTP GET requests for retrieving tasks. This controller implements the
+ * {@link RetrieveTaskFromTaskListUseCase} use case using the {@link RetrieveTaskFromTaskListQuery}
+ * query.
+ */
 @RestController
 public class RetrieveTaskFromTaskListWebController {
     private final RetrieveTaskFromTaskListUseCase retrieveTaskFromTaskListUseCase;
@@ -21,6 +26,13 @@ public class RetrieveTaskFromTaskListWebController {
         this.retrieveTaskFromTaskListUseCase = retrieveTaskFromTaskListUseCase;
     }
 
+    /**
+     * Retrieves a representation of task. Returns HTTP 200 OK if the request is successful with a
+     * representation of the task using the Content-Type "applicatoin/task+json".
+     *
+     * @param taskId the local identifier of the requested task (extracted from the task's URI)
+     * @return a representation of the task if the task exists
+     */
     @GetMapping(path = "/tasks/{taskId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskId") String taskId) {
         RetrieveTaskFromTaskListQuery query = new RetrieveTaskFromTaskListQuery(new Task.TaskId(taskId));
@@ -37,7 +49,7 @@ public class RetrieveTaskFromTaskListWebController {
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
 
             return new ResponseEntity<>(taskRepresentation, responseHeaders, HttpStatus.OK);
         } catch (JsonProcessingException e) {
