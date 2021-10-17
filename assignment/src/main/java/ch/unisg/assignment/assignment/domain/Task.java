@@ -1,5 +1,6 @@
 package ch.unisg.assignment.assignment.domain;
 
+import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,7 +10,7 @@ public class Task {
     private String taskID;
 
     @Getter
-    private String taskType;
+    private ExecutorType taskType;
 
     @Getter
     @Setter
@@ -21,7 +22,14 @@ public class Task {
 
     public Task(String taskID, String taskType) {
         this.taskID = taskID;
+        this.taskType = new ExecutorType(taskType);
+    }
+
+    public Task(String taskID, ExecutorType taskType) {
+        this.taskID = taskID;
         this.taskType = taskType;
     }
+
+    public Task() {};
 
 }

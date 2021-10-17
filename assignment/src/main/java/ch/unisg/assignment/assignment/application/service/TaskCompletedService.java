@@ -8,7 +8,7 @@ import ch.unisg.assignment.assignment.application.port.in.TaskCompletedCommand;
 import ch.unisg.assignment.assignment.application.port.in.TaskCompletedUseCase;
 import ch.unisg.assignment.assignment.application.port.out.TaskCompletedEventPort;
 import ch.unisg.assignment.assignment.domain.Roster;
-import ch.unisg.assignment.assignment.domain.TaskCompletedEvent;
+import ch.unisg.assignment.assignment.domain.event.TaskCompletedEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

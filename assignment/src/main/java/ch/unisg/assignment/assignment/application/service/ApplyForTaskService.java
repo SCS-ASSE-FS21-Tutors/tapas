@@ -9,7 +9,7 @@ import ch.unisg.assignment.assignment.application.port.in.ApplyForTaskUseCase;
 import ch.unisg.assignment.assignment.application.port.out.TaskAssignedEventPort;
 import ch.unisg.assignment.assignment.domain.Roster;
 import ch.unisg.assignment.assignment.domain.Task;
-import ch.unisg.assignment.assignment.domain.TaskAssignedEvent;
+import ch.unisg.assignment.assignment.domain.event.TaskAssignedEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

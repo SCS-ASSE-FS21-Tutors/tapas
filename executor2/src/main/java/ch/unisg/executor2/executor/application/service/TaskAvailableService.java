@@ -1,5 +1,6 @@
 package ch.unisg.executor2.executor.application.service;
 
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.executor2.executor.domain.Executor;
@@ -16,6 +17,7 @@ import javax.transaction.Transactional;
 public class TaskAvailableService implements TaskAvailableUseCase {
 
     @Override
+    @Async
     public void newTaskAvailable(TaskAvailableCommand command) {
 
         Executor executor = Executor.getExecutor();

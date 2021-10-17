@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.assignment.assignment.application.port.out.TaskCompletedEventPort;
-import ch.unisg.assignment.assignment.domain.TaskCompletedEvent;
+import ch.unisg.assignment.assignment.domain.event.TaskCompletedEvent;
 
 @Component
 @Primary

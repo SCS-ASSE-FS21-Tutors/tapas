@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
+import ch.unisg.assignment.assignment.domain.valueobject.IP4Adress;
+import ch.unisg.assignment.assignment.domain.valueobject.Port;
+
 public class Roster {
 
     private static final Roster roster = new Roster();
@@ -19,25 +23,25 @@ public class Roster {
     private Roster() {}
 
     public void addTaskToQueue(Task task) {
-        if (queues.containsKey(task.getTaskType().toUpperCase())) {
-            queues.get(task.getTaskType().toUpperCase()).add(task);
+        if (queues.containsKey(task.getTaskType().getValue())) {
+            queues.get(task.getTaskType().getValue()).add(task);
         } else {
-            queues.put(task.getTaskType().toUpperCase(), new ArrayList<>(Arrays.asList(task)));
+            queues.put(task.getTaskType().getValue(), new ArrayList<>(Arrays.asList(task)));
         }
     }
 
-    public Task assignTaskToExecutor(String taskType, String executorIP, int executorPort) {
-        if (!queues.containsKey(taskType.toUpperCase())) {
+    public Task assignTaskToExecutor(ExecutorType taskType, IP4Adress executorIP, Port executorPort) {
+        if (!queues.containsKey(taskType.getValue())) {
             return null;
         }
-        if (queues.get(taskType.toUpperCase()).isEmpty()) {
+        if (queues.get(taskType.getValue()).isEmpty()) {
             return null;
         }
 
-        Task task = queues.get(taskType.toUpperCase()).remove(0);
+        Task task = queues.get(taskType.getValue()).remove(0);
 
-        rosterMap.put(task.getTaskID(), new RosterItem(task.getTaskID(), task.getTaskType(),
-            executorIP, executorPort));
+        rosterMap.put(task.getTaskID(), new RosterItem(task.getTaskID(),
+            task.getTaskType().getValue(), executorIP, executorPort));
 
         return task;
     }

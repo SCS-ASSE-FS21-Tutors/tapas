@@ -1,4 +1,4 @@
-package ch.unisg.assignment.assignment.domain;
+package ch.unisg.assignment.assignment.domain.event;
 
 public class TaskAssignedEvent {
     public String taskID;

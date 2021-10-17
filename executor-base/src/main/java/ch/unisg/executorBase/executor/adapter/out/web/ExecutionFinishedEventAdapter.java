@@ -5,13 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.json.JSONObject;
-
-import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ch.unisg.executorBase.executor.application.port.out.ExecutionFinishedEventPort;
 import ch.unisg.executorBase.executor.domain.ExecutionFinishedEvent;

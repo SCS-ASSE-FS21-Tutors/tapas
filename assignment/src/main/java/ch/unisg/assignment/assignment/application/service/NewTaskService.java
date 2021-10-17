@@ -10,9 +10,9 @@ import org.springframework.stereotype.Component;
 import ch.unisg.assignment.assignment.application.port.in.NewTaskCommand;
 import ch.unisg.assignment.assignment.application.port.in.NewTaskUseCase;
 import ch.unisg.assignment.assignment.application.port.out.NewTaskEventPort;
-import ch.unisg.assignment.assignment.domain.NewTaskEvent;
 import ch.unisg.assignment.assignment.domain.Roster;
 import ch.unisg.assignment.assignment.domain.Task;
+import ch.unisg.assignment.assignment.domain.event.NewTaskEvent;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -26,9 +26,9 @@ public class NewTaskService implements NewTaskUseCase {
     public boolean addNewTaskToQueue(NewTaskCommand command) {
 
         // TODO Get availableTaskTypes from  executor pool
-        List<String> availableTaskTypes = Arrays.asList("addition", "robot");
+        List<String> availableTaskTypes = Arrays.asList("ADDITION", "ROBOT");
 
-        if (!availableTaskTypes.contains(command.getTaskType())) {
+        if (!availableTaskTypes.contains(command.getTaskType().getValue())) {
             return false;
         }
 

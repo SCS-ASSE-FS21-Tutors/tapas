@@ -1,11 +1,11 @@
-package ch.unisg.assignment.assignment.domain;
+package ch.unisg.assignment.assignment.domain.event;
 
 public class TaskCompletedEvent {
-    public String taskID;
+    public final String taskID;
 
-    public String status;
+    public final String status;
 
-    public String result;
+    public final String result;
 
     public TaskCompletedEvent(String taskID, String status, String result) {
         this.taskID = taskID;
