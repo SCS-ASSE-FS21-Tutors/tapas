@@ -34,17 +34,17 @@ jobs:
       run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target
 
-    - name: Build App with Maven
-      run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./app/target/app-0.1.0.jar ./target
-
     - name: Build Roster with Maven
       run: mvn -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-roster/target/tapas-roster-0.0.1-SNAPSHOT.jar ./target
 
-    - name: Build with Maven
-      run: mvn -f tapas-executors/pom.xml --batch-mode --update-snapshots verify
-    - run: cp ./tapas-executors/target/tapas-executors-0.0.1-SNAPSHOT.jar ./target
+    - name: Build Digital-Executor with Maven
+      run: mvn -f tapas-executor-digital/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executor-digital/target/tapas-executor-digital-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build Cherrybot-Executor with Maven
+      run: mvn -f tapas-executor-cherrybot/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executor-cherrybot/target/tapas-executor-cherrybot-0.0.1-SNAPSHOT.jar ./target
 
     - run: cp docker-compose.yml ./target
     - name: Archive artifacts
