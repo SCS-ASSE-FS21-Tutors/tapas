@@ -1,5 +1,6 @@
 package ch.unisg.tapas.roster.web.integration;
 
+import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
@@ -31,9 +32,9 @@ public class NewTaskAddedTest {
     public void beforeEach() throws Exception {
 
         // Set up mocked executor-pool with Wiremock
-        stubFor(WireMock.post(urlEqualTo("/executorPool/newtask/"))
+        stubFor(WireMock.post(urlEqualTo("/assignment/"))
                 .willReturn(aResponse()
-                        .withStatus(200)));
+                        .withStatus(201)));
     }
 
 
@@ -41,21 +42,12 @@ public class NewTaskAddedTest {
     public void testAddNewTask() throws Exception {
 
         // ARRANGE
-        var event = new NewTaskAddedEvent("TaskName", "TaskListName");
-
-        // This is copied code from the task service
-        var values = new HashMap<String, String>() {{
-            put("taskname",event.taskName);
-            put("tasklist",event.taskListName);
-        }};
+        var task = new Task(
+                new Task.TaskName("Somename"),
+                new Task.TaskType("sometype"));
 
         var objectMapper = new ObjectMapper();
-        String requestBody = null;
-        try {
-            requestBody = objectMapper.writeValueAsString(values);
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String requestBody = objectMapper.writeValueAsString(task);
 
         // ACT
         mockMvc.perform(
@@ -65,7 +57,7 @@ public class NewTaskAddedTest {
                 .andExpect(status().isOk());
 
         // ASSERT
-        verify(postRequestedFor(urlEqualTo("/executorPool/newtask/"))
+        verify(postRequestedFor(urlEqualTo("/assignment/"))
                 .withHeader("Content-Type", equalTo("application/json")));
 
     }
