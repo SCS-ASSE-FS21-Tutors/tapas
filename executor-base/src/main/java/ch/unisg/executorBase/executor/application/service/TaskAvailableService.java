@@ -1,11 +1,9 @@
-package ch.unisg.executor2.executor.application.service;
+package ch.unisg.executorBase.executor.application.service;
 
 import org.springframework.stereotype.Component;
 
-import ch.unisg.executor2.executor.domain.Executor;
 import ch.unisg.executorBase.executor.application.port.in.TaskAvailableCommand;
 import ch.unisg.executorBase.executor.application.port.in.TaskAvailableUseCase;
-import ch.unisg.executorBase.executor.domain.ExecutorStatus;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
@@ -17,12 +15,6 @@ public class TaskAvailableService implements TaskAvailableUseCase {
 
     @Override
     public void newTaskAvailable(TaskAvailableCommand command) {
-
-        Executor executor = Executor.getExecutor();
-
-        if (executor.getExecutorType() == command.getTaskType() &&
-            executor.getStatus() == ExecutorStatus.IDLING) {
-            executor.getAssignment();
-        }
+      // Placeholder so spring can create a bean
     }
 }
