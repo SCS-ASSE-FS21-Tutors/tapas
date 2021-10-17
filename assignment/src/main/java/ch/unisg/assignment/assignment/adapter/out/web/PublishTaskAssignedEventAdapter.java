@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.json.JSONObject;
 import org.springframework.context.annotation.Primary;
@@ -18,6 +20,8 @@ import ch.unisg.assignment.assignment.domain.event.TaskAssignedEvent;
 public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
 
     String server = "http://127.0.0.1:8085";
+
+    Logger logger = Logger.getLogger(PublishTaskAssignedEventAdapter.class.getName());
 
     @Override
     public void publishTaskAssignedEvent(TaskAssignedEvent event) {
@@ -37,7 +41,7 @@ public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
             // Restore interrupted state...
             Thread.currentThread().interrupt();
         }
