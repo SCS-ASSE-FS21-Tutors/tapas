@@ -28,8 +28,11 @@ public class ExecutorPool {
         return executorPool;
     }
 
-    public Executor addNewExecutorWithNameAndType(Executor.ExecutorName name, Task.TaskType type) {
-        Executor newExecutor = Executor.createExecutorWithNameAndType(name, type);
+    public Executor addNewExecutorWithNameAndType(Executor.ExecutorName name,
+                                                  Executor.ExecutorServer server,
+                                                  Executor.ExecutorPort port,
+                                                  Task.TaskType type) {
+        Executor newExecutor = Executor.createExecutorWithNameAndType(name, server, port, type);
         poolOfExecutors.value.add(newExecutor);
         //This is a simple debug message to see that the task list is growing with each new request
         System.out.println("Number of executors: "+ poolOfExecutors.value.size());

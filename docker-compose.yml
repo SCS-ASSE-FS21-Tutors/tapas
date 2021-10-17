@@ -81,22 +81,8 @@ services:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-executor-digital.rule=Host(`tapas-executor-digital.${PUB_IP}.nip.io`)"
       - "traefik.http.routers.tapas-executor-digital.service=tapas-executor-digital"
-      - "traefik.http.services.tapas-executor-digital.loadbalancer.server.port=8085"
+      - "traefik.http.services.tapas-executor-digital.loadbalancer.server.port=8083"
       - "traefik.http.routers.tapas-executor-digital.tls=true"
       - "traefik.http.routers.tapas-executor-digital.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-executor-digital.tls.certresolver=le"
 
-  app:
-    image: openjdk
-    command: "java -jar /data/app-0.1.0.jar"
-    restart: unless-stopped
-    volumes:
-      - ./:/data/
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.app.rule=Host(`app.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.app.service=app"
-      - "traefik.http.services.app.loadbalancer.server.port=8080"
-      - "traefik.http.routers.app.tls=true"
-      - "traefik.http.routers.app.entryPoints=web,websecure"
-      - "traefik.http.routers.app.tls.certresolver=le"

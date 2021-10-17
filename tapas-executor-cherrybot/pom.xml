@@ -9,10 +9,10 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>ch.unisg</groupId>
-    <artifactId>tapas-executor-digital</artifactId>
+    <artifactId>tapas-executor-cherrybot</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>tapas-executor-digital</name>
-    <description>tapas-executor-digital</description>
+    <name>tapas-executor-cherrybot</name>
+    <description>tapas-executor-cherrybot</description>
     <properties>
         <java.version>11</java.version>
     </properties>

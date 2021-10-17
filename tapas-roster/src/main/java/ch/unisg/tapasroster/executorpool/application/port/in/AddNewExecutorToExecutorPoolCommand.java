@@ -15,10 +15,21 @@ public class AddNewExecutorToExecutorPoolCommand extends SelfValidating<AddNewEx
     Executor.ExecutorName executorName;
 
     @NotNull
+    Executor.ExecutorServer executorServer;
+
+    @NotNull
+    Executor.ExecutorPort executorPort;
+
+    @NotNull
     Task.TaskType taskType;
 
-    public AddNewExecutorToExecutorPoolCommand(Executor.ExecutorName executorName, Task.TaskType taskType) {
+    public AddNewExecutorToExecutorPoolCommand(Executor.ExecutorName executorName,
+                                               Executor.ExecutorServer executorServer,
+                                               Executor.ExecutorPort executorPort,
+                                               Task.TaskType taskType) {
         this.executorName = executorName;
+        this.executorServer = executorServer;
+        this.executorPort = executorPort;
         this.taskType = taskType;
         this.validateSelf();
     }

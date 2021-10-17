@@ -18,6 +18,8 @@ public class AddNewExecutorToExecutorPoolService implements AddNewExecutorToExec
     public Executor addNewExecutorToExecutorPool(AddNewExecutorToExecutorPoolCommand command) {
         ExecutorPool executorPool = ExecutorPool.getTapasExecutorPool();
 
-        return executorPool.addNewExecutorWithNameAndType(command.getExecutorName(), command.getTaskType());
+        return executorPool.addNewExecutorWithNameAndType(
+                command.getExecutorName(), command.getExecutorServer(),
+                command.getExecutorPort(),  command.getTaskType());
     }
 }
