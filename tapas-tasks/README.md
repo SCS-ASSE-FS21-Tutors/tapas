@@ -163,3 +163,7 @@ Date: Sun, 17 Oct 2021 21:32:25 GMT
   "outputData":"2"
 }
 ```
+
+Internally, this request is mapped to a
+[TaskExecutedEvent](src/main/java/ch/unisg/tapastasks/tasks/application/port/in/TaskExecutedEvent.java).
+The HTTP response returns a `200 OK` status code together with the updated representation of the task.
