@@ -24,7 +24,7 @@ public class CherrybotExecutorController {
     }
 
     @PostMapping("runtask")
-    public ResponseEntity<String> runTaskInDigitalExecutor(@RequestBody Task task) {
+    public ResponseEntity<String> runTaskInCherrybotExecutor(@RequestBody Task task) {
         try {
             cherrybotExecutorService.runTaskAsync(task);
 
