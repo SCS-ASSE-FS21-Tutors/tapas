@@ -24,7 +24,7 @@ public class AddNewExecutorIntegrationTest {
     private ExecutorRepository repository;
 
     @Test
-    public void AddNewExectorTest() throws Exception{
+    public void AddNewExecutorTest() throws Exception{
 
         // ARRANGE
         Executor executor = new Executor(

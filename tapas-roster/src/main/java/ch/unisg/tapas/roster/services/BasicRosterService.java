@@ -43,7 +43,7 @@ public class BasicRosterService implements RosterService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if(response.statusCode() != 200)
+            if(response.statusCode() != 201)
                 throw new RuntimeException("Executor pool responded with statusCode " + response.statusCode() + " but 201 is expected");
         }
         catch (Exception ex){

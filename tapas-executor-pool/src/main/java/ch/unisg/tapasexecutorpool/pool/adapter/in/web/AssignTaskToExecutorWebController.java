@@ -2,6 +2,7 @@ package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskUseCase;
+import ch.unisg.tapasexecutorpool.pool.application.service.NoExecutorFoundException;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import org.springframework.http.HttpHeaders;
@@ -38,6 +39,8 @@ public class AssignTaskToExecutorWebController {
             return new ResponseEntity<>(ExecutorMediaType.serialize(assignedExecutor), responseHeaders, HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        } catch (NoExecutorFoundException e){
+            throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, e.getMessage());
         }
     }
 }

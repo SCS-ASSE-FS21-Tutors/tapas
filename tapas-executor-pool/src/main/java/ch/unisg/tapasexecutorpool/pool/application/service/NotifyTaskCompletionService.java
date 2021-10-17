@@ -6,11 +6,14 @@ import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionU
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collection;
+import java.util.Optional;
 
+@Log
 @Component
 public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase {
 
@@ -21,23 +24,22 @@ public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase 
     public void notifyTaskCompletion(NotifyTaskCompletionCommand command) {
 
         // Search for executor with corresponding executorID
-        Executor executor = findByTaskId(repository.getExecutors(), command.getTaskId());
+        Optional<Executor> executorOptional = repository.findByTaskId(command.getTaskId());
 
+        if(executorOptional.isPresent()){
 
-        // Change state of executor
-        if(executor!=null) {
+            Executor executor = executorOptional.get();
             executor.setExecutorState(new Executor.ExecutorState(Executor.State.AVAILABLE));
             executor.setAssignedTask(null);
 
-            System.out.println(executor.getExecutorName().getValue() + " completed its task");
-        }else {
-            System.out.println("Executor for task completion of "+ command.getTaskId() + " not found");
+            repository.updateExecutor(executor);
+
+            System.out.println(executor.getExecutorId().getValue() + " completed its task");
+        }
+        else {
+            throw new TaskNotBeingProcessedException("Executor for task completion of "+ command.getTaskId() + " not found");
         }
 
-    }
-
-    public static Executor findByTaskId(Collection<Executor> executors, String taskId) {
-        return executors.stream().filter(executor -> taskId.equals(executor.getAssignedTask().getTaskId().getValue())).findFirst().orElse(null);
     }
 
 }

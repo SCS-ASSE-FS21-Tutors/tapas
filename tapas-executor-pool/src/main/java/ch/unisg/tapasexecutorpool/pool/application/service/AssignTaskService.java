@@ -2,9 +2,11 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskUseCase;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.SendTaskToExecutorPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
+import lombok.extern.java.Log;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ContentType;
@@ -18,12 +20,15 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-
+@Log
 @Component
 public class AssignTaskService implements AssignTaskUseCase {
 
     @Autowired
     public ExecutorRepository repository;
+
+    @Autowired
+    public SendTaskToExecutorPort executorPort;
 
     @Autowired
     public AssignTaskService() {
@@ -42,43 +47,21 @@ public class AssignTaskService implements AssignTaskUseCase {
                 assignedExecutor = executor;
             }
         }
-        System.out.println("Assigned Executor: " + assignedExecutor.getExecutorName().getValue());
-        if (assignedExecutor != null) {
-            // Calls the /start/ endpoint of the assigned executor
-            String endpoint = assignedExecutor.getExecutorUrl().getValue() + "/start/";
-            CloseableHttpClient httpclient = HttpClients.createDefault();
 
-            // Defines the request body
-            JSONArray values = new JSONArray();
-            values.put(1);
-            values.put(2);
+        // Thor error if not suitable executor is found
+        if(assignedExecutor == null)
+            throw new NoExecutorFoundException("No available executor found for TaskType=" + command.getTaskType().getValue());
 
-            JSONObject json = new JSONObject();
-            json.put("taskID", command.getTaskId().getValue());
-            json.put("values", values);
+        // Sending task to executor
+        log.info("Assigned Executor: " + assignedExecutor.getExecutorName().getValue());
+        executorPort.sendTaskToExecutor(command.getTaskId(), assignedExecutor);
 
-            StringEntity requestEntity = new StringEntity(
-                    json.toString(),
-                    ContentType.APPLICATION_JSON);
+        // Update executor
+        assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
+        assignedExecutor.setAssignedTask(new Task(command.getTaskId(), command.getTaskName(), command.getTaskType()));
+        repository.updateExecutor(assignedExecutor);
 
-            // Executes request
-            HttpPost postMethod = new HttpPost(endpoint);
-            postMethod.setEntity(requestEntity);
-            try {
-                HttpResponse rawResponse = httpclient.execute(postMethod);
-                // Check if request is accepted by executor
-                if (rawResponse.getStatusLine().getStatusCode() == 200) {
-                    // Set the state and assigned Task of the executor to occupied until notified of completion
-                    assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
-                    assignedExecutor.setAssignedTask(new Task(command.getTaskId(), command.getTaskName(), command.getTaskType()));
-                } else {
-                    throw new IOException("Executor did not accept request");
-                }
-            } catch (Exception e) {
-                System.out.println(e);
-            }
-
-        }
+        // Return assigned executpr
         return assignedExecutor;
     }
 }

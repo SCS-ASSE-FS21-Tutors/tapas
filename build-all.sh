@@ -1,10 +1,10 @@
 mkdir ./data
 
-mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
-mvn -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
-mvn -f tapas-executor-pool/pom.xml --batch-mode --update-snapshots verify
-mvn -f tapas-executor-1/pom.xml --batch-mode --update-snapshots verify
-mvn -f tapas-executor-2/pom.xml --batch-mode --update-snapshots verify
+mvn $1 -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
+mvn $1 -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
+mvn $1 -f tapas-executor-pool/pom.xml --batch-mode --update-snapshots verify
+mvn $1 -f tapas-executor-1/pom.xml --batch-mode --update-snapshots verify
+mvn $1 -f tapas-executor-2/pom.xml --batch-mode --update-snapshots verify
 
 cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./data  
 cp ./tapas-roster/target/tapas-roster-0.0.1-SNAPSHOT.jar ./data

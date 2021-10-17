@@ -4,9 +4,11 @@ import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecu
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+@Log
 @Component
 public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCase {
 
@@ -22,9 +24,10 @@ public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCas
     public Executor addNewExecutorToExecutorPool(AddNewExecutorToExecutorPoolCommand command) {
 
         Executor executor = new Executor(command.getExecutorName(), command.getExecutorType(), command.getExecutorUrl());
+
         repository.addExecutor(executor);
-        System.out.println("Executor added...");
-        System.out.println("Current Executor Repository: "+ repository.getExecutors());
+        log.info("Executor added: " + executor.toString());
+
         return executor;
     }
 
