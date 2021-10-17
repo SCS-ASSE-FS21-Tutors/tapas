@@ -2,6 +2,7 @@ package ch.unisg.tapastasks.tasks.adapter.out.web;
 
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
+import ch.unisg.tapastasks.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,22 +26,17 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
     private String server;
 
     @Override
-    public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
+    public void publishNewTaskAddedEvent(Task task) {
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
         try{
 
-            var values = new HashMap<String, String>() {{
-                put("taskname",event.taskName);
-                put("tasklist",event.taskListName);
-            }};
-
             var objectMapper = new ObjectMapper();
             String requestBody = null;
             try {
-                requestBody = objectMapper.writeValueAsString(values);
+                requestBody = objectMapper.writeValueAsString(task);
             } catch (JsonProcessingException e) {
-                e.printStackTrace();
+                throw new RuntimeException(e);
             }
 
             HttpClient client = HttpClient.newHttpClient();
@@ -52,8 +48,8 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            if(response.statusCode() != 201){
-                throw new RuntimeException("Roster responded with unexpected status code " + response.statusCode() + " instead of 201");
+            if(response.statusCode() != 200){
+                throw new RuntimeException("Roster responded with unexpected status code " + response.statusCode() + " instead of 200");
             }
 
         }

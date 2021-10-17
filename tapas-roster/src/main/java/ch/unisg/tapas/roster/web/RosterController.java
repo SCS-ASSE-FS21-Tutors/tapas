@@ -2,7 +2,6 @@ package ch.unisg.tapas.roster.web;
 
 import ch.unisg.tapas.roster.entities.Task;
 import ch.unisg.tapas.roster.services.RosterService;
-import ch.unisg.tapas.roster.web.dto.NewTaskDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,23 +22,16 @@ public class RosterController {
     }
 
     @PostMapping("/newtask/")
-    public void addNewTask(@RequestBody NewTaskDto newTaskDto){
+    public void addNewTask(@RequestBody Task newTask){
 
-        if(newTaskDto.getTaskListName() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskListName missing");
-        if(newTaskDto.getTaskName() == null)
+        if(newTask.getTaskId() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskId missing");
+        if(newTask.getTaskName()== null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskName missing");
+        if(newTask.getTaskType() == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskType missing");
 
-        // I don't know yet how we get the task info
-        // I guess we need to add that to the request, for now just invent a task
-
-        var task = new Task(
-                new Task.TaskName(newTaskDto.getTaskName()),
-                new Task.TaskType("SomeType"));
-
-        rosterService.sendTaskToExecutor(task);
-
-        return;
+        rosterService.rostTask(newTask);
     }
 
 }

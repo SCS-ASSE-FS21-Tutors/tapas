@@ -1,8 +1,6 @@
 package ch.unisg.tapas.roster.entities;
 
-import lombok.Data;
-import lombok.Getter;
-import lombok.Value;
+import lombok.*;
 
 import java.util.UUID;
 
@@ -39,21 +37,29 @@ public class Task {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskId {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskName {
         private String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskState {
         private State value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskType {
         private String value;
     }

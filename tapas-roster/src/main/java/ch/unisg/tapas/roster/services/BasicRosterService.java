@@ -3,6 +3,8 @@ package ch.unisg.tapas.roster.services;
 import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -18,7 +20,7 @@ public class BasicRosterService implements RosterService {
     }
 
     @Override
-    public void sendTaskToExecutor(Task newTask){
+    public void rostTask(Task newTask){
 
         if(true) // Dummy Implementation
             sendTaskToExecutorPool(newTask);
@@ -43,6 +45,8 @@ public class BasicRosterService implements RosterService {
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
+            if(response.statusCode() == 412)
+                throw new ResponseStatusException(HttpStatus.PRECONDITION_FAILED, "Executor Pool responded with status=412");
             if(response.statusCode() != 201)
                 throw new RuntimeException("Executor pool responded with statusCode " + response.statusCode() + " but 201 is expected");
         }
