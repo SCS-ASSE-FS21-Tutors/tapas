@@ -22,7 +22,7 @@ public class TaskCompletedController {
     @PostMapping(path = "/task/completed", consumes = {"application/json"})
     public ResponseEntity<Void> addNewTaskTaskToTaskList(@RequestBody Task task) {
 
-        TaskCompletedCommand command = new TaskCompletedCommand(task.getTaskID(), task.getTaskType(),
+        TaskCompletedCommand command = new TaskCompletedCommand(task.getTaskID(),
             task.getStatus(), task.getResult());
 
         taskCompletedUseCase.taskCompleted(command);

@@ -18,6 +18,9 @@ public class DeleteTaskService implements DeleteTaskUseCase {
 
     @Override
     public Optional<Task> deleteTask(DeleteTaskCommand command){
+
+        // TODO check with assignment service if we can delte
+
         TaskList taskList = TaskList.getTapasTaskList();
         return taskList.deleteTaskById(command.getTaskId());
 

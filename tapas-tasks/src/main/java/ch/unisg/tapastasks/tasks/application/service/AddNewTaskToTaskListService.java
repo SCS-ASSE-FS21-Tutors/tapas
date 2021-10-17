@@ -30,6 +30,7 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
         //the core and then the integration event in the application layer.
         if (newTask != null) {
             NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(newTask.getTaskName().getValue(),
+            taskList.getTaskListName().getValue(), newTask.getTaskId().getValue(), newTask.getTaskType().getValue());
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
 

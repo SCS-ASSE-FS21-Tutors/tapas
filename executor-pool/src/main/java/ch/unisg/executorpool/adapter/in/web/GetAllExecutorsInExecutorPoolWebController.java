@@ -2,7 +2,6 @@ package ch.unisg.executorpool.adapter.in.web;
 
 import ch.unisg.executorpool.application.port.in.GetAllExecutorsInExecutorPoolUseCase;
 import ch.unisg.executorpool.domain.ExecutorClass;
-import ch.unisg.tapastasks.tasks.adapter.in.web.TaskMediaType;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

@@ -23,6 +23,7 @@ public class CompleteTaskWebController {
 
     @PostMapping(path = "/tasks/completeTask", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
     public ResponseEntity<String> completeTask (@RequestBody Task task){
+
         try {
             CompleteTaskCommand command = new CompleteTaskCommand(
                 task.getTaskId(), task.getTaskResult()

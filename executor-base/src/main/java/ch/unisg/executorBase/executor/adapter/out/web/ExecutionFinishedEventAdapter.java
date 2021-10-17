@@ -30,9 +30,9 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/task/"+event.getTaskID()))
+                .uri(URI.create(server+"/task/completed"))
                 .header("Content-Type", "application/json")
-                .PUT(HttpRequest.BodyPublishers.ofString(body))
+                .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
         try {

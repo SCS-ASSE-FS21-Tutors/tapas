@@ -23,10 +23,15 @@ final public class ExecutorMediaType {
         String serializedList = "[ \n";
 
         for (ExecutorClass executor: listOfExecutors) {
-            serializedList += serialize(executor) + ",\n";
+            serializedList += serialize(executor) + "\n";
         }
 
-        return serializedList + "\n ]";
+        // return serializedList + "\n ]";
+        JSONArray jsonArray = new JSONArray();
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("executorIp", "localhost");
+        jsonArray.put(jsonObject);
+        return jsonArray.toString();
     }
 
     private ExecutorMediaType() { }

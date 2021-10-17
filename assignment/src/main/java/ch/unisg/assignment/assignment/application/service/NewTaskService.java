@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import ch.unisg.assignment.assignment.application.port.in.NewTaskCommand;
 import ch.unisg.assignment.assignment.application.port.in.NewTaskUseCase;
+import ch.unisg.assignment.assignment.application.port.out.GetAllExecutorInExecutorPoolByTypePort;
 import ch.unisg.assignment.assignment.application.port.out.NewTaskEventPort;
 import ch.unisg.assignment.assignment.domain.Roster;
 import ch.unisg.assignment.assignment.domain.Task;
@@ -21,14 +22,13 @@ import lombok.RequiredArgsConstructor;
 public class NewTaskService implements NewTaskUseCase {
 
     private final NewTaskEventPort newTaskEventPort;
+    private final GetAllExecutorInExecutorPoolByTypePort getAllExecutorInExecutorPoolByTypePort;
 
     @Override
     public boolean addNewTaskToQueue(NewTaskCommand command) {
 
         // TODO Get availableTaskTypes from  executor pool
-        List<String> availableTaskTypes = Arrays.asList("ADDITION", "ROBOT");
-
-        if (!availableTaskTypes.contains(command.getTaskType().getValue())) {
+        if (!getAllExecutorInExecutorPoolByTypePort.doesExecutorTypeExist(command.getTaskType())) {
             return false;
         }
 

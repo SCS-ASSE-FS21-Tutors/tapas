@@ -14,7 +14,7 @@ import ch.unisg.executorBase.executor.domain.ExecutorBase;
 import ch.unisg.executorBase.executor.domain.ExecutorType;
 
 public class Executor extends ExecutorBase {
-    
+
     private static final Executor executor = new Executor(ExecutorType.ROBOT);
     private final UserToRobotPort userToRobotPort = new UserToRobotAdapter();
     private final InstructionToRobotPort instructionToRobotPort = new InstructionToRobotAdapter();
@@ -31,9 +31,21 @@ public class Executor extends ExecutorBase {
     @Override
     protected
     String execution() {
-        
+
         String key = userToRobotPort.userToRobot();
+        try {
+            TimeUnit.MILLISECONDS.sleep(1500);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         boolean result1 = instructionToRobotPort.instructionToRobot(key);
+        try {
+            TimeUnit.MILLISECONDS.sleep(10000);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         deleteUserFromRobotPort.deleteUserFromRobot(key);
 
         return Boolean.toString(result1);

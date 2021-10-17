@@ -18,7 +18,8 @@ import ch.unisg.assignment.assignment.domain.event.NewTaskEvent;
 @Primary
 public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
-    String server = "http://127.0.0.1:8085";
+    String server = "http://127.0.0.1:8084";
+    String server2 = "http://127.0.0.1:8085";
 
     Logger logger = Logger.getLogger(PublishNewTaskEventAdapter.class.getName());
 
@@ -28,6 +29,21 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(server + "/newtask/" + event.taskType.getValue()))
+                .GET()
+                .build();
+
+
+        try {
+            client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+            // Restore interrupted state...
+            Thread.currentThread().interrupt();
+        }
+
+        HttpClient client2 = HttpClient.newHttpClient();
+        HttpRequest request2 = HttpRequest.newBuilder()
+                .uri(URI.create(server2 + "/newtask/" + event.taskType.getValue()))
                 .GET()
                 .build();
 

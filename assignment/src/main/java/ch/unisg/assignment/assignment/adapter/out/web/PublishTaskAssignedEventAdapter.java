@@ -19,7 +19,7 @@ import ch.unisg.assignment.assignment.domain.event.TaskAssignedEvent;
 @Primary
 public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
 
-    String server = "http://127.0.0.1:8085";
+    String server = "http://127.0.0.1:8081";
 
     Logger logger = Logger.getLogger(PublishTaskAssignedEventAdapter.class.getName());
 
@@ -32,7 +32,7 @@ public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/tasks/completeTask"))
+                .uri(URI.create(server + "/tasks/assignTask"))
                 .header("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();

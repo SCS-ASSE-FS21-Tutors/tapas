@@ -1,5 +1,7 @@
 package ch.unisg.executor1.executor.adapter.in.web;
 
+import java.util.concurrent.CompletableFuture;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ public class TaskAvailableController {
         if (ExecutorType.contains(taskType.toUpperCase())) {
             TaskAvailableCommand command = new TaskAvailableCommand(
                 ExecutorType.valueOf(taskType.toUpperCase()));
-            taskAvailableUseCase.newTaskAvailable(command);
+                CompletableFuture.runAsync(() -> taskAvailableUseCase.newTaskAvailable(command));
         }
 
         // Add the content type as a response header

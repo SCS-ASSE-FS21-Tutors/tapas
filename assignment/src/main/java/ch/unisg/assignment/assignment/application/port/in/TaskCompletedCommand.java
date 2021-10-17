@@ -2,7 +2,6 @@ package ch.unisg.assignment.assignment.application.port.in;
 
 import javax.validation.constraints.NotNull;
 
-import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
 import ch.unisg.assignment.common.SelfValidating;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -15,17 +14,13 @@ public class TaskCompletedCommand extends SelfValidating<TaskCompletedCommand>{
     private final String taskID;
 
     @NotNull
-    private final ExecutorType taskType;
-
-    @NotNull
     private final String taskStatus;
 
     @NotNull
     private final String taskResult;
 
-    public TaskCompletedCommand(String taskID, ExecutorType taskType, String taskStatus, String taskResult) {
+    public TaskCompletedCommand(String taskID, String taskStatus, String taskResult) {
         this.taskID = taskID;
-        this.taskType = taskType;
         this.taskStatus = taskStatus;
         this.taskResult = taskResult;
         this.validateSelf();

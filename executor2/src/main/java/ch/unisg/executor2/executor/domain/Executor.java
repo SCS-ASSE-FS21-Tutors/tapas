@@ -23,7 +23,7 @@ public class Executor extends ExecutorBase {
         int a = 20;
         int b = 20;
         try {
-            TimeUnit.SECONDS.sleep(10);
+            TimeUnit.SECONDS.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
