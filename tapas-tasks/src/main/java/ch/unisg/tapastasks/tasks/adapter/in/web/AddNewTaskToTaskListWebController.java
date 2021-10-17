@@ -4,6 +4,8 @@ import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -51,6 +53,8 @@ public class AddNewTaskToTaskListWebController {
 
             return new ResponseEntity<>(TaskJsonRepresentation.serialize(createdTask), responseHeaders,
                 HttpStatus.CREATED);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

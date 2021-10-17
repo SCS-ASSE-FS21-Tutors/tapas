@@ -1,9 +1,11 @@
 package ch.unisg.tapastasks.tasks.adapter.in.formats;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.json.JSONObject;
 
 /**
  * TODO Andrei: add comments
@@ -56,11 +58,13 @@ final public class TaskJsonRepresentation {
         this.inputData = (task.getInputData() == null) ? null : task.getInputData().getValue();
         this.outputData = (task.getOutputData() == null) ? null : task.getOutputData().getValue();
     }
-
-    public static String serialize(Task task) {
+    
+    public static String serialize(Task task) throws JsonProcessingException {
         TaskJsonRepresentation representation = new TaskJsonRepresentation(task);
-        JSONObject payload = new JSONObject(representation);
 
-        return payload.toString();
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        return mapper.writeValueAsString(representation);
     }
 }

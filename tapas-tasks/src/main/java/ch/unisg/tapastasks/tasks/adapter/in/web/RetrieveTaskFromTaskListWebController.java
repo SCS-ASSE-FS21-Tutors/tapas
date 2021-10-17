@@ -4,6 +4,7 @@ import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -31,11 +32,16 @@ public class RetrieveTaskFromTaskListWebController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
 
-        // Add the content type as a response header
-        HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
+        try {
+            String taskRepresentation = TaskJsonRepresentation.serialize(updatedTaskOpt.get());
 
-        return new ResponseEntity<>(TaskJsonRepresentation.serialize(updatedTaskOpt.get()), responseHeaders,
-                HttpStatus.OK);
+            // Add the content type as a response header
+            HttpHeaders responseHeaders = new HttpHeaders();
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.TASK_MEDIA_TYPE);
+
+            return new ResponseEntity<>(taskRepresentation, responseHeaders, HttpStatus.OK);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }
