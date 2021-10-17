@@ -23,6 +23,8 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var robot = new CherryBot();
         robot.postOperator();
         robot.putTcp();
+        robot.postInitialize();
+        robot.deleteOperator();
 
         return task;
     }

@@ -3,6 +3,7 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
+import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import ch.unisg.tapasexecutorpool.pool.domain.ForwardTaskToExecutorEvent;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import lombok.RequiredArgsConstructor;
@@ -25,9 +26,15 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         System.out.println(command.getTask().getTaskType().getValue());
         System.out.println(command.getTask().getTaskPayload().getValue());
 
-        var event = new ForwardTaskToExecutorEvent(task);
-        forwardTaskToExecutorEventPort.forwardTaskToPoolEvent(event);
+        var pool = ExecutorPool.getTapasExecutorPool();
 
-        return command.getTask();
+        var executor = pool.retrieveExecutorByTaskType(task.getTaskType());
+
+        if (executor.isPresent()) {
+            var event = new ForwardTaskToExecutorEvent(task, executor.get());
+            forwardTaskToExecutorEventPort.forwardTaskToPoolEvent(event);
+        }
+
+        return task;
     }
 }

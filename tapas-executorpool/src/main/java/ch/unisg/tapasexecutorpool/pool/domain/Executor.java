@@ -20,18 +20,22 @@ public class Executor {
     private final ExecutorType executorType;
 
     @Getter
+    private final ExecutorAddress executorAddress;
+
+    @Getter
     private ExecutorState executorState;
 
-    public Executor(ExecutorName executorName, ExecutorType executorType) {
+    public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorAddress executorAddress) {
         this.executorName = executorName;
         this.executorType = executorType;
+        this.executorAddress = executorAddress;
         this.executorState = new ExecutorState(State.IDLE);
         this.executorId = new ExecutorId(UUID.randomUUID().toString());
     }
 
-    protected static Executor createExecutorWithNameAndType(ExecutorName name, ExecutorType type) {
+    protected static Executor createExecutor(ExecutorName name, ExecutorType type, ExecutorAddress address) {
         System.out.println("New Executor: " + name.getValue() + " " + type.getValue());
-        return new Executor(name,type);
+        return new Executor(name, type, address);
     }
 
     @Value
@@ -51,6 +55,11 @@ public class Executor {
 
     @Value
     public static class ExecutorType {
+        private String value;
+    }
+
+    @Value
+    public static class ExecutorAddress {
         private String value;
     }
 }

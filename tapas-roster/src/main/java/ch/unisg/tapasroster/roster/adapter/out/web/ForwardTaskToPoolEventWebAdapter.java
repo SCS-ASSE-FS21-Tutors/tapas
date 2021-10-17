@@ -17,14 +17,14 @@ import java.net.http.HttpResponse;
 @Primary
 public class ForwardTaskToPoolEventWebAdapter implements ExecuteTaskOnPoolEventPort {
 
-    String server = "http://127.0.0.1:8083";
+    public static final String EXECUTOR_POOL_SERVICE_API = "https://tapas-executorpool.86-119-35-199.nip.io/executor-pool/execute-task/";
 
     @Override
     public void forwardTaskToPoolEvent(ForwardTaskToPoolEvent event) {
         var payload = TaskMediaType.serialize(event.task);
         var client = HttpClient.newHttpClient();
         var request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/executor-pool/execute-task/"))
+                .uri(URI.create(EXECUTOR_POOL_SERVICE_API))
                 .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(payload))
                 .build();

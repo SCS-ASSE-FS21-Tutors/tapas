@@ -17,35 +17,33 @@ public class CherryBot {
 
     private String operator_token = "";
 
-    public CherryBot() {
-
-    }
+    public CherryBot() { }
 
     public boolean postOperator() {
         var json = "{\n" +
                 "  \"name\": \"" + OPERATOR_NAME + "\",\n" +
                 "  \"email\": \"" + OPERATOR_EMAIL + "\"" +
                 "}";
-        var response = performHttpOperationWithJsonPayload("operator", "post", json);
+        var response = sendRestRequest("operator", "post", json);
 
-        if (response != null && response.statusCode() == 200) {
+        var ok = checkResponseStatusCode(response);
+        if (ok) {
             var locationSplit = response.headers().map().get("location").get(0).split("/");
             operator_token = locationSplit[locationSplit.length - 1];
             System.out.println("Token: " + operator_token);
-            System.out.println("Operator successfully created");
-            return true;
         }
 
-        System.out.println("Operator registration failed");
-        return false;
+        return ok;
     }
 
     public boolean deleteOperator() {
-        return false;
+        var response = sendRestRequest("operator/" + operator_token, "delete", null);
+        return checkResponseStatusCode(response);
     }
 
     public boolean postInitialize() {
-        return false;
+        var response = sendRestRequest("initialize", "put", "");
+        return checkResponseStatusCode(response);
     }
 
     public boolean putTcp() {
@@ -64,27 +62,35 @@ public class CherryBot {
                 "  },\n" +
                 "  \"speed\": 50\n" +
                 "}";
-        var response = performHttpOperationWithJsonPayload("tcp/target", "put", json);
-
-        if (response != null && response.statusCode() == 200) {
-            System.out.println("TCP command successfully sent");
-            return true;
-        }
-
-        System.out.println("TCP command failed");
-        return false;
+        var response = sendRestRequest("tcp/target", "put", json);
+        return checkResponseStatusCode(response);
     }
 
-    public HttpResponse<String> performHttpOperationWithJsonPayload(String path, String operation, String payload) {
+    private boolean checkResponseStatusCode(HttpResponse<String> response) {
+        var ok = response != null && response.statusCode() >= 200 && response.statusCode() < 300;
+
+        if (ok) {
+            System.out.println("REST Operation successful");
+        } else {
+            System.out.println("REST Operation failed");
+        }
+
+        return ok;
+    }
+
+    private HttpResponse<String> sendRestRequest(String path, String operation, String payload) {
         var client = HttpClient.newHttpClient();
         var requestBuilder = HttpRequest.newBuilder()
-                .uri(URI.create(ROBOT_API + path))
-                .setHeader(HttpHeaders.CONTENT_TYPE, "application/json");
+                .uri(URI.create(ROBOT_API + path));
 
         if (operation.equals("post")) {
-            requestBuilder.POST(HttpRequest.BodyPublishers.ofString(payload));
+            requestBuilder.POST(HttpRequest.BodyPublishers.ofString(payload))
+                    .setHeader(HttpHeaders.CONTENT_TYPE, "application/json");;
         } else if (operation.equals("put")) {
-            requestBuilder.PUT(HttpRequest.BodyPublishers.ofString(payload));
+            requestBuilder.PUT(HttpRequest.BodyPublishers.ofString(payload))
+                    .setHeader(HttpHeaders.CONTENT_TYPE, "application/json");;
+        } else if (operation.equals(("delete"))) {
+            requestBuilder.DELETE();
         }
 
         if (!operator_token.isEmpty()) {
@@ -100,13 +106,9 @@ public class CherryBot {
 
             System.out.println("Response Status Code: " + response.statusCode());
             System.out.println("Response Body: " + response.body());
-        } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
-        }
 
-        try {
             Thread.sleep(1000);
-        } catch (InterruptedException e) {
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
 

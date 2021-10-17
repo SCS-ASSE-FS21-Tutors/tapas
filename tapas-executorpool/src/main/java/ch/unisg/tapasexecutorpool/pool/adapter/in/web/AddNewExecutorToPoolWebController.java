@@ -25,7 +25,9 @@ public class AddNewExecutorToPoolWebController {
     public ResponseEntity<String> addNewExecutorToPool(@RequestBody Executor executor) {
         try {
             AddNewExecutorToPoolCommand command = new AddNewExecutorToPoolCommand(
-                    executor.getExecutorName(), executor.getExecutorType()
+                    executor.getExecutorName(),
+                    executor.getExecutorType(),
+                    executor.getExecutorAddress()
             );
 
             Executor newExecutor = addNewExecutorToPoolUseCase.addNewExecutorToPool(command);

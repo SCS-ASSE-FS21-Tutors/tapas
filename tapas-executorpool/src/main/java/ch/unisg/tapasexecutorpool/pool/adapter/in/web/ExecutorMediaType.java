@@ -14,6 +14,7 @@ final public class ExecutorMediaType {
         payload.put("executorName", executor.getExecutorName().getValue());
         payload.put("executorType", executor.getExecutorType().getValue());
         payload.put("executorState", executor.getExecutorState().getValue());
+        payload.put("executorAddress", executor.getExecutorAddress().getValue());
         payload.put("executorPoolName", ExecutorPool.getTapasExecutorPool().getExecutorPoolName().getValue());
 
         return payload.toString();

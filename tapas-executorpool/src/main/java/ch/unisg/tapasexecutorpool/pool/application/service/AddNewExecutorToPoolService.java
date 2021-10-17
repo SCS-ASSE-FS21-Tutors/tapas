@@ -20,7 +20,7 @@ public class AddNewExecutorToPoolService implements AddNewExecutorToPoolUseCase 
 
     public Executor addNewExecutorToPool(AddNewExecutorToPoolCommand command) {
         ExecutorPool executorPool = ExecutorPool.getTapasExecutorPool();
-        Executor newExecutor = executorPool.addNewExecutorWithNameAndType(command.getExecutorName(), command.getExecutorType());
+        Executor newExecutor = executorPool.addNewExecutor(command.getExecutorName(), command.getExecutorType(), command.getExecutorAddress());
 
         if (newExecutor != null) {
             NewExecutorAddedEvent newExecutorAdded = new NewExecutorAddedEvent(newExecutor.getExecutorName().getValue(),
