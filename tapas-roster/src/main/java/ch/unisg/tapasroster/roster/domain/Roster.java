@@ -49,7 +49,7 @@ public class Roster {
 
         taskAssignment.value.put(task.getTaskId(), executor);
 
-        return new TaskAssignmentReply(executor.getExecutorName().getValue(), "internal");
+        return new TaskAssignmentReply(executor, task, "internal");
     }
 
     public Optional<TaskAssignmentReply> assignTask(Task task) {
