@@ -26,7 +26,7 @@ public class CalculatorController {
             CalculationThread calculationThread = new CalculationThread(calculation);
             calculationThread.start();
 
-            return new ResponseEntity<>("Task Started", responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>("Task Started", responseHeaders, HttpStatus.OK);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
