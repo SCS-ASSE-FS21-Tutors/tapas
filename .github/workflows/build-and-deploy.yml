@@ -48,6 +48,10 @@ jobs:
       run: mvn -f tapas-executorrobot/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-executorrobot/target/tapas-executorrobot-0.0.1-SNAPSHOT.jar ./target
 
+    - name: Build TAPAS Auction House Service with Maven
+      run: mvn -f tapas-auction-house/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-auction-house/target/tapas-auction-house-0.0.1-SNAPSHOT.jar ./target
+
     - run: cp docker-compose.yml ./target
     - name: Archive artifacts
       uses: actions/upload-artifact@v1
