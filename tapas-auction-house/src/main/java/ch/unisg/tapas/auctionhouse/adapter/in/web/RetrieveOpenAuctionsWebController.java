@@ -53,10 +53,6 @@ public class RetrieveOpenAuctionsWebController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");
 
-        // TODO before providing to students: remove hub links
-        responseHeaders.add(HttpHeaders.LINK, "<https://pubsubhubbub.appspot.com/>; rel=\"hub\"");
-        responseHeaders.add(HttpHeaders.LINK, "<http://example.org/auctions/>; rel=\"self\"");
-
         return new ResponseEntity<>(array.toString(), responseHeaders, HttpStatus.OK);
     }
 }

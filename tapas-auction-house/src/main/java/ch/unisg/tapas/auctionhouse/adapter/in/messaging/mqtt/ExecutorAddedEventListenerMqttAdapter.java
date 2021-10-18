@@ -7,6 +7,8 @@ import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
 /**
@@ -15,6 +17,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
  * This class is only provided as an example to help you bootstrap the project.
  */
 public class ExecutorAddedEventListenerMqttAdapter extends AuctionEventMqttListener {
+    private static final Logger LOGGER = LogManager.getLogger(ExecutorAddedEventListenerMqttAdapter.class);
 
     @Override
     public boolean handleEvent(MqttMessage message) {
@@ -36,8 +39,7 @@ public class ExecutorAddedEventListenerMqttAdapter extends AuctionEventMqttListe
             ExecutorAddedHandler newExecutorHandler = new ExecutorAddedHandler();
             newExecutorHandler.handleNewExecutorEvent(executorAddedEvent);
         } catch (JsonProcessingException | NullPointerException e) {
-            // TODO: refactor logging
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
             return false;
         }
 

@@ -11,10 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/*
-    THIS CLASS WILL BE PROVIDED ONLY AS A TEMPLATE; POINT OUT THE API NEEDS TO BE DEFINED
-*/
-
+/**
+ * Template for receiving an executor added event via HTTP
+ */
 @RestController
 public class ExecutorAddedEventListenerHttpAdapter {
 
