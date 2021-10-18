@@ -31,7 +31,7 @@ services:
     command: "java -jar /data/tapas-tasks-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
-      - ./data:/data/
+      - ./:/data/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-tasks.rule=Host(`tapas-tasks.${PUB_IP}.nip.io`)"
@@ -48,7 +48,7 @@ services:
     command: "java -jar /data/tapas-roster-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
-      - ./data:/data/
+      - ./:/data/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-roster.rule=Host(`tapas-roster.${PUB_IP}.nip.io`)"
@@ -65,7 +65,7 @@ services:
     command: "java -jar /data/tapas-executor-pool-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
-      - ./data:/data/
+      - ./:/data/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-executor-pool.rule=Host(`tapas-executor-pool.${PUB_IP}.nip.io`)"
@@ -97,7 +97,7 @@ tapas-auction-house:
     command: "java -jar /data/tapas-executor-1-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
-      - ./data:/data/
+      - ./:/data/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-executor-1.rule=Host(`tapas-executor-1.${PUB_IP}.nip.io`)"
@@ -114,7 +114,7 @@ tapas-auction-house:
     command: "java -jar /data/tapas-executor-2-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
-      - ./data:/data/
+      - ./:/data/
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.tapas-executor-2.rule=Host(`tapas-executor-2.${PUB_IP}.nip.io`)"
