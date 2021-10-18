@@ -3,15 +3,12 @@ package ch.unisg.tapastasks;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.util.Collections;
-
 @SpringBootApplication
 public class TapasTasksApplication {
 
 	public static void main(String[] args) {
-
-        SpringApplication tapasTasksApp = new SpringApplication(TapasTasksApplication.class);
-        tapasTasksApp.run(args);
+		SpringApplication tapasTasksApp = new SpringApplication(TapasTasksApplication.class);
+		tapasTasksApp.run(args);
 	}
 
 }
