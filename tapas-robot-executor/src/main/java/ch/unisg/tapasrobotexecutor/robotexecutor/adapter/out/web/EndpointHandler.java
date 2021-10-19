@@ -1,4 +1,4 @@
-package ch.unisg.tapasrobotexecutor.tasks.adapter.out.web;
+package ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web;
 
 public class EndpointHandler {
     public static final String server = "https://api.interactions.ics.unisg.ch/cherrybot";

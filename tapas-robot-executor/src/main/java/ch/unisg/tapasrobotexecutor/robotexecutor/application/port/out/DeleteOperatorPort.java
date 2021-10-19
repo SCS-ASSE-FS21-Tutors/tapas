@@ -1,4 +1,4 @@
-package ch.unisg.tapasrobotexecutor.tasks.application.port.out;
+package ch.unisg.tapasrobotexecutor.robotexecutor.application.port.out;
 
 public interface DeleteOperatorPort {
     void deleteOperator(String authKey);

@@ -1,9 +1,9 @@
-package ch.unisg.tapasrobotexecutor.tasks.domain;
+package ch.unisg.tapasrobotexecutor.robotexecutor.adapter.in.web;
 
-import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.DeleteOperatorWebAdapter;
-import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.InitializeRobotPositionWebAdapter;
-import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.MoveBallOutOfSightWebAdapter;
-import ch.unisg.tapasrobotexecutor.tasks.adapter.out.web.RegisterNewOperatorWebAdapter;
+import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.DeleteOperatorWebAdapter;
+import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.InitializeRobotPositionWebAdapter;
+import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.MoveBallOutOfSightWebAdapter;
+import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.RegisterNewOperatorWebAdapter;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit;
 
 
 @RestController
-public class MoveRobotController {
+public class MoveRobotWebController {
 
     private static final Integer waitTimeBetweenRequests = 1;
 

@@ -1,6 +1,6 @@
-package ch.unisg.tapasrobotexecutor.tasks.adapter.out.web;
+package ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web;
 
-import ch.unisg.tapasrobotexecutor.tasks.application.port.out.InitializeRobotPositionPort;
+import ch.unisg.tapasrobotexecutor.robotexecutor.application.port.out.InitializeRobotPositionPort;
 
 import java.io.IOException;
 import java.net.URI;
