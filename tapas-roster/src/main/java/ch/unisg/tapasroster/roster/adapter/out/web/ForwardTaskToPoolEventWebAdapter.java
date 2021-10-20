@@ -1,6 +1,7 @@
 package ch.unisg.tapasroster.roster.adapter.out.web;
 
-import ch.unisg.tapasroster.roster.adapter.in.web.TaskMediaType;
+import ch.unisg.tapascommon.ServiceApiAddresses;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.ExecuteTaskOnPoolEventPort;
 import ch.unisg.tapasroster.roster.domain.ForwardTaskToPoolEvent;
 import org.springframework.context.annotation.Primary;
@@ -17,19 +18,19 @@ import java.net.http.HttpResponse;
 @Primary
 public class ForwardTaskToPoolEventWebAdapter implements ExecuteTaskOnPoolEventPort {
 
-    public static final String EXECUTOR_POOL_SERVICE_API = "https://tapas-executorpool.86-119-35-199.nip.io/executor-pool/execute-task/";
+    private static final String URL = ServiceApiAddresses.getExecutorPoolServiceApiUrl();
+    private static final String PATH = "/executor-pool/execute-task/";
 
     @Override
     public void forwardTaskToPoolEvent(ForwardTaskToPoolEvent event) {
-        var payload = TaskMediaType.serialize(event.task);
-        var client = HttpClient.newHttpClient();
-        var request = HttpRequest.newBuilder()
-                .uri(URI.create(EXECUTOR_POOL_SERVICE_API))
-                .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
-                .POST(HttpRequest.BodyPublishers.ofString(payload))
-                .build();
-
         try {
+            var payload = TaskJsonRepresentation.serialize(event.task);
+            var client = HttpClient.newHttpClient();
+            var request = HttpRequest.newBuilder()
+                    .uri(URI.create(URL + PATH))
+                    .setHeader(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE)
+                    .POST(HttpRequest.BodyPublishers.ofString(payload))
+                    .build();
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

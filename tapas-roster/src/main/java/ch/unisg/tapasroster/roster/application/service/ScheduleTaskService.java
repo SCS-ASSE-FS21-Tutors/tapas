@@ -1,10 +1,10 @@
 package ch.unisg.tapasroster.roster.application.service;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskCommand;
 import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskUseCase;
 import ch.unisg.tapasroster.roster.application.port.out.ExecuteTaskOnPoolEventPort;
 import ch.unisg.tapasroster.roster.domain.ForwardTaskToPoolEvent;
-import ch.unisg.tapasroster.roster.domain.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

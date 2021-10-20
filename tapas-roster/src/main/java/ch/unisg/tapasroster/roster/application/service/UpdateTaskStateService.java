@@ -1,8 +1,8 @@
 package ch.unisg.tapasroster.roster.application.service;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasroster.roster.application.port.in.UpdateTaskStateCommand;
 import ch.unisg.tapasroster.roster.application.port.in.UpdateTaskStateUseCase;
-import ch.unisg.tapasroster.roster.domain.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

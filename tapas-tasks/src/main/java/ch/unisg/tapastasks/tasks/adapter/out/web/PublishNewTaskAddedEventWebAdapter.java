@@ -20,7 +20,8 @@ import java.net.http.HttpResponse;
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
-    private static final String serviceApiAddress = ServiceApiAddresses.getRosterServiceApiUrl();
+    private static final String URL = ServiceApiAddresses.getRosterServiceApiUrl();
+    private static final String PATH = "/roster/schedule-task/";
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
@@ -35,7 +36,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
             var requestBody = TaskJsonRepresentation.serialize(task.get());
             var client = HttpClient.newHttpClient();
             var request = HttpRequest.newBuilder()
-                .uri(URI.create(serviceApiAddress + "/roster/schedule-task/"))
+                .uri(URI.create(URL + PATH))
                 .setHeader(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();

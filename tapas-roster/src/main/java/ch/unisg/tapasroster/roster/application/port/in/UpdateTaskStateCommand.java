@@ -1,8 +1,7 @@
 package ch.unisg.tapasroster.roster.application.port.in;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasroster.common.SelfValidating;
-import ch.unisg.tapasroster.roster.domain.Task.TaskId;
-import ch.unisg.tapasroster.roster.domain.Task.TaskType;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
@@ -10,12 +9,12 @@ import javax.validation.constraints.NotNull;
 @Value
 public class UpdateTaskStateCommand extends SelfValidating<UpdateTaskStateCommand> {
     @NotNull
-    private final TaskId taskId;
+    private final Task.TaskId taskId;
 
     @NotNull
-    private final TaskType taskType;
+    private final Task.TaskType taskType;
 
-    public UpdateTaskStateCommand(TaskId taskId, TaskType taskType) {
+    public UpdateTaskStateCommand(Task.TaskId taskId, Task.TaskType taskType) {
         this.taskId = taskId;
         this.taskType = taskType;
         this.validateSelf();
