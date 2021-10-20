@@ -1,5 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
+import ch.unisg.tapascommon.ServiceApiAddresses;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Value;
 
@@ -9,8 +11,8 @@ import java.util.Optional;
 
 public class ExecutorPool {
 
-    private final String EXECUTOR_API_CALC = "https://tapas-executorcalc.86-119-35-199.nip.io/executor-calc/execute-task/";
-    private final String EXECUTOR_API_ROBOT = "https://tapas-executorrobot.86-119-35-199.nip.io/executor-robot/execute-task/";
+    private static final String EXECUTOR_API_CALC = ServiceApiAddresses.getExecutorCalcServiceApiUrl() + "/executor-calc/execute-task/";
+    private static final String EXECUTOR_API_ROBOT = ServiceApiAddresses.getExecutorRobotServiceApiUrl() + "/executor-robot/execute-task/";
 
     @Getter
     private final ExecutorPoolName executorPoolName;
@@ -61,12 +63,12 @@ public class ExecutorPool {
 
     @Value
     public static class ExecutorPoolName {
-        private String value;
+        String value;
     }
 
     @Value
     public static class ListOfExecutors {
-        private List<Executor> value;
+        List<Executor> value;
     }
 
 }
