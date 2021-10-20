@@ -1,4 +1,4 @@
-package ch.unisg.tapascommon;
+package ch.unisg.tapascommon.common;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
