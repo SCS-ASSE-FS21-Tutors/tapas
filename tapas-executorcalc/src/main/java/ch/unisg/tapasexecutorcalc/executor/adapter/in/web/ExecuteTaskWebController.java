@@ -1,8 +1,10 @@
 package ch.unisg.tapasexecutorcalc.executor.adapter.in.web;
 
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskUseCase;
-import ch.unisg.tapasexecutorcalc.executor.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,19 +23,16 @@ public class ExecuteTaskWebController {
         this.executeTaskUseCase = executeTaskUseCase;
     }
 
-    @PostMapping(path = "/executor-calc/execute-task/", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    @PostMapping(path = "/executor-calc/execute-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> executeTask(@RequestBody Task task) {
         try {
             var command = new ExecuteTaskCommand(task);
+            var newTask = executeTaskUseCase.executeTask(command);
+            var responseHeaders = new HttpHeaders();
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
 
-            Task newTask = executeTaskUseCase.executeTask(command);
-
-            // Add the content type as a response header
-            HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
-
-            return new ResponseEntity<>(TaskMediaType.serialize(newTask), responseHeaders, HttpStatus.CREATED);
-        } catch (ConstraintViolationException e) {
+            return new ResponseEntity<>(TaskJsonRepresentation.serialize(newTask), responseHeaders, HttpStatus.CREATED);
+        } catch (ConstraintViolationException | JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
