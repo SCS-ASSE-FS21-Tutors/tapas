@@ -46,8 +46,11 @@ public class AddNewTaskToTaskListWebController {
     @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
-            Task.TaskName taskName = new Task.TaskName(payload.getTaskName());
-            Task.TaskType taskType = new Task.TaskType(payload.getTaskType());
+            var taskName = new Task.TaskName(payload.getTaskName());
+            var taskType = new Task.TaskType(payload.getTaskType());
+
+            Optional<Task.InputData> inputDataOptional = (payload.getInputData() == null) ? Optional.empty()
+                : Optional.of(new Task.InputData(payload.getInputData()));
 
             // If the created task is a delegated task, the representation contains a URI reference
             // to the original task
@@ -55,15 +58,14 @@ public class AddNewTaskToTaskListWebController {
                 (payload.getOriginalTaskUri() == null) ? Optional.empty()
                 : Optional.of(new Task.OriginalTaskUri(payload.getOriginalTaskUri()));
 
-            AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType,
-                originalTaskUriOptional);
+            AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(
+                taskName,
+                taskType,
+                inputDataOptional,
+                originalTaskUriOptional
+            );
 
-            Task createdTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);
-
-            // When creating a task, the task's representation may include optional input data
-            if (payload.getInputData() != null) {
-                createdTask.setInputData(new Task.InputData(payload.getInputData()));
-            }
+            var createdTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();

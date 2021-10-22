@@ -4,9 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
-import java.util.UUID;
-
-/**This is a domain entity**/
 public class Task {
     public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED
@@ -30,34 +27,30 @@ public class Task {
     @Getter @Setter
     private ServiceProvider provider;
 
-    @Getter @Setter
+    @Getter
     private InputData inputData;
 
     @Getter @Setter
     private OutputData outputData;
 
-    public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
-        this.taskId = new TaskId(UUID.randomUUID().toString());
-
+    public Task(
+            TaskId taskId,
+            TaskName taskName,
+            TaskType taskType,
+            OriginalTaskUri taskUri,
+            TaskStatus taskStatus,
+            ServiceProvider provider,
+            InputData inputData,
+            OutputData outputData
+    ) {
+        this.taskId = taskId;
         this.taskName = taskName;
         this.taskType = taskType;
         this.originalTaskUri = taskUri;
-
-        this.taskStatus = new TaskStatus(Status.OPEN);
-
-        this.inputData = null;
-        this.outputData = null;
-    }
-
-    protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
-        //This is a simple debug message to see that the request has reached the right method in the core
-        System.out.println("New Task: " + name.getValue() + " " + type.getValue());
-        return new Task(name, type, null);
-    }
-
-    protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
-            OriginalTaskUri originalTaskUri) {
-        return new Task(name, type, originalTaskUri);
+        this.taskStatus = taskStatus;
+        this.provider = provider;
+        this.inputData = inputData;
+        this.outputData = outputData;
     }
 
     @Value

@@ -24,6 +24,7 @@ public class ScheduleTaskService implements ScheduleTaskUseCase {
         System.out.println(task.getTaskName().getValue());
         System.out.println(task.getTaskId().getValue());
         System.out.println(task.getTaskType().getValue());
+        System.out.println(task.getInputData().getValue());
 
         var event = new ForwardTaskToPoolEvent(task);
         executeTaskOnPoolEventPort.forwardTaskToPoolEvent(event);

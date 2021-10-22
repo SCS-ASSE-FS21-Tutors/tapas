@@ -24,9 +24,9 @@ public class ScheduleNewTaskWebController {
     }
 
     @PostMapping(path = "/roster/schedule-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> scheduleNewTask(@RequestBody Task task) {
+    public ResponseEntity<String> scheduleNewTask(@RequestBody TaskJsonRepresentation task) {
         try {
-            var command = new ScheduleTaskCommand(task);
+            var command = new ScheduleTaskCommand(task.deserialize());
             var newTask = scheduleTaskUseCase.scheduleTask(command);
 
             var responseHeaders = new HttpHeaders();

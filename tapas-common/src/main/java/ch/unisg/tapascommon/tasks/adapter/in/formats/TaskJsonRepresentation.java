@@ -112,4 +112,21 @@ final public class TaskJsonRepresentation {
 
         return mapper.writeValueAsString(representation);
     }
+
+    public static Task deserialize(TaskJsonRepresentation representation) {
+        return new Task(
+                new Task.TaskId(representation.taskId),
+                new Task.TaskName(representation.taskName),
+                new Task.TaskType(representation.taskType),
+                new Task.OriginalTaskUri(representation.originalTaskUri),
+                new Task.TaskStatus(Task.Status.valueOf(representation.taskStatus)),
+                new Task.ServiceProvider(representation.serviceProvider),
+                new Task.InputData(representation.inputData),
+                new Task.OutputData(representation.outputData)
+        );
+    }
+
+    public Task deserialize() {
+        return deserialize(this);
+    }
 }

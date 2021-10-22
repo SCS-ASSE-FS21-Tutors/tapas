@@ -24,9 +24,9 @@ public class ExecuteTaskWebController {
     }
 
     @PostMapping(path = "/executor-calc/execute-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> executeTask(@RequestBody Task task) {
+    public ResponseEntity<String> executeTask(@RequestBody TaskJsonRepresentation task) {
         try {
-            var command = new ExecuteTaskCommand(task);
+            var command = new ExecuteTaskCommand(task.deserialize());
             var newTask = executeTaskUseCase.executeTask(command);
             var responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
