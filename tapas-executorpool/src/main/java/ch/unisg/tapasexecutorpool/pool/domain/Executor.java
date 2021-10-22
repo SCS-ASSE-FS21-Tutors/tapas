@@ -1,13 +1,14 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.Value;
 
 import java.util.UUID;
 
 public class Executor {
     public enum State {
-        IDLE, BUSY
+        IDLE, BUSY, RESERVED
     }
 
     @Getter
@@ -22,6 +23,7 @@ public class Executor {
     @Getter
     private final ExecutorAddress executorAddress;
 
+    @Setter
     @Getter
     private ExecutorState executorState;
 

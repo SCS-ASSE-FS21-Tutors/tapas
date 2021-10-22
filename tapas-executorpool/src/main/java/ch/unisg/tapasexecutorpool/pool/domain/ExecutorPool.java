@@ -7,6 +7,7 @@ import lombok.Value;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 public class ExecutorPool {
@@ -14,20 +15,21 @@ public class ExecutorPool {
     private static final String EXECUTOR_API_CALC = ServiceApiAddresses.getExecutorCalcServiceApiUrl() + "/executor-calc/execute-task/";
     private static final String EXECUTOR_API_ROBOT = ServiceApiAddresses.getExecutorRobotServiceApiUrl() + "/executor-robot/execute-task/";
 
+    private static final ExecutorPool EXECUTOR_POOL = new ExecutorPool(new ExecutorPoolName("tapas-executorpool"));
+
     @Getter
     private final ExecutorPoolName executorPoolName;
 
     @Getter
     private final ListOfExecutors listOfExecutors;
 
-    private static final ExecutorPool EXECUTOR_POOL = new ExecutorPool(new ExecutorPoolName("tapas-executorpool"));
-
     private ExecutorPool(ExecutorPoolName executorPoolName) {
         this.executorPoolName = executorPoolName;
         this.listOfExecutors = new ListOfExecutors(new LinkedList<>());
 
-        addNewExecutor(new Executor.ExecutorName("Calculator"), new Executor.ExecutorType("calc"), new Executor.ExecutorAddress(EXECUTOR_API_CALC));
-        addNewExecutor(new Executor.ExecutorName("Robot"), new Executor.ExecutorType("robot"), new Executor.ExecutorAddress(EXECUTOR_API_ROBOT));
+        // Temporary until Executors are dynamically added to the pool
+        addNewExecutor(new Executor.ExecutorName("Calculator"), new Executor.ExecutorType("CALC"), new Executor.ExecutorAddress(EXECUTOR_API_CALC));
+        addNewExecutor(new Executor.ExecutorName("Robot"), new Executor.ExecutorType("ROBOT"), new Executor.ExecutorAddress(EXECUTOR_API_ROBOT));
     }
 
     public static ExecutorPool getTapasExecutorPool() {
@@ -47,18 +49,37 @@ public class ExecutorPool {
                 return Optional.of(executor);
             }
         }
-
         return Optional.empty();
     }
 
-    public Optional<Executor> retrieveExecutorByTaskType(Task.TaskType type) {
+    public Optional<Executor> retrieveAvailableExecutorByTaskType(Task.TaskType type) {
         for (Executor executor : listOfExecutors.value) {
             if (executor.getExecutorType().getValue().equalsIgnoreCase(type.getValue())) {
-                return Optional.of(executor);
+                if (Objects.equals(executor.getExecutorState(), new Executor.ExecutorState(Executor.State.IDLE))) {
+                    return Optional.of(executor);
+                }
             }
         }
-
         return Optional.empty();
+    }
+
+    public boolean updateExecutorState(Executor.ExecutorId executorId, Executor.ExecutorState executorState) {
+        var executor = retrieveExecutorById(executorId);
+        if (executor.isPresent()) {
+            executor.get().setExecutorState(executorState);
+            return true;
+        }
+        return false;
+    }
+
+    // Temporary until Executors are dynamically added to the pool
+    public Executor.ExecutorId getExecutorIdForExecutorType(String executorType) {
+        for (Executor executor : listOfExecutors.value) {
+            if (executor.getExecutorType().getValue().equalsIgnoreCase(executorType)) {
+                return executor.getExecutorId();
+            }
+        }
+        return null;
     }
 
     @Value
@@ -70,5 +91,4 @@ public class ExecutorPool {
     public static class ListOfExecutors {
         List<Executor> value;
     }
-
 }

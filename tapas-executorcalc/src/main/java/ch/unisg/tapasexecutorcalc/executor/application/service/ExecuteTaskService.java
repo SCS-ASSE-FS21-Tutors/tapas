@@ -3,6 +3,8 @@ package ch.unisg.tapasexecutorcalc.executor.application.service;
 import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorcalc.executor.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapascommon.tasks.domain.Task;
+import ch.unisg.tapasexecutorcalc.executor.application.port.out.ExecutorStateChangedEventPort;
+import ch.unisg.tapasexecutorcalc.executor.domain.ExecutorStateChangedEvent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -15,6 +17,9 @@ import javax.transaction.Transactional;
 @Component
 @Transactional
 public class ExecuteTaskService implements ExecuteTaskUseCase {
+
+    private final ExecutorStateChangedEventPort executorStateChangedEventPort;
+
     @Override
     public Task executeTask(ExecuteTaskCommand command) {
         var task = command.getTask();
@@ -31,6 +36,9 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         } catch(ScriptException ex) {
             System.out.println("Invalid math expression");
         }
+
+        var event = new ExecutorStateChangedEvent("CALC", "IDLE");
+        executorStateChangedEventPort.publishExecutorStateChangedEvent(event);
 
         return task;
     }

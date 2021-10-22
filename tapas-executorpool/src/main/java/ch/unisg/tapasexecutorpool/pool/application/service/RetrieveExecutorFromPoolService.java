@@ -16,7 +16,7 @@ import java.util.Optional;
 public class RetrieveExecutorFromPoolService implements RetrieveExecutorFromPoolUseCase {
     @Override
     public Optional<Executor> retrieveExecutorFromPool(RetrieveExecutorFromPoolCommand command) {
-        ExecutorPool executorPool = ExecutorPool.getTapasExecutorPool();
+        var executorPool = ExecutorPool.getTapasExecutorPool();
         return executorPool.retrieveExecutorById(command.getExecutorId());
     }
 }

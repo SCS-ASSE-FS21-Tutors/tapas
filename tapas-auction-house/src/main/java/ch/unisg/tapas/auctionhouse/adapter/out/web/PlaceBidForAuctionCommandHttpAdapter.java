@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 /**
- * This class is a tempalte for implementing a place bid for auction command via HTTP.
+ * Sends the place bid for an auction command via HTTP.
  */
 @Component
 @Primary
