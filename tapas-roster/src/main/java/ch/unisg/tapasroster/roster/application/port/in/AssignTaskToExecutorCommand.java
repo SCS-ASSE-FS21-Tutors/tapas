@@ -1,23 +1,30 @@
 package ch.unisg.tapasroster.roster.application.port.in;
 
 import ch.unisg.tapasroster.common.SelfValidating;
+import ch.unisg.tapasroster.roster.domain.Task.TaskUri;
 import ch.unisg.tapasroster.roster.domain.Task.TaskType;
 import ch.unisg.tapasroster.roster.domain.Task.TaskId;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
 
 @Value
-public class AssignTaskToExecutorInExecutorPoolCommand extends SelfValidating<AssignTaskToExecutorInExecutorPoolCommand> {
+@EqualsAndHashCode(callSuper = true)
+public class AssignTaskToExecutorCommand extends SelfValidating<AssignTaskToExecutorCommand> {
     @NotNull
-    private final TaskId taskId;
+    TaskId taskId;
 
     @NotNull
-    private final TaskType taskType;
+    TaskUri taskUri;
 
-    public AssignTaskToExecutorInExecutorPoolCommand(TaskId taskId, TaskType taskType) {
+    @NotNull
+    TaskType taskType;
+
+    public AssignTaskToExecutorCommand(TaskId taskId, TaskType taskType, TaskUri taskUri) {
         this.taskId = taskId;
         this.taskType = taskType;
+        this.taskUri = taskUri;
         this.validateSelf();
     }
 }
