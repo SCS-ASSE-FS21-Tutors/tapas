@@ -25,7 +25,7 @@ public class TaskAssignedInternallyEventWebAdapter implements TaskAssignedIntern
             HttpResponse<String> response = client.send(requestToExecutor, HttpResponse.BodyHandlers.ofString());
             // Check whether HTTP response was successful or not
             if (response.statusCode() / 100 != 2) {
-                System.err.printf("Calling %s with %s returns StatusCode: %d",
+                System.err.printf("Calling %s with %s returns StatusCode: %d\n",
                         requestToExecutor.uri(), requestToExecutor.method(), response.statusCode());
                 return false;
             }

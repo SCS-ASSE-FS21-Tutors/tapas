@@ -42,7 +42,7 @@ public class TriggerAuctionForTaskEventHTTPAdapter implements TriggerAuctionForT
                 );
                 // Check whether request was successful
                 if (response.statusCode() / 100 != 2) {
-                    System.err.printf("Calling %s with %s returns StatusCode: %d",
+                    System.err.printf("Calling %s with %s returns StatusCode: %d\n",
                             startAuctionRequest.uri(), startAuctionRequest.method(), response.statusCode());
                     return false;
                 }

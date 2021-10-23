@@ -62,7 +62,7 @@ public class QueryExecutorPoolExecutorsHTTPAdapter implements QueryExecutorPoolE
                     System.err.println("Could not create JSON-Object from response object from ExecutorPool");
                 }
             } else {
-                System.err.printf("Calling %s with method %s returns StatusCode: %d",
+                System.err.printf("Calling %s with method %s returns StatusCode: %d\n",
                         request.uri(), request.method(), response.statusCode());
             }
         } catch (IOException | InterruptedException e) {
