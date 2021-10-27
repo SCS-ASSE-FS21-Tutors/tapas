@@ -2,6 +2,8 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AssignTaskUseCase;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.CanExecuteTaskQuery;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.EnqueueTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.SendTaskToExecutorPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -19,10 +21,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.util.concurrent.ArrayBlockingQueue;
 
 @Log
 @Component
-public class AssignTaskService implements AssignTaskUseCase {
+public class AssignTaskService implements AssignTaskUseCase, CanExecuteTaskQuery, EnqueueTaskUseCase {
 
     @Autowired
     public ExecutorRepository repository;
@@ -30,11 +35,12 @@ public class AssignTaskService implements AssignTaskUseCase {
     @Autowired
     public SendTaskToExecutorPort executorPort;
 
+    public Queue<Task> taskQueue = new LinkedList<Task>();
+
     @Autowired
     public AssignTaskService() {
 
     }
-
 
     @Override
     public Executor assignTask(AssignTaskCommand command) {
@@ -61,7 +67,29 @@ public class AssignTaskService implements AssignTaskUseCase {
         assignedExecutor.setAssignedTask(new Task(command.getTaskId(), command.getTaskName(), command.getTaskType()));
         repository.updateExecutor(assignedExecutor);
 
-        // Return assigned executpr
+        // Return assigned executor
         return assignedExecutor;
+    }
+
+    /**
+     * Check if we have an executor that implements the task type
+     * @param task
+     * @return true if we can execute this task
+     */
+    @Override
+    public boolean canExecute(Task task) {
+
+        var executors = repository.getExecutors();
+        return executors.stream()
+                .anyMatch(e -> e.getExecutorType().getValue().equals(task.getTaskType().getValue()));
+    }
+
+    @Override
+    public void enqueueTask(Task task) {
+
+        if(!canExecute(task))
+            throw new NoExecutorFoundException("cannot execute task");
+
+        taskQueue.add(task);
     }
 }

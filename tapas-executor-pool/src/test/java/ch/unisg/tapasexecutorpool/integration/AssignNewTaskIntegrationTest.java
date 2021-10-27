@@ -2,6 +2,7 @@ package ch.unisg.tapasexecutorpool.integration;
 
 import ch.unisg.tapasexecutorpool.pool.adapter.out.repository.MockExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
+import ch.unisg.tapasexecutorpool.pool.application.service.AssignTaskService;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -28,6 +30,9 @@ public class AssignNewTaskIntegrationTest {
     @Autowired
     private MockExecutorRepository repository;
 
+    @Autowired
+    private AssignTaskService assignTaskService;
+
     private Task newTask = new Task(
             new Task.TaskId("someid"),
             new Task.TaskName("somename"),
@@ -38,20 +43,6 @@ public class AssignNewTaskIntegrationTest {
     public void setUp(){
 
         repository.deleteAll();
-    }
-
-    @Test
-    public void AssignNewTaskTestNoExecutorAvailable() throws Exception{
-
-        // ARRANGE
-        // We have no executor registered that can do that
-        String requestBody = new ObjectMapper().writeValueAsString(newTask);
-
-        // ACT
-        mockMvc.perform(post("/assignment/")
-                .header("Content-Type", "application/json")
-                .content(requestBody))
-                .andExpect(status().isPreconditionFailed());
     }
 
     @Test
@@ -68,22 +59,47 @@ public class AssignNewTaskIntegrationTest {
         String requestBody = new ObjectMapper().writeValueAsString(newTask);
 
         // ACT
-        mockMvc.perform(post("/assignment/")
+        mockMvc.perform(post("/execute/")
                 .header("Content-Type", "application/json")
                 .content(requestBody))
-                .andExpect(status().isCreated());
+                .andExpect(status().isAccepted());
 
-        assertNotNull(executor.getAssignedTask());
-        assertEquals(newTask.getTaskId(), executor.getAssignedTask().getTaskId());
-        assertEquals(Executor.State.OCCUPIED, executor.getExecutorState().getValue());
+        Task taskFromQueue = assignTaskService.taskQueue.peek();
+        assertEquals(newTask.getTaskId(), taskFromQueue.getTaskId());
+    }
 
+    @Test
+    public void CanExecuteIntergrationTest() throws Exception{
 
-        // Also test task can be completed
-        mockMvc.perform(put("/completion/")
-                .param("taskId", newTask.getTaskId().getValue()))
-                .andExpect(status().isOk());
+        // ARRANGE
+        // We add a new executor that can resolve that task
+        Executor executor = new Executor(
+                new Executor.ExecutorName("ExecName"),
+                new Executor.ExecutorType("sometype"),
+                new Executor.ExecutorUrl("someurl"));
+        repository.addExecutor(executor);
 
-        assertEquals(null, executor.getAssignedTask());
-        assertEquals(Executor.State.AVAILABLE, executor.getExecutorState().getValue());
+        String requestBody = new ObjectMapper().writeValueAsString(newTask);
+
+        // ACT
+        mockMvc.perform(post("/can-execute/")
+                .header("Content-Type", "application/json")
+                .content(requestBody))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'executable':true}"));
+
+        Task otherTask = new Task(
+                new Task.TaskId("someid"),
+                new Task.TaskName("somename"),
+                new Task.TaskType("sometypeOTHERTYPE")
+        );
+        String requestBody2 = new ObjectMapper().writeValueAsString(otherTask);
+
+        // ACT
+        mockMvc.perform(post("/can-execute/")
+                .header("Content-Type", "application/json")
+                .content(requestBody2))
+                .andExpect(status().isOk())
+                .andExpect(content().json("{'executable':false}"));
     }
 }
