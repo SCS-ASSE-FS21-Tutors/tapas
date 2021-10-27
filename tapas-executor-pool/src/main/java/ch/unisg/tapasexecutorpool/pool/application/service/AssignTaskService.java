@@ -17,7 +17,10 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.slf4j.event.Level;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.logging.LogLevel;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -27,7 +30,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 @Log
 @Component
-public class AssignTaskService implements AssignTaskUseCase, CanExecuteTaskQuery, EnqueueTaskUseCase {
+public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCase {
 
     @Autowired
     public ExecutorRepository repository;
@@ -35,40 +38,11 @@ public class AssignTaskService implements AssignTaskUseCase, CanExecuteTaskQuery
     @Autowired
     public SendTaskToExecutorPort executorPort;
 
-    public Queue<Task> taskQueue = new LinkedList<Task>();
+    public LinkedList<Task> taskQueue = new LinkedList<>();
 
     @Autowired
     public AssignTaskService() {
 
-    }
-
-    @Override
-    public Executor assignTask(AssignTaskCommand command) {
-
-        Executor assignedExecutor = null;
-
-        // Checks for the first available executor
-        for (Executor executor : repository.getExecutors()) {
-            if (executor.getExecutorState().getValue().equals(Executor.State.AVAILABLE)) {
-                assignedExecutor = executor;
-            }
-        }
-
-        // Thor error if not suitable executor is found
-        if(assignedExecutor == null)
-            throw new NoExecutorFoundException("No available executor found for TaskType=" + command.getTaskType().getValue());
-
-        // Sending task to executor
-        log.info("Assigned Executor: " + assignedExecutor.getExecutorName().getValue());
-        executorPort.sendTaskToExecutor(command.getTaskId(), assignedExecutor);
-
-        // Update executor
-        assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
-        assignedExecutor.setAssignedTask(new Task(command.getTaskId(), command.getTaskName(), command.getTaskType()));
-        repository.updateExecutor(assignedExecutor);
-
-        // Return assigned executor
-        return assignedExecutor;
     }
 
     /**
@@ -91,5 +65,72 @@ public class AssignTaskService implements AssignTaskUseCase, CanExecuteTaskQuery
             throw new NoExecutorFoundException("cannot execute task");
 
         taskQueue.add(task);
+    }
+
+    @Scheduled(fixedRate = 5000)
+    public void scheduleFixedRateTask() {
+
+        log.info("Checking task queue: " + taskQueue.toString());
+
+        for (Task task : taskQueue) {
+
+            if(canExecuteNow(task)){
+
+                taskQueue.remove(task);
+
+                try{
+                    assignTask(task);
+                }
+                catch (Exception ex){
+                    // Read to task queue if failed
+                    taskQueue.push(task);
+                    log.warning("Failed to assign Task");
+                    throw new RuntimeException("Failed to assign Task", ex);
+                }
+            }
+        }
+    }
+
+    private boolean canExecuteNow(Task task){
+
+        var executors = repository.getExecutors();
+        var canExecuteNow = executors.stream()
+                .filter(e -> e.getExecutorType().getValue().equals(task.getTaskType().getValue()))
+                .anyMatch(e -> e.getExecutorState().getValue().equals(Executor.State.AVAILABLE));
+
+        return canExecuteNow;
+    }
+
+    private Executor assignTask(Task task) {
+
+        log.info("Assigning Task: " + task.toString());
+
+        if(! canExecuteNow(task))
+            throw new RuntimeException("Can not execute task now");
+
+        Executor assignedExecutor = null;
+
+        // Checks for the first available executor
+        for (Executor executor : repository.getExecutors()) {
+            if (executor.getExecutorState().getValue().equals(Executor.State.AVAILABLE)) {
+                assignedExecutor = executor;
+            }
+        }
+
+        // Thor error if not suitable executor is found
+        if(assignedExecutor == null)
+            throw new NoExecutorFoundException("No available executor found for TaskType=" + task.getTaskType().getValue());
+
+        // Sending task to executor
+        log.info("Assigned Executor: " + assignedExecutor.getExecutorName().getValue());
+        executorPort.sendTaskToExecutor(task.getTaskId(), assignedExecutor);
+
+        // Update executor
+        assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
+        assignedExecutor.setAssignedTask(new Task(task.getTaskId(), task.getTaskName(), task.getTaskType()));
+        repository.updateExecutor(assignedExecutor);
+
+        // Return assigned executor
+        return assignedExecutor;
     }
 }
