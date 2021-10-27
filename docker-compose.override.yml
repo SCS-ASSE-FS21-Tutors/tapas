@@ -1,0 +1,38 @@
+version: "3.0"
+
+services:
+  tapas-tasks:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8081:8081"
+
+  tapas-roster:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8082:8082"
+
+  tapas-executor-pool:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8083:8083"
+
+  tapas-auction-house:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8085:8085"
+
+  tapas-executor-1:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8091:8091"
+
+  tapas-executor-2:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8092:8092"

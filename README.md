@@ -1,6 +1,8 @@
 # TAPAS
 This is the main GitHub project for your implementation of the TAPAS application.
 
+Start-up locally: `bash build-all.sh && docker-compose -f docker-compose.local.yml -f docker-compose.yml up`
+
 ## Project Structure
 This project is structured as follows:
 * [tapas-tasks](tapas-tasks)
@@ -8,6 +10,7 @@ This project is structured as follows:
 * [tapas-executor-pool](tapas-executor-pool)
 * [tapas-executor-1](tapas-executor-1)
 * [tapas-executor-1](tapas-executor-2)
+* [tapas-auction-house](tapas-auction-house)
 
 ## How to Deploy on your VM
 1. Start your Ubuntu VM on Switch.
