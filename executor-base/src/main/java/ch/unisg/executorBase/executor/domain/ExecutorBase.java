@@ -1,25 +1,23 @@
-package ch.unisg.executorBase.executor.domain;
+package ch.unisg.executorbase.executor.domain;
 
-import ch.unisg.executorBase.executor.application.port.out.ExecutionFinishedEventPort;
-import ch.unisg.executorBase.executor.application.port.out.GetAssignmentPort;
-import ch.unisg.executorBase.executor.application.port.out.NotifyExecutorPoolPort;
-
-import ch.unisg.executorBase.executor.adapter.out.web.ExecutionFinishedEventAdapter;
-import ch.unisg.executorBase.executor.adapter.out.web.GetAssignmentAdapter;
-import ch.unisg.executorBase.executor.adapter.out.web.NotifyExecutorPoolAdapter;
-import ch.unisg.executorBase.executor.application.service.NotifyExecutorPoolService;
+import ch.unisg.common.exception.InvalidExecutorURIException;
+import ch.unisg.common.valueobject.ExecutorURI;
+import ch.unisg.executorbase.executor.adapter.out.web.ExecutionFinishedEventAdapter;
+import ch.unisg.executorbase.executor.adapter.out.web.GetAssignmentAdapter;
+import ch.unisg.executorbase.executor.adapter.out.web.NotifyExecutorPoolAdapter;
+import ch.unisg.executorbase.executor.application.port.out.ExecutionFinishedEventPort;
+import ch.unisg.executorbase.executor.application.port.out.GetAssignmentPort;
+import ch.unisg.executorbase.executor.application.port.out.NotifyExecutorPoolPort;
+import ch.unisg.executorbase.executor.application.service.NotifyExecutorPoolService;
 import lombok.Getter;
 
 public abstract class ExecutorBase {
 
     @Getter
-    private String ip;
+    private ExecutorURI executorURI;
 
     @Getter
     private ExecutorType executorType;
-
-    @Getter
-    private int port;
 
     @Getter
     private ExecutorStatus status;
@@ -34,12 +32,17 @@ public abstract class ExecutorBase {
     public ExecutorBase(ExecutorType executorType) {
         System.out.println("Starting Executor");
         // TODO set this automaticly
-        this.ip = "localhost";
-        this.port = 8084;
+        try {
+            this.executorURI = new ExecutorURI("localhost:8084");
+        } catch (InvalidExecutorURIException e) {
+            // Shutdown system if ip or port is not valid
+            System.exit(1);
+        }
+
         this.executorType = executorType;
 
         this.status = ExecutorStatus.STARTING_UP;
-        if(!notifyExecutorPoolService.notifyExecutorPool(this.ip, this.port, this.executorType)) {
+        if(!notifyExecutorPoolService.notifyExecutorPool(this.executorURI, this.executorType)) {
             System.exit(0);
         } else {
             this.status = ExecutorStatus.IDLING;
@@ -48,8 +51,7 @@ public abstract class ExecutorBase {
     }
 
     public void getAssignment() {
-        Task newTask = getAssignmentPort.getAssignment(this.getExecutorType(), this.getIp(),
-            this.getPort());
+        Task newTask = getAssignmentPort.getAssignment(this.getExecutorType(), this.getExecutorURI());
         if (newTask != null) {
             this.executeTask(newTask);
         } else {

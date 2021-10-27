@@ -1,4 +1,4 @@
-package ch.unisg.assignment.common.exception;
+package ch.unisg.common.exception;
 
 import org.springframework.http.HttpStatus;
 

@@ -3,9 +3,8 @@ package ch.unisg.assignment.assignment.application.port.in;
 import javax.validation.constraints.NotNull;
 
 import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
-import ch.unisg.assignment.assignment.domain.valueobject.IP4Adress;
-import ch.unisg.assignment.assignment.domain.valueobject.Port;
-import ch.unisg.assignment.common.SelfValidating;
+import ch.unisg.common.validation.SelfValidating;
+import ch.unisg.common.valueobject.ExecutorURI;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
 
@@ -17,16 +16,11 @@ public class ApplyForTaskCommand extends SelfValidating<ApplyForTaskCommand>{
     private final ExecutorType taskType;
 
     @NotNull
-    private final IP4Adress executorIP;
+    private final ExecutorURI executorURI;
 
-
-    @NotNull
-    private final Port executorPort;
-
-    public ApplyForTaskCommand(ExecutorType taskType, IP4Adress executorIP, Port executorPort) {
+    public ApplyForTaskCommand(ExecutorType taskType, ExecutorURI executorURI) {
         this.taskType = taskType;
-        this.executorIP = executorIP;
-        this.executorPort = executorPort;
+        this.executorURI = executorURI;
         this.validateSelf();
     }
 }

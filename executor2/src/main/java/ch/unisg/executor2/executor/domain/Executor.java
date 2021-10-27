@@ -1,8 +1,9 @@
 package ch.unisg.executor2.executor.domain;
 
 import java.util.concurrent.TimeUnit;
-import ch.unisg.executorBase.executor.domain.ExecutorBase;
-import ch.unisg.executorBase.executor.domain.ExecutorType;
+
+import ch.unisg.executorbase.executor.domain.ExecutorBase;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
 
 public class Executor extends ExecutorBase {
 

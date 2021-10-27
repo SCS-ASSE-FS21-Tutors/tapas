@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.executor.adapter.in.web;
+package ch.unisg.executorbase.executor.adapter.in.web;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableCommand;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableUseCase;
-import ch.unisg.executorBase.executor.domain.ExecutorType;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableCommand;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableUseCase;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
 
 @RestController
 public class TaskAvailableController {

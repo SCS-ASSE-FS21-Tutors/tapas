@@ -1,9 +1,9 @@
-package ch.unisg.executorBase.executor.application.service;
+package ch.unisg.executorbase.executor.application.service;
 
 import org.springframework.stereotype.Component;
 
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableCommand;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableUseCase;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableCommand;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableUseCase;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;

@@ -21,7 +21,7 @@ public class ApplyForTaskController {
     public Task applyForTask(@RequestBody ExecutorInfo executorInfo) {
 
         ApplyForTaskCommand command = new ApplyForTaskCommand(executorInfo.getExecutorType(),
-            executorInfo.getIp(), executorInfo.getPort());
+            executorInfo.getExecutorURI());
 
         return applyForTaskUseCase.applyForTask(command);
 

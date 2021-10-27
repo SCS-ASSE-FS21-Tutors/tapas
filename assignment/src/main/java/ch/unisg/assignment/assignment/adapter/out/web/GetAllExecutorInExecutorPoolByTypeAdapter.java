@@ -9,7 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -21,9 +21,11 @@ import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
 @Primary
 public class GetAllExecutorInExecutorPoolByTypeAdapter implements GetAllExecutorInExecutorPoolByTypePort {
 
+    @Value("${executor-pool.url}")
+    private String server;
+
     @Override
     public boolean doesExecutorTypeExist(ExecutorType type) {
-        String server = "http://127.0.0.1:8083";
 
         Logger logger = Logger.getLogger(PublishNewTaskEventAdapter.class.getName());
 
@@ -37,17 +39,18 @@ public class GetAllExecutorInExecutorPoolByTypeAdapter implements GetAllExecutor
 
 
         try {
-            HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == HttpStatus.OK.value()) {
-                JSONArray jsonArray = new JSONArray(response.body().toString());
+                JSONArray jsonArray = new JSONArray(response.body());
                 if (jsonArray.length() > 0) {
                     return true;
                 }
             }
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
         return false;
     }

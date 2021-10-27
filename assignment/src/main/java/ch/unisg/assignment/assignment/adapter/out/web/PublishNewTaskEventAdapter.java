@@ -8,6 +8,7 @@ import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +19,11 @@ import ch.unisg.assignment.assignment.domain.event.NewTaskEvent;
 @Primary
 public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
-    String server = "http://127.0.0.1:8084";
-    String server2 = "http://127.0.0.1:8085";
+    @Value("${executor1.url}")
+    private String server;
+
+    @Value("${executor2.url}")
+    private String server2;
 
     Logger logger = Logger.getLogger(PublishNewTaskEventAdapter.class.getName());
 
@@ -35,10 +39,11 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
         HttpClient client2 = HttpClient.newHttpClient();
@@ -49,11 +54,12 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
 
         try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+            client2.send(request2, HttpResponse.BodyHandlers.ofString());
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
     }
 

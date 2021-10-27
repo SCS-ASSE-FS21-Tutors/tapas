@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.executor.domain;
+package ch.unisg.executorbase.executor.domain;
 
 public enum ExecutorType {
     ADDITION, ROBOT;

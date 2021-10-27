@@ -1,8 +1,5 @@
 package ch.unisg.assignment.assignment.application.service;
 
-import java.util.Arrays;
-import java.util.List;
-
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Component;
@@ -27,7 +24,6 @@ public class NewTaskService implements NewTaskUseCase {
     @Override
     public boolean addNewTaskToQueue(NewTaskCommand command) {
 
-        // TODO Get availableTaskTypes from  executor pool
         if (!getAllExecutorInExecutorPoolByTypePort.doesExecutorTypeExist(command.getTaskType())) {
             return false;
         }

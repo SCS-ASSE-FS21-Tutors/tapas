@@ -1,19 +1,14 @@
 package ch.unisg.assignment.assignment.domain;
 
 import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
-import ch.unisg.assignment.assignment.domain.valueobject.IP4Adress;
-import ch.unisg.assignment.assignment.domain.valueobject.Port;
+import ch.unisg.common.valueobject.ExecutorURI;
 import lombok.Getter;
 import lombok.Setter;
 
 public class ExecutorInfo {
     @Getter
     @Setter
-    private IP4Adress ip;
-
-    @Getter
-    @Setter
-    private Port port;
+    private ExecutorURI executorURI;
 
     @Getter
     @Setter

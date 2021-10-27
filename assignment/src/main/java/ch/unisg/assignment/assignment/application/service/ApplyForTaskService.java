@@ -22,7 +22,7 @@ public class ApplyForTaskService implements ApplyForTaskUseCase {
     @Override
     public Task applyForTask(ApplyForTaskCommand command) {
         Task task = Roster.getInstance().assignTaskToExecutor(command.getTaskType(),
-            command.getExecutorIP(), command.getExecutorPort());
+            command.getExecutorURI());
 
         if (task != null) {
             taskAssignedEventPort.publishTaskAssignedEvent(new TaskAssignedEvent(task.getTaskID()));

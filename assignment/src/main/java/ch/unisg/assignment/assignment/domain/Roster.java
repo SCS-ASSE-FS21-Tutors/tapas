@@ -5,8 +5,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import ch.unisg.assignment.assignment.domain.valueobject.ExecutorType;
-import ch.unisg.assignment.assignment.domain.valueobject.IP4Adress;
-import ch.unisg.assignment.assignment.domain.valueobject.Port;
+import ch.unisg.common.valueobject.ExecutorURI;
 
 public class Roster {
 
@@ -30,7 +29,7 @@ public class Roster {
         }
     }
 
-    public Task assignTaskToExecutor(ExecutorType taskType, IP4Adress executorIP, Port executorPort) {
+    public Task assignTaskToExecutor(ExecutorType taskType, ExecutorURI executorURI) {
         if (!queues.containsKey(taskType.getValue())) {
             return null;
         }
@@ -41,7 +40,7 @@ public class Roster {
         Task task = queues.get(taskType.getValue()).remove(0);
 
         rosterMap.put(task.getTaskID(), new RosterItem(task.getTaskID(),
-            task.getTaskType().getValue(), executorIP, executorPort));
+            task.getTaskType().getValue(), executorURI));
 
         return task;
     }

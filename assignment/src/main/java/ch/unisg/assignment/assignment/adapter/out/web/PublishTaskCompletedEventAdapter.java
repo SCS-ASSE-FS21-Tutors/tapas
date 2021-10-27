@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -19,7 +20,8 @@ import ch.unisg.assignment.assignment.domain.event.TaskCompletedEvent;
 @Primary
 public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort {
 
-    String server = "http://127.0.0.1:8081";
+    @Value("${task-list.url}")
+    private String server;
 
     Logger logger = Logger.getLogger(PublishTaskCompletedEventAdapter.class.getName());
 
@@ -42,10 +44,11 @@ public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort 
 
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
     }

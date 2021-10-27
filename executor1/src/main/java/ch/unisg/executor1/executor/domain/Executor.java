@@ -10,8 +10,8 @@ import ch.unisg.executor1.executor.adapter.out.UserToRobotAdapter;
 import ch.unisg.executor1.executor.application.port.out.DeleteUserFromRobotPort;
 import ch.unisg.executor1.executor.application.port.out.InstructionToRobotPort;
 import ch.unisg.executor1.executor.application.port.out.UserToRobotPort;
-import ch.unisg.executorBase.executor.domain.ExecutorBase;
-import ch.unisg.executorBase.executor.domain.ExecutorType;
+import ch.unisg.executorbase.executor.domain.ExecutorBase;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
 
 public class Executor extends ExecutorBase {
 

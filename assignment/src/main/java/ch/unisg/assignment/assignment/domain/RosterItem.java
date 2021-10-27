@@ -1,7 +1,6 @@
 package ch.unisg.assignment.assignment.domain;
 
-import ch.unisg.assignment.assignment.domain.valueobject.IP4Adress;
-import ch.unisg.assignment.assignment.domain.valueobject.Port;
+import ch.unisg.common.valueobject.ExecutorURI;
 import lombok.Getter;
 
 public class RosterItem {
@@ -13,17 +12,12 @@ public class RosterItem {
     private String taskType;
 
     @Getter
-    private IP4Adress executorIP;
+    private ExecutorURI executorURI;
 
-    @Getter
-    private Port executorPort;
-
-
-    public RosterItem(String taskID, String taskType, IP4Adress executorIP, Port executorPort) {
+    public RosterItem(String taskID, String taskType, ExecutorURI executorURI) {
         this.taskID = taskID;
         this.taskType = taskType;
-        this.executorIP = executorIP;
-        this.executorPort = executorPort;
+        this.executorURI = executorURI;
     }
 
 }
