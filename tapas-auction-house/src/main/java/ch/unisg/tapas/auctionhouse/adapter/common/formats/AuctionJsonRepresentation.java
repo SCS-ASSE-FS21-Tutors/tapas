@@ -6,6 +6,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.web.util.UriBuilder;
+
+import java.net.URI;
 
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
@@ -56,5 +59,19 @@ public class AuctionJsonRepresentation {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         return mapper.writeValueAsString(representation);
+    }
+
+    public static Auction deserialize(AuctionJsonRepresentation representation) {
+        return new Auction(
+            new Auction.AuctionId(representation.auctionId),
+            new Auction.AuctionHouseUri(URI.create(representation.auctionHouseUri)),
+            new Auction.AuctionedTaskUri(URI.create(representation.taskUri)),
+            new Auction.AuctionedTaskType(representation.taskType),
+            new Auction.AuctionDeadline(representation.deadline)
+        );
+    }
+
+    public Auction deserialize() {
+        return AuctionJsonRepresentation.deserialize(this);
     }
 }
