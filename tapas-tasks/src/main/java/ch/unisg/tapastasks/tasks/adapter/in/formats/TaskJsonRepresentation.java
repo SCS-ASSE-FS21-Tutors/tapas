@@ -88,7 +88,7 @@ final public class TaskJsonRepresentation {
         this.taskId = task.getTaskId().getValue();
         this.taskStatus = task.getTaskStatus().getValue().name();
 
-        this.originalTaskUri = (task. getOriginalTaskUri() == null) ?
+        this.originalTaskUri = (task.getOriginalTaskUri() == null) ?
             null : task.getOriginalTaskUri().getValue();
 
         this.serviceProvider = (task.getProvider() == null) ? null : task.getProvider().getValue();
