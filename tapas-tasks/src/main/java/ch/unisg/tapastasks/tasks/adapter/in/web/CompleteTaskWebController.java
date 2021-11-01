@@ -1,8 +1,10 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.CompleteTaskCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.CompleteTaskUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +23,7 @@ public class CompleteTaskWebController {
         this.completeTaskUseCase = completeTaskUseCase;
     }
 
-    @PostMapping(path = "/tasks/completeTask", consumes = {TaskMediaType.TASK_MEDIA_TYPE})
+    @PostMapping(path = "/tasks/completeTask", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> completeTask (@RequestBody Task task){
 
         try {
@@ -32,10 +34,12 @@ public class CompleteTaskWebController {
             Task updateATask = completeTaskUseCase.completeTask(command);
 
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
 
-            return new ResponseEntity<>(TaskMediaType.serialize(updateATask), responseHeaders, HttpStatus.ACCEPTED);
-        } catch(ConstraintViolationException e){
+            return new ResponseEntity<>(TaskJsonRepresentation.serialize(updateATask), responseHeaders, HttpStatus.ACCEPTED);
+        } catch (JsonProcessingException e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
     }
