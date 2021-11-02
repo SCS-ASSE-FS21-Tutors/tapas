@@ -15,6 +15,6 @@ public class TaskAvailableService implements TaskAvailableUseCase {
 
     @Override
     public void newTaskAvailable(TaskAvailableCommand command) {
-      // Placeholder so spring can create a bean
+      // Placeholder so spring can create a bean, implementation of this function is inside the executors
     }
 }

@@ -27,6 +27,10 @@ public class NotifyExecutorPoolAdapter implements NotifyExecutorPoolPort {
 
     Logger logger = Logger.getLogger(NotifyExecutorPoolAdapter.class.getName());
 
+    /**
+    *   Notifies the executor-pool about the startup of this executor
+    *   @return if the notification was successful
+    **/
     @Override
     public boolean notifyExecutorPool(ExecutorURI executorURI, ExecutorType executorType) {
 

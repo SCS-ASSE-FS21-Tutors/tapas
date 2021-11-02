@@ -11,6 +11,10 @@ import ch.unisg.common.exception.InvalidExecutorURIException;
 @ControllerAdvice
 public class WebControllerExceptionHandler {
 
+    /**
+    *   Handles error of type InvalidExecutorURIException
+    *   @return 404 Bad Request
+    **/
     @ExceptionHandler(InvalidExecutorURIException.class)
     public ResponseEntity<ErrorResponse> handleException(InvalidExecutorURIException e){
 

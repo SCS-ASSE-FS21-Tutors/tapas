@@ -19,6 +19,10 @@ public class TaskCompletedController {
         this.taskCompletedUseCase = taskCompletedUseCase;
     }
 
+    /**
+    *   Controller which handles the task completed event from executors
+    *   @return 200 OK
+    **/
     @PostMapping(path = "/task/completed", consumes = {"application/json"})
     public ResponseEntity<Void> addNewTaskTaskToTaskList(@RequestBody Task task) {
 

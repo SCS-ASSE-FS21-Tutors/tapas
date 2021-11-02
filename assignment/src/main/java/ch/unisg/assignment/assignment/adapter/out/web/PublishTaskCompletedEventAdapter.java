@@ -25,6 +25,10 @@ public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort 
 
     Logger logger = Logger.getLogger(PublishTaskCompletedEventAdapter.class.getName());
 
+    /**
+    *   Informs the task service about the completion of the task.
+    *   @return void
+    **/
     @Override
     public void publishTaskCompleted(TaskCompletedEvent event) {
 

@@ -19,7 +19,11 @@ public class TaskAvailableController {
         this.taskAvailableUseCase = taskAvailableUseCase;
     }
 
-    @GetMapping(path = "/newtask/{taskType}")
+    /**
+    *   Controller for notification about new events.
+    *   @return 200 OK
+    **/
+    @GetMapping(path = "/newtask/{taskType}", consumes = { "application/json" })
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskType") String taskType) {
 
         if (ExecutorType.contains(taskType.toUpperCase())) {

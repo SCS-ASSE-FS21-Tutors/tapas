@@ -25,6 +25,10 @@ public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
 
     Logger logger = Logger.getLogger(PublishTaskAssignedEventAdapter.class.getName());
 
+    /**
+    *   Informs the task service about the assignment of the task.
+    *   @return void
+    **/
     @Override
     public void publishTaskAssignedEvent(TaskAssignedEvent event) {
 

@@ -24,6 +24,11 @@ public class GetAllExecutorInExecutorPoolByTypeAdapter implements GetAllExecutor
     @Value("${executor-pool.url}")
     private String server;
 
+    /**
+    *   Requests all executor of the give type from the executor-pool and cheks if there is one
+    *   avaialable of this type.
+    *   @return Whether an executor exist or not
+    **/
     @Override
     public boolean doesExecutorTypeExist(ExecutorType type) {
 

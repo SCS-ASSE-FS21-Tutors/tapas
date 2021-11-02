@@ -28,6 +28,11 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
 
     Logger logger = Logger.getLogger(GetAssignmentAdapter.class.getName());
 
+    /**
+    *   Requests a new task assignment
+    *   @return the assigned task
+    *   @see Task
+    **/
     @Override
     public Task getAssignment(ExecutorType executorType, ExecutorURI executorURI) {
 
@@ -44,7 +49,9 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
                 .build();
 
         try {
+            logger.info("Sending getAssignment Request");
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.log(Level.INFO, "getAssignment request result:\n {}", response.body());
             if (response.body().equals("")) {
                 return null;
             }

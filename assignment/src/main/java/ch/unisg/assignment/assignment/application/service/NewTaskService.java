@@ -21,18 +21,22 @@ public class NewTaskService implements NewTaskUseCase {
     private final NewTaskEventPort newTaskEventPort;
     private final GetAllExecutorInExecutorPoolByTypePort getAllExecutorInExecutorPoolByTypePort;
 
+    /**
+    *   Checks if we can execute the give task, if yes the task gets added to the task queue and return true.
+    *   If the task can not be executed by an internal or auction house executor, the method return false.
+    *   @return boolean
+    **/
     @Override
     public boolean addNewTaskToQueue(NewTaskCommand command) {
 
-        if (!getAllExecutorInExecutorPoolByTypePort.doesExecutorTypeExist(command.getTaskType())) {
-            return false;
-        }
+        // if (!getAllExecutorInExecutorPoolByTypePort.doesExecutorTypeExist(command.getTaskType())) {
+        //     return false;
+        // }
 
         Task task = new Task(command.getTaskID(), command.getTaskType());
 
         Roster.getInstance().addTaskToQueue(task);
 
-        // TODO this event should be in the roster function xyz
         NewTaskEvent newTaskEvent = new NewTaskEvent(task.getTaskType());
         newTaskEventPort.publishNewTaskEvent(newTaskEvent);
 

@@ -18,7 +18,11 @@ public class NewTaskController {
         this.newTaskUseCase = newTaskUseCase;
     }
 
-    @PostMapping(path = "/task", consumes = {"application/json"})
+    /**
+    *   Controller which handles the new task event from the tasklist
+    *   @return 201 Create or 409 Conflict
+    **/
+    @PostMapping(path = "/task", consumes = {"application/task+json"})
     public ResponseEntity<Void> newTaskController(@RequestBody Task task) {
 
             NewTaskCommand command = new NewTaskCommand(task.getTaskID(), task.getTaskType());

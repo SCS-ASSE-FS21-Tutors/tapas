@@ -21,6 +21,10 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
 
     Logger logger = Logger.getLogger(ExecutionFinishedEventAdapter.class.getName());
 
+    /**
+    *   Publishes the execution finished event
+    *   @return void
+    **/
     @Override
     public void publishExecutionFinishedEvent(ExecutionFinishedEvent event) {
 
@@ -46,7 +50,7 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
-        System.out.println("Finish execution event sent with result:" + event.getResult());
+        logger.log(Level.INFO, "Finish execution event sent with result: {}", event.getResult());
 
     }
 

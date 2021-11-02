@@ -19,6 +19,11 @@ public class ApplyForTaskService implements ApplyForTaskUseCase {
 
     private final TaskAssignedEventPort taskAssignedEventPort;
 
+    /**
+    *   Checks if a task is available and assignes it to the executor. If task got assigned a task
+    *   assigned event gets published.
+    *   @return assigned task or null if no task is found
+    **/
     @Override
     public Task applyForTask(ApplyForTaskCommand command) {
         Task task = Roster.getInstance().assignTaskToExecutor(command.getTaskType(),

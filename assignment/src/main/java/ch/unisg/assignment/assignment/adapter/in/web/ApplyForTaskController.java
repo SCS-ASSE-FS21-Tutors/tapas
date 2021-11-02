@@ -17,6 +17,10 @@ public class ApplyForTaskController {
         this.applyForTaskUseCase = applyForTaskUseCase;
     }
 
+    /**
+    *   Checks if task is available for the requesting executor.
+    *   @return a task or null if no task found
+    **/
     @PostMapping(path = "/task/apply", consumes = {"application/json"})
     public Task applyForTask(@RequestBody ExecutorInfo executorInfo) {
 
@@ -24,6 +28,5 @@ public class ApplyForTaskController {
             executorInfo.getExecutorURI());
 
         return applyForTaskUseCase.applyForTask(command);
-
     }
 }

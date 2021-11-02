@@ -27,6 +27,10 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
     Logger logger = Logger.getLogger(PublishNewTaskEventAdapter.class.getName());
 
+    /**
+    *   Informs executors about the availability of a new task.
+    *   @return void
+    **/
     @Override
     public void publishNewTaskEvent(NewTaskEvent event) {
 

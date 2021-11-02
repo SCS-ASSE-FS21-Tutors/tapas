@@ -18,6 +18,10 @@ public class TaskCompletedService implements TaskCompletedUseCase {
 
     private final TaskCompletedEventPort taskCompletedEventPort;
 
+    /**
+    *   Completes the task in the roster and publishes a task completed event.
+    *   @return void
+    **/
     @Override
     public void taskCompleted(TaskCompletedCommand command) {
 
