@@ -71,6 +71,9 @@ public class AssignTaskToExecutorInExecutorPoolService implements AssignTaskToEx
                     // return that assignment was successful
                     return true;
                 }
+                else{
+                    System.out.println("No executor");
+                }
             }
         } catch (IOException | InterruptedException | JSONException e) {
             e.printStackTrace();
