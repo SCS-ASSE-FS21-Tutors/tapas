@@ -1,10 +1,10 @@
 package ch.unisg.tapasroster.roster.adapter.out.web;
 
 import ch.unisg.tapasroster.roster.application.port.in.AssignTaskToExecutorCommand;
-import ch.unisg.tapasroster.roster.domain.Task;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 final public class AuctionMediaType {
@@ -13,10 +13,10 @@ final public class AuctionMediaType {
     public static JSONObject toJSON(AssignTaskToExecutorCommand assignTaskToExecutorCommand) throws JSONException {
         JSONObject payload = new JSONObject();
 
-        // TODO: Has to be changed to conform to uniform interface
         payload.put("taskUri", assignTaskToExecutorCommand.getTaskUri().getValue());
         payload.put("taskType", assignTaskToExecutorCommand.getTaskType().getValue());
-        payload.put("deadline", LocalDateTime.now().plusDays(2).toString());
+        String timestamp = Timestamp.valueOf(LocalDateTime.now().plusDays(2)).toString();
+        payload.put("deadline", timestamp);
 
         return payload;
     }

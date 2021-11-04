@@ -27,17 +27,17 @@ public class Task {
 
     @Value
     public static class TaskId {
-        private String value;
+        String value;
     }
 
     @Value
     public static class TaskUri {
-        private String value;
+        String value;
     }
 
 
     @Value
     public static class TaskType {
-        private String value;
+        String value;
     }
 }

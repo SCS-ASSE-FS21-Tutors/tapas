@@ -24,7 +24,7 @@ public class TriggerAuctionForTaskEventHTTPAdapter implements TriggerAuctionForT
             // Use AuctionMediaType to create a new Auction for a given Task
             String payload = AuctionMediaType.serialize(assignTaskToExecutorCommand);
             try {
-                URI startAuctionUri = URI.create(auctionHouseUrl + "/auction/");
+                URI startAuctionUri = URI.create(auctionHouseUrl + "/auctions/");
                 HttpClient httpClient = HttpClient.newHttpClient();
 
                 // Build POST-request with auction
