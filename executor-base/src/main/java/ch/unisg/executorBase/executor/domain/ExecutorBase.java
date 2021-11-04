@@ -2,7 +2,6 @@ package ch.unisg.executorbase.executor.domain;
 
 import java.util.logging.Logger;
 
-import ch.unisg.common.exception.InvalidExecutorURIException;
 import ch.unisg.common.valueobject.ExecutorURI;
 import ch.unisg.executorbase.executor.adapter.out.web.ExecutionFinishedEventAdapter;
 import ch.unisg.executorbase.executor.adapter.out.web.GetAssignmentAdapter;
@@ -39,12 +38,7 @@ public abstract class ExecutorBase {
         this.status = ExecutorStatus.STARTING_UP;
         this.executorType = executorType;
         // TODO set this automaticly
-        try {
-            this.executorURI = new ExecutorURI("localhost:8084");
-        } catch (InvalidExecutorURIException e) {
-            // Shutdown system if the executorURI is not valid
-            System.exit(1);
-        }
+        this.executorURI = new ExecutorURI("localhost:8084");
 
         // Notify executor-pool about existence. If executor-pools response is successfull start with getting an assignment, else shut down executor.
         if(!notifyExecutorPoolService.notifyExecutorPool(this.executorURI, this.executorType)) {
