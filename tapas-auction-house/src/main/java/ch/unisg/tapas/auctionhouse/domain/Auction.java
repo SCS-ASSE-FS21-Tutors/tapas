@@ -166,6 +166,6 @@ public class Auction {
 
     @Value
     public static class AuctionDeadline {
-        int value;
+        String value;
     }
 }

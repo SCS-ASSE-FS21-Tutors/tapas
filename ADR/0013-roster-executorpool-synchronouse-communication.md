@@ -1,4 +1,4 @@
-# 12. Roster ExecutorPool synchronouse communication
+# 12. Roster ExecutorPool synchronous communication
 
 Date: 2021-10-12
 
@@ -8,7 +8,8 @@ Accepted
 
 ## Context
 
-As elaborated in ADR #10 asynchronouse communication is used among most of the components due to the partially long
+Communication between Roster and ExecutorPool is necessary to retrieve an up-to-date list of available executors.
+As elaborated in ADR #10 asynchronous communication is used among most of the components due to the partially long
 execution times and the resulting component coupling. Furthermore, we elaborated that we use synchronous
 communication wherever feasible to decrease complexity of implementation.
 ## Decision
@@ -21,3 +22,5 @@ This is a straightforward process, not introducing the necessity of asynchronous
 ## Consequences
 
 By doing so, we are able to reduce the implementation and communication complexity in this part of the application.
+However, this also means that a delay in the response of the ExecutorPool interferes with
+the assignment of new Tasks.

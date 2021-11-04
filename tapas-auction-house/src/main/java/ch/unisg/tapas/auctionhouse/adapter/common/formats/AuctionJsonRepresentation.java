@@ -28,12 +28,12 @@ public class AuctionJsonRepresentation {
     private String taskType;
 
     @Getter @Setter
-    private Integer deadline;
+    private String deadline;
 
     public AuctionJsonRepresentation() {  }
 
     public AuctionJsonRepresentation(String auctionId, String auctionHouseUri, String taskUri,
-            String taskType, Integer deadline) {
+            String taskType, String deadline) {
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
