@@ -1,14 +1,17 @@
 package ch.unisg.tapasrobotexecutor.robotexecutor.adapter.in.web;
 
+import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.in.formats.TaskMediaType;
 import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.DeleteOperatorWebAdapter;
 import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.InitializeRobotPositionWebAdapter;
 import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.MoveBallOutOfSightWebAdapter;
 import ch.unisg.tapasrobotexecutor.robotexecutor.adapter.out.web.RegisterNewOperatorWebAdapter;
+import ch.unisg.tapasrobotexecutor.robotexecutor.domain.Task;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Optional;
@@ -30,8 +33,8 @@ public class MoveRobotWebController {
         }
     }
 
-    @GetMapping(path = "/executeTask/")
-    public ResponseEntity<String> move() {
+    @GetMapping(path = "/",consumes = TaskMediaType.TASK_MEDIA_TYPE)
+    public ResponseEntity<String> move(@RequestBody TaskMediaType incomingTask) {
         JSONObject payload = new JSONObject();
 
         RegisterNewOperatorWebAdapter authorizeOperator = new RegisterNewOperatorWebAdapter();
@@ -56,13 +59,19 @@ public class MoveRobotWebController {
             DeleteOperatorWebAdapter deleteOperatorWebAdapter = new DeleteOperatorWebAdapter();
             deleteOperatorWebAdapter.deleteOperator(authKeyValue);
 
+            incomingTask.setTaskStatus(Task.Status.EXECUTED.toString());
+            incomingTask.setOutputData("");
+            String jsonPayload = incomingTask.toJSON();
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");
-            return new ResponseEntity<>(payload.toString(), responseHeaders, HttpStatus.OK);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
+            return new ResponseEntity<>(jsonPayload,responseHeaders, HttpStatus.OK);
         } else {
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, "application/json");
-            return new ResponseEntity<>("", responseHeaders, HttpStatus.CONFLICT);
+            incomingTask.setTaskStatus(Task.Status.FAILED.toString());
+            incomingTask.setOutputData("");
+            String jsonPayload = incomingTask.toJSON();
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE);
+            return new ResponseEntity<>(jsonPayload, responseHeaders, HttpStatus.CONFLICT);
         }
     }
 }
