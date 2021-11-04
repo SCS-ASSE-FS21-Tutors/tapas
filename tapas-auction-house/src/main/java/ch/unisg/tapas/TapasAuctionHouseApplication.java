@@ -28,7 +28,7 @@ public class TapasAuctionHouseApplication {
 
 		// We will use these bootstrap methods in Week 6:
         // bootstrapMarketplaceWithWebSub();
-        // bootstrapMarketplaceWithMqtt();
+        bootstrapMarketplaceWithMqtt();
 
         tapasAuctioneerApp.run(args);
 	}

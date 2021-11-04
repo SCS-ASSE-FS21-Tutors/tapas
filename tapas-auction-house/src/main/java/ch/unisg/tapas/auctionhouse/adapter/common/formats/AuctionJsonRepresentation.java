@@ -3,9 +3,12 @@ package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.net.URI;
 
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
@@ -56,5 +59,18 @@ public class AuctionJsonRepresentation {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         return mapper.writeValueAsString(representation);
+    }
+
+    public static Auction deserialize(String auctionString) throws JsonProcessingException {
+        JsonNode auctionData = new ObjectMapper().readTree(auctionString);
+        Auction.AuctionHouseUri auctionHouseUri =
+            new Auction.AuctionHouseUri(URI.create(auctionData.get("auctionHouseUri").textValue()));
+        Auction.AuctionedTaskUri taskUri =
+            new Auction.AuctionedTaskUri(URI.create(auctionData.get("auctionHouseUri").textValue()));
+        Auction.AuctionedTaskType taskType=
+            new Auction.AuctionedTaskType(auctionData.get("taskType").textValue());
+        Auction.AuctionDeadline deadline =
+            new Auction.AuctionDeadline(auctionData.get("deadline").textValue());
+        return new Auction(auctionHouseUri, taskUri, taskType, deadline);
     }
 }
