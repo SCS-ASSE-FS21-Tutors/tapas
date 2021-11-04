@@ -67,6 +67,7 @@ public class QueryExecutorPoolExecutorsHTTPAdapter implements QueryExecutorPoolE
             }
         } catch (IOException | InterruptedException e) {
             System.err.println(e.getMessage());
+            e.printStackTrace();
         }
         return Optional.empty();
     }
