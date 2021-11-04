@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
+import ch.unisg.tapastasks.common.Util;
 import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
@@ -35,10 +36,6 @@ import java.util.Optional;
 public class AddNewTaskToTaskListWebController {
     private final AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase;
 
-    // Used to retrieve properties from application.properties
-    @Autowired
-    private Environment environment;
-
     public AddNewTaskToTaskListWebController(AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase) {
         this.addNewTaskToTaskListUseCase = addNewTaskToTaskListUseCase;
     }
@@ -70,8 +67,7 @@ public class AddNewTaskToTaskListWebController {
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
             // Construct and advertise the URI of the newly created task; we retrieve the base URI
             // from the application.properties file
-            responseHeaders.add(HttpHeaders.LOCATION, environment.getProperty("baseuri")
-                + "tasks/" + createdTask.getTaskId().getValue());
+            responseHeaders.add(HttpHeaders.LOCATION, Util.buildTaskUri(createdTask.getTaskId().getValue()));
 
             return new ResponseEntity<>(TaskJsonRepresentation.serialize(createdTask), responseHeaders,
                 HttpStatus.CREATED);

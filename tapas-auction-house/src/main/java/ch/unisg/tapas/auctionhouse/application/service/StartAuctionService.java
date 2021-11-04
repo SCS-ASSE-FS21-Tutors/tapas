@@ -11,6 +11,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -24,8 +27,6 @@ import java.util.concurrent.TimeUnit;
 @Component
 public class StartAuctionService implements LaunchAuctionUseCase {
     private static final Logger LOGGER = LogManager.getLogger(StartAuctionService.class);
-
-    private final static int DEFAULT_AUCTION_DEADLINE_MILLIS = 10000;
 
     // Event port used to publish an auction started event
     private final AuctionStartedEventPort auctionStartedEventPort;
@@ -54,17 +55,24 @@ public class StartAuctionService implements LaunchAuctionUseCase {
      */
     @Override
     public Auction launchAuction(LaunchAuctionCommand command) {
+        LocalDateTime nowLocalDatetime = LocalDateTime.now();
         Auction.AuctionDeadline deadline = (command.getDeadline() == null) ?
-            new Auction.AuctionDeadline(DEFAULT_AUCTION_DEADLINE_MILLIS) : command.getDeadline();
+            new Auction.AuctionDeadline(Timestamp.valueOf(nowLocalDatetime.plusDays(1)).toString()) : command.getDeadline();
 
         // Create a new auction and add it to the auction registry
         Auction auction = new Auction(new Auction.AuctionHouseUri(config.getAuctionHouseUri()),
             command.getTaskUri(), command.getTaskType(), deadline);
         auctions.addAuction(auction);
 
+        // Compute milliseconds between now and deadline for scheduler
+        LocalDateTime deadlineLocalDateTime = Timestamp.valueOf(deadline.getValue()).toLocalDateTime();
+        long millisecondsTillDeadline = Duration.between(nowLocalDatetime, deadlineLocalDateTime).toMillis();
         // Schedule the closing of the auction at the deadline
-        service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue(),
-            TimeUnit.MILLISECONDS);
+        service.schedule(
+            new CloseAuctionTask(auction.getAuctionId()),
+            millisecondsTillDeadline,
+            TimeUnit.MILLISECONDS
+        );
 
         // Publish an auction started event
         AuctionStartedEvent auctionStartedEvent = new AuctionStartedEvent(auction);
@@ -99,13 +107,13 @@ public class StartAuctionService implements LaunchAuctionUseCase {
                     // Notify the bidder
                     Bid.BidderName bidderName = bid.get().getBidderName();
                     LOGGER.info("Auction #" + auction.getAuctionId().getValue() + " for task "
-                            + auction.getTaskUri().getValue() + " won by " + bidderName.getValue());
+                        + auction.getTaskUri().getValue() + " won by " + bidderName.getValue());
 
                     // Send an auction won event for the winning bid
                     auctionWonEventPort.publishAuctionWonEvent(new AuctionWonEvent(bid.get()));
                 } else {
                     LOGGER.info("Auction #" + auction.getAuctionId().getValue() + " ended with no bids for task "
-                            + auction.getTaskUri().getValue());
+                        + auction.getTaskUri().getValue());
                 }
             }
         }

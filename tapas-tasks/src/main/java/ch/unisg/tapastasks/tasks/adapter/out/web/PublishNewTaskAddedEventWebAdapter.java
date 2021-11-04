@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
+import ch.unisg.tapastasks.common.Util;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -20,9 +21,8 @@ import java.util.HashMap;
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
-    //    @org.springframework.beans.factory.annotation.Value("${newTaskEventServer}")
-    //    private String server;
-    String server = "http://tapas-roster.86-119-35-72.nip.io";
+    @org.springframework.beans.factory.annotation.Value("${newTaskEventServer}")
+    private String newTaskEventServer;
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
@@ -34,6 +34,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
             put("tasklist", event.taskListName);
             put("taskType", event.taskType);
             put("taskId", event.taskId);
+            put("taskUri", Util.buildTaskUri(event.taskId));
         }};
 
         var objectMapper = new ObjectMapper();
@@ -46,7 +47,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/roster/newtask/"))
+                .uri(URI.create(newTaskEventServer +"/roster/newtask/"))
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .header(HttpHeaders.CONTENT_TYPE, "application/json")
                 .build();
@@ -55,6 +56,12 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
+            System.err.printf(
+                "Received following error with HTTP Request to %s with method %s and body %s",
+                request.uri(),
+                request.method(),
+                request.bodyPublisher()
+                );
             e.printStackTrace();
         }
 
