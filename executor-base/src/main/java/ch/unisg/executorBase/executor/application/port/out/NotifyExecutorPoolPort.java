@@ -1,7 +1,8 @@
-package ch.unisg.executorBase.executor.application.port.out;
+package ch.unisg.executorbase.executor.application.port.out;
 
-import ch.unisg.executorBase.executor.domain.ExecutorType;
+import ch.unisg.common.valueobject.ExecutorURI;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
 
 public interface NotifyExecutorPoolPort {
-    boolean notifyExecutorPool(String ip, int port, ExecutorType executorType);
+    boolean notifyExecutorPool(ExecutorURI executorURI, ExecutorType executorType);
 }

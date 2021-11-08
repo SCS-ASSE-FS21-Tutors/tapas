@@ -1,10 +1,9 @@
-package ch.unisg.executorBase.executor.application.port.in;
-
-import ch.unisg.executorBase.common.SelfValidating;
-import ch.unisg.executorBase.executor.domain.ExecutorType;
+package ch.unisg.executorbase.executor.application.port.in;
 
 import javax.validation.constraints.NotNull;
 
+import ch.unisg.common.validation.SelfValidating;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
 import lombok.Value;
 
 @Value

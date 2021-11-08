@@ -1,12 +1,12 @@
-package ch.unisg.executorBase.executor.domain;
+package ch.unisg.executorbase.executor.domain;
 
 import lombok.Getter;
 
 public class ExecutionFinishedEvent {
-    
+
     @Getter
     private String taskID;
-    
+
     @Getter
     private String result;
 

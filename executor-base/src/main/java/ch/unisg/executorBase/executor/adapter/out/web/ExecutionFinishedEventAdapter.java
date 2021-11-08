@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.executor.adapter.out.web;
+package ch.unisg.executorbase.executor.adapter.out.web;
 
 import java.io.IOException;
 import java.net.URI;
@@ -9,16 +9,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
-import ch.unisg.executorBase.executor.application.port.out.ExecutionFinishedEventPort;
-import ch.unisg.executorBase.executor.domain.ExecutionFinishedEvent;
+import ch.unisg.executorbase.executor.application.port.out.ExecutionFinishedEventPort;
+import ch.unisg.executorbase.executor.domain.ExecutionFinishedEvent;
 
 public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort {
 
-    String server = "http://127.0.0.1:8082";
+    @Value("${roster.url}")
+    String server;
 
     Logger logger = Logger.getLogger(ExecutionFinishedEventAdapter.class.getName());
 
+    /**
+    *   Publishes the execution finished event
+    *   @return void
+    **/
     @Override
     public void publishExecutionFinishedEvent(ExecutionFinishedEvent event) {
 
@@ -37,13 +43,14 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
 
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
-        System.out.println("Finish execution event sent with result:" + event.getResult());
+        logger.log(Level.INFO, "Finish execution event sent with result: {}", event.getResult());
 
     }
 

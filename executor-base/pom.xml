@@ -60,6 +60,12 @@
 			<artifactId>json</artifactId>
 			<version>20210307</version>
 		</dependency>
+
+        <dependency>
+			<groupId>ch.unisg</groupId>
+			<artifactId>common</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 
 </project>

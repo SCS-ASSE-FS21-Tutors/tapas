@@ -3,9 +3,9 @@ package ch.unisg.executorcomputation.executor.application.service;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.executorcomputation.executor.domain.Executor;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableCommand;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableUseCase;
-import ch.unisg.executorBase.executor.domain.ExecutorStatus;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableCommand;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableUseCase;
+import ch.unisg.executorbase.executor.domain.ExecutorStatus;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;

@@ -3,9 +3,9 @@ package ch.unisg.executorrobot.executor.application.service;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.executorrobot.executor.domain.Executor;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableCommand;
-import ch.unisg.executorBase.executor.application.port.in.TaskAvailableUseCase;
-import ch.unisg.executorBase.executor.domain.ExecutorStatus;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableCommand;
+import ch.unisg.executorbase.executor.application.port.in.TaskAvailableUseCase;
+import ch.unisg.executorbase.executor.domain.ExecutorStatus;
 import lombok.RequiredArgsConstructor;
 
 import javax.transaction.Transactional;
@@ -20,7 +20,7 @@ public class TaskAvailableService implements TaskAvailableUseCase {
 
         Executor executor = Executor.getExecutor();
 
-        if (executor.getExecutorType() == command.getTaskType() && 
+        if (executor.getExecutorType() == command.getTaskType() &&
             executor.getStatus() == ExecutorStatus.IDLING) {
             executor.getAssignment();
         }

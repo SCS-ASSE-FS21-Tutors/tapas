@@ -1,4 +1,4 @@
-package ch.unisg.executorBase.executor.adapter.out.web;
+package ch.unisg.executorbase.executor.adapter.out.web;
 
 import java.io.IOException;
 import java.net.URI;
@@ -8,12 +8,14 @@ import java.net.http.HttpResponse;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import ch.unisg.executorBase.executor.application.port.out.GetAssignmentPort;
-import ch.unisg.executorBase.executor.domain.ExecutorType;
-import ch.unisg.executorBase.executor.domain.Task;
+import ch.unisg.common.valueobject.ExecutorURI;
+import ch.unisg.executorbase.executor.application.port.out.GetAssignmentPort;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
+import ch.unisg.executorbase.executor.domain.Task;
 
 import org.json.JSONObject;
 
@@ -21,17 +23,22 @@ import org.json.JSONObject;
 @Primary
 public class GetAssignmentAdapter implements GetAssignmentPort {
 
-    String server = "http://127.0.0.1:8082";
+    @Value("${roster.url}")
+    String server;
 
     Logger logger = Logger.getLogger(GetAssignmentAdapter.class.getName());
 
+    /**
+    *   Requests a new task assignment
+    *   @return the assigned task
+    *   @see Task
+    **/
     @Override
-    public Task getAssignment(ExecutorType executorType, String ip, int port) {
+    public Task getAssignment(ExecutorType executorType, ExecutorURI executorURI) {
 
         String body = new JSONObject()
                   .put("executorType", executorType)
-                  .put("ip", ip)
-                  .put("port", port)
+                  .put("executorURI", executorURI.getValue())
                   .toString();
 
         HttpClient client = HttpClient.newHttpClient();
@@ -42,17 +49,20 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
                 .build();
 
         try {
+            logger.info("Sending getAssignment Request");
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            logger.log(Level.INFO, "getAssignment request result:\n {}", response.body());
             if (response.body().equals("")) {
                 return null;
             }
             JSONObject responseBody = new JSONObject(response.body());
             return new Task(responseBody.getString("taskID"), responseBody.getString("input"));
 
-        } catch (IOException | InterruptedException e) {
+        } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            // Restore interrupted state...
             Thread.currentThread().interrupt();
+        } catch (IOException e) {
+            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
         return null;

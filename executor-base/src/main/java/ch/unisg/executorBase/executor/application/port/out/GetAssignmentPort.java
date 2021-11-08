@@ -1,8 +1,9 @@
-package ch.unisg.executorBase.executor.application.port.out;
+package ch.unisg.executorbase.executor.application.port.out;
 
-import ch.unisg.executorBase.executor.domain.ExecutorType;
-import ch.unisg.executorBase.executor.domain.Task;
+import ch.unisg.common.valueobject.ExecutorURI;
+import ch.unisg.executorbase.executor.domain.ExecutorType;
+import ch.unisg.executorbase.executor.domain.Task;
 
 public interface GetAssignmentPort {
-    Task getAssignment(ExecutorType executorType, String ip, int port);
+    Task getAssignment(ExecutorType executorType, ExecutorURI executorURI);
 }
