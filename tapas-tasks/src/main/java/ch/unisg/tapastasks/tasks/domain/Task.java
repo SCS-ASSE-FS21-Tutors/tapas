@@ -46,6 +46,7 @@ public class Task {
         this.taskId = new TaskId(UUID.randomUUID().toString());
         this.taskResult = new TaskResult("");
         this.originalTaskUri = taskUri;
+
         this.inputData = null;
         this.outputData = null;
     }

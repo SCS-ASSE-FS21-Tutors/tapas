@@ -19,6 +19,7 @@ public class TaskList {
 
     //Note: We do not care about the management of task lists, there is only one within this service
     //--> using the Singleton pattern here to make lives easy; we will later load it from a repo
+
     private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-group1"));
 
     private TaskList(TaskListName taskListName) {
