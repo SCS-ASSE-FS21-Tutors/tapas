@@ -67,50 +67,51 @@ public class TaskList {
     }
 
     public Optional<Task> deleteTaskById(Task.TaskId id) {
-        for (Task task: listOfTasks.value){
-            if(task.getTaskId().getValue().equalsIgnoreCase(id.getValue())){
+        for (Task task : listOfTasks.value) {
+            if (task.getTaskId().getValue().equalsIgnoreCase(id.getValue())) {
                 listOfTasks.value.remove(task);
                 return Optional.of(task);
             }
         }
 
         return Optional.empty();
-    // public Task changeTaskStatusToAssigned(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
-    //         throws TaskNotFoundException {
-    //     return changeTaskStatus(id, new Task.TaskStatus(Task.Status.ASSIGNED), serviceProvider, Optional.empty());
-    // }
-
-    // public Task changeTaskStatusToRunning(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
-    //         throws TaskNotFoundException {
-    //     return changeTaskStatus(id, new Task.TaskStatus(Task.Status.RUNNING), serviceProvider, Optional.empty());
-    // }
-
-    // public Task changeTaskStatusToExecuted(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider,
-    //         Optional<Task.OutputData> outputData) throws TaskNotFoundException {
-    //     return changeTaskStatus(id, new Task.TaskStatus(Task.Status.EXECUTED), serviceProvider, outputData);
-    // }
-
-    // private Task changeTaskStatus(Task.TaskId id, Task.TaskStatus status, Optional<Task.ServiceProvider> serviceProvider,
-    //         Optional<Task.OutputData> outputData) {
-    //     Optional<Task> taskOpt = retrieveTaskById(id);
-
-    //     if (taskOpt.isEmpty()) {
-    //         throw new TaskNotFoundException();
-    //     }
-
-    //     Task task = taskOpt.get();
-    //     task.setTaskStatus(status);
-
-    //     if (serviceProvider.isPresent()) {
-    //         task.setProvider(serviceProvider.get());
-    //     }
-
-    //     if (outputData.isPresent()) {
-    //         task.setOutputData(outputData.get());
-    //     }
-
-    //     return task;
     }
+     public Task changeTaskStatusToAssigned(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
+             throws TaskNotFoundException {
+         return changeTaskStatus(id, new Task.TaskStatus(Task.Status.ASSIGNED), serviceProvider, Optional.empty());
+     }
+
+     public Task changeTaskStatusToRunning(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider)
+             throws TaskNotFoundException {
+         return changeTaskStatus(id, new Task.TaskStatus(Task.Status.RUNNING), serviceProvider, Optional.empty());
+     }
+
+     public Task changeTaskStatusToExecuted(Task.TaskId id, Optional<Task.ServiceProvider> serviceProvider,
+             Optional<Task.OutputData> outputData) throws TaskNotFoundException {
+         return changeTaskStatus(id, new Task.TaskStatus(Task.Status.EXECUTED), serviceProvider, outputData);
+     }
+
+     private Task changeTaskStatus(Task.TaskId id, Task.TaskStatus status, Optional<Task.ServiceProvider> serviceProvider,
+             Optional<Task.OutputData> outputData) {
+         Optional<Task> taskOpt = retrieveTaskById(id);
+
+         if (taskOpt.isEmpty()) {
+             throw new TaskNotFoundException();
+         }
+
+         Task task = taskOpt.get();
+         task.setTaskStatus(status);
+
+         if (serviceProvider.isPresent()) {
+             task.setProvider(serviceProvider.get());
+         }
+
+         if (outputData.isPresent()) {
+             task.setOutputData(outputData.get());
+         }
+
+         return task;
+     }
 
     @Value
     public static class TaskListName {

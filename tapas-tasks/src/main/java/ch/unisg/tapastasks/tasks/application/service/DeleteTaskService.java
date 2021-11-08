@@ -19,10 +19,15 @@ public class DeleteTaskService implements DeleteTaskUseCase {
     @Override
     public Optional<Task> deleteTask(DeleteTaskCommand command){
 
-        // TODO check with assignment service if we can delte
-
         TaskList taskList = TaskList.getTapasTaskList();
-        return taskList.deleteTaskById(command.getTaskId());
+        Optional<Task> updatedTask = taskList.retrieveTaskById(command.getTaskId());
+        Task newTask = updatedTask.get();
+        // TODO: Fill in the right condition into the if-statement and the else-statement
+        if (/*the task can be deleted*/){
+            return taskList.deleteTaskById(command.getTaskId());
+        } else {
+            /*send message back to TaskList that the task cannot be deleted*/
+        }
 
     }
 }

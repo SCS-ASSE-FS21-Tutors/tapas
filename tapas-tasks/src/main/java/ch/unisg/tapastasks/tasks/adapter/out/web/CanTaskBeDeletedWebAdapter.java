@@ -1,7 +1,8 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
-import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
-import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
+
+import ch.unisg.tapastasks.tasks.application.port.out.CanTaskBeDeletedPort;
+import ch.unisg.tapastasks.tasks.domain.DeleteTaskEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.context.annotation.Primary;
@@ -16,39 +17,40 @@ import java.util.HashMap;
 
 @Component
 @Primary
-public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
+public class CanTaskBeDeletedWebAdapter implements CanTaskBeDeletedPort {
 
-    //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
-    String server = "http://127.0.0.1:8082";
+    // Base URI of the service interested in this event
+    //Todo: Add the right IP address
+    String server = null;
 
     @Override
-    public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
+    public void canTaskBeDeletedEvent(DeleteTaskEvent event){
 
-        //Here we would need to work with DTOs in case the payload of calls becomes more complex
-
-        var values = new HashMap<String, String>() {{
-            put("taskID", event.taskId);
-            put("taskType", event.taskType);
+        var values = new HashMap<> () {{
+            put("taskId", event.taskId);
+            put("taskUri", event.taskUri);
         }};
 
         var objectMapper = new ObjectMapper();
         String requestBody = null;
         try {
             requestBody = objectMapper.writeValueAsString(values);
-        } catch (JsonProcessingException e) {
+        } catch (JsonProcessingException e){
             e.printStackTrace();
         }
 
+        //Todo: Question: How do we include the URI from the DeleteTaskEvent? Do we even need it?
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server+"/task"))
-                .header("Content-Type", "application/task+json")
-                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
-                .build();
+            .uri(URI.create(server+"task"))
+            .header("Content-Type", "application/task+json")
+            .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+            .build();
 
+        //Todo: The following parameters probably need to be changed to get the right error code
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (IOException e) {
+        } catch (IOException e){
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
