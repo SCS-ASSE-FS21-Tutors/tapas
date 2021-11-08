@@ -21,40 +21,33 @@ public class Task {
     @Getter
     private final TaskType taskType;
 
-    @Getter
-    public TaskState taskState; // had to make public for CompleteTaskService
+    @Getter @Setter
+    public TaskStatus taskStatus; // had to make public for CompleteTaskService
 
     @Getter
     public TaskResult taskResult; // same as above
 
-    // private final OriginalTaskUri originalTaskUri;
+    @Getter
+    private final OriginalTaskUri originalTaskUri;
 
-    // @Getter @Setter
-    // private TaskStatus taskStatus;
+    @Getter @Setter
+    private ServiceProvider provider;
 
-    // @Getter @Setter
-    // private ServiceProvider provider;
+    @Getter @Setter
+    private InputData inputData;
 
-    // @Getter @Setter
-    // private InputData inputData;
-
-    // @Getter @Setter
-    // private OutputData outputData;
+    @Getter @Setter
+    private OutputData outputData;
 
     public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
-        this.taskId = new TaskId(UUID.randomUUID().toString());
-
         this.taskName = taskName;
         this.taskType = taskType;
-        this.taskState = new TaskState(State.OPEN);
+        this.taskStatus = new TaskStatus(Status.OPEN);
         this.taskId = new TaskId(UUID.randomUUID().toString());
         this.taskResult = new TaskResult("");
-        // this.originalTaskUri = taskUri;
-
-        // this.taskStatus = new TaskStatus(Status.OPEN);
-
-        // this.inputData = null;
-        // this.outputData = null;
+        this.originalTaskUri = taskUri;
+        this.inputData = null;
+        this.outputData = null;
     }
 
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {

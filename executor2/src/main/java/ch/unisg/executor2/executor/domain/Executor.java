@@ -19,19 +19,28 @@ public class Executor extends ExecutorBase {
 
     @Override
     protected
-    String execution() {
+    String execution(String... input) {
 
-        int a = 20;
-        int b = 20;
+        double result = Double.NaN;
+        int a = Integer.parseInt(input[0]);
+        int b = Integer.parseInt(input[2]);
+        String operation = input[1];
+
         try {
             TimeUnit.SECONDS.sleep(20);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
 
-        int result = a + b;
+        if (operation == "+") {
+            result = a + b;
+        } else if (operation == "*") {
+            result = a * b;
+        } else if (operation == "-") {
+            result = a - b;
+        }
 
-        return Integer.toString(result);
+        return Double.toString(result);
     }
 
 }

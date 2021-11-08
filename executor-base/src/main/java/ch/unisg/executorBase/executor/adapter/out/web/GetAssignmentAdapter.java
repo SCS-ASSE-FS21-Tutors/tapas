@@ -55,8 +55,8 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
             if (response.body().equals("")) {
                 return null;
             }
-
-            return new Task(new JSONObject(response.body()).getString("taskID"));
+            JSONObject responseBody = new JSONObject(response.body());
+            return new Task(responseBody.getString("taskID"), responseBody.getString("input"));
 
         } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);

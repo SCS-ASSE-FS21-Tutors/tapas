@@ -70,7 +70,7 @@ public abstract class ExecutorBase {
         logger.info("Starting execution");
         this.status = ExecutorStatus.EXECUTING;
 
-        task.setResult(execution());
+        task.setResult(execution(task.getInput()));
 
         // TODO implement logic if execution was not successful
         executionFinishedEventPort.publishExecutionFinishedEvent(
@@ -84,6 +84,6 @@ public abstract class ExecutorBase {
     *   Implementation of the actual execution method of an executor
     *   @return the execution result
     **/
-    protected abstract String execution();
+    protected abstract String execution(String... input);
 
 }
