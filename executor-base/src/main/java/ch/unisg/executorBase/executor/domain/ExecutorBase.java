@@ -61,7 +61,7 @@ public abstract class ExecutorBase {
         System.out.println("Starting execution");
         this.status = ExecutorStatus.EXECUTING;
 
-        task.setResult(execution());
+        task.setResult(execution(task.getInput()));
 
         executionFinishedEventPort.publishExecutionFinishedEvent(
             new ExecutionFinishedEvent(task.getTaskID(), task.getResult(), "SUCCESS"));
@@ -70,6 +70,6 @@ public abstract class ExecutorBase {
         getAssignment();
     }
 
-    protected abstract String execution();
-
+    protected abstract String execution(String... input);
+    
 }

@@ -42,7 +42,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(server+"/task"))
-                .header("Content-Type", "application/json")
+                .header("Content-Type", "application/task+json")
                 .POST(HttpRequest.BodyPublishers.ofString(requestBody))
                 .build();
 
