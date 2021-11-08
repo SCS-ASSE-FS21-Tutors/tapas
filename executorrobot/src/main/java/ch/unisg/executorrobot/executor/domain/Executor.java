@@ -1,7 +1,5 @@
 package ch.unisg.executorrobot.executor.domain;
 
-import java.net.http.HttpClient;
-import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
 import ch.unisg.executorrobot.executor.adapter.out.DeleteUserFromRobotAdapter;
@@ -30,7 +28,7 @@ public class Executor extends ExecutorBase {
 
     @Override
     protected
-    String execution() {
+    String execution(String... input) {
 
         String key = userToRobotPort.userToRobot();
         try {
