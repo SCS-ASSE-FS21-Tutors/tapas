@@ -12,8 +12,12 @@ public class Task {
     @Setter
     private String result;
 
-    public Task(String taskID) {
+    @Getter
+    private String[] input;
+
+    public Task(String taskID, String... input) {
         this.taskID = taskID;
+        this.input = input;
     }
 
 }
