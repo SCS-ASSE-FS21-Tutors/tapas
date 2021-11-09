@@ -1,5 +1,6 @@
 package ch.unisg.executorpool.adapter.in.web;
 
+import ch.unisg.executorpool.adapter.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.executorpool.application.port.in.GetAllExecutorsInExecutorPoolByTypeQuery;
 import ch.unisg.executorpool.application.port.in.GetAllExecutorsInExecutorPoolByTypeUseCase;
 import ch.unisg.executorpool.domain.ExecutorClass;
@@ -28,8 +29,8 @@ public class GetAllExecutorsInExecutorPoolByTypeWebController {
 
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
+        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE);
 
-        return new ResponseEntity<>(ExecutorMediaType.serialize(matchedExecutors), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(ExecutorJsonRepresentation.serialize(matchedExecutors), responseHeaders, HttpStatus.OK);
     }
 }
