@@ -17,6 +17,6 @@ public class RemoveExecutorFromExecutorPoolService implements RemoveExecutorFrom
     @Override
     public Optional<ExecutorClass> removeExecutorFromExecutorPool(RemoveExecutorFromExecutorPoolCommand command){
         ExecutorPool executorPool = ExecutorPool.getExecutorPool();
-        return executorPool.removeExecutorByIpAndPort(command.getExecutorIp(), command.getExecutorPort());
+        return executorPool.removeExecutorByIpAndPort(command.getExecutorUri());
     }
 }

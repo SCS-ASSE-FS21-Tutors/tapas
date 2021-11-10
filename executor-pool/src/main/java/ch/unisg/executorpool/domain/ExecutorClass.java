@@ -3,36 +3,29 @@ package ch.unisg.executorpool.domain;
 import lombok.Getter;
 import lombok.Value;
 
+import java.net.URI;
+
 public class ExecutorClass {
 
     @Getter
-    private final ExecutorIp executorIp;
-
-    @Getter
-    private final ExecutorPort executorPort;
+    private final ExecutorUri executorUri;
 
     @Getter
     private final ExecutorTaskType executorTaskType;
 
-    public ExecutorClass(ExecutorIp executorIp, ExecutorPort executorPort, ExecutorTaskType executorTaskType){
-        this.executorIp = executorIp;
-        this.executorPort = executorPort;
+    public ExecutorClass(ExecutorUri executorUri, ExecutorTaskType executorTaskType){
+        this.executorUri = executorUri;
         this.executorTaskType = executorTaskType;
     }
 
-    protected static ExecutorClass createExecutorClass(ExecutorIp executorIp, ExecutorPort executorPort, ExecutorTaskType executorTaskType){
-        System.out.println("New Task: " + executorIp.getValue() + " " + executorPort.getValue() + " " + executorTaskType.getValue());
-        return new ExecutorClass(executorIp, executorPort, executorTaskType);
+    protected static ExecutorClass createExecutorClass(ExecutorUri executorUri, ExecutorTaskType executorTaskType){
+        System.out.println("New Executor: " + executorUri.value.toString() + " " + executorTaskType.getValue());
+        return new ExecutorClass(executorUri, executorTaskType);
     }
 
     @Value
-    public static class ExecutorIp {
-        private String value;
-    }
-
-    @Value
-    public static class ExecutorPort {
-        private String value;
+    public static class ExecutorUri {
+        private URI value;
     }
 
     @Value

@@ -20,6 +20,6 @@ public class AddNewExecutorToExecutorPoolService implements AddNewExecutorToExec
     public ExecutorClass addNewExecutorToExecutorPool(AddNewExecutorToExecutorPoolCommand command){
         ExecutorPool executorPool = ExecutorPool.getExecutorPool();
 
-        return executorPool.addNewExecutor(command.getExecutorIp(), command.getExecutorPort(), command.getExecutorTaskType());
+        return executorPool.addNewExecutor(command.getExecutorUri(), command.getExecutorTaskType());
     }
 }
