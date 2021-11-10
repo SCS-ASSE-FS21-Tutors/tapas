@@ -7,11 +7,11 @@ import lombok.Value;
 import javax.validation.constraints.NotNull;
 
 @Value
-public class GetAllExecutorInExecutorPoolByTypeQuery extends SelfValidating<GetAllExecutorInExecutorPoolByTypeQuery> {
+public class GetAllExecutorsInExecutorPoolByTypeQuery extends SelfValidating<GetAllExecutorsInExecutorPoolByTypeQuery> {
     @NotNull
     private final ExecutorTaskType executorTaskType;
 
-    public GetAllExecutorInExecutorPoolByTypeQuery(ExecutorTaskType executorTaskType){
+    public GetAllExecutorsInExecutorPoolByTypeQuery(ExecutorTaskType executorTaskType){
         this.executorTaskType = executorTaskType;
         this.validateSelf();
     }

@@ -1,7 +1,7 @@
 package ch.unisg.executorpool.adapter.in.web;
 
-import ch.unisg.executorpool.application.port.in.GetAllExecutorInExecutorPoolByTypeQuery;
-import ch.unisg.executorpool.application.port.in.GetAllExecutorInExecutorPoolByTypeUseCase;
+import ch.unisg.executorpool.application.port.in.GetAllExecutorsInExecutorPoolByTypeQuery;
+import ch.unisg.executorpool.application.port.in.GetAllExecutorsInExecutorPoolByTypeUseCase;
 import ch.unisg.executorpool.domain.ExecutorClass;
 import ch.unisg.executorpool.domain.ExecutorClass.ExecutorTaskType;
 import org.springframework.http.HttpHeaders;
@@ -14,17 +14,17 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-public class GetAllExecutorInExecutorPoolByTypeWebController {
-    private final GetAllExecutorInExecutorPoolByTypeUseCase getAllExecutorInExecutorPoolByTypeUseCase;
+public class GetAllExecutorsInExecutorPoolByTypeWebController {
+    private final GetAllExecutorsInExecutorPoolByTypeUseCase getAllExecutorsInExecutorPoolByTypeUseCase;
 
-    public GetAllExecutorInExecutorPoolByTypeWebController(GetAllExecutorInExecutorPoolByTypeUseCase getAllExecutorInExecutorPoolByTypeUseCase){
-        this.getAllExecutorInExecutorPoolByTypeUseCase = getAllExecutorInExecutorPoolByTypeUseCase;
+    public GetAllExecutorsInExecutorPoolByTypeWebController(GetAllExecutorsInExecutorPoolByTypeUseCase getAllExecutorInExecutorPoolByTypeUseCase){
+        this.getAllExecutorsInExecutorPoolByTypeUseCase = getAllExecutorInExecutorPoolByTypeUseCase;
     }
 
-    @GetMapping(path = "/executor-pool/GetAllExecutorInExecutorPoolByType/{taskType}")
+    @GetMapping(path = "/executor-pool/GetAllExecutorsInExecutorPoolByType/{taskType}")
     public ResponseEntity<String> getAllExecutorInExecutorPoolByType(@PathVariable("taskType") String taskType){
-        GetAllExecutorInExecutorPoolByTypeQuery query = new GetAllExecutorInExecutorPoolByTypeQuery(new ExecutorTaskType(taskType));
-        List<ExecutorClass> matchedExecutors = getAllExecutorInExecutorPoolByTypeUseCase.getAllExecutorInExecutorPoolByType(query);
+        GetAllExecutorsInExecutorPoolByTypeQuery query = new GetAllExecutorsInExecutorPoolByTypeQuery(new ExecutorTaskType(taskType));
+        List<ExecutorClass> matchedExecutors = getAllExecutorsInExecutorPoolByTypeUseCase.getAllExecutorsInExecutorPoolByType(query);
 
         // Add the content type as a response header
         HttpHeaders responseHeaders = new HttpHeaders();
