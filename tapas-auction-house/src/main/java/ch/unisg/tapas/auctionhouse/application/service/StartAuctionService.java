@@ -2,6 +2,7 @@ package ch.unisg.tapas.auctionhouse.application.service;
 
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
+import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionWonEventPort;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionStartedEventPort;
 import ch.unisg.tapas.auctionhouse.domain.*;
@@ -63,7 +64,7 @@ public class StartAuctionService implements LaunchAuctionUseCase {
         auctions.addAuction(auction);
 
         // Schedule the closing of the auction at the deadline
-        service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue(),
+        service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue().getTime() - System.currentTimeMillis(),
             TimeUnit.MILLISECONDS);
 
         // Publish an auction started event
