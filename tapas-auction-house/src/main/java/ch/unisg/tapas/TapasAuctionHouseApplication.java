@@ -7,6 +7,7 @@ import ch.unisg.tapas.common.AuctionHouseResourceDirectory;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -26,17 +27,21 @@ public class TapasAuctionHouseApplication {
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
 
-		// We will use these bootstrap methods in Week 6:
-        // bootstrapMarketplaceWithWebSub();
-        // bootstrapMarketplaceWithMqtt();
+
 
         tapasAuctioneerApp.run(args);
+
+        		// We will use these bootstrap methods in Week 6:
+
+        // bootstrapMarketplaceWithMqtt();
+        bootstrapMarketplaceWithWebSub();
 	}
 
     /**
      * Discovers auction houses and subscribes to WebSub notifications
      */
 	private static void bootstrapMarketplaceWithWebSub() {
+        System.out.println("HAHA");
         List<String> auctionHouseEndpoints = discoverAuctionHouseEndpoints();
         LOGGER.info("Found auction house endpoints: " + auctionHouseEndpoints);
 
