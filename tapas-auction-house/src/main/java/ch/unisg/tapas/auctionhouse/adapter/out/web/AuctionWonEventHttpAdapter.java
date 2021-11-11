@@ -10,8 +10,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.net.URI;
-
 /**
  * This class is a template for sending auction won events via HTTP. This class was created here only
  * as a placeholder, it is up to you to decide how such events should be sent (e.g., via HTTP,

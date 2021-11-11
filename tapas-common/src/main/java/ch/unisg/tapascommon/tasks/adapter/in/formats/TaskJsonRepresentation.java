@@ -113,6 +113,12 @@ final public class TaskJsonRepresentation {
         return mapper.writeValueAsString(representation);
     }
 
+    public String serialize() throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper.writeValueAsString(this);
+    }
+
     public static Task deserialize(TaskJsonRepresentation representation) {
         return new Task(
                 new Task.TaskId(representation.taskId),
