@@ -10,8 +10,8 @@ import java.net.http.HttpResponse;
 
 public class WebClient {
 
-    public static HttpResponse<String> get(String uri, String payload, String contentType) {
-        return httpRequest("POST", uri, payload, contentType);
+    public static HttpResponse<String> get(String uri) {
+        return httpRequest("GET", uri, null, null);
     }
 
     public static HttpResponse<String> post(String uri, String payload, String contentType) {
@@ -27,18 +27,32 @@ public class WebClient {
     }
 
     public static HttpResponse<String> httpRequest(String method, String uri, String payload, String contentType) {
-        var request = HttpRequest.newBuilder()
-                .uri(URI.create(uri))
-                .setHeader(HttpHeaders.CONTENT_TYPE, contentType)
-                .method(method, HttpRequest.BodyPublishers.ofString(payload))
-                .build();
+        var builder = HttpRequest.newBuilder().uri(URI.create(uri));
+
+        if (contentType != null) {
+            builder.setHeader(HttpHeaders.CONTENT_TYPE, contentType);
+        }
+
+        if (payload != null) {
+            builder.method(method, HttpRequest.BodyPublishers.ofString(payload));
+        } else {
+            builder.method(method, HttpRequest.BodyPublishers.noBody());
+        }
+
+        var request = builder.build();
         var client = HttpClient.newHttpClient();
+
         HttpResponse<String> response = null;
         try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
+
         return response;
+    }
+
+    public static <T> boolean checkResponseStatusCode(HttpResponse<T> response) {
+        return response != null && response.statusCode() >= 200 && response.statusCode() < 300;
     }
 }
