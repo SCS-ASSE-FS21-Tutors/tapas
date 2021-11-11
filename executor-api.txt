@@ -1,0 +1,25 @@
+Executor Pool -> Executor
+POST /execute
+Content-Type: application/json
+ 
+ {
+     "taskId": "foobar",
+     "inputData":"1+1"
+ }
+ --> 202 Accepted (empty body)
+
+
+...
+Executor -> Executor Pool
+PUT /completion
+{
+    "taskId": "foobar",
+    "outputData": " "2"
+}
+
+--> 200 OK (empty body)
+
+
+
+
+
