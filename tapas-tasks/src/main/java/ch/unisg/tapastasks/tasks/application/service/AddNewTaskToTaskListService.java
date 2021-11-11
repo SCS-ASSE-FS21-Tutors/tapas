@@ -2,7 +2,9 @@ package ch.unisg.tapastasks.tasks.application.service;
 
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
+import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
+import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.Task;
 
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
@@ -17,17 +19,23 @@ import javax.transaction.Transactional;
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
 
     private final NewTaskAddedEventPort newTaskAddedEventPort;
+    private final AddTaskPort addTaskToRepositoryPort;
+    private final TaskListLock taskListLock;
 
     @Override
     public Task addNewTaskToTaskList(AddNewTaskToTaskListCommand command) {
         TaskList taskList = TaskList.getTapasTaskList();
 
+        taskListLock.lockTaskList(taskList.getTaskListName());
         Task newTask = (command.getOriginalTaskUri().isPresent()) ?
             // Create a delegated task that points back to the original task
             taskList.addNewTaskWithNameAndTypeAndOriginalTaskUri(command.getTaskName(),
                 command.getTaskType(), command.getOriginalTaskUri().get())
             // Create an original task
             : taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
+
+        addTaskToRepositoryPort.addTask(newTask);
+        taskListLock.releaseTaskList(taskList.getTaskListName());
 
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.
