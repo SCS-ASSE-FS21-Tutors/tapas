@@ -36,7 +36,7 @@ public class AuctionHouseWebAdapter implements AuctionHousePort {
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(auctionHouseUrl+"/execute/"))
+                    .uri(URI.create(auctionHouseUrl+"/internal/create-auction-for-task/"))
                     .headers("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();

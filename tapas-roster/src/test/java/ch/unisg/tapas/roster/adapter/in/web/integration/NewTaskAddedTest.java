@@ -85,7 +85,7 @@ public class NewTaskAddedTest {
                         .withHeader("Content-Type", "application/json")
                         .withBody("{\"executable\":false}")));
 
-        stubFor(WireMock.post(urlEqualTo("/auction-house/execute/"))
+        stubFor(WireMock.post(urlEqualTo("/auction-house/internal/create-auction-for-task/"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.ACCEPTED.value())));
 
@@ -108,7 +108,7 @@ public class NewTaskAddedTest {
         verify(postRequestedFor(urlEqualTo("/executor-pool/can-execute/"))
                 .withHeader("Content-Type", equalTo("application/json")));
 
-        verify(postRequestedFor(urlEqualTo("/auction-house/execute/"))
+        verify(postRequestedFor(urlEqualTo("/auction-house/internal/create-auction-for-task/"))
                 .withHeader("Content-Type", equalTo("application/json")));
     }
 
