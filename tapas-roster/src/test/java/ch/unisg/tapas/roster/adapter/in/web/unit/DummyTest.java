@@ -1,4 +1,4 @@
-package ch.unisg.tapas.roster.web.unit;
+package ch.unisg.tapas.roster.adapter.in.web.unit;
 
 import static org.junit.Assert.*;
 

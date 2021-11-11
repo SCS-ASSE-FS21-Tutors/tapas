@@ -1,4 +1,4 @@
-package ch.unisg.tapas.roster.web;
+package ch.unisg.tapas.roster.adapter.in.web;
 
 import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.java.Log;
