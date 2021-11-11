@@ -71,50 +71,50 @@ services:
       - "traefik.http.routers.tapas-roster.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-roster.tls.certresolver=le"
 
-  tapas-executorpool:
+  tapas-executor-pool:
     image: openjdk
-    command: "java -jar /data/tapas-executorpool-0.0.1-SNAPSHOT.jar"
+    command: "java -jar /data/tapas-executor-pool-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
       - ./:/data/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tapas-executorpool.rule=Host(`tapas-executorpool.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.tapas-executorpool.service=tapas-executorpool"
-      - "traefik.http.services.tapas-executorpool.loadbalancer.server.port=8083"
-      - "traefik.http.routers.tapas-executorpool.tls=true"
-      - "traefik.http.routers.tapas-executorpool.entryPoints=web,websecure"
-      - "traefik.http.routers.tapas-executorpool.tls.certresolver=le"
+      - "traefik.http.routers.tapas-executor-pool.rule=Host(`tapas-executor-pool.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-pool.service=tapas-executor-pool"
+      - "traefik.http.services.tapas-executor-pool.loadbalancer.server.port=8083"
+      - "traefik.http.routers.tapas-executor-pool.tls=true"
+      - "traefik.http.routers.tapas-executor-pool.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-pool.tls.certresolver=le"
 
-  tapas-executorcalc:
+  tapas-executor-computation:
     image: openjdk
-    command: "java -jar /data/tapas-executorcalc-0.0.1-SNAPSHOT.jar"
+    command: "java -jar /data/tapas-executor-computation-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
       - ./:/data/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tapas-executorcalc.rule=Host(`tapas-executorcalc.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.tapas-executorcalc.service=tapas-executorcalc"
-      - "traefik.http.services.tapas-executorcalc.loadbalancer.server.port=8084"
-      - "traefik.http.routers.tapas-executorcalc.tls=true"
-      - "traefik.http.routers.tapas-executorcalc.entryPoints=web,websecure"
-      - "traefik.http.routers.tapas-executorcalc.tls.certresolver=le"
+      - "traefik.http.routers.tapas-executor-computation.rule=Host(`tapas-executor-computation.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-computation.service=tapas-executor-computation"
+      - "traefik.http.services.tapas-executor-computation.loadbalancer.server.port=8084"
+      - "traefik.http.routers.tapas-executor-computation.tls=true"
+      - "traefik.http.routers.tapas-executor-computation.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-computation.tls.certresolver=le"
 
-  tapas-executorrobot:
+  tapas-executor-bigrobot:
     image: openjdk
-    command: "java -jar /data/tapas-executorrobot-0.0.1-SNAPSHOT.jar"
+    command: "java -jar /data/tapas-executor-bigrobot-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:
       - ./:/data/
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.tapas-executorrobot.rule=Host(`tapas-executorrobot.${PUB_IP}.nip.io`)"
-      - "traefik.http.routers.tapas-executorrobot.service=tapas-executorrobot"
-      - "traefik.http.services.tapas-executorrobot.loadbalancer.server.port=8085"
-      - "traefik.http.routers.tapas-executorrobot.tls=true"
-      - "traefik.http.routers.tapas-executorrobot.entryPoints=web,websecure"
-      - "traefik.http.routers.tapas-executorrobot.tls.certresolver=le"
+      - "traefik.http.routers.tapas-executor-bigrobot.rule=Host(`tapas-executor-bigrobot.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-bigrobot.service=tapas-executor-bigrobot"
+      - "traefik.http.services.tapas-executor-bigrobot.loadbalancer.server.port=8085"
+      - "traefik.http.routers.tapas-executor-bigrobot.tls=true"
+      - "traefik.http.routers.tapas-executor-bigrobot.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-bigrobot.tls.certresolver=le"
 
   tapas-auction-house:
     image: openjdk

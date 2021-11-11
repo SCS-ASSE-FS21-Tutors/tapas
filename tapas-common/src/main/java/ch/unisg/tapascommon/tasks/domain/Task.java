@@ -1,12 +1,19 @@
 package ch.unisg.tapascommon.tasks.domain;
 
+import ch.unisg.tapascommon.ServiceHostAddresses;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 
+import java.util.UUID;
+
 public class Task {
     public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED
+    }
+
+    public enum Type {
+        BIGROBOT, SMALLROBOT, COMPUTATION, RANDOMTEXT
     }
 
     @Getter
@@ -19,7 +26,7 @@ public class Task {
     private final TaskType taskType;
 
     @Getter
-    private final OriginalTaskUri originalTaskUri;
+    private OriginalTaskUri originalTaskUri;
 
     @Getter @Setter
     private TaskStatus taskStatus;
@@ -27,7 +34,7 @@ public class Task {
     @Getter @Setter
     private ServiceProvider provider;
 
-    @Getter
+    @Getter @Setter
     private InputData inputData;
 
     @Getter @Setter
@@ -53,6 +60,29 @@ public class Task {
         this.outputData = outputData;
     }
 
+    public static Task createNewTask(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
+        var task = new Task(
+                new TaskId(UUID.randomUUID().toString()),
+                taskName,
+                taskType,
+                taskUri,
+                new TaskStatus(Status.OPEN),
+                null,
+                null,
+                null
+        );
+
+        if (taskUri == null) {
+            task.originalTaskUri = new OriginalTaskUri(ServiceHostAddresses.getTaskServiceHostAddress() + "/tasks/" + task.taskId.getValue());
+        }
+
+        return task;
+    }
+
+    public static Task createNewTask(TaskName taskName, TaskType taskType) {
+        return createNewTask(taskName, taskType, null);
+    }
+
     @Value
     public static class TaskId {
         String value;
@@ -65,7 +95,7 @@ public class Task {
 
     @Value
     public static class TaskType {
-        String value;
+        Type value;
     }
 
     @Value

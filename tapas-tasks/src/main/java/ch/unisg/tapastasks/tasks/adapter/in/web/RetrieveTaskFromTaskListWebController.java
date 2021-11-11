@@ -1,9 +1,9 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

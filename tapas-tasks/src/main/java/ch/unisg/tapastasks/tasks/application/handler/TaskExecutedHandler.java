@@ -2,7 +2,7 @@ package ch.unisg.tapastasks.tasks.application.handler;
 
 import ch.unisg.tapastasks.tasks.application.port.in.TaskExecutedEvent;
 import ch.unisg.tapastasks.tasks.application.port.in.TaskExecutedEventHandler;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import org.springframework.stereotype.Component;

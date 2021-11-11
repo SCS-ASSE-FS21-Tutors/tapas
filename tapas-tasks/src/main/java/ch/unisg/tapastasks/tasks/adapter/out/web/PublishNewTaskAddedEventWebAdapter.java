@@ -1,10 +1,10 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
-import ch.unisg.tapascommon.ServiceApiAddresses;
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +20,7 @@ import java.net.http.HttpResponse;
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
-    private static final String URL = ServiceApiAddresses.getRosterServiceApiUrl();
+    private static final String URL = ServiceHostAddresses.getRosterServiceHostAddress();
     private static final String PATH = "/roster/schedule-task/";
 
     @Override

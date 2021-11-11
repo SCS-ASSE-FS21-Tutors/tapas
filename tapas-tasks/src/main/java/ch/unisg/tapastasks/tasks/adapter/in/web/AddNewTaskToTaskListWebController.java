@@ -1,9 +1,9 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -47,7 +47,7 @@ public class AddNewTaskToTaskListWebController {
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
             var taskName = new Task.TaskName(payload.getTaskName());
-            var taskType = new Task.TaskType(payload.getTaskType());
+            var taskType = new Task.TaskType(Task.Type.valueOf(payload.getTaskType()));
 
             Optional<Task.InputData> inputDataOptional = (payload.getInputData() == null) ? Optional.empty()
                 : Optional.of(new Task.InputData(payload.getInputData()));

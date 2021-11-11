@@ -1,7 +1,7 @@
 package ch.unisg.tapastasks.tasks.application.port.in;
 
-import ch.unisg.tapastasks.common.SelfValidating;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.common.SelfValidating;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;

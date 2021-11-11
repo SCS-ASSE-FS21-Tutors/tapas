@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.domain;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Value;
 
@@ -32,7 +33,8 @@ public class TaskList {
     //Only the aggregate root is allowed to create new tasks and add them to the task list.
     //Note: Here we could add some sophisticated invariants/business rules that the aggregate root checks
     public Task addNewTaskWithNameAndType(Task.TaskName name, Task.TaskType type) {
-        Task newTask = Task.createTaskWithNameAndType(name, type);
+        Task newTask = Task.createNewTask(name, type);
+
         this.addNewTaskToList(newTask);
 
         return newTask;
@@ -40,7 +42,7 @@ public class TaskList {
 
     public Task addNewTaskWithNameAndTypeAndOriginalTaskUri(Task.TaskName name, Task.TaskType type,
             Task.OriginalTaskUri originalTaskUri) {
-        Task newTask = Task.createTaskWithNameAndTypeAndOriginalTaskUri(name, type, originalTaskUri);
+        Task newTask = Task.createNewTask(name, type, originalTaskUri);
         this.addNewTaskToList(newTask);
 
         return newTask;

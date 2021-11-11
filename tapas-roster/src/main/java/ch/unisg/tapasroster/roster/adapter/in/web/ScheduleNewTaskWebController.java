@@ -24,17 +24,13 @@ public class ScheduleNewTaskWebController {
     }
 
     @PostMapping(path = "/roster/schedule-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> scheduleNewTask(@RequestBody TaskJsonRepresentation task) {
+    public ResponseEntity<Void> scheduleNewTask(@RequestBody TaskJsonRepresentation task) {
         try {
             var command = new ScheduleTaskCommand(task.deserialize());
-            var newTask = scheduleTaskUseCase.scheduleTask(command);
-
-            var responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
-
-            return new ResponseEntity<>(TaskJsonRepresentation.serialize(newTask), responseHeaders, HttpStatus.CREATED);
-        } catch (ConstraintViolationException | JsonProcessingException e) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+            var isScheduled = scheduleTaskUseCase.scheduleTask(command);
+            return isScheduled ? ResponseEntity.ok().build() : ResponseEntity.badRequest().build();
+        } catch (ConstraintViolationException e) {
+            return ResponseEntity.badRequest().build();
         }
     }
 }

@@ -99,4 +99,21 @@ public class TaskJsonPatchRepresentation {
         return node.isObject() && node.get("path") != null
             && node.get("path").asText().equalsIgnoreCase(path);
     }
+
+    public static String getPatchRepresentation(String taskStatus, String outputData) {
+        var builder = new StringBuilder();
+        builder.append("[\n");
+        builder.append("  {\"op\": \"replace\", \"path\": \"/taskStatus\", \"value\": \"")
+                .append(taskStatus);
+        if (outputData != null && !outputData.isEmpty()) {
+            builder.append("\"},\n")
+                    .append("  {\"op\": \"add\", \"path\": \"/outputData\", \"value\": \"")
+                    .append(outputData)
+                    .append("\"}\n");
+        } else {
+            builder.append("\"}\n");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 }

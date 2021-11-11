@@ -13,8 +13,13 @@ import org.springframework.stereotype.Component;
 @Component
 @Primary
 public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
+
+    private static final String PATH = "/taskwinner";
+
     @Override
     public void publishAuctionWonEvent(AuctionWonEvent event) {
+        var winningBid = event.getWinningBid();
+
 
     }
 }

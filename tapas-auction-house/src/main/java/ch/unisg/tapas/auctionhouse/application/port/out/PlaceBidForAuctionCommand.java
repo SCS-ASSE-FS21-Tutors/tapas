@@ -3,6 +3,7 @@ package ch.unisg.tapas.auctionhouse.application.port.out;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
 import ch.unisg.tapas.common.SelfValidating;
+import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
@@ -10,12 +11,13 @@ import javax.validation.constraints.NotNull;
 /**
  * Command to place a bid for a given auction.
  */
+@EqualsAndHashCode(callSuper = true)
 @Value
 public class PlaceBidForAuctionCommand extends SelfValidating<PlaceBidForAuctionCommand> {
     @NotNull
-    private final Auction auction;
+    Auction auction;
     @NotNull
-    private final Bid bid;
+    Bid bid;
 
     public PlaceBidForAuctionCommand(Auction auction, Bid bid) {
         this.auction = auction;

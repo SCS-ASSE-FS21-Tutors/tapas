@@ -1,10 +1,10 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapastasks.tasks.application.handler.TaskExecutedHandler;
 import ch.unisg.tapastasks.tasks.application.port.in.TaskExecutedEvent;
 import ch.unisg.tapastasks.tasks.application.port.in.TaskExecutedEventHandler;
-import ch.unisg.tapastasks.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.util.Optional;

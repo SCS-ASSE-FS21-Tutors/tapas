@@ -83,7 +83,7 @@ final public class TaskJsonRepresentation {
      * @param task the task
      */
     public TaskJsonRepresentation(Task task) {
-        this(task.getTaskName().getValue(), task.getTaskType().getValue());
+        this(task.getTaskName().getValue(), task.getTaskType().getValue().name());
 
         this.taskId = task.getTaskId().getValue();
         this.taskStatus = task.getTaskStatus().getValue().name();
@@ -117,7 +117,7 @@ final public class TaskJsonRepresentation {
         return new Task(
                 new Task.TaskId(representation.taskId),
                 new Task.TaskName(representation.taskName),
-                new Task.TaskType(representation.taskType),
+                new Task.TaskType(Task.Type.valueOf(representation.taskType)),
                 new Task.OriginalTaskUri(representation.originalTaskUri),
                 new Task.TaskStatus(Task.Status.valueOf(representation.taskStatus)),
                 new Task.ServiceProvider(representation.serviceProvider),

@@ -62,6 +62,9 @@ public class StartAuctionService implements LaunchAuctionUseCase {
             command.getTaskUri(), command.getTaskType(), deadline);
         auctions.addAuction(auction);
 
+        LOGGER.info("Auction #" + auction.getAuctionId().getValue() + " for task "
+            + auction.getTaskUri().getValue() + " started");
+
         // Schedule the closing of the auction at the deadline
         service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue(),
             TimeUnit.MILLISECONDS);

@@ -1,8 +1,8 @@
 package ch.unisg.tapastasks.tasks.application.service;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQuery;
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
-import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
