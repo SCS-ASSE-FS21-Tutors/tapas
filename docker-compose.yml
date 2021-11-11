@@ -94,7 +94,7 @@ services:
       ME_CONFIG_MONGODB_SERVER: mongodb
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.dbadmin.rule=Host(`dbadmin1.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.dbadmin.rule=Host(`dbadmin.${PUB_IP}.nip.io`)"
       - "traefik.http.routers.dbadmin.service=dbadmin"
       - "traefik.http.services.dbadmin.loadbalancer.server.port=8081"
       - "traefik.http.routers.dbadmin.tls=true"
