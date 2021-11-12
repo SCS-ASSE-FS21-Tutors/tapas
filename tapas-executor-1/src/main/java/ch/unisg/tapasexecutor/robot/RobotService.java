@@ -3,13 +3,18 @@ package ch.unisg.tapasexecutor.robot;
 import lombok.extern.java.Log;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.remoting.RemoteAccessException;
+import org.springframework.retry.RetryCallback;
+import org.springframework.retry.RetryContext;
+import org.springframework.retry.annotation.EnableRetry;
+import org.springframework.retry.annotation.Retryable;
+import org.springframework.retry.policy.TimeoutRetryPolicy;
+import org.springframework.retry.support.RetryTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 import java.io.InputStream;
@@ -23,17 +28,6 @@ import java.util.Optional;
 @Log
 @Service
 public class RobotService {
-
-    public List<Robot> getRobots() {
-        return List.of(
-                new Robot(
-                        400,
-                        200,
-                        0,
-                        0
-                )
-        );
-    }
 
     public ResponseEntity<?> getUser(){
 
@@ -50,7 +44,7 @@ public class RobotService {
         log.info("Returned User");
         return response;
     }
-
+waitAndSleep();
     public Optional<String> addUser(){
 
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
@@ -194,6 +188,42 @@ public class RobotService {
 
         restTemplate.put(url, request, String.class);
         log.info("Robot reset");
+    }
+
+    public void moveRobot(String apiKeyValue) {
+        waitAndSleep();
+
+        moveElbow(450, apiKeyValue);
+
+        waitAndSleep();
+
+        moveWristAngle(550, apiKeyValue);
+
+        waitAndSleep();
+
+        moveWristRotation(550, apiKeyValue);
+
+        waitAndSleep();
+
+        moveGripper(200, apiKeyValue);
+
+        waitAndSleep();
+
+        moveReset(0, apiKeyValue);
+
+        waitAndSleep();
+
+    }
+
+    public void waitAndSleep() {
+        try
+        {
+            Thread.sleep(8000);
+        }
+        catch(InterruptedException ex)
+        {
+            Thread.currentThread().interrupt();
+        }
     }
 
 }

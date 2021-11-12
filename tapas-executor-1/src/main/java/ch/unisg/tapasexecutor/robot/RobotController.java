@@ -46,62 +46,40 @@ public class RobotController {
         this.robotService = robotService;
     }
 
-
-    @RequestMapping("/getUser")
+    // could be deleted later, just for testing
+    @GetMapping("/getUser")
     public ResponseEntity<?> getUser() {
         return robotService.getUser();
     }
 
-    @RequestMapping("/addUser")
+    // could be deleted later, just for testing
+    @PostMapping("/addUser")
     public Optional<String> addUser() {
         return robotService.addUser();
     }
 
-    @RequestMapping("/moveRobot")
-    public void moveRobot() {
-        Optional<String> apiKey = robotService.addUser();
+
+    // could be deleted later, just for testing
+    @PostMapping("/deleteUser")
+    public void deleteUser(String apiKey) {
+        robotService.deleteUser(apiKey);
+    }
+
+    @PostMapping("/execute")
+    public void executeRobot() {
+
+        Optional<String> apiKey = addUser();
 
         if (apiKey.isPresent()) {
+
             String apiKeyValue = apiKey.get();
 
-            System.out.println(apiKeyValue);
-
-            waitAndSleep();
-
-            robotService.moveElbow(450, apiKeyValue);
-
-            waitAndSleep();
-
-            robotService.moveWristAngle(550, apiKeyValue);
-
-            waitAndSleep();
-
-            robotService.moveWristRotation(550, apiKeyValue);
-
-            waitAndSleep();
-
-            robotService.moveGripper(200, apiKeyValue);
-
-            waitAndSleep();
-
-            robotService.moveReset(0, apiKeyValue);
-
-            waitAndSleep();
+            robotService.moveRobot(apiKeyValue);
 
             robotService.deleteUser(apiKeyValue);
 
         }
-    }
 
-    public void waitAndSleep() {
-        try
-        {
-            Thread.sleep(8000);
-        }
-        catch(InterruptedException ex)
-        {
-            Thread.currentThread().interrupt();
-        }
     }
 }
 
