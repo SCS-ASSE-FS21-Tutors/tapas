@@ -18,7 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExecutorRemovedEventListenerHttpAdapter {
 
     // TODO: add annotations for request method, request URI, etc.
-    public void handleExecutorRemovedEvent(@PathVariable("executorId") String executorId) {
+    @PostMapping(path = "/executors/{taskType}/{executorId}")
+    public ResponseEntity<String> handleExecutorRemovedEvent(@PathVariable("executorId") String executorId) {
         // TODO: implement logic
 
         ExecutorRemovedEvent executorRemovedEvent = new ExecutorRemovedEvent(
@@ -27,6 +28,7 @@ public class ExecutorRemovedEventListenerHttpAdapter {
 
         ExecutorRemovedHandler newExecutorHandler = new ExecutorRemovedHandler();
         newExecutorHandler.handleExecutorRemovedEvent(executorRemovedEvent);
-
+        
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
