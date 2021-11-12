@@ -11,7 +11,6 @@ public class ServiceHostAddresses {
     private static final String LOCALHOST_EXECUTOR_ROBOT = "http://127.0.0.1:8085";
     private static final String LOCALHOST_AUCTION_HOUSE = "http://127.0.0.1:8086";
 
-
     private static final String PUBLIC_TASKS = "https://tapas-tasks.86-119-35-199.nip.io";
     private static final String PUBLIC_ROSTER = "https://tapas-roster.86-119-35-199.nip.io";
     private static final String PUBLIC_EXECUTOR_POOL = "https://tapas-executorpool.86-119-35-199.nip.io";

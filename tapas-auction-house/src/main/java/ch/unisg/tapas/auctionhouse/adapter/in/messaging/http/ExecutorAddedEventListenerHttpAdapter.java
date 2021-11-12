@@ -18,9 +18,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExecutorAddedEventListenerHttpAdapter {
 
     @PostMapping(path = "/executors/{taskType}/{executorId}")
-    public ResponseEntity<String> handleExecutorAddedEvent(@PathVariable("taskType") String taskType,
-                                                         @PathVariable("executorId") String executorId) {
-
+    public ResponseEntity<String> handleExecutorAddedEvent(
+        @PathVariable("taskType") String taskType,
+        @PathVariable("executorId") String executorId)
+    {
         ExecutorAddedEvent executorAddedEvent = new ExecutorAddedEvent(
             new ExecutorRegistry.ExecutorIdentifier(executorId),
             new Auction.AuctionedTaskType(taskType)

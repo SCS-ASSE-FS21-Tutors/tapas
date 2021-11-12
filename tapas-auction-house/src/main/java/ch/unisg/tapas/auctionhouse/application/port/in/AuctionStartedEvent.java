@@ -1,6 +1,6 @@
 package ch.unisg.tapas.auctionhouse.application.port.in;
 
-import ch.unisg.tapas.auctionhouse.domain.Auction;
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.AuctionJsonRepresentation;
 import ch.unisg.tapas.common.SelfValidating;
 import lombok.EqualsAndHashCode;
 import lombok.Value;
@@ -14,10 +14,10 @@ import javax.validation.constraints.NotNull;
 @Value
 public class AuctionStartedEvent extends SelfValidating<AuctionStartedEvent> {
     @NotNull
-    Auction auction;
+    AuctionJsonRepresentation auctionJsonRepresentation;
 
-    public AuctionStartedEvent(Auction auction) {
-        this.auction = auction;
+    public AuctionStartedEvent(AuctionJsonRepresentation auctionJsonRepresentation) {
+        this.auctionJsonRepresentation = auctionJsonRepresentation;
         this.validateSelf();
     }
 }

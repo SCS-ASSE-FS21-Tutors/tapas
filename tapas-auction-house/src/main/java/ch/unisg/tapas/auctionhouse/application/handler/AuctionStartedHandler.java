@@ -35,9 +35,8 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
      */
     @Override
     public boolean handleAuctionStartedEvent(AuctionStartedEvent auctionStartedEvent) {
-        Auction auction = auctionStartedEvent.getAuction();
+        var auction = auctionStartedEvent.getAuctionJsonRepresentation().deserialize();
 
-        // TODO: Fill or remove Registry
         if (ExecutorRegistry.getInstance().containsTaskType(auction.getTaskType())) {
             LOGGER.info("Placing bid for task " + auction.getTaskUri() + " of type "
                 + auction.getTaskType() + " in auction " + auction.getAuctionId()

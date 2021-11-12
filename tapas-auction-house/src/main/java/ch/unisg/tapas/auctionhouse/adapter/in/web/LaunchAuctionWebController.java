@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.net.URI;
 
 /**
@@ -52,18 +51,12 @@ public class LaunchAuctionWebController {
             deadline
         );
 
-        // This command returns the created auction. We need the created auction to be able to
-        // include a representation of it in the HTTP response.
-        Auction auction = launchAuctionUseCase.launchAuction(command);
+        var auction = launchAuctionUseCase.launchAuction(command);
 
         try {
-            AuctionJsonRepresentation representation = new AuctionJsonRepresentation(auction);
-            String auctionJson = AuctionJsonRepresentation.serialize(auction);
-
-            HttpHeaders responseHeaders = new HttpHeaders();
+            var auctionJson = AuctionJsonRepresentation.serialize(auction);
+            var responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, AuctionJsonRepresentation.MEDIA_TYPE);
-
-            // Return a 201 Created status code and a representation of the created auction
             return new ResponseEntity<>(auctionJson, responseHeaders, HttpStatus.CREATED);
         } catch (JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR);

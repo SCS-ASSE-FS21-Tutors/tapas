@@ -16,8 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class ExecutorRemovedEventListenerHttpAdapter {
 
     @DeleteMapping(path = "/executors/{executorId}")
-    public ResponseEntity<String> handleExecutorRemovedEvent(@PathVariable("executorId") String executorId) {
-
+    public ResponseEntity<String> handleExecutorRemovedEvent(
+        @PathVariable("executorId") String executorId)
+    {
         var event = new ExecutorRemovedEvent(
             new ExecutorRegistry.ExecutorIdentifier(executorId)
         );

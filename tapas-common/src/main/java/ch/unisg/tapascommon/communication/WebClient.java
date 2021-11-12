@@ -26,6 +26,10 @@ public class WebClient {
         return httpRequest("PATCH", uri, payload, contentType);
     }
 
+    public static HttpResponse<String> delete(String uri, String payload, String contentType) {
+        return httpRequest("DELETE", uri, payload, contentType);
+    }
+
     public static HttpResponse<String> httpRequest(String method, String uri, String payload, String contentType) {
         var builder = HttpRequest.newBuilder().uri(URI.create(uri));
 

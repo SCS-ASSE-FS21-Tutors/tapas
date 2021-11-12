@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 public class AuctionStartedEventListenerHttpAdapter {
-    @PostMapping(path = "/auctions",  consumes = {AuctionJsonRepresentation.MEDIA_TYPE})
+    @PostMapping(path = "/auction",  consumes = {AuctionJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> handleAuctionStartedEvent(@RequestBody AuctionJsonRepresentation auctionRepresentation) {
-        var auction = auctionRepresentation.deserialize();
-        var event = new AuctionStartedEvent(auction);
+        var event = new AuctionStartedEvent(auctionRepresentation);
         var handler = new AuctionStartedHandler();
         var ok = handler.handleAuctionStartedEvent(event);
-        return new ResponseEntity<>(ok ? HttpStatus.ACCEPTED : HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(ok ? HttpStatus.OK : HttpStatus.BAD_REQUEST);
     }
 }

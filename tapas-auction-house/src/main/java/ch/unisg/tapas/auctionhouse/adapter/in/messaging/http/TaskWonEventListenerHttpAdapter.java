@@ -17,8 +17,9 @@ public class TaskWonEventListenerHttpAdapter {
     private final TaskWonEventHandler taskWonEventHandler;
 
     @PostMapping(path = "/taskwinner/", consumes = TaskJsonRepresentation.MEDIA_TYPE)
-    public ResponseEntity<String> receiveWonTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
-
+    public ResponseEntity<String> receiveWonTask(
+        @RequestBody TaskJsonRepresentation taskJsonRepresentation)
+    {
         var event = new TaskWonEvent(taskJsonRepresentation);
         var status = taskWonEventHandler.handleAuctionWon(event);
 
