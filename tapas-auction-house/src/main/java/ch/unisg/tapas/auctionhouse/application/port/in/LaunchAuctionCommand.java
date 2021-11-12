@@ -1,11 +1,10 @@
 package ch.unisg.tapas.auctionhouse.application.port.in;
 
 import ch.unisg.tapas.auctionhouse.domain.Auction;
-import ch.unisg.common.SelfValidating;
-import lombok.NonNull;
+import ch.unisg.tapas.common.SelfValidating;
 import lombok.Value;
 
-import javax.validation.constraint.NotNull;
+import javax.validation.constraints.NotNull;
 
 /**
  * Command for launching an auction in this auction house.
