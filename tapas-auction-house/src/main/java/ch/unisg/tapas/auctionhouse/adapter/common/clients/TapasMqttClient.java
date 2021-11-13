@@ -5,7 +5,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
-
 import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
@@ -68,7 +67,7 @@ public class TapasMqttClient {
         mqttClient.subscribe(topic);
     }
 
-    private void publishMessage(String topic, String payload) throws MqttException {
+    public void publishMessage(String topic, String payload) throws MqttException {
         MqttMessage message = new MqttMessage(payload.getBytes(StandardCharsets.UTF_8));
         mqttClient.publish(topic, message);
     }

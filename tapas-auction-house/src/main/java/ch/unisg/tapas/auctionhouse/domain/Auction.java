@@ -59,7 +59,7 @@ public class Auction {
     /**
      * Constructs an auction.
      *
-     * @param auctionHouseUri the URI of the auction hause that started the auction
+     * @param auctionHouseUri the URI of the auction house that started the auction
      * @param taskUri the URI of the task being auctioned
      * @param taskType the type of the task being auctioned
      * @param deadline the deadline by which the auction is open for bids
@@ -85,7 +85,7 @@ public class Auction {
      * Constructs an auction.
      *
      * @param auctionId the identifier of the auction
-     * @param auctionHouseUri the URI of the auction hause that started the auction
+     * @param auctionHouseUri the URI of the auction house that started the auction
      * @param taskUri the URI of the task being auctioned
      * @param taskType the type of the task being auctioned
      * @param deadline the deadline by which the auction is open for bids

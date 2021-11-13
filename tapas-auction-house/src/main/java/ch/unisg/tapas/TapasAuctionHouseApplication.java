@@ -30,8 +30,8 @@ public class TapasAuctionHouseApplication {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
 
 		// We will use these bootstrap methods in Week 6:
-        // bootstrapMarketplaceWithWebSub();
-        // bootstrapMarketplaceWithMqtt();
+        bootstrapMarketplaceWithWebSub();
+        bootstrapMarketplaceWithMqtt();
 
         tapasAuctioneerApp.run(args);
 	}
