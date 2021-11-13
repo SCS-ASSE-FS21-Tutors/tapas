@@ -44,7 +44,7 @@ public class RobotService {
         log.info("Returned User");
         return response;
     }
-waitAndSleep();
+
     public Optional<String> addUser(){
 
         MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
