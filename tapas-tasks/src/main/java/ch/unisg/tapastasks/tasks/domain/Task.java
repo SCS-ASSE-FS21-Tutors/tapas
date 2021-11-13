@@ -80,26 +80,36 @@ public class Task {
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class OriginalTaskUri {
         String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class TaskStatus {
         Status value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class ServiceProvider {
         String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class InputData {
         String value;
     }
 
     @Value
+    @NoArgsConstructor(force = true, access = AccessLevel.PRIVATE)
+    @AllArgsConstructor
     public static class OutputData {
         String value;
     }

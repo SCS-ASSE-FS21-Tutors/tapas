@@ -1,7 +1,7 @@
-package ch.unisg.tapas.roster.web;
+package ch.unisg.tapas.roster.adapter.in.web;
 
 import ch.unisg.tapas.roster.entities.Task;
-import ch.unisg.tapas.roster.services.RosterService;
+import ch.unisg.tapas.roster.application.port.in.RostNewTaskUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,11 +14,11 @@ import org.springframework.web.server.ResponseStatusException;
 @RestController
 public class RosterController {
 
-    private RosterService rosterService;
+    private RostNewTaskUseCase rostNewTaskUseCase;
 
     @Autowired
-    public RosterController(RosterService rosterService) {
-        this.rosterService = rosterService;
+    public RosterController(RostNewTaskUseCase rostNewTaskUseCase) {
+        this.rostNewTaskUseCase = rostNewTaskUseCase;
     }
 
     @PostMapping("/newtask/")
@@ -31,7 +31,7 @@ public class RosterController {
         if(newTask.getTaskType() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskType missing");
 
-        rosterService.rostTask(newTask);
+        rostNewTaskUseCase.rostTask(newTask);
     }
 
 }

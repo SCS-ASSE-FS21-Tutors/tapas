@@ -1,9 +1,8 @@
-package ch.unisg.tapasexecutorpool.pool.domain;
+package ch.unisg.tapas.auctionhouse.domain;
 
 import lombok.*;
 
 import java.util.UUID;
-
 
 /**This is a domain entity**/
 @NoArgsConstructor

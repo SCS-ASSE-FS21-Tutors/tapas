@@ -1,4 +1,4 @@
-package ch.unisg.tapas.roster.web.dto;
+package ch.unisg.tapas.roster.adapter.in.web.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
