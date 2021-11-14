@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
+
 @RequiredArgsConstructor
 @Component
 public class ResourceDirectoryRegisterer {
@@ -26,21 +29,21 @@ public class ResourceDirectoryRegisterer {
             .put("endpoint", webSubConfig.getSelf())
             .toString();
 
-        var response = WebClient.post(RESOURCE_DIRECTORY, json, "application/json");
-        var ok = WebClient.checkResponseStatusCode(response);
-
-        if (ok) {
-            LOGGER.info("Registered to resource directory");
-        } else {
-            LOGGER.warn("Failed to register to resource directory");
-        }
-
-        return ok;
+        HttpResponse<String> response = null;
+        try {
+            response = WebClient.post(RESOURCE_DIRECTORY, json, "application/json");
+            var ok = WebClient.checkResponseStatusCode(response);
+            if (ok) {
+                LOGGER.info("Registered to resource directory");
+            } else {
+                LOGGER.warn("Failed to register to resource directory");
+            }
+            return ok;
+        } catch (IOException | InterruptedException ignored) { }
+        return false;
     }
 
     public boolean unregister() {
-        var result = false;
-
         try {
             var response = WebClient.get(RESOURCE_DIRECTORY);
             var payload = new ObjectMapper().readTree(response.body());
@@ -48,19 +51,17 @@ public class ResourceDirectoryRegisterer {
                 if (node.get("group").textValue().equals(webSubConfig.getGroup())) {
                     var responseDelete = WebClient.delete(
                         RESOURCE_DIRECTORY + node.get("id").textValue(), null, null);
-                    result = WebClient.checkResponseStatusCode(responseDelete);
+                    var ok = WebClient.checkResponseStatusCode(responseDelete);
 
-                    if (result) {
+                    if (ok) {
                         LOGGER.info("Unregistered from resource directory");
                     } else {
                         LOGGER.warn("Failed to unregister from resource directory");
                     }
+                    return ok;
                 }
             }
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
-
-        return result;
+        } catch (IOException | InterruptedException ignored) { }
+        return false;
     }
 }

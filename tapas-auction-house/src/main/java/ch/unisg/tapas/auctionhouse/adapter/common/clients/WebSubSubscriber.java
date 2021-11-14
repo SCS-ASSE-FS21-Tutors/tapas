@@ -4,9 +4,11 @@ import ch.unisg.tapascommon.communication.WebClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.hibernate.validator.internal.constraintvalidators.hv.URLValidator;
 import org.json.JSONObject;
-import java.net.URI;
-import java.net.URLEncoder;
+
+import java.io.IOException;
+import java.net.*;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
 
@@ -36,8 +38,27 @@ public class WebSubSubscriber {
     private String hub = "";
     private String topic = "";
 
+    private boolean checkUri(String uri) {
+        try {
+            var u = new URL(uri);
+            u.toURI();
+            return true;
+        } catch (MalformedURLException | URISyntaxException ignored) { }
+        return false;
+    }
+
     private boolean discoverWebSubHub(String actionHouseUri) {
-        var response = WebClient.get(actionHouseUri);
+        if (!checkUri(actionHouseUri)) {
+            return false;
+        }
+
+        HttpResponse<String> response = null;
+        try {
+            response = WebClient.get(actionHouseUri);
+        } catch (IOException | InterruptedException e) {
+            LOGGER.info("Failed to discover WebSubHub");
+            return false;
+        }
 
         var linkHeaders = response.headers().allValues("Link");
         for (var linkHeader : linkHeaders) {
@@ -65,11 +86,13 @@ public class WebSubSubscriber {
     }
 
     private void subscribeToWebSubHub() {
-        HttpResponse<String> response;
+        HttpResponse<String> response = null;
 
         if (webSubConfig.isProductionEnvironment()) {
             var parameters = buildSubscriptionString(webSubConfig.getOwnAddress() + CALLBACK_PATH, topic);
-            response = WebClient.post(hub, parameters, CONTENT_TYPE_PRODUCTION);
+            try {
+                response = WebClient.post(hub, parameters, CONTENT_TYPE_PRODUCTION);
+            } catch (IOException | InterruptedException ignored) { }
         } else {
             var json = new JSONObject()
                 .put("hub.callback", webSubConfig.getOwnAddressDevelopment() + CALLBACK_PATH)
@@ -78,7 +101,9 @@ public class WebSubSubscriber {
                 .put("hub.ws", false)
                 .toString();
 
-            response = WebClient.post(hub, json, CONTENT_TYPE_DEVELOPMENT);
+            try {
+                response = WebClient.post(hub, json, CONTENT_TYPE_DEVELOPMENT);
+            } catch (IOException | InterruptedException ignored) { }
         }
 
         if (WebClient.checkResponseStatusCode(response)) {

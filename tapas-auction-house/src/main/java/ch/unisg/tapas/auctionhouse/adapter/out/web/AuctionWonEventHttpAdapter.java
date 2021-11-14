@@ -10,6 +10,9 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
+
 /**
  * This class is a template for sending auction won events via HTTP. This class was created here only
  * as a placeholder, it is up to you to decide how such events should be sent (e.g., via HTTP,
@@ -33,7 +36,13 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
         if (auctionOptional.isPresent()) {
             var auction = auctionOptional.get();
             var taskUri = auction.getTaskUri();
-            var taskResponse = WebClient.get(taskUri.toString());
+            HttpResponse<String> taskResponse = null;
+            try {
+                taskResponse = WebClient.get(taskUri.toString());
+            } catch (IOException | InterruptedException e) {
+                LOGGER.warn("Failed to retrieve the task from task list");
+                return;
+            }
 
             var taskJson = taskResponse.body();
             var contentTypeOptional = taskResponse.headers().firstValue("Content-Type");
@@ -46,11 +55,14 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
             }
             auctionHouseUri = auctionHouseUri.replace("//", "/");
 
-            var response = WebClient.post(auctionHouseUri, taskJson, taskJsonContentType);
-
-            if (WebClient.checkResponseStatusCode(response)) {
-                LOGGER.info("Successfully notified the winning auction house");
-            } else {
+            try {
+                var response = WebClient.post(auctionHouseUri, taskJson, taskJsonContentType);
+                if (WebClient.checkResponseStatusCode(response)) {
+                    LOGGER.info("Successfully notified the winning auction house");
+                } else {
+                    LOGGER.warn("Failed to notify the winning auction house");
+                }
+            } catch (IOException | InterruptedException ignored) {
                 LOGGER.warn("Failed to notify the winning auction house");
             }
         } else {

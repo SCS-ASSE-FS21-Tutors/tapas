@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Primary
 @Component
 public class TaskWonHandler implements TaskWonEventHandler {
@@ -26,8 +28,7 @@ public class TaskWonHandler implements TaskWonEventHandler {
                 TaskJsonRepresentation.MEDIA_TYPE);
             LOGGER.info("Delegated task forwarded to task list service");
             return WonTaskStatus.OK;
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
+        } catch (IOException | InterruptedException ignored) {
             LOGGER.warn("Failed to forward delegated task");
             return WonTaskStatus.CANNOT_EXECUTE;
         }

@@ -1,6 +1,5 @@
-package ch.unisg.tapas;
+package ch.unisg.tapas.auctionhouse;
 
-import ch.unisg.tapascommon.communication.WebClient;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 

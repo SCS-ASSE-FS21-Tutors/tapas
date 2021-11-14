@@ -8,6 +8,9 @@ import org.json.JSONObject;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+import java.net.http.HttpResponse;
+
 @RequiredArgsConstructor
 @Component
 public class WebSubPublisher {
@@ -29,13 +32,15 @@ public class WebSubPublisher {
             .put("hub.url", webSubConfig.getSelf() + path)
             .toString();
 
-        var response = WebClient.post(webSubConfig.getHub() + "/publish", json, CONTENT_TYPE_DEVELOPMENT);
-        var ok = WebClient.checkResponseStatusCode(response);
+        try {
+            var response = WebClient.post(webSubConfig.getHub() + "/publish", json, CONTENT_TYPE_DEVELOPMENT);
+            var ok = WebClient.checkResponseStatusCode(response);
 
-        if (ok) {
-            LOGGER.info("Successfully notified WebSubHub");
-        } else {
-            LOGGER.warn("Failed to notify WebSubHub");
-        }
+            if (ok) {
+                LOGGER.info("Successfully notified WebSubHub");
+            } else {
+                LOGGER.warn("Failed to notify WebSubHub");
+            }
+        } catch (IOException | InterruptedException ignored) { }
     }
 }
