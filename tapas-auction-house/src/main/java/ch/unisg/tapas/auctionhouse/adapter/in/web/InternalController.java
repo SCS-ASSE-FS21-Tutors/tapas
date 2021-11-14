@@ -23,8 +23,6 @@ public class InternalController {
     @Value("${tasks.list.uri}")
     private String taskListUri;
 
-    private int defaultDeadline = 100000;
-
     public InternalController(LaunchAuctionUseCase launchAuctionUseCase) {
         this.launchAuctionUseCase = launchAuctionUseCase;
     }
@@ -34,12 +32,10 @@ public class InternalController {
     @PostMapping("/create-auction-for-task/")
     public ResponseEntity createAuctionForTask(@RequestBody Task task) {
 
-        Auction.AuctionDeadline deadline = new Auction.AuctionDeadline(defaultDeadline);
-
         LaunchAuctionCommand command = new LaunchAuctionCommand(
             new Auction.AuctionedTaskUri(URI.create(taskListUri)),
             new Auction.AuctionedTaskType(task.getTaskType().getValue()),
-            deadline
+            null
         );
 
         launchAuctionUseCase.launchAuction(command);
