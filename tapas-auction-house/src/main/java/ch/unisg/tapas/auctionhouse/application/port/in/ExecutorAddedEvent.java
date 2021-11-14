@@ -1,7 +1,8 @@
 package ch.unisg.tapas.auctionhouse.application.port.in;
 
 import ch.unisg.tapas.auctionhouse.domain.Auction.AuctionedTaskType;
-import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry.ExecutorIdentifier;
+import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry;
+import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry.ExecutorUri;
 import ch.unisg.tapas.common.SelfValidating;
 import lombok.Value;
 
@@ -13,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Value
 public class ExecutorAddedEvent extends SelfValidating<ExecutorAddedEvent> {
     @NotNull
-    private final ExecutorIdentifier executorId;
+    private final ExecutorRegistry.ExecutorUri executorUri;
 
     @NotNull
     private final AuctionedTaskType taskType;
@@ -21,10 +22,10 @@ public class ExecutorAddedEvent extends SelfValidating<ExecutorAddedEvent> {
     /**
      * Constructs an executor added event.
      *
-     * @param executorId the identifier of the executor that was added to this TAPAS application
+     * @param executorUri the identifier of the executor that was added to this TAPAS application
      */
-    public ExecutorAddedEvent(ExecutorIdentifier executorId, AuctionedTaskType taskType) {
-        this.executorId = executorId;
+    public ExecutorAddedEvent(ExecutorUri executorUri, AuctionedTaskType taskType) {
+        this.executorUri = executorUri;
         this.taskType = taskType;
 
         this.validateSelf();
