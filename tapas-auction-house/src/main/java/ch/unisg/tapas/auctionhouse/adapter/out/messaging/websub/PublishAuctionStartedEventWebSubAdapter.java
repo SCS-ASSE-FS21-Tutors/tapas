@@ -29,7 +29,6 @@ import java.util.stream.Collectors;
  * This class is a template for publishing auction started events via WebSub.
  */
 @Component
-@Primary
 public class PublishAuctionStartedEventWebSubAdapter implements AuctionStartedEventPort {
     // You can use this object to retrieve properties from application.properties, e.g. the
     // WebSub hub publish endpoint, etc.

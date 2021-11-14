@@ -1,5 +1,6 @@
 package ch.unisg.executorpool.adapter.in.web;
 
+import ch.unisg.executorpool.adapter.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.executorpool.application.port.in.RemoveExecutorFromExecutorPoolCommand;
 import ch.unisg.executorpool.application.port.in.RemoveExecutorFromExecutorPoolUseCase;
 import ch.unisg.executorpool.domain.ExecutorClass;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.net.URI;
 import java.util.Optional;
 
 @RestController
@@ -21,9 +23,11 @@ public class RemoveExecutorFromExecutorPoolWebController {
         this.removeExecutorFromExecutorPoolUseCase = removeExecutorFromExecutorPoolUseCase;
     }
 
-    @PostMapping(path = "/executor-pool/RemoveExecutor", consumes = {ExecutorMediaType.EXECUTOR_MEDIA_TYPE})
-    public ResponseEntity<String> removeExecutorFromExecutorPool(@RequestBody ExecutorClass executorClass){
-        RemoveExecutorFromExecutorPoolCommand command = new RemoveExecutorFromExecutorPoolCommand(executorClass.getExecutorIp(), executorClass.getExecutorPort());
+    @PostMapping(path = "/executor-pool/RemoveExecutor", consumes = {ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE})
+    public ResponseEntity<String> removeExecutorFromExecutorPool(@RequestBody ExecutorJsonRepresentation executorJsonRepresentation){
+        RemoveExecutorFromExecutorPoolCommand command = new RemoveExecutorFromExecutorPoolCommand(
+            new ExecutorClass.ExecutorUri(URI.create(executorJsonRepresentation.getExecutorUri()))
+        );
         Optional<ExecutorClass> removedExecutor = removeExecutorFromExecutorPoolUseCase.removeExecutorFromExecutorPool(command);
 
         if(removedExecutor.isEmpty()){
@@ -31,9 +35,9 @@ public class RemoveExecutorFromExecutorPoolWebController {
         }
 
         HttpHeaders responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
+        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE);
 
-        return new ResponseEntity<>(ExecutorMediaType.serialize(removedExecutor.get()), responseHeaders,
+        return new ResponseEntity<>(ExecutorJsonRepresentation.serialize(removedExecutor.get()), responseHeaders,
                 HttpStatus.OK);
     }
 }

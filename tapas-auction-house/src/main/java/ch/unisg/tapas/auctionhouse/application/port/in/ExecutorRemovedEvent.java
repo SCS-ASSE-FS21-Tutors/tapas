@@ -1,6 +1,7 @@
 package ch.unisg.tapas.auctionhouse.application.port.in;
 
-import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry.ExecutorIdentifier;
+import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry;
+import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry.ExecutorUri;
 import ch.unisg.tapas.common.SelfValidating;
 import lombok.Value;
 
@@ -12,15 +13,15 @@ import javax.validation.constraints.NotNull;
 @Value
 public class ExecutorRemovedEvent extends SelfValidating<ExecutorRemovedEvent> {
     @NotNull
-    private final ExecutorIdentifier executorId;
+    private final ExecutorUri executorUri;
 
     /**
      * Constructs an executor removed event.
      *
-     * @param executorId the identifier of the executor that was removed from this TAPAS application
+     * @param executorUri
      */
-    public ExecutorRemovedEvent(ExecutorIdentifier executorId) {
-        this.executorId = executorId;
+    public ExecutorRemovedEvent(ExecutorUri executorUri) {
+        this.executorUri = executorUri;
         this.validateSelf();
     }
 }

@@ -1,5 +1,8 @@
 package ch.unisg.executorpool.domain;
 
+import ch.unisg.executorpool.domain.ExecutorClass.ExecutorUri;
+import ch.unisg.executorpool.domain.ExecutorClass.ExecutorTaskType;
+
 import lombok.Getter;
 import lombok.Value;
 
@@ -20,19 +23,17 @@ public class ExecutorPool {
 
     public static ExecutorPool getExecutorPool() { return executorPool; }
 
-    public ExecutorClass addNewExecutor(ExecutorClass.ExecutorIp executorIp, ExecutorClass.ExecutorPort executorPort, ExecutorClass.ExecutorTaskType executorTaskType){
-        ExecutorClass newExecutor = ExecutorClass.createExecutorClass(executorIp, executorPort, executorTaskType);
+    public ExecutorClass addNewExecutor(ExecutorUri executorUri, ExecutorTaskType executorTaskType){
+        ExecutorClass newExecutor = ExecutorClass.createExecutorClass(executorUri, executorTaskType);
         listOfExecutors.value.add(newExecutor);
         System.out.println("Number of executors: " + listOfExecutors.value.size());
         return newExecutor;
     }
 
-    public Optional<ExecutorClass> getExecutorByIpAndPort(ExecutorClass.ExecutorIp executorIp, ExecutorClass.ExecutorPort executorPort){
+    public Optional<ExecutorClass> getExecutorByUri(ExecutorUri executorUri){
 
         for (ExecutorClass executor : listOfExecutors.value ) {
-            // TODO can this be simplified by overwriting equals()?
-            if(executor.getExecutorIp().getValue().equalsIgnoreCase(executorIp.getValue()) &&
-                    executor.getExecutorPort().getValue().equalsIgnoreCase(executorPort.getValue())){
+            if(executor.getExecutorUri().getValue().equals(executorUri)){
                 return Optional.of(executor);
             }
         }
@@ -54,11 +55,10 @@ public class ExecutorPool {
         return matchedExecutors;
     }
 
-    public Optional<ExecutorClass> removeExecutorByIpAndPort(ExecutorClass.ExecutorIp executorIp, ExecutorClass.ExecutorPort executorPort){
+    public Optional<ExecutorClass> removeExecutorByIpAndPort(ExecutorUri executorUri){
         for (ExecutorClass executor : listOfExecutors.value ) {
             // TODO can this be simplified by overwriting equals()?
-            if(executor.getExecutorIp().getValue().equalsIgnoreCase(executorIp.getValue()) &&
-                    executor.getExecutorPort().getValue().equalsIgnoreCase(executorPort.getValue())){
+            if(executor.getExecutorUri().getValue().equals(executorUri.getValue())){
                 listOfExecutors.value.remove(executor);
                 return Optional.of(executor);
             }

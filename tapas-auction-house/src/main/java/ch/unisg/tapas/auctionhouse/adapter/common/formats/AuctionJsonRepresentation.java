@@ -7,6 +7,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
  * only meant as a starting point when defining a uniform HTTP API for the Auction House: feel free
@@ -28,12 +30,12 @@ public class AuctionJsonRepresentation {
     private String taskType;
 
     @Getter @Setter
-    private Integer deadline;
+    private Timestamp deadline;
 
     public AuctionJsonRepresentation() {  }
 
     public AuctionJsonRepresentation(String auctionId, String auctionHouseUri, String taskUri,
-            String taskType, Integer deadline) {
+                                     String taskType, Timestamp deadline) {
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
