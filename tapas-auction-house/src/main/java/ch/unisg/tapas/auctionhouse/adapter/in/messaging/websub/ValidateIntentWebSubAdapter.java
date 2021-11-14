@@ -18,9 +18,6 @@ public class ValidateIntentWebSubAdapter {
 
     @GetMapping(path = "/auction-started")
     public ResponseEntity<String> handleExecutorAddedEvent(@RequestParam("hub.challenge") String challenge) {
-
-
-
         // Different implementation depending on local development or production
         if (environment.equalsIgnoreCase("development")) {
             HttpHeaders headers = new HttpHeaders();

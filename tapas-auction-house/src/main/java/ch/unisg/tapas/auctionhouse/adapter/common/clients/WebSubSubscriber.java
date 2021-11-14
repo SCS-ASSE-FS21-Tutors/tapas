@@ -9,10 +9,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Component;
 
 /**
  * Subscribes to the WebSub hubs of auction houses discovered at run time. This class is instantiated
@@ -38,6 +35,7 @@ public class WebSubSubscriber {
 
         subscribeToWebSub(topic);
 
+        // Shoudl be done :D
         // TODO Subscribe to the auction house endpoint via WebSub:
         // 1. Send a request to the auction house in order to discover the WebSub hub to subscribe to.
         // The request URI should depend on the design of the Auction House HTTP API.
