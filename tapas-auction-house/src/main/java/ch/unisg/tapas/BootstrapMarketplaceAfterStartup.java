@@ -11,12 +11,14 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.util.List;
 
+@Profile("!test")
 @AllArgsConstructor
 @Component
 public class BootstrapMarketplaceAfterStartup {
@@ -28,7 +30,7 @@ public class BootstrapMarketplaceAfterStartup {
 
     private final WebSubConfig webSubConfig;
     private final ResourceDirectoryRegisterer resourceDirectoryRegisterer;
-
+    
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         resourceDirectoryRegisterer.unregister();
