@@ -16,7 +16,4 @@ public class ExecutorRemovedHandler implements ExecutorRemovedEventHandler {
     public boolean handleExecutorRemovedEvent(ExecutorRemovedEvent executorRemovedEvent) {
         return ExecutorRegistry.getInstance().removeExecutor(executorRemovedEvent.getExecutorUri());
     }
-
-    public void handleNewExecutorEvent(ExecutorRemovedEvent executorRemovedEvent) {
-    }
 }

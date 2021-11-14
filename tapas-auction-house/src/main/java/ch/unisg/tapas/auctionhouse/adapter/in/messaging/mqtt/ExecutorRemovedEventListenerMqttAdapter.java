@@ -11,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 
+import java.net.URI;
+
 /**
  * Listener that handles events when an executor was removed to this TAPAS application.
  *
@@ -28,14 +30,14 @@ public class ExecutorRemovedEventListenerMqttAdapter extends AuctionEventMqttLis
             // representation that makes sense in the context of your application.
             JsonNode data = new ObjectMapper().readTree(payload);
 
-            String executorId = data.get("executorId").asText();
+            String executorUri = data.get("executorUri").asText();
 
             ExecutorRemovedEvent executorRemovedEvent = new ExecutorRemovedEvent(
-                new ExecutorRegistry.ExecutorIdentifier(executorId)
+                new ExecutorRegistry.ExecutorUri(URI.create(executorUri))
             );
 
             ExecutorRemovedHandler newExecutorHandler = new ExecutorRemovedHandler();
-            newExecutorHandler.handleNewExecutorEvent(executorRemovedEvent);
+            newExecutorHandler.handleExecutorRemovedEvent(executorRemovedEvent);
         } catch (JsonProcessingException | NullPointerException e) {
             LOGGER.error(e.getMessage(), e);
             return false;
