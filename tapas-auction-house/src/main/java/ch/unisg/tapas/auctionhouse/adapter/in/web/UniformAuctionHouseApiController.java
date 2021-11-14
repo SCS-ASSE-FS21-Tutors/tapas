@@ -5,6 +5,7 @@ import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.AllArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,7 +21,7 @@ import java.net.URI;
  * {@link LaunchAuctionUseCase} use case using the {@link LaunchAuctionCommand}.
  */
 @RestController
-public class LaunchAuctionWebController {
+public class UniformAuctionHouseApiController {
     private final LaunchAuctionUseCase launchAuctionUseCase;
 
     /**
@@ -28,7 +29,7 @@ public class LaunchAuctionWebController {
      *
      * @param launchAuctionUseCase an implementation of the launch auction use case
      */
-    public LaunchAuctionWebController(LaunchAuctionUseCase launchAuctionUseCase) {
+    public UniformAuctionHouseApiController(LaunchAuctionUseCase launchAuctionUseCase) {
         this.launchAuctionUseCase = launchAuctionUseCase;
     }
 

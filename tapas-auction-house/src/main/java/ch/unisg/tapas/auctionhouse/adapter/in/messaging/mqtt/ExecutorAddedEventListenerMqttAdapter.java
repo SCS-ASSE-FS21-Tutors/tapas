@@ -10,12 +10,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.stereotype.Component;
 
 /**
  * Listener that handles events when an executor was added to this TAPAS application.
  *
  * This class is only provided as an example to help you bootstrap the project.
  */
+@Component
 public class ExecutorAddedEventListenerMqttAdapter extends AuctionEventMqttListener {
     private static final Logger LOGGER = LogManager.getLogger(ExecutorAddedEventListenerMqttAdapter.class);
 

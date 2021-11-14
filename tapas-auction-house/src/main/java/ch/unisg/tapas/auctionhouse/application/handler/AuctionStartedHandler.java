@@ -47,15 +47,8 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
 
         LOGGER.info("Checking for suitable executors for task type " + auction.getTaskType().getValue());
 
-        //TODO: Use Autowired CheckForExecutorQueryPort Instead
-        //boolean canExecute = checkForExecutorQueryPort.checkForExecutor(query);
         CheckForExecutorQuery query = new CheckForExecutorQuery(auction);
-        CheckForExecutorQueryHttpAdapter adapter = new CheckForExecutorQueryHttpAdapter();
-        boolean canExecute = adapter.checkForExecutor(query);
-
-        System.out.println(placeBidForAuctionCommandPort);
-
-
+        boolean canExecute = checkForExecutorQueryPort.checkForExecutor(query);
 
         if (canExecute) {
             LOGGER.info("Placing bid for task " + auction.getTaskUri() + " of type "

@@ -21,15 +21,14 @@ import java.net.http.HttpResponse;
 public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPort {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(AuctionStartedHandler.class);
 
-    @Value("${ch.unisg.tapas.executor-pool-url}")
     private String executorPoolUrl;
-
     private HttpClient client;
     private ObjectMapper om;
 
-    public CheckForExecutorQueryHttpAdapter() {
+    public CheckForExecutorQueryHttpAdapter(@Value("${ch.unisg.tapas.executor-pool-url}") String executorPoolUrl) {
         this.om = new ObjectMapper();
         this.client = HttpClient.newHttpClient();
+        this.executorPoolUrl = executorPoolUrl;
     }
 
     @Override

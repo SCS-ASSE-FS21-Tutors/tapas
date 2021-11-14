@@ -15,9 +15,8 @@ import org.springframework.stereotype.Component;
 @Primary
 public class PublishAuctionStartedEventMqttAdapter implements AuctionStartedEventPort {
 
-    private AuctionEventsMqttDispatcher dispatcher = new AuctionEventsMqttDispatcher();
-    private String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
-    private TapasMqttClient client = TapasMqttClient.getInstance(MQTT_BROKER, dispatcher);
+    @Autowired
+    private TapasMqttClient client;
 
     @Override
     public void publishAuctionStartedEvent(AuctionStartedEvent event) {

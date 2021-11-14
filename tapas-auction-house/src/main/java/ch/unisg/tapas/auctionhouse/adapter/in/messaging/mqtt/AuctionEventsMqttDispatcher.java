@@ -1,6 +1,8 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.messaging.mqtt;
 
 import org.eclipse.paho.client.mqttv3.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Hashtable;
 import java.util.Map;
@@ -16,18 +18,23 @@ import java.util.Set;
  * This class is only provided as an example to help you bootstrap the project. You are welcomed to
  * change this class as you see fit.
  */
+@Component
 public class AuctionEventsMqttDispatcher {
     private final Map<String, AuctionEventMqttListener> router;
 
-    public AuctionEventsMqttDispatcher() {
+    private AuctionAddedEventListenerMqttAdapter auctionAddedEventListenerMqttAdapter;
+    private ExecutorAddedEventListenerMqttAdapter executorAddedEventListenerMqttAdapter;
+
+    public AuctionEventsMqttDispatcher(@Autowired AuctionAddedEventListenerMqttAdapter auctionAddedEventListenerMqttAdapter, @Autowired ExecutorAddedEventListenerMqttAdapter executorAddedEventListenerMqttAdapter) {
         this.router = new Hashtable<>();
-        initRouter();
+        this.auctionAddedEventListenerMqttAdapter = auctionAddedEventListenerMqttAdapter;
+        this.executorAddedEventListenerMqttAdapter = executorAddedEventListenerMqttAdapter;
+        this.initRouter();
     }
 
-    // TODO: Register here your topics and event listener adapters
     private void initRouter() {
-        router.put("ch/unisg/tapas/auctions", new AuctionAddedEventListenerMqttAdapter());
-        router.put("ch/unisg/tapas-group-tutors/executors", new ExecutorAddedEventListenerMqttAdapter());
+        router.put("ch/unisg/tapas/auctions", auctionAddedEventListenerMqttAdapter);
+        router.put("ch/unisg/tapas-group-tutors/executors", executorAddedEventListenerMqttAdapter);
     }
 
     /**
