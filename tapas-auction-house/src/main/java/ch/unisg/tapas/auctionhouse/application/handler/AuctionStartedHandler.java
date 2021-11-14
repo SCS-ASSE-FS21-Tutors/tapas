@@ -51,8 +51,8 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
         boolean canExecute = checkForExecutorQueryPort.checkForExecutor(query);
 
         if (canExecute) {
-            LOGGER.info("Placing bid for task " + auction.getTaskUri() + " of type "
-                + auction.getTaskType() + " in auction " + auction.getAuctionId()
+            LOGGER.info("Placing bid for task " + auction.getTaskUri().getValue().toString() + " of type "
+                + auction.getTaskType().getValue() + " in auction " + auction.getAuctionId().getValue()
                 + " from auction house " + auction.getAuctionHouseUri().getValue().toString());
 
             Bid bid = new Bid(auction.getAuctionId(),

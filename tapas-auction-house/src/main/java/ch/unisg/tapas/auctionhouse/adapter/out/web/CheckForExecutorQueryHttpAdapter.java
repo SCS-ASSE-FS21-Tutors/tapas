@@ -6,6 +6,7 @@ import ch.unisg.tapas.auctionhouse.application.port.out.CheckForExecutorQueryPor
 import ch.unisg.tapas.auctionhouse.domain.Task;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -18,8 +19,8 @@ import java.net.http.HttpResponse;
 
 @Component
 @Primary
+@Log4j2
 public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPort {
-    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger(AuctionStartedHandler.class);
 
     private String executorPoolUrl;
     private HttpClient client;
@@ -33,7 +34,7 @@ public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPo
 
     @Override
     public boolean checkForExecutor(CheckForExecutorQuery query) {
-        LOGGER.info("Sending request to executor pool");
+        log.info("Sending request to executor pool");
 
         Task task = new Task(new Task.TaskName("Tasktype wrapper"), new Task.TaskType(query.getAuction().getTaskType().getValue()));
 

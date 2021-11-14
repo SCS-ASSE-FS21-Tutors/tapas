@@ -20,9 +20,6 @@ public class AuctionAddedEventListenerMqttAdapter extends AuctionEventMqttListen
     @Autowired
     private AuctionStartedHandler auctionStartedHandler;
 
-    //TODO Check: Needed to hardcore the uri, not sure why I cannot retrieve with config or @value
-    private String internalAuctionHouseUri = "https://tapas-auction-house.86-119-34-23.nip.io/";
-
     @Override
     public boolean handleEvent(MqttMessage message) {
         Auction auction;
@@ -31,7 +28,7 @@ public class AuctionAddedEventListenerMqttAdapter extends AuctionEventMqttListen
             auction = AuctionJsonRepresentation.deserialize(new String(message.getPayload()));
 
             // Check if auction is not from us
-            if (auction.getAuctionHouseUri().getValue().toString().equals(internalAuctionHouseUri)) {
+            if (auction.getAuctionHouseUri().getValue().toString().equals(config.getAuctionHouseUri().toString())) {
                 AuctionStartedEvent auctionStartedEvent = new AuctionStartedEvent(auction);
                 auctionStartedHandler.handleAuctionStartedEvent(auctionStartedEvent);
             }

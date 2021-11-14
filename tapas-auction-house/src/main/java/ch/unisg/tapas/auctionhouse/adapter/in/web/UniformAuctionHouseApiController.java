@@ -1,8 +1,8 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.web;
 
-import ch.unisg.tapas.auctionhouse.adapter.in.web.dto.AuctionDto;
-import ch.unisg.tapas.auctionhouse.adapter.in.web.dto.BidDto;
-import ch.unisg.tapas.auctionhouse.adapter.in.web.dto.TaskDto;
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.AuctionDto;
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.BidDto;
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.TaskDto;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import org.springframework.http.HttpStatus;
@@ -28,6 +28,7 @@ public class UniformAuctionHouseApiController {
 
     @PostMapping("/bid")
     public ResponseEntity placeNewBidEndpoint(@RequestBody BidDto bidDto){
+        System.out.println("Bid received");
 
         if(bidDto == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);

@@ -1,4 +1,4 @@
-package ch.unisg.tapas.auctionhouse.adapter.in.web.dto;
+package ch.unisg.tapas.auctionhouse.adapter.common.formats.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
