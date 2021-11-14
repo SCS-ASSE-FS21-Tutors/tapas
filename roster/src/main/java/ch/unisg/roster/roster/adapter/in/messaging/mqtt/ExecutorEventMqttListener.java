@@ -5,7 +5,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 /**
  * Abstract MQTT listener for auction-related events
  */
-public abstract class AuctionEventMqttListener {
+public abstract class ExecutorEventMqttListener {
 
     public abstract boolean handleEvent(MqttMessage message);
 }

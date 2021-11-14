@@ -11,7 +11,7 @@ import ch.unisg.common.valueobject.ExecutorURI;
 import ch.unisg.roster.roster.application.handler.ExecutorRemovedHandler;
 import ch.unisg.roster.roster.application.port.in.ExecutorRemovedEvent;
 
-public class ExecutorRemovedEventListenerMqttAdapter extends AuctionEventMqttListener {
+public class ExecutorRemovedEventListenerMqttAdapter extends ExecutorEventMqttListener {
     private static final Logger LOGGER = LogManager.getLogger(ExecutorRemovedEventListenerMqttAdapter.class);
 
     @Override

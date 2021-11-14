@@ -6,20 +6,10 @@ import java.util.Hashtable;
 import java.util.Map;
 import java.util.Set;
 
-/**
- * Dispatches MQTT messages for known topics to associated event listeners. Used in conjunction with
- * {@link ch.unisg.tapas.auctionhouse.adapter.common.clients.TapasMqttClient}.
- *
- * This is where you would define MQTT topics and map them to event listeners (see
- * {@link AuctionEventsMqttDispatcher#initRouter()}).
- *
- * This class is only provided as an example to help you bootstrap the project. You are welcomed to
- * change this class as you see fit.
- */
-public class AuctionEventsMqttDispatcher {
-    private final Map<String, AuctionEventMqttListener> router;
+public class ExecutorEventsMqttDispatcher {
+    private final Map<String, ExecutorEventMqttListener> router;
 
-    public AuctionEventsMqttDispatcher() {
+    public ExecutorEventsMqttDispatcher() {
         this.router = new Hashtable<>();
         initRouter();
     }
@@ -46,7 +36,7 @@ public class AuctionEventsMqttDispatcher {
      * @param message the received MQTT message
      */
     public void dispatchEvent(String topic, MqttMessage message) {
-        AuctionEventMqttListener listener = router.get(topic);
+        ExecutorEventMqttListener listener = router.get(topic);
         listener.handleEvent(message);
     }
 }
