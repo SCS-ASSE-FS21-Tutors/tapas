@@ -12,10 +12,9 @@ public class ConfigProperties {
     private Environment environment;
 
     /**
-     * Retrieves the URI of the WebSub hub. In this project, we use a single WebSub hub, but we could
-     * use multiple.
+     * Retrieves the URI of the MQTT broker.
      *
-     * @return the URI of the WebSub hub
+     * @return the URI of the MQTT broker
      */
     public URI getMqttBrokerUri() {
         return URI.create(environment.getProperty("mqtt.broker.uri"));

@@ -61,4 +61,14 @@ public class ConfigProperties {
     public URI getTaskListUri() {
         return URI.create(environment.getProperty("tasks.list.uri"));
     }
+
+
+    /**
+     * Retrieves the URI of the MQTT broker.
+     *
+     * @return the URI of the MQTT broker
+     */
+    public URI getMqttBrokerUri() {
+        return URI.create(environment.getProperty("mqtt.broker.uri"));
+    }
 }
