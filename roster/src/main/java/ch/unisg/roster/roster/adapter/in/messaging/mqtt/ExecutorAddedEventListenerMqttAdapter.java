@@ -12,7 +12,7 @@ import ch.unisg.roster.roster.application.handler.ExecutorAddedHandler;
 import ch.unisg.roster.roster.application.port.in.ExecutorAddedEvent;
 import ch.unisg.roster.roster.domain.valueobject.ExecutorType;
 
-public class ExecutorAddedEventListenerMqttAdapter extends AuctionEventMqttListener {
+public class ExecutorAddedEventListenerMqttAdapter extends ExecutorEventMqttListener {
     private static final Logger LOGGER = LogManager.getLogger(ExecutorAddedEventListenerMqttAdapter.class);
 
     @Override
@@ -24,7 +24,7 @@ public class ExecutorAddedEventListenerMqttAdapter extends AuctionEventMqttListe
             // representation that makes sense in the context of your application.
             JsonNode data = new ObjectMapper().readTree(payload);
 
-            String taskType = data.get("taskType").asText();
+            String taskType = data.get("executorTaskType").asText();
             String executorId = data.get("executorURI").asText();
 
             ExecutorAddedEvent executorAddedEvent = new ExecutorAddedEvent(

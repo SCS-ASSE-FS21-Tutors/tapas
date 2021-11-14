@@ -1,6 +1,6 @@
 package ch.unisg.roster.roster.adapter.common.clients;
 
-import ch.unisg.roster.roster.adapter.in.messaging.mqtt.AuctionEventsMqttDispatcher;
+import ch.unisg.roster.roster.adapter.in.messaging.mqtt.ExecutorEventsMqttDispatcher;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.*;
@@ -25,9 +25,9 @@ public class TapasMqttClient {
 
     private final MessageReceivedCallback messageReceivedCallback;
 
-    private final AuctionEventsMqttDispatcher dispatcher;
+    private final ExecutorEventsMqttDispatcher dispatcher;
 
-    private TapasMqttClient(String brokerAddress, AuctionEventsMqttDispatcher dispatcher) {
+    private TapasMqttClient(String brokerAddress, ExecutorEventsMqttDispatcher dispatcher) {
         this.mqttClientId = UUID.randomUUID().toString();
         this.brokerAddress = brokerAddress;
 
@@ -37,7 +37,7 @@ public class TapasMqttClient {
     }
 
     public static synchronized TapasMqttClient getInstance(String brokerAddress,
-            AuctionEventsMqttDispatcher dispatcher) {
+            ExecutorEventsMqttDispatcher dispatcher) {
 
         if (tapasClient == null) {
             tapasClient = new TapasMqttClient(brokerAddress, dispatcher);
