@@ -2,7 +2,7 @@ package ch.unisg.tapascommon;
 
 public class ServiceHostAddresses {
 
-    private static final boolean IS_LOCALHOST = true;
+    private static final boolean IS_LOCALHOST = false;
 
     private static final String LOCALHOST_TASKS = "http://127.0.0.1:8081";
     private static final String LOCALHOST_ROSTER = "http://127.0.0.1:8082";

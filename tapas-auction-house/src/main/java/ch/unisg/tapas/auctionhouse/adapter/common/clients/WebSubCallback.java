@@ -1,8 +1,10 @@
 package ch.unisg.tapas.auctionhouse.adapter.common.clients;
 
+import ch.unisg.tapas.auctionhouse.adapter.in.messaging.websub.AuctionStartedEventListenerWebSubAdapter;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,8 @@ public class WebSubCallback {
     private static final Logger LOGGER = LogManager.getLogger(WebSubCallback.class);
 
     private final WebSubConfig webSubConfig;
+
+    private final AuctionStartedEventListenerWebSubAdapter auctionStartedEventListenerWebSubAdapter;
 
     @GetMapping(path = "/subscribe")
     public ResponseEntity<String> handleCallback(
@@ -45,11 +49,7 @@ public class WebSubCallback {
     @PostMapping(path = "/subscribe")
     public ResponseEntity<String> handleCallback(
         @RequestBody Optional<String> bodyOptional) {
-        LOGGER.info("WebSub callback triggered");
-        bodyOptional.ifPresent(System.out::println);
-
-        // TODO: Propagate new auctions to listener
-
+        bodyOptional.ifPresent(auctionStartedEventListenerWebSubAdapter::handleAuctionStartedEvent);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

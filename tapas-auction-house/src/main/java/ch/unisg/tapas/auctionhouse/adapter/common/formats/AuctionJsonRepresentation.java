@@ -4,6 +4,7 @@ import ch.unisg.tapas.auctionhouse.domain.Auction;
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -36,8 +37,13 @@ public class AuctionJsonRepresentation {
 
     public AuctionJsonRepresentation() {  }
 
-    public AuctionJsonRepresentation(String auctionId, String auctionHouseUri, String taskUri,
-            String taskType, Integer deadline) {
+    public AuctionJsonRepresentation(
+        String auctionId,
+        String auctionHouseUri,
+        String taskUri,
+        String taskType,
+        Integer deadline)
+    {
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
@@ -72,5 +78,15 @@ public class AuctionJsonRepresentation {
 
     public Auction deserialize() {
         return AuctionJsonRepresentation.deserialize(this);
+    }
+
+    public static AuctionJsonRepresentation fromJsonString(String auctionString) throws JsonProcessingException {
+        var dataAuction = new ObjectMapper().readTree(auctionString);
+        var auctionId = dataAuction.get("auctionId").textValue();
+        var auctionHouseUri = dataAuction.get("auctionHouseUri").textValue();
+        var taskUri = dataAuction.get("auctionHouseUri").textValue();
+        var taskType= dataAuction.get("taskType").textValue();
+        var deadline = dataAuction.get("deadline").intValue();
+        return new AuctionJsonRepresentation(auctionId, auctionHouseUri, taskUri, taskType, deadline);
     }
 }

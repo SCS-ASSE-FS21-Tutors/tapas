@@ -1,6 +1,5 @@
 package ch.unisg.tapascommon.tasks.domain;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
@@ -26,7 +25,7 @@ public class Task {
     private final TaskType taskType;
 
     @Getter
-    private OriginalTaskUri originalTaskUri;
+    private final OriginalTaskUri originalTaskUri;
 
     @Getter @Setter
     private TaskStatus taskStatus;
@@ -60,23 +59,17 @@ public class Task {
         this.outputData = outputData;
     }
 
-    public static Task createNewTask(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
-        var task = new Task(
+    public static Task createNewTask(TaskName taskName, TaskType taskType, OriginalTaskUri originalTaskUri) {
+        return new Task(
                 new TaskId(UUID.randomUUID().toString()),
                 taskName,
                 taskType,
-                taskUri,
+                originalTaskUri,
                 new TaskStatus(Status.OPEN),
                 null,
                 null,
                 null
         );
-
-        if (taskUri == null) {
-            task.originalTaskUri = new OriginalTaskUri(ServiceHostAddresses.getTaskServiceHostAddress() + "/tasks/" + task.taskId.getValue());
-        }
-
-        return task;
     }
 
     public static Task createNewTask(TaskName taskName, TaskType taskType) {

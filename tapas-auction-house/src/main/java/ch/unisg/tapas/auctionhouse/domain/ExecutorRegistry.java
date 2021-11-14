@@ -17,6 +17,10 @@ public class ExecutorRegistry {
 
     private ExecutorRegistry() {
         this.executors = new Hashtable<>();
+
+        // Temporary
+        addExecutor(new Auction.AuctionedTaskType("COMPUTATION"), new ExecutorIdentifier("COMPUTATION"));
+        addExecutor(new Auction.AuctionedTaskType("BIGROBOT"), new ExecutorIdentifier("BIGROBOT"));
     }
 
     public static synchronized ExecutorRegistry getInstance() {

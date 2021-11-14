@@ -6,6 +6,7 @@ import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskComman
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateChangedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
+import ch.unisg.tapasexecutorbase.executor.application.service.ExecuteTaskBaseService;
 import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
 import ch.unisg.tapasexecutorbase.executor.domain.TaskUpdatedEvent;
 import lombok.AllArgsConstructor;
@@ -21,16 +22,6 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     private final ExecutorStateChangedEventPort executorStateChangedEventPort;
     private final TaskUpdatedEventPort taskUpdatedEventPort;
-
-    private void updateTaskStatus(Task task) {
-        var taskRepresentation = new TaskJsonRepresentation(task);
-        var updateTaskEvent = new TaskUpdatedEvent(
-                taskRepresentation.getTaskId(),
-                taskRepresentation.getTaskStatus(),
-                taskRepresentation.getOutputData(),
-                taskRepresentation.getOriginalTaskUri());
-        taskUpdatedEventPort.updateTaskStatusEvent(updateTaskEvent);
-    }
 
     private void updateExecutorState(String state) {
         executorStateChangedEventPort.publishExecutorStateChangedEvent(
@@ -54,7 +45,7 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var task = command.getTask();
 
         task.setTaskStatus(new Task.TaskStatus(Task.Status.RUNNING));
-        updateTaskStatus(task);
+        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
 
         var expression = task.getInputData().getValue();
         var result = calculate(expression);
@@ -64,7 +55,7 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
         task.setOutputData(new Task.OutputData(result));
         task.setTaskStatus(new Task.TaskStatus(Task.Status.EXECUTED));
-        updateTaskStatus(task);
+        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
 
         updateExecutorState("IDLE");
     }

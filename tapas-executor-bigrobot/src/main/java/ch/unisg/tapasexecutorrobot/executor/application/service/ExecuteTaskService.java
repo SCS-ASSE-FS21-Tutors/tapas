@@ -1,10 +1,12 @@
 package ch.unisg.tapasexecutorrobot.executor.application.service;
 
+import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateChangedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
+import ch.unisg.tapasexecutorbase.executor.application.service.ExecuteTaskBaseService;
 import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
 import ch.unisg.tapasexecutorbase.executor.domain.TaskUpdatedEvent;
 import ch.unisg.tapasexecutorrobot.executor.domain.Cherrybot;
@@ -20,16 +22,6 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     private final ExecutorStateChangedEventPort executorStateChangedEventPort;
     private final TaskUpdatedEventPort taskUpdatedEventPort;
-
-    private void updateTaskStatus(Task task) {
-        var taskRepresentation = new TaskJsonRepresentation(task);
-        var updateTaskEvent = new TaskUpdatedEvent(
-                taskRepresentation.getTaskId(),
-                taskRepresentation.getTaskStatus(),
-                taskRepresentation.getOutputData(),
-                taskRepresentation.getOriginalTaskUri());
-        taskUpdatedEventPort.updateTaskStatusEvent(updateTaskEvent);
-    }
 
     private void updateExecutorState(String state) {
         executorStateChangedEventPort.publishExecutorStateChangedEvent(
@@ -52,13 +44,13 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var task = command.getTask();
 
         task.setTaskStatus(new Task.TaskStatus(Task.Status.RUNNING));
-        updateTaskStatus(task);
+        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
 
         moveRobot();
         task.setOutputData(new Task.OutputData("COMPLETED"));
 
         task.setTaskStatus(new Task.TaskStatus(Task.Status.EXECUTED));
-        updateTaskStatus(task);
+        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
 
         updateExecutorState("IDLE");
     }

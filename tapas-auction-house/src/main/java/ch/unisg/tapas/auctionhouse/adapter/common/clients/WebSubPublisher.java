@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONObject;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 @RequiredArgsConstructor
@@ -18,7 +19,8 @@ public class WebSubPublisher {
 
     private final WebSubConfig webSubConfig;
 
-    public boolean notifyHub(String path) {
+    @Async
+    public void notifyHub(String path) {
 
         // TODO: Implement production
 
@@ -35,7 +37,5 @@ public class WebSubPublisher {
         } else {
             LOGGER.warn("Failed to notify WebSubHub");
         }
-
-        return ok;
     }
 }

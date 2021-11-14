@@ -42,7 +42,7 @@ public class BootstrapMarketplaceAfterStartup {
             subscriber.subscribeToDevelopmentWebSubHub();
         }
 
-        // bootstrapMarketplaceWithMqtt();
+        bootstrapMarketplaceWithMqtt();
     }
 
     /**
