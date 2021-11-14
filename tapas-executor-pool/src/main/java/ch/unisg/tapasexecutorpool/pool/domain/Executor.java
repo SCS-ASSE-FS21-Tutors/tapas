@@ -28,6 +28,19 @@ public class Executor {
     @Getter
     private ExecutorState executorState;
 
+    public Executor(
+            ExecutorId executorId,
+            ExecutorName executorName,
+            ExecutorType executorType,
+            ExecutorAddress executorAddress,
+            ExecutorState executorState) {
+        this.executorId = executorId;
+        this.executorName = executorName;
+        this.executorType = executorType;
+        this.executorAddress = executorAddress;
+        this.executorState = executorState;
+    }
+
     public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorAddress executorAddress) {
         this.executorName = executorName;
         this.executorType = executorType;

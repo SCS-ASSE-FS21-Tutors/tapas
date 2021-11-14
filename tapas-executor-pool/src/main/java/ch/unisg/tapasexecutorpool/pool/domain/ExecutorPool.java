@@ -37,7 +37,7 @@ public class ExecutorPool {
     }
 
     public Executor addNewExecutor(Executor.ExecutorName name, Executor.ExecutorType type, Executor.ExecutorAddress address) {
-        Executor newExecutor = Executor.createExecutor(name, type, address);
+        var newExecutor = Executor.createExecutor(name, type, address);
         listOfExecutors.value.add(newExecutor);
         System.out.println("Number of Executors: "+ listOfExecutors.value.size());
         return newExecutor;

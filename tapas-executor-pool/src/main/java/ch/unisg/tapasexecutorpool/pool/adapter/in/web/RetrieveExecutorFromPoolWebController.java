@@ -1,42 +1,38 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
+import ch.unisg.tapasexecutorpool.pool.adapter.in.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Optional;
-
+@RequiredArgsConstructor
 @RestController
 public class RetrieveExecutorFromPoolWebController {
     private final RetrieveExecutorFromPoolUseCase retrieveExecutorFromPoolUseCase;
 
-    public RetrieveExecutorFromPoolWebController(RetrieveExecutorFromPoolUseCase retrieveExecutorFromPoolUseCase) {
-        this.retrieveExecutorFromPoolUseCase = retrieveExecutorFromPoolUseCase;
-    }
-
     @GetMapping(path = "/executors/{executorId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("executorId") String executor) {
         var command = new RetrieveExecutorFromPoolCommand(new Executor.ExecutorId(executor));
-        Optional<Executor> updatedTaskOpt = retrieveExecutorFromPoolUseCase.retrieveExecutorFromPool(command);
+        var executorOptional = retrieveExecutorFromPoolUseCase.retrieveExecutorFromPool(command);
 
-        // Check if the task with the given identifier exists
-        if (updatedTaskOpt.isEmpty()) {
-            // If not, through a 404 Not Found status code
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+        if (executorOptional.isPresent()) {
+            var responseHeaders = new HttpHeaders();
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE);
+            try {
+                var json = executorOptional.get().serialize();
+                return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
+            } catch (JsonProcessingException e) {
+                e.printStackTrace();
+            }
         }
-
-        // Add the content type as a response header
-        var responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
-
-        return new ResponseEntity<>(ExecutorMediaType.serialize(updatedTaskOpt.get()), responseHeaders,
-                HttpStatus.OK);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 }

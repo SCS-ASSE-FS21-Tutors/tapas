@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.application.service;
 
+import ch.unisg.tapasexecutorpool.pool.adapter.in.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -15,8 +16,15 @@ import java.util.Optional;
 @Transactional
 public class RetrieveExecutorFromPoolService implements RetrieveExecutorFromPoolUseCase {
     @Override
-    public Optional<Executor> retrieveExecutorFromPool(RetrieveExecutorFromPoolCommand command) {
+    public Optional<ExecutorJsonRepresentation> retrieveExecutorFromPool(RetrieveExecutorFromPoolCommand command) {
         var executorPool = ExecutorPool.getTapasExecutorPool();
-        return executorPool.retrieveExecutorById(command.getExecutorId());
+        var executor = executorPool.retrieveExecutorById(command.getExecutorId());
+
+        if (executor.isPresent()) {
+            var representation = new ExecutorJsonRepresentation(executor.get());
+            return Optional.of(representation);
+        }
+
+        return Optional.empty();
     }
 }
