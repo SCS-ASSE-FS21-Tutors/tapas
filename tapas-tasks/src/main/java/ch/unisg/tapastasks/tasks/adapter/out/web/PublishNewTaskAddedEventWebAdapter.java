@@ -1,8 +1,11 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.web.TaskMediaType;
+import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
+import ch.unisg.tapascommon.tasks.domain.Task;
+import ch.unisg.tapastasks.tasks.domain.TaskList;;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -17,20 +20,26 @@ import java.net.http.HttpResponse;
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
-    public static final String ROSTER_SERVICE_API = "https://tapas-roster.86-119-35-199.nip.io/roster/schedule-task/";
+    private static final String URL = ServiceHostAddresses.getRosterServiceHostAddress();
+    private static final String PATH = "/roster/schedule-task/";
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
 
-        var payload = TaskMediaType.serialize(event.task);
-        var client = HttpClient.newHttpClient();
-        var request = HttpRequest.newBuilder()
-            .uri(URI.create(ROSTER_SERVICE_API))
-            .setHeader(HttpHeaders.CONTENT_TYPE, TaskMediaType.TASK_MEDIA_TYPE)
-            .POST(HttpRequest.BodyPublishers.ofString(payload))
-            .build();
+        var task = TaskList.getTapasTaskList().retrieveTaskById(new Task.TaskId(event.taskId));
+
+        if (task.isEmpty()) {
+            return;
+        }
 
         try {
+            var requestBody = TaskJsonRepresentation.serialize(task.get());
+            var client = HttpClient.newHttpClient();
+            var request = HttpRequest.newBuilder()
+                .uri(URI.create(URL + PATH))
+                .setHeader(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE)
+                .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                .build();
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
             e.printStackTrace();

@@ -1,7 +1,7 @@
 package ch.unisg.tapastasks.tasks.application.port.in;
 
-import ch.unisg.tapastasks.common.SelfValidating;
-import ch.unisg.tapastasks.tasks.domain.Task.TaskId;
+import ch.unisg.tapascommon.common.SelfValidating;
+import ch.unisg.tapascommon.tasks.domain.Task.TaskId;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;

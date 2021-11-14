@@ -1,28 +1,42 @@
 package ch.unisg.tapastasks.tasks.application.port.in;
 
-import ch.unisg.tapastasks.common.SelfValidating;
-import ch.unisg.tapastasks.tasks.domain.Task.TaskType;
-import ch.unisg.tapastasks.tasks.domain.Task.TaskName;
-import ch.unisg.tapastasks.tasks.domain.Task.TaskPayload;
+import ch.unisg.tapascommon.common.SelfValidating;
+import ch.unisg.tapascommon.tasks.domain.Task;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.Value;
 
 import javax.validation.constraints.NotNull;
+import java.util.Optional;
 
+@EqualsAndHashCode(callSuper = true)
 @Value
 public class AddNewTaskToTaskListCommand extends SelfValidating<AddNewTaskToTaskListCommand> {
     @NotNull
-    private final TaskName taskName;
+    Task.TaskName taskName;
 
     @NotNull
-    private final TaskType taskType;
+    Task.TaskType taskType;
 
+    @Getter
     @NotNull
-    private final TaskPayload taskPayload;
+    Optional<Task.InputData> inputData;
 
-    public AddNewTaskToTaskListCommand(TaskName taskName, TaskType taskType, TaskPayload taskPayload) {
+    @Getter
+    @NotNull
+    Optional<Task.OriginalTaskUri> originalTaskUri;
+
+    public AddNewTaskToTaskListCommand(
+        Task.TaskName taskName,
+        Task.TaskType taskType,
+        Optional<Task.InputData> inputData,
+        Optional<Task.OriginalTaskUri> originalTaskUri)
+    {
         this.taskName = taskName;
         this.taskType = taskType;
-        this.taskPayload = taskPayload;
+        this.inputData = inputData;
+        this.originalTaskUri = originalTaskUri;
+
         this.validateSelf();
     }
 }
