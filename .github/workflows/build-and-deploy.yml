@@ -28,6 +28,10 @@ jobs:
       run: mvn -f app/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./app/target/app-0.1.0.jar ./target
 
+    - name: Build TAPAS Common Library with Maven
+      run: mvn -f tapas-common/pom.xml --batch-mode --update-snapshots verify install
+    - run: cp ./tapas-common/target/tapas-common-0.0.1-SNAPSHOT.jar ./target
+
     - name: Build TAPAS Task Service with Maven
       run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target
@@ -39,6 +43,10 @@ jobs:
     - name: Build TAPAS Executor Pool Service with Maven
       run: mvn -f tapas-executor-pool/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-executor-pool/target/tapas-executor-pool-0.0.1-SNAPSHOT.jar ./target
+
+    - name: Build TAPAS Executor Base Library with Maven
+      run: mvn -f tapas-executor-base/pom.xml --batch-mode --update-snapshots verify install
+    - run: cp ./tapas-executor-base/target/tapas-executor-base-0.0.1-SNAPSHOT.jar ./target
 
     - name: Build TAPAS Executor Computation Service with Maven
       run: mvn -f tapas-executor-computation/pom.xml --batch-mode --update-snapshots verify
