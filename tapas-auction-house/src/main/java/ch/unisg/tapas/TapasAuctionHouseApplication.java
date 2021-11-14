@@ -4,9 +4,11 @@ import ch.unisg.tapas.auctionhouse.adapter.common.clients.TapasMqttClient;
 import ch.unisg.tapas.auctionhouse.adapter.in.messaging.mqtt.AuctionEventsMqttDispatcher;
 import ch.unisg.tapas.auctionhouse.adapter.common.clients.WebSubSubscriber;
 import ch.unisg.tapas.common.AuctionHouseResourceDirectory;
+import ch.unisg.tapas.common.ConfigProperties;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -19,6 +21,9 @@ import java.util.List;
 @SpringBootApplication
 public class TapasAuctionHouseApplication {
     private static final Logger LOGGER = LogManager.getLogger(TapasAuctionHouseApplication.class);
+
+    @Autowired
+    private ConfigProperties config;
 
     public static String RESOURCE_DIRECTORY = "https://api.interactions.ics.unisg.ch/auction-houses/";
     public static String MQTT_BROKER = "tcp://localhost:1883";
