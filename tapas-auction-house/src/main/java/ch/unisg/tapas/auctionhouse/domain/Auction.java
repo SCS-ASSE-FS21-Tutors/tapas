@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Value;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -166,6 +167,6 @@ public class Auction {
 
     @Value
     public static class AuctionDeadline {
-        int value;
+        Timestamp value;
     }
 }

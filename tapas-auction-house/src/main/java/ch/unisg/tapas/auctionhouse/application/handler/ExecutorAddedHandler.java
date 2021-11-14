@@ -11,6 +11,6 @@ public class ExecutorAddedHandler implements ExecutorAddedEventHandler {
     @Override
     public boolean handleNewExecutorEvent(ExecutorAddedEvent executorAddedEvent) {
         return ExecutorRegistry.getInstance().addExecutor(executorAddedEvent.getTaskType(),
-            executorAddedEvent.getExecutorId());
+            executorAddedEvent.getExecutorUri());
     }
 }

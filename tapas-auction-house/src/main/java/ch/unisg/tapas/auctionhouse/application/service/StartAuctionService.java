@@ -2,6 +2,7 @@ package ch.unisg.tapas.auctionhouse.application.service;
 
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
+import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionWonEventPort;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionStartedEventPort;
 import ch.unisg.tapas.auctionhouse.domain.*;
@@ -11,6 +12,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.sql.Timestamp;
 import java.util.Optional;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -25,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 public class StartAuctionService implements LaunchAuctionUseCase {
     private static final Logger LOGGER = LogManager.getLogger(StartAuctionService.class);
 
-    private final static int DEFAULT_AUCTION_DEADLINE_MILLIS = 10000;
+    private final Timestamp DEFAULT_AUCTION_DEADLINE_MILLIS = Timestamp.valueOf("1970-01-01 00:00:01");
 
     // Event port used to publish an auction started event
     private final AuctionStartedEventPort auctionStartedEventPort;
@@ -63,7 +65,7 @@ public class StartAuctionService implements LaunchAuctionUseCase {
         auctions.addAuction(auction);
 
         // Schedule the closing of the auction at the deadline
-        service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue(),
+        service.schedule(new CloseAuctionTask(auction.getAuctionId()), deadline.getValue().getTime() - System.currentTimeMillis(),
             TimeUnit.MILLISECONDS);
 
         // Publish an auction started event

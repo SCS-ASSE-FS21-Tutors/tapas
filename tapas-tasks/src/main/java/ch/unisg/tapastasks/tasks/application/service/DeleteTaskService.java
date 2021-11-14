@@ -5,6 +5,7 @@ import ch.unisg.tapastasks.tasks.application.port.in.DeleteTaskCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.DeleteTaskUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
+import jdk.jshell.spi.ExecutionControl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,11 +24,10 @@ public class DeleteTaskService implements DeleteTaskUseCase {
         Optional<Task> updatedTask = taskList.retrieveTaskById(command.getTaskId());
         Task newTask = updatedTask.get();
         // TODO: Fill in the right condition into the if-statement and the else-statement
-        if (/*the task can be deleted*/){
+        if (true){
             return taskList.deleteTaskById(command.getTaskId());
-        } else {
-            /*send message back to TaskList that the task cannot be deleted*/
         }
-
+        // TODO Handle with a return message
+        return Optional.empty();
     }
 }
