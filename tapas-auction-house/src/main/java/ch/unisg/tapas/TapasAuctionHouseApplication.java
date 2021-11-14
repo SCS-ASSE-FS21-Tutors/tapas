@@ -21,14 +21,14 @@ public class TapasAuctionHouseApplication {
     private static final Logger LOGGER = LogManager.getLogger(TapasAuctionHouseApplication.class);
 
     public static String RESOURCE_DIRECTORY = "https://api.interactions.ics.unisg.ch/auction-houses/";
-    public static String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
+    public static String MQTT_BROKER = "tcp://localhost:1883";
 
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
 
 		// We will use these bootstrap methods in Week 6:
         // bootstrapMarketplaceWithWebSub();
-        // bootstrapMarketplaceWithMqtt();
+        bootstrapMarketplaceWithMqtt();
 
         tapasAuctioneerApp.run(args);
 	}
