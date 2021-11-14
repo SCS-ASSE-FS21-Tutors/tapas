@@ -27,6 +27,7 @@ public class AuctionEventsMqttDispatcher {
     // TODO: Register here your topics and event listener adapters
     private void initRouter() {
         router.put("ch/unisg/tapas/executors/added", new ExecutorAddedEventListenerMqttAdapter());
+        router.put("ch/unisg/tapas/executors/removed", new ExecutorRemovedEventListenerMqttAdapter());
     }
 
     /**
