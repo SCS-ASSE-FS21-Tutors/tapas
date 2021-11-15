@@ -109,7 +109,7 @@ public class NewTaskAddedTest {
                 .withHeader("Content-Type", equalTo("application/json")));
 
         verify(postRequestedFor(urlEqualTo("/auction-house/internal/create-auction-for-task/"))
-                .withHeader("Content-Type", equalTo("application/json")));
+                .withHeader("Content-Type", equalTo("application/task+json")));
     }
 
 }
