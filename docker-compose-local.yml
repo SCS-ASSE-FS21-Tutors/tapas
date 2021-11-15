@@ -22,6 +22,8 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 8nP7s0a    # Can not be changed again later on
     volumes:
       - database:/data/db
+    networks:
+      - tapas-network
 
 #Volume for mongodb. One per server.
 volumes:
