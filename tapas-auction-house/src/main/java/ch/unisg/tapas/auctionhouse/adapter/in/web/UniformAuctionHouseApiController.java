@@ -1,13 +1,12 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.web;
 
 import ch.unisg.tapas.auctionhouse.adapter.common.formats.BidJsonRepresentation;
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.AuctionDto;
 import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.TaskDto;
-import ch.unisg.tapas.auctionhouse.application.port.in.BidReceivedEvent;
-import ch.unisg.tapas.auctionhouse.application.port.in.BidReceivedEventHandler;
-import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
-import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
+import ch.unisg.tapas.auctionhouse.application.port.in.*;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
+import ch.unisg.tapas.auctionhouse.domain.Task;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +19,11 @@ import org.springframework.web.server.ResponseStatusException;
  */
 @RestController
 public class UniformAuctionHouseApiController {
+    private final ProcessExternalTaskUseCase processExternalTaskUseCase;
     private final BidReceivedEventHandler bidReceivedEventHandler;
 
-    public UniformAuctionHouseApiController(BidReceivedEventHandler bidReceivedEventHandler) {
+    public UniformAuctionHouseApiController(ProcessExternalTaskUseCase processExternalTaskUseCase, BidReceivedEventHandler bidReceivedEventHandler) {
+        this.processExternalTaskUseCase = processExternalTaskUseCase;
         this.bidReceivedEventHandler = bidReceivedEventHandler;
     }
 
@@ -56,13 +57,23 @@ public class UniformAuctionHouseApiController {
         }
     }
 
-    @PostMapping("/taskwinner")
-    public ResponseEntity taskwinnerNotificationEndpoint(@RequestBody TaskDto taskwinnerDto) {
+    @PostMapping(path="/taskwinner", consumes = TaskJsonRepresentation.MEDIA_TYPE)
+    public ResponseEntity taskwinnerNotificationEndpoint(@RequestBody TaskJsonRepresentation payload) {
 
-        if (taskwinnerDto == null)
+        if (payload == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity(HttpStatus.ACCEPTED);
+        try {
+            Task task = TaskJsonRepresentation.toTask(payload);
+            ProcessExternalTaskCommand command = new ProcessExternalTaskCommand(task);
+            boolean assigned = processExternalTaskUseCase.processExternalTask(command);
+            if(assigned){
+                return new ResponseEntity(HttpStatus.ACCEPTED);
+            } else {
+                return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
+            }
+        } catch (Exception e) {
+            return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @PostMapping("/tasks/{taskId}")

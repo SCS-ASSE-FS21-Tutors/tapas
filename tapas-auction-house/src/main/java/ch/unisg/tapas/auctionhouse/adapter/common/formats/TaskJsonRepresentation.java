@@ -80,5 +80,19 @@ public class TaskJsonRepresentation {
         Task task = new Task(taskId,taskName, taskType, originalTaskUri, taskStatus, serviceProvider, inputData, outputData);
         return task;
     }
+    public static Task toTask(TaskJsonRepresentation taskJsonRepresentation) {
+        Task task = new Task(
+        new Task.TaskId(taskJsonRepresentation.getTaskId()),
+        new Task.TaskName(taskJsonRepresentation.getTaskName()),
+        new Task.TaskType(taskJsonRepresentation.getTaskType()),
+        new Task.OriginalTaskUri(taskJsonRepresentation.getOriginalTaskUri()),
+        new Task.TaskStatus(Task.Status.valueOf(taskJsonRepresentation.getTaskStatus())),
+        new Task.ServiceProvider(taskJsonRepresentation.getServiceProvider()),
+        new Task.InputData(taskJsonRepresentation.getInputData()),
+        new Task.OutputData(taskJsonRepresentation.getOutputData())
+        );
+        return task;
+    }
+
 
 }
