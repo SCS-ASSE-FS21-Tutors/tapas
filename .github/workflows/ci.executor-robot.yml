@@ -1,4 +1,4 @@
-name: CI Executor 1
+name: CI executor-robot
 on:
     push:
         branches: [main, dev]
