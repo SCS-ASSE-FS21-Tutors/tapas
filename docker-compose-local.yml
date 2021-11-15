@@ -1,0 +1,32 @@
+version: "3.7"
+
+services:
+  tapas-tasks:
+    build:
+      context: ./tapas-tasks
+      dockerfile: Dockerfile
+    # Use environment variables instead of application.properties
+    environment:
+     - KEY=VALUE
+    ports: #Just needed when testing from outside
+     - "8081:8081"    
+    networks:
+      - tapas-network
+
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: unless-stopped
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: 8nP7s0a    # Can not be changed again later on
+    volumes:
+      - database:/data/db
+
+#Volume for mongodb. One per server.
+volumes:
+  database:
+  
+networks:
+  tapas-network:
+    driver: bridge
