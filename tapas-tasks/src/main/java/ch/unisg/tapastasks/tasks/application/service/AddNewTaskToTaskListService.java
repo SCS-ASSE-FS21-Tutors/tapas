@@ -3,8 +3,9 @@ package ch.unisg.tapastasks.tasks.application.service;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
+import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
-
+import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,14 @@ import javax.transaction.Transactional;
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
 
     private final NewTaskAddedEventPort newTaskAddedEventPort;
+    private final AddTaskPort addTaskToRepositoryPort;
+    private final TaskListLock taskListLock;
 
     @Override
     public Task addNewTaskToTaskList(AddNewTaskToTaskListCommand command) {
         var taskList = TaskList.getTapasTaskList();
+
+        taskListLock.lockTaskList(taskList.getTaskListName());
 
         var newTask = (command.getOriginalTaskUri().isPresent()) ?
             // Create a delegated task that points back to the original task
@@ -33,6 +38,9 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
         if (command.getInputData().isPresent()){
             newTask.setInputData(command.getInputData().get());
         }
+
+        addTaskToRepositoryPort.addTask(newTask);
+        taskListLock.releaseTaskList(taskList.getTaskListName());
 
         if (newTask != null) {
             var newTaskAdded = new NewTaskAddedEvent(

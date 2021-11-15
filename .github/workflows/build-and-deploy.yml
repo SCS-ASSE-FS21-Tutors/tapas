@@ -101,5 +101,6 @@ jobs:
           cd /home/${{ secrets.SSH_USER }}/
           touch acme.json
           sudo chmod 0600 acme.json
+          sudo docker-compose down --remove-orphans
           sudo echo "PUB_IP=$(wget -qO- http://ipecho.net/plain | xargs echo)" | sed -e 's/\./-/g' > .env
           sudo docker-compose up -d --build --remove-orphans --force-recreate
