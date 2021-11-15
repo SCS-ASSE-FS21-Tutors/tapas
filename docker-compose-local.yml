@@ -13,6 +13,18 @@ services:
     networks:
       - tapas-network
 
+  tapas-auction-house:
+    build:
+      context: ./tapas-auction-house
+      dockerfile: Dockerfile
+    # Use environment variables instead of application.properties
+    environment:
+     - KEY=VALUE
+    ports: #Just needed when testing from outside
+     - "8082:8082"    
+    networks:
+      - tapas-network
+
   mongodb:
     image: mongo
     container_name: mongodb
