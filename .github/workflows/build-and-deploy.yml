@@ -33,30 +33,33 @@ jobs:
                   key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
                   restore-keys: ${{ runner.os }}-m2
 
-            - name: Build with Maven
-              run: mvn -f assignment/pom.xml --batch-mode --update-snapshots verify
-            - run: cp ./assignment/target/assignment-0.0.1-SNAPSHOT.jar ./target
+            - name: Build common library
+              run: mvn -f common/pom.xml --batch-mode --update-snapshots install
 
-            - name: Build with Maven
+            - name: Build roster service
+              run: mvn -f roster/pom.xml --batch-mode --update-snapshots verify
+            - run: cp ./roster/target/roster-0.0.1-SNAPSHOT.jar ./target
+
+            - name: Build executor-pool service
               run: mvn -f executor-pool/pom.xml --batch-mode --update-snapshots verify
             - run: cp ./executor-pool/target/executor-pool-0.0.1-SNAPSHOT.jar ./target
 
-            - name: Build with Maven
+            - name: Build executor-base library
               run: mvn -f executor-base/pom.xml --batch-mode --update-snapshots install
 
-            - name: Build with Maven
-              run: mvn -f executor1/pom.xml --batch-mode --update-snapshots verify
-            - run: cp ./executor1/target/executor1-0.0.1-SNAPSHOT.jar ./target
+            - name: Build executor-computation service
+              run: mvn -f executor-computation/pom.xml --batch-mode --update-snapshots verify
+            - run: cp ./executor-computation/target/executor-computation-0.0.1-SNAPSHOT.jar ./target
 
-            - name: Build with Maven
-              run: mvn -f executor2/pom.xml --batch-mode --update-snapshots verify
-            - run: cp ./executor2/target/executor2-0.0.1-SNAPSHOT.jar ./target
+            - name: Build executor-robot service
+              run: mvn -f executor-robot/pom.xml --batch-mode --update-snapshots verify
+            - run: cp ./executor-robot/target/executor-robot-0.0.1-SNAPSHOT.jar ./target
 
-            - name: Build with Maven
+            - name: Build tapas-task service
               run: mvn -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
             - run: cp ./tapas-tasks/target/tapas-tasks-0.0.1-SNAPSHOT.jar ./target
 
-            - name: Build with Maven
+            - name: Build tapas-auction-house service
               run: mvn -f tapas-auction-house/pom.xml --batch-mode --update-snapshots verify
             - run: cp ./tapas-auction-house/target/tapas-auction-house-0.0.1-SNAPSHOT.jar ./target
 

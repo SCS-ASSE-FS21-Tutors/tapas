@@ -16,8 +16,8 @@ public class ExecutorEventsMqttDispatcher {
 
     // TODO: Register here your topics and event listener adapters
     private void initRouter() {
-        router.put("ch/unisg/tapas-group-tutors/executors/added", new ExecutorAddedEventListenerMqttAdapter());
-        router.put("ch/unisg/tapas-group-tutors/executors/removed", new ExecutorRemovedEventListenerMqttAdapter());
+        router.put("ch/unisg/tapas/executors/added", new ExecutorAddedEventListenerMqttAdapter());
+        router.put("ch/unisg/tapas/executors/removed", new ExecutorRemovedEventListenerMqttAdapter());
     }
 
     /**

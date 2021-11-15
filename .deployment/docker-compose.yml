@@ -56,20 +56,20 @@ services:
             - "traefik.http.routers.tapas-auction-house.entryPoints=web,websecure"
             - "traefik.http.routers.tapas-auction-house.tls.certresolver=le"
 
-    assignment:
+    roster:
         image: openjdk
-        command: "java -jar /data/assignment-0.0.1-SNAPSHOT.jar"
+        command: "java -jar /data/roster-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         volumes:
             - ./:/data/
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.assignment.rule=Host(`assignment.${PUB_IP}.nip.io`)"
-            - "traefik.http.routers.assignment.service=assignment"
-            - "traefik.http.services.assignment.loadbalancer.server.port=8082"
-            - "traefik.http.routers.assignment.tls=true"
-            - "traefik.http.routers.assignment.entryPoints=web,websecure"
-            - "traefik.http.routers.assignment.tls.certresolver=le"
+            - "traefik.http.routers.roster.rule=Host(`roster.${PUB_IP}.nip.io`)"
+            - "traefik.http.routers.roster.service=roster"
+            - "traefik.http.services.roster.loadbalancer.server.port=8082"
+            - "traefik.http.routers.roster.tls=true"
+            - "traefik.http.routers.roster.entryPoints=web,websecure"
+            - "traefik.http.routers.roster.tls.certresolver=le"
 
     executor-pool:
         image: openjdk
@@ -86,38 +86,38 @@ services:
             - "traefik.http.routers.executor-pool.entryPoints=web,websecure"
             - "traefik.http.routers.executor-pool.tls.certresolver=le"
 
-    executor1:
+    executor-computation:
         image: openjdk
-        command: "java -jar /data/executor1-0.0.1-SNAPSHOT.jar"
+        command: "java -jar /data/executor-computation-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         depends_on:
             - executor-pool
-            - assignment
+            - roster
         volumes:
             - ./:/data/
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.executor1.rule=Host(`executor1.${PUB_IP}.nip.io`)"
-            - "traefik.http.routers.executor1.service=executor1"
-            - "traefik.http.services.executor1.loadbalancer.server.port=8084"
-            - "traefik.http.routers.executor1.tls=true"
-            - "traefik.http.routers.executor1.entryPoints=web,websecure"
-            - "traefik.http.routers.executor1.tls.certresolver=le"
+            - "traefik.http.routers.executor-computation.rule=Host(`executor-computation.${PUB_IP}.nip.io`)"
+            - "traefik.http.routers.executor-computation.service=executor-computation"
+            - "traefik.http.services.executor-computation.loadbalancer.server.port=8084"
+            - "traefik.http.routers.executor-computation.tls=true"
+            - "traefik.http.routers.executor-computation.entryPoints=web,websecure"
+            - "traefik.http.routers.executor-computation.tls.certresolver=le"
 
-    executor2:
+    executor-robot:
         image: openjdk
-        command: "java -jar /data/executor2-0.0.1-SNAPSHOT.jar"
+        command: "java -jar /data/executor-robot-0.0.1-SNAPSHOT.jar"
         restart: unless-stopped
         depends_on:
             - executor-pool
-            - assignment
+            - roster
         volumes:
             - ./:/data/
         labels:
             - "traefik.enable=true"
-            - "traefik.http.routers.executor2.rule=Host(`executor2.${PUB_IP}.nip.io`)"
-            - "traefik.http.routers.executor2.service=executor2"
-            - "traefik.http.services.executor2.loadbalancer.server.port=8085"
-            - "traefik.http.routers.executor2.tls=true"
-            - "traefik.http.routers.executor2.entryPoints=web,websecure"
-            - "traefik.http.routers.executor2.tls.certresolver=le"
+            - "traefik.http.routers.executor-robot.rule=Host(`executor-robot.${PUB_IP}.nip.io`)"
+            - "traefik.http.routers.executor-robot.service=executor-robot"
+            - "traefik.http.services.executor-robot.loadbalancer.server.port=8085"
+            - "traefik.http.routers.executor-robot.tls=true"
+            - "traefik.http.routers.executor-robot.entryPoints=web,websecure"
+            - "traefik.http.routers.executor-robot.tls.certresolver=le"

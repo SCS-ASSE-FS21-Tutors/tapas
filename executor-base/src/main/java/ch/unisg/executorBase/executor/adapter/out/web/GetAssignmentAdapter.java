@@ -23,8 +23,9 @@ import org.json.JSONObject;
 @Primary
 public class GetAssignmentAdapter implements GetAssignmentPort {
 
+    // TODO Not working for now bc it doesn't get autowired
     @Value("${roster.url}")
-    String server;
+    String server = "http://127.0.0.1:8082";
 
     Logger logger = Logger.getLogger(GetAssignmentAdapter.class.getName());
 
@@ -51,12 +52,15 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
         try {
             logger.info("Sending getAssignment Request");
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            logger.log(Level.INFO, "getAssignment request result:\n {}", response.body());
+            logger.log(Level.INFO, "getAssignment request result:\n {0}", response.body());
             if (response.body().equals("")) {
                 return null;
             }
             JSONObject responseBody = new JSONObject(response.body());
-            return new Task(responseBody.getString("taskID"), responseBody.getString("input"));
+
+            String[] input = { "1", "+", "2" };
+            // TODO Add input in roster + tasklist
+            return new Task(responseBody.getString("taskID"), input);
 
         } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);

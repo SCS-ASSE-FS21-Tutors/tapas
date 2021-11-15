@@ -1,5 +1,7 @@
 package ch.unisg.executorbase.executor.adapter.in.web;
 
+import java.util.logging.Logger;
+
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,12 +21,16 @@ public class TaskAvailableController {
         this.taskAvailableUseCase = taskAvailableUseCase;
     }
 
+    Logger logger = Logger.getLogger(TaskAvailableController.class.getName());
+
     /**
     *   Controller for notification about new events.
     *   @return 200 OK
     **/
     @GetMapping(path = "/newtask/{taskType}", consumes = { "application/json" })
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskType") String taskType) {
+
+        logger.info("New " + taskType + " available");
 
         if (ExecutorType.contains(taskType.toUpperCase())) {
             TaskAvailableCommand command = new TaskAvailableCommand(
