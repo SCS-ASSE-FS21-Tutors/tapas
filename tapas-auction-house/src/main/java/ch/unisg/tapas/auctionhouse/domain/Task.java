@@ -22,7 +22,7 @@ public class Task {
     @Getter
     private TaskType taskType;
 
-    @Getter
+    @Getter @Setter
     private OriginalTaskUri originalTaskUri;
 
     @Getter @Setter

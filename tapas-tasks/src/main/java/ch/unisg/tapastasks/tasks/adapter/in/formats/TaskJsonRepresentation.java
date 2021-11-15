@@ -108,7 +108,6 @@ final public class TaskJsonRepresentation {
         TaskJsonRepresentation representation = new TaskJsonRepresentation(task);
 
         ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         return mapper.writeValueAsString(representation);
     }

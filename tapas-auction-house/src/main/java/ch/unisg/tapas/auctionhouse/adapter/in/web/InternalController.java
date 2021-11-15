@@ -1,5 +1,6 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.web;
 
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
@@ -29,11 +30,11 @@ public class InternalController {
 
 
     @Operation(description = "Should only be called by services of the TAPAS 3 group. Creates a new auction for a service that cannot be executed internally")
-    @PostMapping("/create-auction-for-task/")
+    @PostMapping(path = "/create-auction-for-task/", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity createAuctionForTask(@RequestBody Task task) {
 
         LaunchAuctionCommand command = new LaunchAuctionCommand(
-            new Auction.AuctionedTaskUri(URI.create(taskListUri)),
+            new Auction.AuctionedTaskUri(URI.create(taskListUri + "tasks/" + task.getTaskId().getValue())),
             new Auction.AuctionedTaskType(task.getTaskType().getValue()),
             null
         );
