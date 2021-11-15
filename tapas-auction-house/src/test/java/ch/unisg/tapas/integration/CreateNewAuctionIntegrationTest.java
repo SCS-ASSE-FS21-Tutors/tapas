@@ -35,7 +35,7 @@ public class CreateNewAuctionIntegrationTest {
 
         // ACT
         mockMvc.perform(post("/internal/create-auction-for-task/")
-            .header("Content-Type", "application/json")
+            .header("Content-Type", "application/task+json")
             .content(requestBody))
             .andExpect(status().isAccepted());
     }

@@ -3,9 +3,12 @@ package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
+
+import java.net.URI;
 
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
@@ -15,25 +18,31 @@ import lombok.Setter;
 public class AuctionJsonRepresentation {
     public static final String MEDIA_TYPE = "application/json";
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String auctionId;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String auctionHouseUri;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String taskUri;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private String taskType;
 
-    @Getter @Setter
+    @Getter
+    @Setter
     private Integer deadline;
 
-    public AuctionJsonRepresentation() {  }
+    public AuctionJsonRepresentation() {
+    }
 
     public AuctionJsonRepresentation(String auctionId, String auctionHouseUri, String taskUri,
-            String taskType, Integer deadline) {
+                                     String taskType, Integer deadline) {
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
@@ -56,5 +65,18 @@ public class AuctionJsonRepresentation {
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
         return mapper.writeValueAsString(representation);
+    }
+
+    public static Auction deserialize(String auctionJson) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(auctionJson);
+        Auction.AuctionId auctionId = new Auction.AuctionId(jsonNode.get("auctionId").asText());
+        Auction.AuctionHouseUri auctionHouseUri = new Auction.AuctionHouseUri(URI.create(jsonNode.get("auctionHouseUri").asText()));
+        Auction.AuctionedTaskUri taskUri = new Auction.AuctionedTaskUri(URI.create(jsonNode.get("taskUri").asText()));
+        Auction.AuctionedTaskType taskType = new Auction.AuctionedTaskType(jsonNode.get("taskType").asText());
+        Auction.AuctionDeadline deadline  = new Auction.AuctionDeadline(jsonNode.get("deadline").asInt());
+
+        Auction auction = new Auction(auctionId, auctionHouseUri, taskUri, taskType, deadline);
+        return auction;
     }
 }

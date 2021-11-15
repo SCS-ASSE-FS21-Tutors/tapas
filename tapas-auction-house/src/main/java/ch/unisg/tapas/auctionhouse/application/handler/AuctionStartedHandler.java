@@ -1,7 +1,11 @@
 package ch.unisg.tapas.auctionhouse.application.handler;
 
+import ch.unisg.tapas.auctionhouse.adapter.out.web.CheckForExecutorQueryHttpAdapter;
 import ch.unisg.tapas.auctionhouse.application.port.in.AuctionStartedEvent;
 import ch.unisg.tapas.auctionhouse.application.port.in.AuctionStartedEventHandler;
+import ch.unisg.tapas.auctionhouse.application.port.out.CheckForExecutorQuery;
+import ch.unisg.tapas.auctionhouse.application.port.out.CheckForExecutorQueryPort;
+
 import ch.unisg.tapas.auctionhouse.application.port.out.PlaceBidForAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.out.PlaceBidForAuctionCommandPort;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
@@ -27,6 +31,9 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
     @Autowired
     private PlaceBidForAuctionCommandPort placeBidForAuctionCommandPort;
 
+    @Autowired
+    private CheckForExecutorQueryPort checkForExecutorQueryPort;
+
     /**
      * Handles an auction started event and bids in all auctions for tasks of known types.
      *
@@ -37,9 +44,15 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
     public boolean handleAuctionStartedEvent(AuctionStartedEvent auctionStartedEvent) {
         Auction auction = auctionStartedEvent.getAuction();
 
-        if (ExecutorRegistry.getInstance().containsTaskType(auction.getTaskType())) {
-            LOGGER.info("Placing bid for task " + auction.getTaskUri() + " of type "
-                + auction.getTaskType() + " in auction " + auction.getAuctionId()
+
+        LOGGER.info("Checking for suitable executors for task type " + auction.getTaskType().getValue());
+
+        CheckForExecutorQuery query = new CheckForExecutorQuery(auction);
+        boolean canExecute = checkForExecutorQueryPort.checkForExecutor(query);
+
+        if (canExecute) {
+            LOGGER.info("Placing bid for task " + auction.getTaskUri().getValue().toString() + " of type "
+                + auction.getTaskType().getValue() + " in auction " + auction.getAuctionId().getValue()
                 + " from auction house " + auction.getAuctionHouseUri().getValue().toString());
 
             Bid bid = new Bid(auction.getAuctionId(),
@@ -56,4 +69,5 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
 
         return true;
     }
+
 }
