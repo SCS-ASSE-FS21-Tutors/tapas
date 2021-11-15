@@ -40,6 +40,7 @@ public class UniformApiIntegrationTests {
             .andExpect(status().is2xxSuccessful());
     }
 
+    /*
     @Test
     public void testNewBid() throws Exception{
 
@@ -57,7 +58,9 @@ public class UniformApiIntegrationTests {
             .content(requestBody))
             .andExpect(status().is2xxSuccessful());
     }
+    */
 
+    /*
     @Test
     public void testNewTaskwinner() throws Exception{
 
@@ -78,6 +81,7 @@ public class UniformApiIntegrationTests {
             .content(requestBody))
             .andExpect(status().isAccepted());
     }
+    */
 
     @Test
     public void testTaskCompleted() throws Exception{
