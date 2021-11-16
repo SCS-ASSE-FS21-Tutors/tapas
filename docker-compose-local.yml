@@ -1,3 +1,5 @@
+# Dockerfile/Docker-Compose file based on an initial version authored by Alexander Lontke (ASSE, Fall Semester 2021)
+
 version: "3.7"
 
 services:
