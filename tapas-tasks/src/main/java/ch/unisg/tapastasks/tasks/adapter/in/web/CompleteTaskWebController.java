@@ -8,8 +8,11 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -23,12 +26,17 @@ public class CompleteTaskWebController {
         this.completeTaskUseCase = completeTaskUseCase;
     }
 
-    @PostMapping(path = "/tasks/completeTask", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> completeTask (@RequestBody Task task){
+    @GetMapping(path = "/tasks/completeTask/{taskId}")
+    public ResponseEntity<String> completeTask (@PathVariable("taskId") String taskId){
+
+        System.out.println("completeTask");
+        System.out.println(taskId);
+
+        String taskResult = "0";
 
         try {
             CompleteTaskCommand command = new CompleteTaskCommand(
-                task.getTaskId(), task.getTaskResult()
+                new Task.TaskId(taskId), new Task.OutputData(taskResult)
             );
 
             Task updateATask = completeTaskUseCase.completeTask(command);

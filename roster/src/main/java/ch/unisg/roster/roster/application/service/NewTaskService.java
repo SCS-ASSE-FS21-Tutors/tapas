@@ -34,7 +34,7 @@ public class NewTaskService implements NewTaskUseCase {
             return false;
         }
 
-        Task task = new Task(command.getTaskID(), command.getTaskType());
+        Task task = new Task(command.getTaskID(), command.getTaskType(), command.getInputData());
 
         Roster.getInstance().addTaskToQueue(task);
 

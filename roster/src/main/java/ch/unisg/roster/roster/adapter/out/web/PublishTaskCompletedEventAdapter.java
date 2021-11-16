@@ -32,17 +32,22 @@ public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort 
     @Override
     public void publishTaskCompleted(TaskCompletedEvent event) {
 
+        System.out.println("PublishTaskCompletedEventAdapter.publishTaskCompleted()");
+        System.out.print(server);
+
         String body = new JSONObject()
                   .put("taskId", event.taskID)
                   .put("status", event.status)
-                  .put("taskResult", event.result)
+                  .put("outputData", event.result)
                   .toString();
+
+        System.out.println(event.taskID);
 
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/tasks/completeTask"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
+                .uri(URI.create(server + "/tasks/completeTask/" + event.taskID))
+                .header("Content-Type", "application/task+json")
+                .GET()
                 .build();
 
 

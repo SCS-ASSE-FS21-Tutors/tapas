@@ -55,15 +55,14 @@ public class AddNewTaskToTaskListWebController {
                 (payload.getOriginalTaskUri() == null) ? Optional.empty()
                 : Optional.of(new Task.OriginalTaskUri(payload.getOriginalTaskUri()));
 
+            Optional<Task.InputData> inputData =
+                (payload.getInputData() == null) ? Optional.empty()
+                : Optional.of(new Task.InputData(payload.getInputData()));
+
             AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType,
-                originalTaskUriOptional);
+                originalTaskUriOptional, inputData);
 
             Task createdTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);
-
-            // When creating a task, the task's representation may include optional input data
-            if (payload.getInputData() != null) {
-                createdTask.setInputData(new Task.InputData(payload.getInputData()));
-            }
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();

@@ -19,30 +19,45 @@ public class Executor extends ExecutorBase {
 
     @Override
     protected
-    String execution(String... input) {
+    String execution(String inputData) {
 
-        System.out.println(input);
+        System.out.println(inputData);
 
-        double result = Double.NaN;
-        int a = Integer.parseInt(input[0]);
-        int b = Integer.parseInt(input[2]);
-        String operation = input[1];
-
-        // try {
-        //     TimeUnit.SECONDS.sleep(20);
-        // } catch (InterruptedException e) {
-        //     e.printStackTrace();
-        // }
-
-        if (operation == "+") {
-            result = a + b;
-        } else if (operation == "*") {
-            result = a * b;
-        } else if (operation == "-") {
-            result = a - b;
+        String operator = "";
+        if (inputData.contains("+")) {
+            operator = "+";
+        } else if (inputData.contains("-")) {
+            operator = "-";
+        } else if (inputData.contains("*")) {
+            operator = "*";
         }
 
-        System.out.println("finish");
+        // System.out.println(operator);
+
+        // double result = Double.NaN;
+
+        // System.out.print(inputData.split("+"));
+
+        // int a = Integer.parseInt(inputData.split(operator)[0]);
+        // int b = Integer.parseInt(inputData.split(operator)[1]);
+
+        // // try {
+        // //     TimeUnit.SECONDS.sleep(20);
+        // // } catch (InterruptedException e) {
+        // //     e.printStackTrace();
+        // // }
+
+        // if (operator.equalsIgnoreCase("+")) {
+        //     result = a + b;
+        // } else if (operator.equalsIgnoreCase("*")) {
+        //     result = a * b;
+        // } else if (operator.equalsIgnoreCase("-")) {
+        //     result = a - b;
+        // }
+
+        // System.out.println("Result: " + result);
+
+        double result = 0.0;
 
         return Double.toString(result);
     }

@@ -58,9 +58,8 @@ public class GetAssignmentAdapter implements GetAssignmentPort {
             }
             JSONObject responseBody = new JSONObject(response.body());
 
-            String[] input = { "1", "+", "2" };
-            // TODO Add input in roster + tasklist
-            return new Task(responseBody.getString("taskID"), input);
+            String inputData = responseBody.getString("inputData");
+            return new Task(responseBody.getString("taskID"), inputData);
 
         } catch (InterruptedException e) {
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);

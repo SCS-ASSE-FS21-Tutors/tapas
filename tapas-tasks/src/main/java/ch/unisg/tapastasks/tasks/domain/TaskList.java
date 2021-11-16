@@ -48,6 +48,15 @@ public class TaskList {
         return newTask;
     }
 
+    public Task addNewTaskWithNameAndTypeAndOriginalTaskUriAndInputData(Task.TaskName name, Task.TaskType type,
+            Task.OriginalTaskUri originalTaskUri, Task.InputData inputData) {
+        Task newTask = Task.createTaskWithNameAndTypeAndOriginalTaskUriAndInputData(name, type, originalTaskUri, inputData);
+        this.addNewTaskToList(newTask);
+
+        return newTask;
+    }
+
+
     private void addNewTaskToList(Task newTask) {
         //Here we would also publish a domain event to other entities in the core interested in this event.
         //However, we skip this here as it makes the core even more complex (e.g., we have to implement a light-weight

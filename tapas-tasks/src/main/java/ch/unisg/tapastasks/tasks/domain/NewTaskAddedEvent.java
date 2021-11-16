@@ -6,12 +6,14 @@ public class NewTaskAddedEvent {
     public String taskListName;
     public String taskId;
     public String taskType;
+    public String inputData;
 
-    public NewTaskAddedEvent(String taskName, String taskListName, String taskId, String taskType) {
+    public NewTaskAddedEvent(String taskName, String taskListName, String taskId, String taskType, String inputData) {
         this.taskName = taskName;
         this.taskListName = taskListName;
         this.taskId = taskId;
         this.taskType = taskType;
+        this.inputData = inputData;
     }
 
 }

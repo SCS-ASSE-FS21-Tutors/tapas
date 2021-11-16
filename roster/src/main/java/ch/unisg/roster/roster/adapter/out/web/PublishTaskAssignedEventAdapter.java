@@ -32,26 +32,26 @@ public class PublishTaskAssignedEventAdapter implements TaskAssignedEventPort {
     @Override
     public void publishTaskAssignedEvent(TaskAssignedEvent event) {
 
-        String body = new JSONObject()
-                  .put("taskId", event.taskID)
-                  .toString();
+        // String body = new JSONObject()
+        //           .put("taskId", event.taskID)
+        //           .toString();
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/tasks/assignTask"))
-                .header("Content-Type", "application/json")
-                .POST(HttpRequest.BodyPublishers.ofString(body))
-                .build();
+        // HttpClient client = HttpClient.newHttpClient();
+        // HttpRequest request = HttpRequest.newBuilder()
+        //         .uri(URI.create(server + "/tasks/assignTask"))
+        //         .header("Content-Type", "application/task+json")
+        //         .POST(HttpRequest.BodyPublishers.ofString(body))
+        //         .build();
 
 
-        try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            Thread.currentThread().interrupt();
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        }
+        // try {
+        //     client.send(request, HttpResponse.BodyHandlers.ofString());
+        // } catch (InterruptedException e) {
+        //     logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        //     Thread.currentThread().interrupt();
+        // } catch (IOException e) {
+        //     logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        // }
     }
 
 }

@@ -28,7 +28,7 @@ public class Executor extends ExecutorBase {
 
     @Override
     protected
-    String execution(String... input) {
+    String execution(String input) {
 
         String key = userToRobotPort.userToRobot();
         try {

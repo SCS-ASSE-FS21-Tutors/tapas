@@ -31,7 +31,8 @@ public class NewTaskController {
 
             logger.info("New task with id:" + task.getTaskID());
 
-            NewTaskCommand command = new NewTaskCommand(task.getTaskID(), task.getTaskType());
+            NewTaskCommand command = new NewTaskCommand(task.getTaskID(), task.getTaskType(),
+                task.getInputData());
 
             boolean success = newTaskUseCase.addNewTaskToQueue(command);
 

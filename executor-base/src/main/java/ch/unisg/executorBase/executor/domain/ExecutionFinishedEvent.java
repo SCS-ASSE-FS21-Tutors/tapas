@@ -8,14 +8,14 @@ public class ExecutionFinishedEvent {
     private String taskID;
 
     @Getter
-    private String result;
+    private String outputData;
 
     @Getter
     private String status;
 
-    public ExecutionFinishedEvent(String taskID, String result, String status) {
+    public ExecutionFinishedEvent(String taskID, String outputData, String status) {
         this.taskID = taskID;
-        this.result = result;
+        this.outputData = outputData;
         this.status = status;
     }
 }

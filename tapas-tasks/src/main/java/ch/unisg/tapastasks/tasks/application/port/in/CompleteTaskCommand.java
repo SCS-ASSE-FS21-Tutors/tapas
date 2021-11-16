@@ -1,6 +1,7 @@
 package ch.unisg.tapastasks.tasks.application.port.in;
 
 import ch.unisg.tapastasks.common.SelfValidating;
+import ch.unisg.tapastasks.tasks.domain.Task.OutputData;
 import ch.unisg.tapastasks.tasks.domain.Task.TaskId;
 import ch.unisg.tapastasks.tasks.domain.Task.TaskResult;
 import lombok.Value;
@@ -13,11 +14,11 @@ public class CompleteTaskCommand extends SelfValidating<CompleteTaskCommand> {
     private final TaskId taskId;
 
     @NotNull
-    private final TaskResult taskResult;
+    private final OutputData outputData;
 
-    public CompleteTaskCommand(TaskId taskId, TaskResult taskResult){
+    public CompleteTaskCommand(TaskId taskId, OutputData outputData){
         this.taskId = taskId;
-        this.taskResult = taskResult;
+        this.outputData = outputData;
         this.validateSelf();
     }
 }
