@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.unisg</groupId>
-	<artifactId>executorrobot</artifactId>
+	<artifactId>executor-computation</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>executorrobot</name>
+	<name>executor-computation</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>11</java.version>
@@ -42,8 +42,15 @@
 		</dependency>
 		<dependency>
 			<groupId>ch.unisg</groupId>
-			<artifactId>executorbase</artifactId>
+			<artifactId>executor-base</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+		</dependency>
+
+        <dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20210307</version>
 		</dependency>
 	</dependencies>
 
