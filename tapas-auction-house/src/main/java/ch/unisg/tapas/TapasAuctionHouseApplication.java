@@ -27,7 +27,7 @@ public class TapasAuctionHouseApplication {
     private ConfigProperties config;
 
     public static String RESOURCE_DIRECTORY = "https://api.interactions.ics.unisg.ch/auction-houses/";
-    public static String MQTT_BROKER = "tcp://localhost:1883";
+    public static String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
 
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
