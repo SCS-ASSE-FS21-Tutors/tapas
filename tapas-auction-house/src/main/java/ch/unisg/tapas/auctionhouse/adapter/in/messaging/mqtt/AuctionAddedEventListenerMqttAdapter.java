@@ -28,7 +28,7 @@ public class AuctionAddedEventListenerMqttAdapter extends AuctionEventMqttListen
             auction = AuctionJsonRepresentation.deserialize(new String(message.getPayload()));
 
             // Check if auction is not from us
-            if (auction.getAuctionHouseUri().getValue().toString().equals(config.getAuctionHouseUri().toString())) {
+            if (!auction.getAuctionHouseUri().getValue().toString().equals(config.getAuctionHouseUri().toString())) {
                 AuctionStartedEvent auctionStartedEvent = new AuctionStartedEvent(auction);
                 auctionStartedHandler.handleAuctionStartedEvent(auctionStartedEvent);
             }
