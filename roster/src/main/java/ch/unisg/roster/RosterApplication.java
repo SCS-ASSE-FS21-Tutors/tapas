@@ -16,7 +16,7 @@ public class RosterApplication {
 
     static Logger logger = Logger.getLogger(RosterApplication.class.getName());
 
-    public static String MQTT_BROKER = "tcp://localhost:1883";
+    public static String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
 
 	public static void main(String[] args) {
 		SpringApplication.run(RosterApplication.class, args);
