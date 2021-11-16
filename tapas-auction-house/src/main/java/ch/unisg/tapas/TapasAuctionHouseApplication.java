@@ -9,6 +9,8 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.URI;
 import java.util.List;
@@ -23,14 +25,15 @@ public class TapasAuctionHouseApplication {
     public static String RESOURCE_DIRECTORY = "https://api.interactions.ics.unisg.ch/auction-houses/";
     public static String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
 
+    private static ConfigurableEnvironment ENVIRONMENT;
+
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
+        ENVIRONMENT = tapasAuctioneerApp.run(args).getEnvironment();
 
 		// We will use these bootstrap methods in Week 6:
         // bootstrapMarketplaceWithWebSub();
         // bootstrapMarketplaceWithMqtt();
-
-        tapasAuctioneerApp.run(args);
 	}
 
     /**
@@ -53,8 +56,16 @@ public class TapasAuctionHouseApplication {
      */
     private static void bootstrapMarketplaceWithMqtt() {
         try {
+            String broker = ENVIRONMENT.getProperty("broker.mqtt");
+
+            if (broker == null) {
+                broker = MQTT_BROKER;
+                LOGGER.info("No MQTT broker was set in application.propreties, going with default: "
+                    + MQTT_BROKER);
+            }
+
             AuctionEventsMqttDispatcher dispatcher = new AuctionEventsMqttDispatcher();
-            TapasMqttClient client = TapasMqttClient.getInstance(MQTT_BROKER, dispatcher);
+            TapasMqttClient client = TapasMqttClient.getInstance(broker, dispatcher);
             client.startReceivingMessages();
         } catch (MqttException e) {
             LOGGER.error(e.getMessage(), e);
