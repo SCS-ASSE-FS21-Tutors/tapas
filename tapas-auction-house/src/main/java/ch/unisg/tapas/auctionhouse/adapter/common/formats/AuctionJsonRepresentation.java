@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URI;
+import java.text.SimpleDateFormat;
 
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
@@ -63,7 +64,7 @@ public class AuctionJsonRepresentation {
 
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
+        mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss"));
         return mapper.writeValueAsString(representation);
     }
 
