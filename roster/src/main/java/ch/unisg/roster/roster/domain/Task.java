@@ -14,7 +14,11 @@ public class Task {
 
     @Getter
     @Setter
-    private String result;
+    private String inputData;
+
+    @Getter
+    @Setter
+    private String outputData;
 
     @Getter
     @Setter
@@ -28,6 +32,12 @@ public class Task {
     public Task(String taskID, ExecutorType taskType) {
         this.taskID = taskID;
         this.taskType = taskType;
+    }
+
+    public Task(String taskID, ExecutorType taskType, String inputData) {
+        this.taskID = taskID;
+        this.taskType = taskType;
+        this.inputData = inputData;
     }
 
     public Task() {}

@@ -22,12 +22,26 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
     public Task addNewTaskToTaskList(AddNewTaskToTaskListCommand command) {
         TaskList taskList = TaskList.getTapasTaskList();
 
-        Task newTask = (command.getOriginalTaskUri().isPresent()) ?
-            // Create a delegated task that points back to the original task
-            taskList.addNewTaskWithNameAndTypeAndOriginalTaskUri(command.getTaskName(),
-                command.getTaskType(), command.getOriginalTaskUri().get())
-            // Create an original task
-            : taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
+        Task newTask;
+
+        System.out.println("TEST:");
+        System.out.println(command.getInputData().get());
+
+        if (command.getOriginalTaskUri().isPresent() && command.getInputData().isPresent()) {
+            System.out.println("TEST2:");
+            newTask = taskList.addNewTaskWithNameAndTypeAndOriginalTaskUriAndInputData(command.getTaskName(),
+                command.getTaskType(), command.getOriginalTaskUri().get(), command.getInputData().get());
+        } else if (command.getOriginalTaskUri().isPresent()) {
+            newTask = taskList.addNewTaskWithNameAndTypeAndOriginalTaskUri(command.getTaskName(),
+                command.getTaskType(), command.getOriginalTaskUri().get());
+        } else if (command.getOriginalTaskUri().isPresent()) {
+            newTask = null;
+        } else {
+            newTask = taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
+        }
+
+        System.out.println("TEST");
+        System.out.println(newTask.getInputData());
 
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.
@@ -35,8 +49,13 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
         //not recommended to emit a domain event via an application service! You should first emit the domain event in
         //the core and then the integration event in the application layer.
         if (newTask != null) {
-            NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(newTask.getTaskName().getValue(),
-            taskList.getTaskListName().getValue(), newTask.getTaskId().getValue(), newTask.getTaskType().getValue());
+            NewTaskAddedEvent newTaskAdded = new NewTaskAddedEvent(
+                newTask.getTaskName().getValue(),
+                taskList.getTaskListName().getValue(),
+                newTask.getTaskId().getValue(),
+                newTask.getTaskType().getValue(),
+                newTask.getInputData().getValue()
+            );
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
 

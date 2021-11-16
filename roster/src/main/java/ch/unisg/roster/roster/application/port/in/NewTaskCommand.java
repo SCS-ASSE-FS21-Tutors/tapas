@@ -17,9 +17,13 @@ public class NewTaskCommand extends SelfValidating<NewTaskCommand> {
     @NotNull
     private final ExecutorType taskType;
 
-    public NewTaskCommand(String taskID, ExecutorType taskType) {
+    @NotNull
+    private final String inputData;
+
+    public NewTaskCommand(String taskID, ExecutorType taskType, String inputData) {
         this.taskID = taskID;
         this.taskType = taskType;
+        this.inputData = inputData;
         this.validateSelf();
     }
 }

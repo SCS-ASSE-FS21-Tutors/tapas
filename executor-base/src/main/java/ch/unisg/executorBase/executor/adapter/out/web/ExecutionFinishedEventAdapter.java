@@ -29,12 +29,9 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
     @Override
     public void publishExecutionFinishedEvent(ExecutionFinishedEvent event) {
 
-        System.out.println("HI");
-        System.out.println(server);
-
         String body = new JSONObject()
         .put("taskID", event.getTaskID())
-        .put("result", event.getResult())
+        .put("outputData", event.getOutputData())
         .put("status", event.getStatus())
         .toString();
 
@@ -46,8 +43,6 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
                 .build();
 
 
-        System.out.println(server);
-
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (InterruptedException e) {
@@ -57,7 +52,7 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
-        logger.log(Level.INFO, "Finish execution event sent with result: {0}", event.getResult());
+        logger.log(Level.INFO, "Finish execution event sent with result: {0}", event.getOutputData());
 
     }
 

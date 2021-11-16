@@ -51,6 +51,18 @@ public class Task {
         this.outputData = null;
     }
 
+    public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri, InputData inputData) {
+        this.taskName = taskName;
+        this.taskType = taskType;
+        this.taskStatus = new TaskStatus(Status.OPEN);
+        this.taskId = new TaskId(UUID.randomUUID().toString());
+        this.taskResult = new TaskResult("");
+        this.originalTaskUri = taskUri;
+
+        this.inputData = inputData;
+        this.outputData = null;
+    }
+
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
         //This is a simple debug message to see that the request has reached the right method in the core
         System.out.println("New Task: " + name.getValue() + " " + type.getValue());
@@ -60,6 +72,11 @@ public class Task {
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
             OriginalTaskUri originalTaskUri) {
         return new Task(name, type, originalTaskUri);
+    }
+
+    protected static Task createTaskWithNameAndTypeAndOriginalTaskUriAndInputData(TaskName name, TaskType type,
+    OriginalTaskUri originalTaskUri, InputData inputData) {
+        return new Task(name, type, originalTaskUri, inputData);
     }
 
     @Value
