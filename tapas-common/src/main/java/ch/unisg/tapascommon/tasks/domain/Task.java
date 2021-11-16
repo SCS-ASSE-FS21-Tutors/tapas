@@ -156,4 +156,22 @@ public class Task {
     public static class OutputData {
         String value;
     }
+
+    @Override
+    public String toString() {
+        var providerString = provider != null ? provider.getValue() : "";
+        var inputDataString = inputData !=  null ? inputData.getValue() : "";
+        var outputDataString = outputData != null ? outputData.getValue() : "";
+
+        return "Task{" +
+                "taskId=" + taskId.getValue() +
+                ", taskName=" + taskName.getValue() +
+                ", taskType=" + taskType.getValue().name() +
+                ", originalTaskUri=" + originalTaskUri.getValue() +
+                ", taskStatus=" + taskStatus.getValue().name() +
+                ", provider=" + providerString +
+                ", inputData=" + inputDataString +
+                ", outputData=" + outputDataString +
+                '}';
+    }
 }

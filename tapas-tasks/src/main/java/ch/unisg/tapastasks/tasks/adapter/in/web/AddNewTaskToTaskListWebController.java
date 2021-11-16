@@ -47,7 +47,7 @@ public class AddNewTaskToTaskListWebController {
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
             var taskName = new Task.TaskName(payload.getTaskName());
-            var taskType = new Task.TaskType(Task.Type.valueOf(payload.getTaskType()));
+            var taskType = new Task.TaskType(Task.Type.valueOf(payload.getTaskType().toUpperCase()));
 
             Optional<Task.InputData> inputDataOptional = (payload.getInputData() == null) ? Optional.empty()
                 : Optional.of(new Task.InputData(payload.getInputData()));

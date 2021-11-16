@@ -3,7 +3,7 @@ package ch.unisg.tapasroster.roster.adapter.out.web;
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapasroster.roster.adapter.out.formats.NewAuctionJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToAuctionHouseEventPort;
-import ch.unisg.tapasroster.roster.domain.ForwardTaskToAuctionHouseEvent;
+import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToAuctionHouseEvent;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

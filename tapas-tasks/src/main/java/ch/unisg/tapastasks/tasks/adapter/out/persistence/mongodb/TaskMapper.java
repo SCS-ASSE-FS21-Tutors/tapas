@@ -6,7 +6,6 @@ import org.springframework.stereotype.Component;
 
 @Component
 class TaskMapper {
-
     Task mapToDomainEntity(MongoTaskDocument task) {
         return Task.withIdNameTypeOriginaluriStatus(
             new Task.TaskId(task.taskId),

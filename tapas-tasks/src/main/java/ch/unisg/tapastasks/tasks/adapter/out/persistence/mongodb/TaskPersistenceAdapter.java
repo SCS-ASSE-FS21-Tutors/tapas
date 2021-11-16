@@ -5,30 +5,39 @@ import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskPort;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class TaskPersistenceAdapter implements
-    AddTaskPort,
-    LoadTaskPort {
+public class TaskPersistenceAdapter implements AddTaskPort, LoadTaskPort {
+
+    private static final Logger LOGGER = LogManager.getLogger(TaskPersistenceAdapter.class);
 
     @Autowired
     private final TaskRepository taskRepository;
-
     private final TaskMapper taskMapper;
 
     @Override
     public void addTask(Task task) {
-        MongoTaskDocument mongoTaskDocument = taskMapper.mapToMongoDocument(task);
-        taskRepository.save(mongoTaskDocument);
+        try {
+            var mongoTaskDocument = taskMapper.mapToMongoDocument(task);
+            taskRepository.save(mongoTaskDocument);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to add Task to MongoDB");
+        }
     }
 
     @Override
     public Task loadTask(Task.TaskId taskId, TaskList.TaskListName taskListName) {
-        MongoTaskDocument mongoTaskDocument = taskRepository.findByTaskId(taskId.getValue(),taskListName.getValue());
-        Task task = taskMapper.mapToDomainEntity(mongoTaskDocument);
-        return task;
+        try{
+            var mongoTaskDocument = taskRepository.findByTaskId(taskId.getValue(),taskListName.getValue());
+            return taskMapper.mapToDomainEntity(mongoTaskDocument);
+        } catch (Exception e) {
+            LOGGER.warn("Failed to load Task from MongoDB");
+        }
+        return null;
     }
 }

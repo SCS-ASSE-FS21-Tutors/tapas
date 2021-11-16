@@ -9,6 +9,8 @@ import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
 import javax.transaction.Transactional;
 
@@ -16,6 +18,8 @@ import javax.transaction.Transactional;
 @Component
 @Transactional
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
+
+    private static final Logger LOGGER = LogManager.getLogger(AddNewTaskToTaskListService.class);
 
     private final NewTaskAddedEventPort newTaskAddedEventPort;
     private final AddTaskPort addTaskToRepositoryPort;
@@ -39,17 +43,18 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
             newTask.setInputData(command.getInputData().get());
         }
 
-        addTaskToRepositoryPort.addTask(newTask);
-        taskListLock.releaseTaskList(taskList.getTaskListName());
-
         if (newTask != null) {
             var newTaskAdded = new NewTaskAddedEvent(
                 newTask.getTaskName().getValue(),
                 taskList.getTaskListName().getValue(),
                 newTask.getTaskId().getValue()
             );
+            LOGGER.info("Forwarding Task to Roster Service: " + newTask);
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
+
+        addTaskToRepositoryPort.addTask(newTask);
+        taskListLock.releaseTaskList(taskList.getTaskListName());
 
         return newTask;
     }

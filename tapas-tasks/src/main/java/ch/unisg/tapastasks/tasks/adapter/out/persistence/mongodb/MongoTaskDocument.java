@@ -7,7 +7,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Data
 @Document(collection = "tasks")
 public class MongoTaskDocument {
-
     @Id
     public String taskId;
 
@@ -16,7 +15,6 @@ public class MongoTaskDocument {
     public String originalTaskUri;
     public String taskStatus;
     public String taskListName;
-
 
     public MongoTaskDocument(String taskId, String taskName, String taskType,
                              String originalTaskUri,

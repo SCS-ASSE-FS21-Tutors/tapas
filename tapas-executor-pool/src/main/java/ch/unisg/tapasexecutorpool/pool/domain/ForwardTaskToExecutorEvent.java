@@ -1,6 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
 import ch.unisg.tapascommon.common.SelfValidating;
+import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;

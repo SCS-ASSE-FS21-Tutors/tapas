@@ -1,10 +1,10 @@
 package ch.unisg.tapasexecutorpool.pool.application.service;
 
 import ch.unisg.tapascommon.tasks.domain.Task;
-import ch.unisg.tapasexecutorpool.pool.adapter.in.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolUseCase;
-import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

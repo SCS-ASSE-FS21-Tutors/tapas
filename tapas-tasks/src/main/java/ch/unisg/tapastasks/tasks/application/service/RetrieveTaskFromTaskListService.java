@@ -21,11 +21,12 @@ public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskList
     @Override
     public Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListQuery query) {
         TaskList taskList = TaskList.getTapasTaskList();
-
         Optional<Task> task = taskList.retrieveTaskById(query.getTaskId());
-
         Optional<Task> taskFromRepo = Optional.ofNullable(loadTaskFromRepositoryPort.loadTask(query.getTaskId(), taskList.getTaskListName()));
 
-        return taskFromRepo;
+        if (taskFromRepo.isPresent()) {
+            return taskFromRepo;
+        }
+        return task;
     }
 }

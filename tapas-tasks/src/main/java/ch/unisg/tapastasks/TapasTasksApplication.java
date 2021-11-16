@@ -8,13 +8,8 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 @SpringBootApplication
 @EnableMongoRepositories(basePackageClasses = TaskRepository.class)
 public class TapasTasksApplication {
-
 	public static void main(String[] args) {
 		SpringApplication tapasTasksApp = new SpringApplication(TapasTasksApplication.class);
 		tapasTasksApp.run(args);
-
-
-
 	}
-
 }

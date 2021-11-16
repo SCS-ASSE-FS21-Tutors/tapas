@@ -1,4 +1,4 @@
-package ch.unisg.tapasroster.roster.domain;
+package ch.unisg.tapasroster.roster.application.port.out;
 
 import ch.unisg.tapascommon.common.SelfValidating;
 import ch.unisg.tapascommon.tasks.domain.Task;
@@ -10,14 +10,19 @@ import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class ForwardTaskToExecutorPoolEvent extends SelfValidating<ForwardTaskToExecutorPoolEvent> {
+public class ForwardTaskToAuctionHouseEvent extends SelfValidating<ForwardTaskToAuctionHouseEvent> {
 
     @Getter
     @NotNull
     Task task;
 
-    public ForwardTaskToExecutorPoolEvent(Task task) {
+    @Getter
+    @NotNull
+    long deadline;
+
+    public ForwardTaskToAuctionHouseEvent(Task task, long deadline) {
         this.task = task;
+        this.deadline = deadline;
         this.validateSelf();
     }
 }

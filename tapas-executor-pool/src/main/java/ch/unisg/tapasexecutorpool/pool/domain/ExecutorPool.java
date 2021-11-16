@@ -1,16 +1,17 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
 import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.Getter;
 import lombok.Value;
-
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import java.util.*;
 
 public class ExecutorPool {
+
+    private static final Logger LOGGER = LogManager.getLogger(ExecutorPool.class);
 
     private static final String EXECUTOR_API_CALC = ServiceHostAddresses.getExecutorCalcServiceHostAddress() + "/execute-task";
     private static final String EXECUTOR_API_ROBOT = ServiceHostAddresses.getExecutorRobotServiceHostAddress() + "/execute-task";
@@ -37,9 +38,18 @@ public class ExecutorPool {
     }
 
     public Executor addNewExecutor(Executor.ExecutorName name, Executor.ExecutorType type, Executor.ExecutorAddress address) {
-        var newExecutor = Executor.createExecutor(name, type, address);
+        var newExecutor = new Executor(
+                new Executor.ExecutorId(UUID.randomUUID().toString()),
+                name,
+                type,
+                address,
+                new Executor.ExecutorState(Executor.State.IDLE),
+                new Executor.ExecutorPoolName(executorPoolName.getValue())
+        );
+
         listOfExecutors.value.add(newExecutor);
-        System.out.println("Number of Executors: "+ listOfExecutors.value.size());
+        LOGGER.info("Added new Executor: " + newExecutor);
+        LOGGER.info("Number of Executors: "+ listOfExecutors.value.size());
         return newExecutor;
     }
 
@@ -61,6 +71,16 @@ public class ExecutorPool {
             }
         }
         return Optional.empty();
+    }
+
+    public List<Executor> retrieveAvailableExecutors() {
+        var availableExecutors = new ArrayList<Executor>();
+        for (Executor executor : listOfExecutors.value) {
+            if (executor.getExecutorState().getValue().equals(Executor.State.IDLE)) {
+                availableExecutors.add(executor);
+            }
+        }
+        return availableExecutors;
     }
 
     public boolean updateExecutorState(Executor.ExecutorId executorId, Executor.ExecutorState executorState) {
