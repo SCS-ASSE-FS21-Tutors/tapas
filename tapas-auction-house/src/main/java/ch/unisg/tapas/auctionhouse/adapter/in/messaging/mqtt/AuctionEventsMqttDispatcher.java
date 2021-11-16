@@ -28,6 +28,7 @@ public class AuctionEventsMqttDispatcher {
     private void initRouter() {
         router.put("ch/unisg/tapas/executors/added", new ExecutorAddedEventListenerMqttAdapter());
         router.put("ch/unisg/tapas/executors/removed", new ExecutorRemovedEventListenerMqttAdapter());
+        router.put("ch/unisg/tapas/auctions", new ExternalAuctionStartedEventListenerMqttAdapter());
     }
 
     /**

@@ -112,4 +112,13 @@ final public class TaskJsonRepresentation {
 
         return mapper.writeValueAsString(representation);
     }
+
+    public String serialize() throws JsonProcessingException {
+        TaskJsonRepresentation representation = this;
+
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
+        return mapper.writeValueAsString(representation);
+    }
 }
