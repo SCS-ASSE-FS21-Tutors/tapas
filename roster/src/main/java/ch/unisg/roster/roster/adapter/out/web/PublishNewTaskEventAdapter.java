@@ -34,21 +34,23 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
     @Override
     public void publishNewTaskEvent(NewTaskEvent event) {
 
-        HttpClient client = HttpClient.newHttpClient();
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/newtask/" + event.taskType.getValue()))
-                .GET()
-                .build();
+        System.out.println(server2);
+
+        // HttpClient client = HttpClient.newHttpClient();
+        // HttpRequest request = HttpRequest.newBuilder()
+        //         .uri(URI.create(server + "/newtask/" + event.taskType.getValue()))
+        //         .GET()
+        //         .build();
 
 
-        try {
-            client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (InterruptedException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-            Thread.currentThread().interrupt();
-        } catch (IOException e) {
-            logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
-        }
+        // try {
+        //     client.send(request, HttpResponse.BodyHandlers.ofString());
+        // } catch (InterruptedException e) {
+        //     logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        //     Thread.currentThread().interrupt();
+        // } catch (IOException e) {
+        //     logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
+        // }
 
         HttpClient client2 = HttpClient.newHttpClient();
         HttpRequest request2 = HttpRequest.newBuilder()

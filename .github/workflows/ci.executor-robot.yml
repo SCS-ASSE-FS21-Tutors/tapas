@@ -1,15 +1,17 @@
-name: CI Executor 1
+name: CI executor-robot
 on:
     push:
         branches: [main, dev]
         paths:
             - "executor-base/**"
-            - "executor1/**"
+            - "executor-robot/**"
+            - "common/**"
     pull_request:
         branches: [main, dev]
         paths:
             - "executor-base/**"
-            - "executor1/**"
+            - "executor-robot/**"
+            - "common/**"
 
     workflow_dispatch:
 jobs:
@@ -37,9 +39,11 @@ jobs:
                   key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
                   restore-keys: ${{ runner.os }}-m2
             - name: Build executorBase
+              run: mvn -f common/pom.xml -B install
+            - name: Build executorBase
               run: mvn -f executor-base/pom.xml -B install
             - name: Build and analyze
               env:
                   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
                   SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-              run: mvn -f executor1/pom.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=scs-asse-fs21-group1_tapas-executor1
+              run: mvn -f executor-robot/pom.xml -B verify org.sonarsource.scanner.maven:sonar-maven-plugin:sonar -Dsonar.projectKey=scs-asse-fs21-group1_tapas-executor1

@@ -16,8 +16,9 @@ import ch.unisg.executorbase.executor.domain.ExecutionFinishedEvent;
 
 public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort {
 
+    // TODO url doesn't get mapped bc no autowiring
     @Value("${roster.url}")
-    String server;
+    String server = "http://localhost:8082";
 
     Logger logger = Logger.getLogger(ExecutionFinishedEventAdapter.class.getName());
 
@@ -27,6 +28,9 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
     **/
     @Override
     public void publishExecutionFinishedEvent(ExecutionFinishedEvent event) {
+
+        System.out.println("HI");
+        System.out.println(server);
 
         String body = new JSONObject()
         .put("taskID", event.getTaskID())
@@ -41,6 +45,9 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
+
+        System.out.println(server);
+
         try {
             client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (InterruptedException e) {
@@ -50,7 +57,7 @@ public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort
             logger.log(Level.SEVERE, e.getLocalizedMessage(), e);
         }
 
-        logger.log(Level.INFO, "Finish execution event sent with result: {}", event.getResult());
+        logger.log(Level.INFO, "Finish execution event sent with result: {0}", event.getResult());
 
     }
 

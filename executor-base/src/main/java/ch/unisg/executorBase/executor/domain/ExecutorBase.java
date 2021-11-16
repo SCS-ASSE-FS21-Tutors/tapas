@@ -23,9 +23,8 @@ public abstract class ExecutorBase {
     @Getter
     private ExecutorStatus status;
 
-    // TODO Violation of the Dependency Inversion Principle?, but we havn't really got a better solutions to send a http request / access a service from a domain model
-    // TODO I guess we can implement the execution as a service but there still is the problem with the startup request.
-    // TODO I guess we can somehow autowire this but I don't know why it's not working :D
+    // TODO Violation of the Dependency Inversion Principle?,
+    // TODO do this with only services
     private final NotifyExecutorPoolPort notifyExecutorPoolPort = new NotifyExecutorPoolAdapter();
 	private final NotifyExecutorPoolService notifyExecutorPoolService = new NotifyExecutorPoolService(notifyExecutorPoolPort);
     private final GetAssignmentPort getAssignmentPort = new GetAssignmentAdapter();
@@ -38,8 +37,8 @@ public abstract class ExecutorBase {
         this.status = ExecutorStatus.STARTING_UP;
         this.executorType = executorType;
         // TODO set this automaticly
-        this.executorURI = new ExecutorURI("localhost:8084");
-
+        this.executorURI = new ExecutorURI("http://localhost:8084");
+        // TODO do this in main
         // Notify executor-pool about existence. If executor-pools response is successfull start with getting an assignment, else shut down executor.
         if(!notifyExecutorPoolService.notifyExecutorPool(this.executorURI, this.executorType)) {
             System.exit(0);
@@ -55,6 +54,8 @@ public abstract class ExecutorBase {
     **/
     public void getAssignment() {
         Task newTask = getAssignmentPort.getAssignment(this.getExecutorType(), this.getExecutorURI());
+        System.out.println("New assignment");
+        System.out.println(newTask);
         if (newTask != null) {
             this.executeTask(newTask);
         } else {
@@ -71,6 +72,8 @@ public abstract class ExecutorBase {
         this.status = ExecutorStatus.EXECUTING;
 
         task.setResult(execution(task.getInput()));
+
+        System.out.println(task.getResult());
 
         // TODO implement logic if execution was not successful
         executionFinishedEventPort.publishExecutionFinishedEvent(

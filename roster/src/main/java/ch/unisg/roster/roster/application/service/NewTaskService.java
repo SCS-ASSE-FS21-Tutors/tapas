@@ -29,6 +29,7 @@ public class NewTaskService implements NewTaskUseCase {
     public boolean addNewTaskToQueue(NewTaskCommand command) {
 
         ExecutorRegistry executorRegistry = ExecutorRegistry.getInstance();
+
         if (!executorRegistry.containsTaskType(command.getTaskType())) {
             return false;
         }

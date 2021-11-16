@@ -22,8 +22,9 @@ import ch.unisg.executorbase.executor.domain.ExecutorType;
 @Primary
 public class NotifyExecutorPoolAdapter implements NotifyExecutorPoolPort {
 
-    @Value("${executor-pool.url}")
-    String server;
+    // TODO Not working for now bc it doesn't get autowired
+    @Value("${executor.pool.url}")
+    String server = "http://127.0.0.1:8083";
 
     Logger logger = Logger.getLogger(NotifyExecutorPoolAdapter.class.getName());
 
@@ -36,7 +37,7 @@ public class NotifyExecutorPoolAdapter implements NotifyExecutorPoolPort {
 
         String body = new JSONObject()
             .put("executorTaskType", executorType)
-            .put("executorURI", executorURI.getValue())
+            .put("executorUri", executorURI.getValue())
             .toString();
 
         HttpClient client = HttpClient.newHttpClient();

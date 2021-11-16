@@ -17,6 +17,9 @@ public class ExecutorAddedEventListenerMqttAdapter extends ExecutorEventMqttList
 
     @Override
     public boolean handleEvent(MqttMessage message) {
+
+        System.out.println("New Executor added!");
+
         String payload = new String(message.getPayload());
 
         try {
@@ -25,7 +28,7 @@ public class ExecutorAddedEventListenerMqttAdapter extends ExecutorEventMqttList
             JsonNode data = new ObjectMapper().readTree(payload);
 
             String taskType = data.get("executorTaskType").asText();
-            String executorId = data.get("executorURI").asText();
+            String executorId = data.get("executorUri").asText();
 
             ExecutorAddedEvent executorAddedEvent = new ExecutorAddedEvent(
                 new ExecutorURI(executorId),
