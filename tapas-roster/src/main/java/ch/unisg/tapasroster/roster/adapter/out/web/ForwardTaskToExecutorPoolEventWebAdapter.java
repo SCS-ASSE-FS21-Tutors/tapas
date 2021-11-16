@@ -3,7 +3,7 @@ package ch.unisg.tapasroster.roster.adapter.out.web;
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToExecutorPoolEventPort;
-import ch.unisg.tapasroster.roster.domain.ForwardTaskToExecutorPoolEvent;
+import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToExecutorPoolEvent;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;

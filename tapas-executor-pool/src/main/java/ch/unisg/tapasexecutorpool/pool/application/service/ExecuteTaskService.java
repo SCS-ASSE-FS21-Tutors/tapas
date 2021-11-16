@@ -3,7 +3,6 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
-import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import ch.unisg.tapasexecutorpool.pool.domain.ForwardTaskToExecutorEvent;
 import ch.unisg.tapascommon.tasks.domain.Task;

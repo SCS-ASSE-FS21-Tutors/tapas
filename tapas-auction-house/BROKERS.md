@@ -14,10 +14,8 @@ Running this WebSub Hub implementation requires Docker, Node.js, and npm:
 ### How to run
 
 ```shell
-git clone https://github.com/hemerajs/websub-hub.git
-cd websub-hub
-docker run -d -p 27017:27017 -p 28017:28017 -e AUTH=no tutum/mongodb
-npm i -g websub-hub-cli
+docker run -d -p 27017:27017 -p 28017:28017 -e AUTH=no mongo:latest
+npm i -g websub-hub
 websub-hub -l info -m mongodb://localhost:27017/hub
 ```
 

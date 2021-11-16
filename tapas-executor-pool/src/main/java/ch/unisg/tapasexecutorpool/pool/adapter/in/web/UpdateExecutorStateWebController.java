@@ -2,7 +2,7 @@ package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.UpdateExecutorStateCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.UpdateExecutorStateUseCase;
-import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
