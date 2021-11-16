@@ -1,4 +1,4 @@
-package ch.unisg.tapas.auctionhouse.adapter.out.messaging.websub;
+package ch.unisg.tapas.auctionhouse.adapter.out.messaging.mqtt;
 
 import ch.unisg.tapas.auctionhouse.adapter.common.clients.TapasMqttClient;
 import ch.unisg.tapas.auctionhouse.adapter.common.formats.AuctionJsonRepresentation;
