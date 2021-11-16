@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.net.URI;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
 /**
@@ -37,18 +38,20 @@ public class AuctionJsonRepresentation {
 
     @Getter
     @Setter
-    private Integer deadline;
+    private Timestamp deadline;
 
     public AuctionJsonRepresentation() {
     }
 
     public AuctionJsonRepresentation(String auctionId, String auctionHouseUri, String taskUri,
                                      String taskType, Integer deadline) {
+
+
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
         this.taskType = taskType;
-        this.deadline = deadline;
+        this.deadline = new Timestamp(System.currentTimeMillis()+ deadline);
     }
 
     public AuctionJsonRepresentation(Auction auction) {
@@ -56,7 +59,7 @@ public class AuctionJsonRepresentation {
         this.auctionHouseUri = auction.getAuctionHouseUri().getValue().toString();
         this.taskUri = auction.getTaskUri().getValue().toString();
         this.taskType = auction.getTaskType().getValue();
-        this.deadline = auction.getDeadline().getValue();
+        this.deadline = new Timestamp(auction.getDeadline().getValue() + System.currentTimeMillis());
     }
 
     public static String serialize(Auction auction) throws JsonProcessingException {
