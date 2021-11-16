@@ -23,7 +23,7 @@ public class ExecutorRemovedEventListenerMqttAdapter extends ExecutorEventMqttLi
             // representation that makes sense in the context of your application.
             JsonNode data = new ObjectMapper().readTree(payload);
 
-            String executorId = data.get("executorURI").asText();
+            String executorId = data.get("executorUri").asText();
 
             ExecutorRemovedEvent executorRemovedEvent = new ExecutorRemovedEvent(
                 new ExecutorURI(executorId));

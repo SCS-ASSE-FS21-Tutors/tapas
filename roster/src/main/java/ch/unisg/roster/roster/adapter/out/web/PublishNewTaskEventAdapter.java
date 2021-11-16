@@ -34,8 +34,6 @@ public class PublishNewTaskEventAdapter implements NewTaskEventPort {
     @Override
     public void publishNewTaskEvent(NewTaskEvent event) {
 
-        System.out.println(server2);
-
         // HttpClient client = HttpClient.newHttpClient();
         // HttpRequest request = HttpRequest.newBuilder()
         //         .uri(URI.create(server + "/newtask/" + event.taskType.getValue()))
