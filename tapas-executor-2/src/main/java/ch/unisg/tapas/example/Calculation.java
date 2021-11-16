@@ -4,11 +4,13 @@ import lombok.Getter;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClients;
+import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.util.concurrent.TimeUnit;
 
 
@@ -17,16 +19,14 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class Calculation {
 
+    @Value( "${ch.unisg.tapas.executor-pool-url}" )
+    private String executorPoolUri;
+
     @NonNull
     private String taskId;
 
     @NonNull
     private String inputData;
-
-    /*
-    @NonNull
-    private String operator;
-    */
 
     public int execute(){
         int sum = 0;
@@ -36,16 +36,24 @@ public class Calculation {
         for(int i =0; i<values.length; i++){
             sum+= values[i];
         }
+
         try {
             TimeUnit.SECONDS.sleep(10);
             // Calls the /completion/ endpoint of the executor pool
-            String url = "http://127.0.0.1:8082/completion/?taskId="+taskId;
-            CloseableHttpClient httpclient = HttpClients.createDefault();
+            HttpClient client = HttpClient.newHttpClient();
+            String url = executorPoolUri+ "completion/?taskId="+taskId;
+            String inputDataJson = new JSONObject()
+                    .put("taskId", taskId)
+                    .put("outputData", sum)
+                    .toString();
 
-            // Executes request
-            HttpPut putMethod = new HttpPut(url);
-            HttpResponse rawResponse = httpclient.execute(putMethod);
-            System.out.println(rawResponse);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .headers("Content-Type", "application/json")
+                    .PUT(HttpRequest.BodyPublishers.ofString(inputDataJson))
+                    .build();
+
+            java.net.http.HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         }catch (Exception e){
             System.out.println(e);
