@@ -95,6 +95,9 @@ services:
             - roster
         volumes:
             - ./:/data/
+        environment:
+            - executor_pool_uri: "executor-pool.86-119-35-40.nip.io"
+            - roster_uri: "roster.86-119-35-40.nip.io"
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.executor-computation.rule=Host(`executor-computation.${PUB_IP}.nip.io`)"
@@ -103,7 +106,6 @@ services:
             - "traefik.http.routers.executor-computation.tls=true"
             - "traefik.http.routers.executor-computation.entryPoints=web,websecure"
             - "traefik.http.routers.executor-computation.tls.certresolver=le"
-
     executor-robot:
         image: openjdk
         command: "java -jar /data/executor-robot-0.0.1-SNAPSHOT.jar"
@@ -113,6 +115,9 @@ services:
             - roster
         volumes:
             - ./:/data/
+        environment:
+            - executor_pool_uri: "executor-pool.86-119-35-40.nip.io"
+            - roster_uri: "roster.86-119-35-40.nip.io"
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.executor-robot.rule=Host(`executor-robot.${PUB_IP}.nip.io`)"

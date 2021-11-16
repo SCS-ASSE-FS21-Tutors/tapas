@@ -23,9 +23,8 @@ import org.json.JSONObject;
 @Primary
 public class GetAssignmentAdapter implements GetAssignmentPort {
 
-    // TODO Not working for now bc it doesn't get autowired
-    @Value("${roster.url}")
-    String server = "http://127.0.0.1:8082";
+    String server = System.getenv("roster_uri") == null ?
+        "http://localhost:8082" : System.getenv("roster_uri");
 
     Logger logger = Logger.getLogger(GetAssignmentAdapter.class.getName());
 

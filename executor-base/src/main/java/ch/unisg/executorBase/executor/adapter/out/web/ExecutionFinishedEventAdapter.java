@@ -9,16 +9,15 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 
 import ch.unisg.executorbase.executor.application.port.out.ExecutionFinishedEventPort;
 import ch.unisg.executorbase.executor.domain.ExecutionFinishedEvent;
 
 public class ExecutionFinishedEventAdapter implements ExecutionFinishedEventPort {
 
-    // TODO url doesn't get mapped bc no autowiring
-    @Value("${roster.url}")
-    String server = "http://localhost:8082";
+    String server = System.getenv("roster_uri") == null ?
+        "http://localhost:8082" : System.getenv("roster_uri");
+
 
     Logger logger = Logger.getLogger(ExecutionFinishedEventAdapter.class.getName());
 
