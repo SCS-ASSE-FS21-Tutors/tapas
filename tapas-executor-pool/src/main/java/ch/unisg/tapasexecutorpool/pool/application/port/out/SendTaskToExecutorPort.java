@@ -6,5 +6,5 @@ import ch.unisg.tapasexecutorpool.pool.domain.Task;
 
 public interface SendTaskToExecutorPort {
 
-    void sendTaskToExecutor(Task.TaskId taskId, Executor executor);
+    void sendTaskToExecutor(Task task, Executor executor);
 }

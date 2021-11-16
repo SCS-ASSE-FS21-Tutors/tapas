@@ -14,11 +14,11 @@ import java.util.Optional;
  * Just stores the executors in a in-memory collection.
  */
 @Component
-public class MockExecutorRepository implements ExecutorRepository {
+public class InternalExecutorRepository implements ExecutorRepository {
 
     private HashSet<Executor> inMemorySet;
 
-    public MockExecutorRepository() {
+    public InternalExecutorRepository() {
         this.inMemorySet = new HashSet<>();
     }
 

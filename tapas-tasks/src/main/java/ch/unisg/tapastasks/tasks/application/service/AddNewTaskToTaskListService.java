@@ -29,6 +29,8 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
             // Create an original task
             : taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
 
+        newTask.setInputData(command.getInputData());
+
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.
         //Domain events are usually rather "fat". In our implementation we simplify at this point. In general, it is

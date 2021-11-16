@@ -16,7 +16,7 @@ import javax.validation.ConstraintViolationException;
 public class CalculatorController {
 
 
-    @PostMapping(path = "/start/")
+    @PostMapping(path = "/execute/")
     public ResponseEntity<String> startCalculation(@RequestBody Calculation calculation) {
         try {
 
@@ -26,7 +26,7 @@ public class CalculatorController {
             CalculationThread calculationThread = new CalculationThread(calculation);
             calculationThread.start();
 
-            return new ResponseEntity<>("Task Started", responseHeaders, HttpStatus.OK);
+            return new ResponseEntity<>("Task Started", responseHeaders, HttpStatus.ACCEPTED);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

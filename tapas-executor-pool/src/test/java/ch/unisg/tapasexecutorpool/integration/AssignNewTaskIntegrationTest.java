@@ -1,12 +1,10 @@
 package ch.unisg.tapasexecutorpool.integration;
 
-import ch.unisg.tapasexecutorpool.pool.adapter.out.repository.MockExecutorRepository;
-import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
+import ch.unisg.tapasexecutorpool.pool.adapter.out.repository.InternalExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.application.service.AssignTaskService;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +26,7 @@ public class AssignNewTaskIntegrationTest {
     private MockMvc mockMvc;
 
     @Autowired
-    private MockExecutorRepository repository;
+    private InternalExecutorRepository repository;
 
     @Autowired
     private AssignTaskService assignTaskService;

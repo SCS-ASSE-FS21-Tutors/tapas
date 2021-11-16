@@ -32,7 +32,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         try{
 
             var objectMapper = new ObjectMapper();
-            String requestBody = null;
+            String requestBody;
             try {
                 requestBody = objectMapper.writeValueAsString(task);
             } catch (JsonProcessingException e) {

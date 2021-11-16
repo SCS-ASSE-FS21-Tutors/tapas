@@ -18,10 +18,10 @@ import java.util.concurrent.TimeUnit;
 public class Calculation {
 
     @NonNull
-    private String taskID;
+    private String taskId;
 
     @NonNull
-    private int[] values;
+    private String inputData;
 
     /*
     @NonNull
@@ -31,13 +31,15 @@ public class Calculation {
     public int execute(){
         int sum = 0;
 
+        System.out.println(inputData);
+        int values[] = {1,2,3};
         for(int i =0; i<values.length; i++){
             sum+= values[i];
         }
         try {
             TimeUnit.SECONDS.sleep(10);
             // Calls the /completion/ endpoint of the executor pool
-            String url = "http://127.0.0.1:8082/completion/?taskId="+taskID;
+            String url = "http://127.0.0.1:8082/completion/?taskId="+taskId;
             CloseableHttpClient httpclient = HttpClients.createDefault();
 
             // Executes request

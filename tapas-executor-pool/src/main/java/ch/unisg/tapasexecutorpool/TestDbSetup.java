@@ -19,10 +19,11 @@ public class TestDbSetup implements CommandLineRunner {
     public void run(String... args) {
 
         log.info("Setting up mock executors");
-
+        /*
         repository.addExecutor(new Executor(
                 new Executor.ExecutorName("Mock Executor"),
                 new Executor.ExecutorType("string"), //We use 'string' because its the default executor type in the swagger ui
                 new Executor.ExecutorUrl("doesnotexist")));
+                */
     }
 }
