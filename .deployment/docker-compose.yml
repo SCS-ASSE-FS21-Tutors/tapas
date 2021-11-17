@@ -96,8 +96,8 @@ services:
         volumes:
             - ./:/data/
         environment:
-            - executor_pool_uri: "executor-pool.86-119-35-40.nip.io"
-            - roster_uri: "roster.86-119-35-40.nip.io"
+            executor_pool_uri: executor-pool.86-119-35-40.nip.io
+            roster_uri: roster.86-119-35-40.nip.io"
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.executor-computation.rule=Host(`executor-computation.${PUB_IP}.nip.io`)"
@@ -116,8 +116,8 @@ services:
         volumes:
             - ./:/data/
         environment:
-            - executor_pool_uri: "executor-pool.86-119-35-40.nip.io"
-            - roster_uri: "roster.86-119-35-40.nip.io"
+            executor_pool_uri: executor-pool.86-119-35-40.nip.io
+            roster_uri: roster.86-119-35-40.nip.io
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.executor-robot.rule=Host(`executor-robot.${PUB_IP}.nip.io`)"
