@@ -4,8 +4,11 @@ import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionUseCase;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionWonEventPort;
 import ch.unisg.tapas.auctionhouse.application.port.out.AuctionStartedEventPort;
+import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEvent;
+import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEventPort;
 import ch.unisg.tapas.auctionhouse.domain.*;
 import ch.unisg.tapas.common.ConfigProperties;
+import ch.unisg.tapascommon.ServiceHostAddresses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ public class StartAuctionService implements LaunchAuctionUseCase {
     private final AuctionStartedEventPort auctionStartedEventPort;
     // Event port used to publish an auction won event
     private final AuctionWonEventPort auctionWonEventPort;
+    private final TaskAssignedEventPort taskAssignedEventPort;
 
     private final ScheduledExecutorService service;
     private final AuctionRegistry auctions;
@@ -39,11 +43,14 @@ public class StartAuctionService implements LaunchAuctionUseCase {
     private ConfigProperties config;
 
     public StartAuctionService(AuctionStartedEventPort auctionStartedEventPort,
-                               AuctionWonEventPort auctionWonEventPort) {
+                               AuctionWonEventPort auctionWonEventPort,
+                               TaskAssignedEventPort taskAssignedEventPort
+    ) {
         this.auctionStartedEventPort = auctionStartedEventPort;
         this.auctionWonEventPort = auctionWonEventPort;
         this.auctions = AuctionRegistry.getInstance();
         this.service = Executors.newScheduledThreadPool(1);
+        this.taskAssignedEventPort = taskAssignedEventPort;
     }
 
     /**
@@ -100,9 +107,18 @@ public class StartAuctionService implements LaunchAuctionUseCase {
 
                 if (bid.isPresent()) {
                     // Notify the bidder
-                    Bid.BidderName bidderName = bid.get().getBidderName();
+                    var bidderName = bid.get().getBidderName().getValue();
+                    var taskUri = auction.getTaskUri().getValue().toString();
+
                     LOGGER.info("Auction #" + auction.getAuctionId().getValue() + " for task "
-                            + auction.getTaskUri().getValue() + " won by " + bidderName.getValue());
+                            + taskUri + " won by " + bidderName);
+
+                    taskAssignedEventPort.handleTaskAssignedEvent(
+                        new TaskAssignedEvent(
+                            bidderName,
+                            taskUri
+                        )
+                    );
 
                     // Send an auction won event for the winning bid
                     auctionWonEventPort.publishAuctionWonEvent(new AuctionWonEvent(bid.get()));

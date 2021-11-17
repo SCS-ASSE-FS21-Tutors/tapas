@@ -1,8 +1,11 @@
 package ch.unisg.tapasexecutorpool.pool.application.service;
 
+import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.TaskAssignedEvent;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.TaskAssignedEventPort;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
 import ch.unisg.tapasexecutorpool.pool.domain.ForwardTaskToExecutorEvent;
 import ch.unisg.tapascommon.tasks.domain.Task;
@@ -20,6 +23,7 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     private static final Logger LOGGER = LogManager.getLogger(ExecuteTaskService.class);
 
+    private final TaskAssignedEventPort taskAssignedEventPort;
     private final ForwardTaskToExecutorEventPort forwardTaskToExecutorEventPort;
 
     @Override
@@ -31,9 +35,20 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var executorOptional = pool.retrieveAvailableExecutorByTaskType(task.getTaskType());
 
         if (executorOptional.isPresent()) {
-            var executor = executorOptional.get();
-            var event = new ForwardTaskToExecutorEvent(task, executor);
-            forwardTaskToExecutorEventPort.forwardTaskToExecutorEvent(event);
+            var taskId = task.getTaskId().getValue();
+
+            taskAssignedEventPort.handleTaskAssignedEvent(
+                    new TaskAssignedEvent(
+                            "tapas-group4",
+                            ServiceHostAddresses.getTaskServiceHostAddress() + "/tasks/" + taskId
+                    )
+            );
+
+            forwardTaskToExecutorEventPort.forwardTaskToExecutorEvent(
+                    new ForwardTaskToExecutorEvent(
+                            task, executorOptional.get()
+                    )
+            );
         }
 
         return task;
