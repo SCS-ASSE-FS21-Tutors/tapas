@@ -5,46 +5,33 @@ import ch.unisg.tapascommon.pool.domain.Executor;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 
+@Data
+@AllArgsConstructor
 public class ExecutorJsonRepresentation {
-    public static final String EXECUTOR_MEDIA_TYPE = "application/json";
+    public static final String MEDIA_TYPE = "application/executor+json";
 
-    @Getter
-    @Setter
     private String executorId;
-
-    @Getter
-    private final String executorName;
-
-    @Getter
-    private final String executorType;
-
-    @Getter
-    private final String executorAddress;
-
-    @Getter
-    @Setter
+    private String executorName;
+    private String executorType;
+    private String executorAddress;
     private String executorState;
+    private String executorPoolName;
 
-    @Getter
-    private final String executorPoolName;
+    public ExecutorJsonRepresentation() { }
 
     public ExecutorJsonRepresentation(
             String executorId,
             String executorName,
             String executorType,
-            String executorAddress,
-            String executorState,
-            String executorPoolName
+            String executorAddress
     ) {
         this.executorId = executorId;
         this.executorName = executorName;
         this.executorType = executorType;
         this.executorAddress = executorAddress;
-        this.executorState = executorState;
-        this.executorPoolName = executorPoolName;
     }
 
     public ExecutorJsonRepresentation(Executor executor) {

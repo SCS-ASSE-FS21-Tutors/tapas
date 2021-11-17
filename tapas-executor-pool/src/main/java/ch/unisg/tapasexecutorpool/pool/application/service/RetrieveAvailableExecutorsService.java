@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.application.service;
 
-import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsCommand;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsQuery;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsUseCase;
 import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
@@ -14,7 +14,7 @@ import java.util.List;
 @Transactional
 public class RetrieveAvailableExecutorsService implements RetrieveAvailableExecutorsUseCase {
     @Override
-    public List<Executor> retrieveAvailableExecutorsFromPool(RetrieveAvailableExecutorsCommand command) {
+    public List<Executor> retrieveAvailableExecutorsFromPool(RetrieveAvailableExecutorsQuery query) {
         var executorPool = ExecutorPool.getTapasExecutorPool();
         return executorPool.retrieveAvailableExecutors();
     }

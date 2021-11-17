@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 
 @EqualsAndHashCode(callSuper = true)
 @Value
-public class RetrieveExecutorFromPoolCommand extends SelfValidating<RetrieveExecutorFromPoolCommand> {
+public class RetrieveExecutorFromPoolQuery extends SelfValidating<RetrieveExecutorFromPoolQuery> {
     @NotNull
     ExecutorId executorId;
 
-    public RetrieveExecutorFromPoolCommand(ExecutorId executorId) {
+    public RetrieveExecutorFromPoolQuery(ExecutorId executorId) {
         this.executorId = executorId;
         this.validateSelf();
     }

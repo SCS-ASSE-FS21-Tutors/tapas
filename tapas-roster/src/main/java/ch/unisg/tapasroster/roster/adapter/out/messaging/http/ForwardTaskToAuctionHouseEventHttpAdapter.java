@@ -1,4 +1,4 @@
-package ch.unisg.tapasroster.roster.adapter.out.web;
+package ch.unisg.tapasroster.roster.adapter.out.messaging.http;
 
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapasroster.roster.adapter.out.formats.NewAuctionJsonRepresentation;
@@ -16,7 +16,7 @@ import java.net.http.HttpResponse;
 
 @Component
 @Primary
-public class ForwardTaskToAuctionHouseEventWebAdapter implements ForwardTaskToAuctionHouseEventPort {
+public class ForwardTaskToAuctionHouseEventHttpAdapter implements ForwardTaskToAuctionHouseEventPort {
 
     private static final String URL = ServiceHostAddresses.getAuctionHouseServiceHostAddress();
     private static final String PATH = "/auctions/";

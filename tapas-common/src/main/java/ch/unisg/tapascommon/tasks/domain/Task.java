@@ -159,6 +159,7 @@ public class Task {
 
     @Override
     public String toString() {
+        var originalTaskUriString = originalTaskUri != null ? originalTaskUri.getValue() : "";
         var providerString = provider != null ? provider.getValue() : "";
         var inputDataString = inputData !=  null ? inputData.getValue() : "";
         var outputDataString = outputData != null ? outputData.getValue() : "";
@@ -167,7 +168,7 @@ public class Task {
                 "taskId=" + taskId.getValue() +
                 ", taskName=" + taskName.getValue() +
                 ", taskType=" + taskType.getValue().name() +
-                ", originalTaskUri=" + originalTaskUri.getValue() +
+                ", originalTaskUri=" + originalTaskUriString +
                 ", taskStatus=" + taskStatus.getValue().name() +
                 ", provider=" + providerString +
                 ", inputData=" + inputDataString +

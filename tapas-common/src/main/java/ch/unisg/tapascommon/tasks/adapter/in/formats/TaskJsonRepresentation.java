@@ -69,12 +69,11 @@ final public class TaskJsonRepresentation {
     public TaskJsonRepresentation(String taskName, String taskType) {
         this.taskName = taskName;
         this.taskType = taskType;
-
-        this.taskStatus = null;
-        this.originalTaskUri = null;
-        this.serviceProvider = null;
-        this.inputData = null;
-        this.outputData = null;
+        this.taskStatus = "";
+        this.originalTaskUri = "";
+        this.serviceProvider = "";
+        this.inputData = "";
+        this.outputData = "";
     }
 
     /**
@@ -89,11 +88,11 @@ final public class TaskJsonRepresentation {
         this.taskStatus = task.getTaskStatus().getValue().name();
 
         this.originalTaskUri = (task.getOriginalTaskUri() == null) ?
-            null : task.getOriginalTaskUri().getValue();
+            "" : task.getOriginalTaskUri().getValue();
 
-        this.serviceProvider = (task.getProvider() == null) ? null : task.getProvider().getValue();
-        this.inputData = (task.getInputData() == null) ? null : task.getInputData().getValue();
-        this.outputData = (task.getOutputData() == null) ? null : task.getOutputData().getValue();
+        this.serviceProvider = (task.getProvider() == null) ? "" : task.getProvider().getValue();
+        this.inputData = (task.getInputData() == null) ? "" : task.getInputData().getValue();
+        this.outputData = (task.getOutputData() == null) ? "" : task.getOutputData().getValue();
     }
 
     /**

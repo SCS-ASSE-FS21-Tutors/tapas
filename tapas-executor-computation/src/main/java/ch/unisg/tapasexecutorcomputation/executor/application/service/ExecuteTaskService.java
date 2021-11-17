@@ -1,6 +1,5 @@
 package ch.unisg.tapasexecutorcomputation.executor.application.service;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCase;
@@ -8,8 +7,9 @@ import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateCha
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.service.ExecuteTaskBaseService;
 import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
-import ch.unisg.tapasexecutorbase.executor.domain.TaskUpdatedEvent;
 import lombok.AllArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 import javax.script.ScriptEngineManager;
@@ -20,17 +20,22 @@ import javax.script.ScriptException;
 @Component
 public class ExecuteTaskService implements ExecuteTaskUseCase {
 
+    private static final Logger LOGGER = LogManager.getLogger(ExecuteTaskService.class);
+
+    private static final String JAVASCRIPT_ENGINE_NAME = "JavaScript";
+
     private final ExecutorStateChangedEventPort executorStateChangedEventPort;
     private final TaskUpdatedEventPort taskUpdatedEventPort;
 
     private void updateExecutorState(String state) {
+        LOGGER.info("Update Executor State to: " + state);
         executorStateChangedEventPort.publishExecutorStateChangedEvent(
                 new ExecutorStateChangedEvent(Task.Type.COMPUTATION.name(), state)
         );
     }
 
     private String calculate(String expression) {
-        var engine = new ScriptEngineManager().getEngineByName("JavaScript");
+        var engine = new ScriptEngineManager().getEngineByName(JAVASCRIPT_ENGINE_NAME);
         try {
             return engine.eval(expression).toString();
         } catch (ScriptException e) {
@@ -50,8 +55,8 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var expression = task.getInputData().getValue();
         var result = calculate(expression);
 
-        System.out.println("Math Expression: " + expression);
-        System.out.println("Result: " + result);
+        LOGGER.info("Math Expression: " + expression);
+        LOGGER.info("Result: " + result);
 
         task.setOutputData(new Task.OutputData(result));
         task.setTaskStatus(new Task.TaskStatus(Task.Status.EXECUTED));

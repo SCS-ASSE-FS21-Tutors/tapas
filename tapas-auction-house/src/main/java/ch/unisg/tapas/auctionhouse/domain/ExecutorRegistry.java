@@ -1,26 +1,21 @@
 package ch.unisg.tapas.auctionhouse.domain;
 
-import lombok.Value;
+import ch.unisg.tapascommon.pool.domain.Executor;
+import ch.unisg.tapascommon.tasks.domain.Task;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 
-/**
- * Registry that keeps a track of executors internal to the TAPAS application and the types of tasks
- * they can achieve. One executor may correspond to multiple task types. This mapping is used when
- * bidding for tasks: the auction house will only bid for tasks for which there is a known executor.
- * This class is a singleton.
- */
 public class ExecutorRegistry {
+    private static final Logger LOGGER = LogManager.getLogger(ExecutorRegistry.class);
+
     private static ExecutorRegistry registry;
 
-    private final Map<Auction.AuctionedTaskType, Set<ExecutorIdentifier>> executors;
+    private final HashSet<Executor> executors;
 
     private ExecutorRegistry() {
-        this.executors = new Hashtable<>();
-
-        // Temporary
-        addExecutor(new Auction.AuctionedTaskType("COMPUTATION"), new ExecutorIdentifier("COMPUTATION"));
-        addExecutor(new Auction.AuctionedTaskType("BIGROBOT"), new ExecutorIdentifier("BIGROBOT"));
+        this.executors = new HashSet<>();
     }
 
     public static synchronized ExecutorRegistry getInstance() {
@@ -31,60 +26,32 @@ public class ExecutorRegistry {
         return registry;
     }
 
-    /**
-     * Adds an executor to the registry for a given task type.
-     *
-     * @param taskType the type of the task
-     * @param executorIdentifier the identifier of the executor (can be any string)
-     * @return true unless a runtime exception occurs
-     */
-    public boolean addExecutor(Auction.AuctionedTaskType taskType, ExecutorIdentifier executorIdentifier) {
-        Set<ExecutorIdentifier> taskTypeExecs = executors.getOrDefault(taskType,
-            Collections.synchronizedSet(new HashSet<>()));
-
-        taskTypeExecs.add(executorIdentifier);
-        executors.put(taskType, taskTypeExecs);
-
-        return true;
+    public boolean addExecutor(Executor executor) {
+        LOGGER.debug("Add Executor to Registry: " + executor);
+        var result = executors.add(executor);
+        LOGGER.info("Number of available executors: " + executors.size());
+        return result;
     }
 
-    /**
-     * Removes an executor from the registry. The executor is disassociated from all known task types.
-     *
-     * @param executorIdentifier the identifier of the executor (can be any string)
-     * @return true unless a runtime exception occurs
-     */
-    public boolean removeExecutor(ExecutorIdentifier executorIdentifier) {
-        Iterator<Auction.AuctionedTaskType> iterator = executors.keySet().iterator();
+    public boolean removeExecutor(Executor executor) {
+        LOGGER.debug("Remove Executor from Registry: " + executor);
+        var result = executors.remove(executor);
+        LOGGER.info("Number of available executors: " + executors.size());
+        return result;
+    }
 
-        while (iterator.hasNext()) {
-            Auction.AuctionedTaskType taskType = iterator.next();
-            Set<ExecutorIdentifier> set = executors.get(taskType);
+    public void clearExecutors() {
+        LOGGER.debug("Cleared all Executors from Registry");
+        executors.clear();
+        LOGGER.info("Number of available executors: " + executors.size());
+    }
 
-            set.remove(executorIdentifier);
-
-            if (set.isEmpty()) {
-                iterator.remove();
+    public boolean hasExecutorWithAuctionType(String type) {
+        for (var executor : executors) {
+            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(type)) {
+                return true;
             }
         }
-
-        return true;
-    }
-
-    /**
-     * Checks if the registry contains an executor for a given task type. Used during an auction to
-     * decide if a bid should be placed.
-     *
-     * @param taskType the task type being auctioned
-     * @return
-     */
-    public boolean containsTaskType(Auction.AuctionedTaskType taskType) {
-        return executors.containsKey(taskType);
-    }
-
-    // Value Object for the executor identifier
-    @Value
-    public static class ExecutorIdentifier {
-        String value;
+        return false;
     }
 }

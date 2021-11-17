@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutorpool.pool.domain;
+package ch.unisg.tapasexecutorpool.pool.application.port.out;
 
 import ch.unisg.tapascommon.common.SelfValidating;
 import ch.unisg.tapascommon.pool.domain.Executor;

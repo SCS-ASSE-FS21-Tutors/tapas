@@ -1,7 +1,8 @@
 package ch.unisg.tapasexecutorrobot.executor.domain;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpHeaders;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -9,6 +10,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 public class Cherrybot {
+
+    private static final Logger LOGGER = LogManager.getLogger(Cherrybot.class);
 
     private static final String ROBOT_API = "https://api.interactions.ics.unisg.ch/cherrybot/";
 
@@ -20,6 +23,8 @@ public class Cherrybot {
     public Cherrybot() { }
 
     public boolean postOperator() {
+        LOGGER.info("Post Operator");
+
         var json = "{\n" +
                 "  \"name\": \"" + OPERATOR_NAME + "\",\n" +
                 "  \"email\": \"" + OPERATOR_EMAIL + "\"" +
@@ -30,23 +35,26 @@ public class Cherrybot {
         if (ok) {
             var locationSplit = response.headers().map().get("location").get(0).split("/");
             operator_token = locationSplit[locationSplit.length - 1];
-            System.out.println("Token: " + operator_token);
+            LOGGER.info("Token: " + operator_token);
         }
 
         return ok;
     }
 
     public boolean deleteOperator() {
+        LOGGER.info("Delete Operator");
         var response = sendRestRequest("operator/" + operator_token, "delete", null);
         return checkResponseStatusCode(response);
     }
 
     public boolean postInitialize() {
+        LOGGER.info("Post Initialize");
         var response = sendRestRequest("initialize", "put", "");
         return checkResponseStatusCode(response);
     }
 
     public boolean putTcp() {
+        LOGGER.info("Put TCP");
         var json = "{\n" +
                 "  \"target\": {\n" +
                 "    \"coordinate\": {\n" +
@@ -70,9 +78,9 @@ public class Cherrybot {
         var ok = response != null && response.statusCode() >= 200 && response.statusCode() < 300;
 
         if (ok) {
-            System.out.println("REST Operation successful");
+            LOGGER.info("REST Operation successful");
         } else {
-            System.out.println("REST Operation failed");
+            LOGGER.warn("REST Operation failed");
         }
 
         return ok;
@@ -104,8 +112,8 @@ public class Cherrybot {
         try {
             response =  client.send(request, HttpResponse.BodyHandlers.ofString());
 
-            System.out.println("Response Status Code: " + response.statusCode());
-            System.out.println("Response Body: " + response.body());
+            LOGGER.debug("Response Status Code: " + response.statusCode());
+            LOGGER.debug("Response Body: " + response.body());
 
             Thread.sleep(1000);
         } catch (IOException | InterruptedException e) {

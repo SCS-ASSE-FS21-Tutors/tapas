@@ -16,7 +16,7 @@ import java.net.URI;
  * to modify this class as you see fit!
  */
 public class BidJsonRepresentation {
-    public static final String MEDIA_TYPE = "application/json";
+    public static final String MEDIA_TYPE = "application/bid+json";
 
     @Getter @Setter
     private String auctionId;
@@ -36,15 +36,13 @@ public class BidJsonRepresentation {
         this.auctionId = bid.getAuctionId().getValue();
         this.bidderName = bid.getBidderName().getValue();
         this.bidderAuctionHouseUri = bid.getBidderAuctionHouseUri().toString();
-        this.bidderTaskListUri = getBidderTaskListUri().toString();
+        this.bidderTaskListUri = bid.getBidderTaskListUri().toString();
     }
 
     public static String serialize(Bid bid) throws JsonProcessingException {
         BidJsonRepresentation representation = new BidJsonRepresentation(bid);
-
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
         return mapper.writeValueAsString(representation);
     }
 

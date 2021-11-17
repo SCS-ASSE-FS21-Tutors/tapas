@@ -5,5 +5,5 @@ import lombok.Value;
 
 @EqualsAndHashCode(callSuper = false)
 @Value
-public class RetrieveAvailableExecutorsCommand {
+public class RetrieveAvailableExecutorsQuery {
 }

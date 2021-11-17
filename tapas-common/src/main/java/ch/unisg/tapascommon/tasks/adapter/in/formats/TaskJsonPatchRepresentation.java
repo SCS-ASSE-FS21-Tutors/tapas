@@ -116,4 +116,21 @@ public class TaskJsonPatchRepresentation {
         builder.append("]");
         return builder.toString();
     }
+
+    public static String getPatchRepresentationTaskAssigned(String serviceProvider) {
+        var builder = new StringBuilder();
+        builder.append("[\n");
+        builder.append("  {\"op\": \"replace\", \"path\": \"/taskStatus\", \"value\": \"ASSIGNED\"}");
+
+        if (serviceProvider != null && !serviceProvider.isEmpty()) {
+            builder.append(",\n")
+                    .append("  {\"op\": \"add\", \"path\": \"/serviceProvider\", \"value\": \"")
+                    .append(serviceProvider)
+                    .append("\"}\n");
+        } else {
+            builder.append("\n");
+        }
+        builder.append("]");
+        return builder.toString();
+    }
 }
