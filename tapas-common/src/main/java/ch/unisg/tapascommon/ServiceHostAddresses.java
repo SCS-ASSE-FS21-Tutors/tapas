@@ -14,7 +14,7 @@ public class ServiceHostAddresses {
     private static final String PUBLIC_TASKS = "https://tapas-tasks.86-119-35-199.nip.io";
     private static final String PUBLIC_ROSTER = "https://tapas-roster.86-119-35-199.nip.io";
     private static final String PUBLIC_EXECUTOR_POOL = "https://tapas-executor-pool.86-119-35-199.nip.io";
-    private static final String PUBLIC_EXECUTOR_CALC = "https://tapas-executor-computaiton.86-119-35-199.nip.io";
+    private static final String PUBLIC_EXECUTOR_CALC = "https://tapas-executor-computation.86-119-35-199.nip.io";
     private static final String PUBLIC_EXECUTOR_ROBOT = "https://tapas-executor-bigrobot.86-119-35-199.nip.io";
     private static final String PUBLIC_AUCTION_HOUSE = "https://tapas-auction-house.86-119-35-199.nip.io";
 
