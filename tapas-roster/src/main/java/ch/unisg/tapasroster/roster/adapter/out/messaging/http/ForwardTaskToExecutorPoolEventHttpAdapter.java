@@ -1,4 +1,4 @@
-package ch.unisg.tapasroster.roster.adapter.out.web;
+package ch.unisg.tapasroster.roster.adapter.out.messaging.http;
 
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
@@ -16,10 +16,10 @@ import java.net.http.HttpResponse;
 
 @Component
 @Primary
-public class ForwardTaskToExecutorPoolEventWebAdapter implements ForwardTaskToExecutorPoolEventPort {
+public class ForwardTaskToExecutorPoolEventHttpAdapter implements ForwardTaskToExecutorPoolEventPort {
 
     private static final String URL = ServiceHostAddresses.getExecutorPoolServiceHostAddress();
-    private static final String PATH = "/executor-pool/execute-task/";
+    private static final String PATH = "/execute-task/";
 
     @Override
     public void forwardTaskToExecutorPoolEvent(ForwardTaskToExecutorPoolEvent event) {

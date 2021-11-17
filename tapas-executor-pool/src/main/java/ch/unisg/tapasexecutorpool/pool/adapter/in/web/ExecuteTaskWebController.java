@@ -24,7 +24,7 @@ public class ExecuteTaskWebController {
         this.executeTaskUseCase = executeTaskUseCase;
     }
 
-    @PostMapping(path = "/executor-pool/execute-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
+    @PostMapping(path = "/execute-task/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> executeTask(@RequestBody TaskJsonRepresentation task) {
         try {
             var command = new ExecuteTaskCommand(task.deserialize());

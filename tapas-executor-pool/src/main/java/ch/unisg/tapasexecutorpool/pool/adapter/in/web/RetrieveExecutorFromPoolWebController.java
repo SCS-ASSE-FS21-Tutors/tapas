@@ -25,7 +25,7 @@ public class RetrieveExecutorFromPoolWebController {
 
         if (executorOptional.isPresent()) {
             var responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.MEDIA_TYPE);
             try {
                 var json = executorOptional.get().serialize();
                 return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);

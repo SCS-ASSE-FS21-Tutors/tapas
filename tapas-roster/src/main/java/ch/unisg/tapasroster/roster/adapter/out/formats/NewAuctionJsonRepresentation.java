@@ -1,5 +1,6 @@
 package ch.unisg.tapasroster.roster.adapter.out.formats;
 
+import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.domain.Task;
 
 public class NewAuctionJsonRepresentation {
@@ -15,7 +16,7 @@ public class NewAuctionJsonRepresentation {
 
         return "{\n" +
                 "  \"taskUri\": \"" +
-                task.getOriginalTaskUri().getValue() +
+                ServiceHostAddresses.getTaskServiceHostAddress() + task.getTaskId().getValue() +
                 "\"," +
                 "  \"taskType\": \"" +
                 task.getTaskType().getValue().name() +

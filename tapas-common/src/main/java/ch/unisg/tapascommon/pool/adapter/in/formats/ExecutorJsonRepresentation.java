@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 public class ExecutorJsonRepresentation {
-    public static final String EXECUTOR_MEDIA_TYPE = "application/json";
+    public static final String MEDIA_TYPE = "application/executor+json";
 
     @Getter
     @Setter

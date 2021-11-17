@@ -20,13 +20,13 @@ import javax.validation.ConstraintViolationException;
 public class AddNewExecutorToPoolWebController {
     private final AddNewExecutorToPoolUseCase addNewExecutorToPoolUseCase;
 
-    @PostMapping(path = "/executors/", consumes = {ExecutorMediaType.EXECUTOR_MEDIA_TYPE})
+    @PostMapping(path = "/executors/", consumes = {ExecutorJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> addNewExecutorToPool(@RequestBody ExecutorJsonRepresentation executorJsonRepresentation) {
         try {
             var command = new AddNewExecutorToPoolCommand(executorJsonRepresentation);
             var newExecutorRepresentation = addNewExecutorToPoolUseCase.addNewExecutorToPool(command);
             var responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.MEDIA_TYPE);
             return new ResponseEntity<>(newExecutorRepresentation.serialize(), responseHeaders, HttpStatus.CREATED);
         } catch (ConstraintViolationException | JsonProcessingException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());

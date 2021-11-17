@@ -38,7 +38,7 @@ public class RetrieveAvailableExecutorsWebController {
         var json = jsonBuffer.toString();
 
         var responseHeaders = new HttpHeaders();
-        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.EXECUTOR_MEDIA_TYPE);
+        responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.MEDIA_TYPE);
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);
     }
 }

@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutorpool.pool.adapter.out.web;
+package ch.unisg.tapasexecutorpool.pool.adapter.out.messaging.http;
 
 import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
@@ -17,9 +17,9 @@ import java.net.http.HttpResponse;
 
 @Component
 @Primary
-public class ForwardTaskToExecutorEventWebAdapter implements ForwardTaskToExecutorEventPort {
+public class ForwardTaskToExecutorEventHttpAdapter implements ForwardTaskToExecutorEventPort {
 
-    private static final Logger LOGGER = LogManager.getLogger(ForwardTaskToExecutorEventWebAdapter.class);
+    private static final Logger LOGGER = LogManager.getLogger(ForwardTaskToExecutorEventHttpAdapter.class);
 
     @Override
     public void forwardTaskToExecutorEvent(ForwardTaskToExecutorEvent event) {
