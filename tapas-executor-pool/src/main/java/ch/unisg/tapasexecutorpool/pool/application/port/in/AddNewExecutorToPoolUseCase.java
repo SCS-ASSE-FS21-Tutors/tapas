@@ -1,7 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.application.port.in;
 
-import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapascommon.pool.domain.Executor;
 
 public interface AddNewExecutorToPoolUseCase {
-    ExecutorJsonRepresentation addNewExecutorToPool(AddNewExecutorToPoolCommand command);
+    Executor addNewExecutorToPool(AddNewExecutorToPoolCommand command);
 }

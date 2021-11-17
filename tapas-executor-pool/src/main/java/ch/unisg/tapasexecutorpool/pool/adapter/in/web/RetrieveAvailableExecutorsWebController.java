@@ -1,7 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
-import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsCommand;
+import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsQuery;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveAvailableExecutorsUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -14,11 +14,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RestController
 public class RetrieveAvailableExecutorsWebController {
+
     private final RetrieveAvailableExecutorsUseCase retrieveAvailableExecutorsUseCase;
 
     @GetMapping(path = "/available-executors/")
     public ResponseEntity<String> retrieveTaskFromTaskList() {
-        var command = new RetrieveAvailableExecutorsCommand();
+        var command = new RetrieveAvailableExecutorsQuery();
         var availableExecutors = retrieveAvailableExecutorsUseCase.retrieveAvailableExecutorsFromPool(command);
 
         var jsonBuffer = new StringBuilder();

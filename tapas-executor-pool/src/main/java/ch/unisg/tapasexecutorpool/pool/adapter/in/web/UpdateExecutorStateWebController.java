@@ -26,7 +26,7 @@ public class UpdateExecutorStateWebController {
     ) {
         // Temporary until Executors are dynamically added to the pool
         var executorIdType = ExecutorPool.getTapasExecutorPool().getExecutorIdForExecutorType(executorId);
-        System.out.println(executorIdType);
+
         if (executorIdType == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

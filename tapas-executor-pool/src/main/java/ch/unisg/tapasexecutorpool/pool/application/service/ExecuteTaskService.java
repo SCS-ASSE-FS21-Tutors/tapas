@@ -3,17 +3,14 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
-import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
-import ch.unisg.tapasexecutorpool.pool.application.port.out.TaskAssignedEvent;
-import ch.unisg.tapasexecutorpool.pool.application.port.out.TaskAssignedEventPort;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.*;
 import ch.unisg.tapasexecutorpool.pool.domain.ExecutorPool;
-import ch.unisg.tapasexecutorpool.pool.domain.ForwardTaskToExecutorEvent;
 import ch.unisg.tapascommon.tasks.domain.Task;
+import ch.unisg.tapasexecutorpool.pool.domain.TaskAssignment;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
-
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
@@ -26,6 +23,9 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
     private final TaskAssignedEventPort taskAssignedEventPort;
     private final ForwardTaskToExecutorEventPort forwardTaskToExecutorEventPort;
 
+    private final AddTaskAssignmentToRepositoryPort addTaskAssignmentToRepositoryPort;
+    private final TaskAssignmentsLock taskAssignmentsLock;
+
     @Override
     public Task executeTask(ExecuteTaskCommand command) {
         var task = command.getTask();
@@ -35,6 +35,7 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
         var executorOptional = pool.retrieveAvailableExecutorByTaskType(task.getTaskType());
 
         if (executorOptional.isPresent()) {
+            var executor =  executorOptional.get();
             var taskId = task.getTaskId().getValue();
 
             taskAssignedEventPort.handleTaskAssignedEvent(
@@ -44,10 +45,14 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
                     )
             );
 
+            taskAssignmentsLock.lockTaskAssignments();
+            addTaskAssignmentToRepositoryPort.addTaskAssignment(
+                    new TaskAssignment(task.getTaskId(), executor.getExecutorId())
+            );
+            taskAssignmentsLock.releaseTaskAssignments();
+
             forwardTaskToExecutorEventPort.forwardTaskToExecutorEvent(
-                    new ForwardTaskToExecutorEvent(
-                            task, executorOptional.get()
-                    )
+                    new ForwardTaskToExecutorEvent(task, executor)
             );
         }
 

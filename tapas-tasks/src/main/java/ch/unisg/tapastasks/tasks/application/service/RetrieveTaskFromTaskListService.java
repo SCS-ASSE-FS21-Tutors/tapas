@@ -6,8 +6,9 @@ import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUse
 import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskPort;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
-
 import javax.transaction.Transactional;
 import java.util.Optional;
 
@@ -15,6 +16,8 @@ import java.util.Optional;
 @Component
 @Transactional
 public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskListUseCase {
+
+    private static final Logger LOGGER = LogManager.getLogger(RetrieveTaskFromTaskListService.class);
 
     private final LoadTaskPort loadTaskFromRepositoryPort;
 
@@ -25,8 +28,11 @@ public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskList
         Optional<Task> taskFromRepo = Optional.ofNullable(loadTaskFromRepositoryPort.loadTask(query.getTaskId(), taskList.getTaskListName()));
 
         if (taskFromRepo.isPresent()) {
+            LOGGER.info("Retrieved Task from Repository");
             return taskFromRepo;
         }
+
+        LOGGER.info("Retrieved Task from Cache");
         return task;
     }
 }
