@@ -28,20 +28,22 @@ public class ExecutorRegistry {
 
     public boolean addExecutor(Executor executor) {
         LOGGER.debug("Add Executor to Registry: " + executor);
+        var result = executors.add(executor);
         LOGGER.info("Number of available executors: " + executors.size());
-        return executors.add(executor);
+        return result;
     }
 
     public boolean removeExecutor(Executor executor) {
         LOGGER.debug("Remove Executor from Registry: " + executor);
+        var result = executors.remove(executor);
         LOGGER.info("Number of available executors: " + executors.size());
-        return executors.remove(executor);
+        return result;
     }
 
     public void clearExecutors() {
         LOGGER.debug("Cleared all Executors from Registry");
-        LOGGER.info("Number of available executors: " + executors.size());
         executors.clear();
+        LOGGER.info("Number of available executors: " + executors.size());
     }
 
     public boolean hasExecutorWithTaskType(Task.Type type) {
