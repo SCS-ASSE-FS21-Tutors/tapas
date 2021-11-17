@@ -27,19 +27,20 @@ public class ExecutorPool {
     private ExecutorPool(ExecutorPoolName executorPoolName) {
         this.executorPoolName = executorPoolName;
         this.listOfExecutors = new ListOfExecutors(new LinkedList<>());
-
-        // Temporary until Executors are dynamically added to the pool
-        addNewExecutor(new Executor.ExecutorName("Calculator"), new Executor.ExecutorType(Task.Type.COMPUTATION), new Executor.ExecutorAddress(EXECUTOR_API_CALC));
-        addNewExecutor(new Executor.ExecutorName("Robot"), new Executor.ExecutorType(Task.Type.BIGROBOT), new Executor.ExecutorAddress(EXECUTOR_API_ROBOT));
     }
 
     public static ExecutorPool getTapasExecutorPool() {
         return EXECUTOR_POOL;
     }
 
-    public Executor addNewExecutor(Executor.ExecutorName name, Executor.ExecutorType type, Executor.ExecutorAddress address) {
+    public Executor addNewExecutor(
+            Executor.ExecutorId id,
+            Executor.ExecutorName name,
+            Executor.ExecutorType type,
+            Executor.ExecutorAddress address
+    ) {
         var newExecutor = new Executor(
-                new Executor.ExecutorId(UUID.randomUUID().toString()),
+                id,
                 name,
                 type,
                 address,
@@ -90,16 +91,6 @@ public class ExecutorPool {
             return true;
         }
         return false;
-    }
-
-    // Temporary until Executors are dynamically added to the pool
-    public Executor.ExecutorId getExecutorIdForExecutorType(String executorType) {
-        for (Executor executor : listOfExecutors.value) {
-            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(executorType)) {
-                return executor.getExecutorId();
-            }
-        }
-        return null;
     }
 
     @Value

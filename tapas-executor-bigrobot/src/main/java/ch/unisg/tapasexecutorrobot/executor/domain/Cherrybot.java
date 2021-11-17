@@ -35,7 +35,7 @@ public class Cherrybot {
         if (ok) {
             var locationSplit = response.headers().map().get("location").get(0).split("/");
             operator_token = locationSplit[locationSplit.length - 1];
-            System.out.println("Token: " + operator_token);
+            LOGGER.info("Token: " + operator_token);
         }
 
         return ok;

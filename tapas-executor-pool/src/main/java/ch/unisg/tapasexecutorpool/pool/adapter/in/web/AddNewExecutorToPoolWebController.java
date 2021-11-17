@@ -25,6 +25,7 @@ public class AddNewExecutorToPoolWebController {
         try {
             var newExecutor = addNewExecutorToPoolUseCase.addNewExecutorToPool(
                     new AddNewExecutorToPoolCommand(
+                            executorJsonRepresentation.getExecutorId(),
                             executorJsonRepresentation.getExecutorName(),
                             executorJsonRepresentation.getExecutorType(),
                             executorJsonRepresentation.getExecutorAddress()

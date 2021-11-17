@@ -24,20 +24,22 @@ public class RetrieveAvailableExecutorsWebController {
 
         var jsonBuffer = new StringBuilder();
         jsonBuffer.append("[\n");
-        for (var executor : availableExecutors) {
-            var executorJson = "";
-            try {
-                executorJson = ExecutorJsonRepresentation.serialize(executor);
-            } catch (JsonProcessingException e) {
-                continue;
+        if (!availableExecutors.isEmpty()) {
+            for (var executor : availableExecutors) {
+                var executorJson = "";
+                try {
+                    executorJson = ExecutorJsonRepresentation.serialize(executor);
+                } catch (JsonProcessingException e) {
+                    continue;
+                }
+                jsonBuffer.append(executorJson);
+                jsonBuffer.append(",\n");
             }
-            jsonBuffer.append(executorJson);
-            jsonBuffer.append(",\n");
+            jsonBuffer.deleteCharAt(jsonBuffer.lastIndexOf(","));
         }
-        jsonBuffer.deleteCharAt(jsonBuffer.lastIndexOf(","));
         jsonBuffer.append("]");
-        var json = jsonBuffer.toString();
 
+        var json = jsonBuffer.toString();
         var responseHeaders = new HttpHeaders();
         responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.MEDIA_TYPE);
         return new ResponseEntity<>(json, responseHeaders, HttpStatus.OK);

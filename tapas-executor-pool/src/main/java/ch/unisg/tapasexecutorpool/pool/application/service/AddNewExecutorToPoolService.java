@@ -26,6 +26,7 @@ public class AddNewExecutorToPoolService implements AddNewExecutorToPoolUseCase 
         executorPoolLock.lockExecutorPool(executorPool.getExecutorPoolName());
 
         var newExecutor = executorPool.addNewExecutor(
+                new Executor.ExecutorId(command.getExecutorId()),
                 new Executor.ExecutorName(command.getExecutorName()),
                 new Executor.ExecutorType(Task.Type.valueOf(command.getExecutorType())),
                 new Executor.ExecutorAddress(command.getExecutorAddress())

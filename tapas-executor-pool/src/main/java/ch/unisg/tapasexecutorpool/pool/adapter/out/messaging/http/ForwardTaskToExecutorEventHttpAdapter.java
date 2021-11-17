@@ -8,7 +8,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -24,9 +23,10 @@ public class ForwardTaskToExecutorEventHttpAdapter implements ForwardTaskToExecu
     @Override
     public void forwardTaskToExecutorEvent(ForwardTaskToExecutorEvent event) {
         try {
+            var uri = event.getExecutor().getExecutorAddress().getValue() + "/execute-task/";
             var payload = TaskJsonRepresentation.serialize(event.getTask());
             var client = HttpClient.newHttpClient();
-            var request = HttpRequest.newBuilder().uri(URI.create(event.getExecutor().getExecutorAddress().getValue()))
+            var request = HttpRequest.newBuilder().uri(URI.create(uri))
                     .setHeader(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(payload))
                     .build();
