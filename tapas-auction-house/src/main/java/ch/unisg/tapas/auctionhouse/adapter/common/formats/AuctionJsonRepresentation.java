@@ -11,6 +11,7 @@ import lombok.Setter;
 import org.springframework.web.util.UriBuilder;
 
 import java.net.URI;
+import java.sql.Timestamp;
 
 /**
  * Used to expose a representation of the state of an auction through an interface. This class is
@@ -18,7 +19,7 @@ import java.net.URI;
  * to modify this class as you see fit!
  */
 public class AuctionJsonRepresentation {
-    public static final String MEDIA_TYPE = "application/json";
+    public static final String MEDIA_TYPE = "application/auction+json";
 
     @Getter @Setter
     private String auctionId;
@@ -33,7 +34,11 @@ public class AuctionJsonRepresentation {
     private String taskType;
 
     @Getter @Setter
-    private Integer deadline;
+    private String deadline;
+
+    public int getDeadlineInt() {
+        return parseDeadlineString(deadline);
+    }
 
     public AuctionJsonRepresentation() {  }
 
@@ -42,7 +47,7 @@ public class AuctionJsonRepresentation {
         String auctionHouseUri,
         String taskUri,
         String taskType,
-        Integer deadline)
+        String deadline)
     {
         this.auctionId = auctionId;
         this.auctionHouseUri = auctionHouseUri;
@@ -56,7 +61,7 @@ public class AuctionJsonRepresentation {
         this.auctionHouseUri = auction.getAuctionHouseUri().getValue().toString();
         this.taskUri = auction.getTaskUri().getValue().toString();
         this.taskType = auction.getTaskType().getValue();
-        this.deadline = auction.getDeadline().getValue();
+        this.deadline = "" + auction.getDeadline().getValue();
     }
 
     public static String serialize(Auction auction) throws JsonProcessingException {
@@ -72,7 +77,7 @@ public class AuctionJsonRepresentation {
             new Auction.AuctionHouseUri(URI.create(representation.auctionHouseUri)),
             new Auction.AuctionedTaskUri(URI.create(representation.taskUri)),
             new Auction.AuctionedTaskType(representation.taskType),
-            new Auction.AuctionDeadline(representation.deadline)
+            new Auction.AuctionDeadline(parseDeadlineString(representation.deadline))
         );
     }
 
@@ -86,7 +91,22 @@ public class AuctionJsonRepresentation {
         var auctionHouseUri = dataAuction.get("auctionHouseUri").textValue();
         var taskUri = dataAuction.get("auctionHouseUri").textValue();
         var taskType= dataAuction.get("taskType").textValue();
-        var deadline = dataAuction.get("deadline").intValue();
+        var deadline = dataAuction.get("deadline").textValue();
         return new AuctionJsonRepresentation(auctionId, auctionHouseUri, taskUri, taskType, deadline);
+    }
+
+    private static int parseDeadlineString(String deadlineString) {
+        int deadline = 0;
+
+        try {
+            var deadlineTimestamp = Timestamp.valueOf(deadlineString);
+            deadline = (int)(deadlineTimestamp.toInstant().toEpochMilli() - System.currentTimeMillis());
+        } catch(IllegalArgumentException ignored) { }
+
+        try {
+            deadline = Integer.parseInt(deadlineString);
+        } catch (NumberFormatException ignored) { }
+
+        return deadline;
     }
 }

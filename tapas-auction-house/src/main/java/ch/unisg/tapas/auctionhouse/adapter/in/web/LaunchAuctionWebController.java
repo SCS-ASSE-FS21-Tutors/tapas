@@ -43,7 +43,7 @@ public class LaunchAuctionWebController {
     @PostMapping(path = "/auctions/", consumes = AuctionJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity<String> launchAuction(@RequestBody AuctionJsonRepresentation payload) {
         Auction.AuctionDeadline deadline = (payload.getDeadline() == null) ?
-            null : new Auction.AuctionDeadline(payload.getDeadline());
+            null : new Auction.AuctionDeadline(payload.getDeadlineInt());
 
         LaunchAuctionCommand command = new LaunchAuctionCommand(
             new Auction.AuctionedTaskUri(URI.create(payload.getTaskUri())),

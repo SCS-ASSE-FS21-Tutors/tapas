@@ -25,7 +25,6 @@ public class AuctionEventsMqttDispatcher {
     }
 
     private void initRouter() {
-        router.put("ch/unisg/tapas-group-4/executors", new ExecutorAddedEventListenerMqttAdapter());
         router.put("ch/unisg/tapas/auctions", new AuctionStartedEventMqttListener());
     }
 
