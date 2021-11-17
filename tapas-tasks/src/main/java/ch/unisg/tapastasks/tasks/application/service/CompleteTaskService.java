@@ -26,10 +26,10 @@ public class CompleteTaskService implements CompleteTaskUseCase {
         Optional<Task> updatedTask = taskList.retrieveTaskById(command.getTaskId());
 
         Task newTask = updatedTask.get();
-        newTask.taskResult = new TaskResult(command.getOutputData().getValue());
-        newTask.taskStatus = new TaskStatus(Task.Status.EXECUTED);
+        newTask.setOutputData(command.getOutputData());
+        newTask.setTaskStatus(new TaskStatus(Task.Status.EXECUTED));
 
-        if (!newTask.getOriginalTaskUri().getValue().equalsIgnoreCase("")) {
+        if (newTask.getOriginalTaskUri() != null) {
             ExternalTaskExecutedEvent event = new ExternalTaskExecutedEvent(
                 newTask.getTaskId(),
                 newTask.getOriginalTaskUri(),

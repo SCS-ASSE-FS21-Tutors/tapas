@@ -26,17 +26,16 @@ public class CompleteTaskWebController {
         this.completeTaskUseCase = completeTaskUseCase;
     }
 
-    @GetMapping(path = "/tasks/completeTask/{taskId}")
-    public ResponseEntity<String> completeTask (@PathVariable("taskId") String taskId){
+    @PostMapping(path = "/tasks/completeTask")
+    public ResponseEntity<String> completeTask (@RequestBody TaskJsonRepresentation payload) {
 
         System.out.println("completeTask");
-        System.out.println(taskId);
+        System.out.println(payload.getTaskId());
 
-        String taskResult = "0";
 
         try {
             CompleteTaskCommand command = new CompleteTaskCommand(
-                new Task.TaskId(taskId), new Task.OutputData(taskResult)
+                new Task.TaskId(payload.getTaskId()), new Task.OutputData(payload.getOutputData())
             );
 
             Task updateATask = completeTaskUseCase.completeTask(command);

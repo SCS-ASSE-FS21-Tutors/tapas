@@ -24,10 +24,10 @@ public class TaskAssignedWebController {
     }
 
     @PostMapping(path="/tasks/assignTask", consumes= {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> assignTask(@RequestBody Task task){
+    public ResponseEntity<String> assignTask(@RequestBody TaskJsonRepresentation payload) {
         try{
             TaskAssignedCommand command = new TaskAssignedCommand(
-                task.getTaskId()
+                new Task.TaskId(payload.getTaskId())
             );
 
             Task updateATask = taskAssignedUseCase.assignTask(command);

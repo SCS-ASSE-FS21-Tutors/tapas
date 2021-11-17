@@ -6,10 +6,14 @@ import lombok.Value;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 /**This is our aggregate root**/
 public class TaskList {
+
+    Logger logger = Logger.getLogger(TaskList.class.getName());
 
     @Getter
     private final TaskListName taskListName;
@@ -48,6 +52,14 @@ public class TaskList {
         return newTask;
     }
 
+    public Task addNewTaskWithNameAndTypeAndInputData(Task.TaskName name, Task.TaskType type,
+            Task.InputData inputData) {
+        Task newTask = Task.createTaskWithNameAndTypeAndInputData(name, type, inputData);
+        this.addNewTaskToList(newTask);
+
+        return newTask;
+    }
+
     public Task addNewTaskWithNameAndTypeAndOriginalTaskUriAndInputData(Task.TaskName name, Task.TaskType type,
             Task.OriginalTaskUri originalTaskUri, Task.InputData inputData) {
         Task newTask = Task.createTaskWithNameAndTypeAndOriginalTaskUriAndInputData(name, type, originalTaskUri, inputData);
@@ -62,8 +74,10 @@ public class TaskList {
         //However, we skip this here as it makes the core even more complex (e.g., we have to implement a light-weight
         //domain event publisher and subscribers (see "Implementing Domain-Driven Design by V. Vernon, pp. 296ff).
         listOfTasks.value.add(newTask);
-        //This is a simple debug message to see that the task list is growing with each new request
-        System.out.println("Number of tasks: " + listOfTasks.value.size());
+        logger.log(Level.INFO, "New task created! Id: " + newTask.getTaskId().getValue() +
+            " | Name: " + newTask.getTaskName().getValue() +
+            " | InputData: " + newTask.getInputData().getValue());
+        logger.log(Level.INFO, "Number of tasks: {0}", listOfTasks.value.size());
     }
 
     public Optional<Task> retrieveTaskById(Task.TaskId id) {

@@ -57,11 +57,11 @@ public abstract class ExecutorBase {
     **/
     public void getAssignment() {
         Task newTask = getAssignmentPort.getAssignment(this.getExecutorType(), this.getExecutorURI());
-        System.out.println("New assignment");
-        System.out.println(newTask);
         if (newTask != null) {
+            logger.info("Executor got a new task");
             this.executeTask(newTask);
         } else {
+            logger.info("Executor got no new task");
             this.status = ExecutorStatus.IDLING;
         }
     }

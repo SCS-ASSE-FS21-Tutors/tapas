@@ -21,8 +21,6 @@ public class Executor extends ExecutorBase {
     protected
     String execution(String inputData) {
 
-        System.out.println(inputData);
-
         String operator = "";
         if (inputData.contains("+")) {
             operator = "+";
@@ -30,34 +28,34 @@ public class Executor extends ExecutorBase {
             operator = "-";
         } else if (inputData.contains("*")) {
             operator = "*";
+        } else {
+            return "invalid data";
         }
 
-        // System.out.println(operator);
+        double result = Double.NaN;
 
-        // double result = Double.NaN;
-
-        // System.out.print(inputData.split("+"));
-
-        // int a = Integer.parseInt(inputData.split(operator)[0]);
-        // int b = Integer.parseInt(inputData.split(operator)[1]);
-
-        // // try {
-        // //     TimeUnit.SECONDS.sleep(20);
-        // // } catch (InterruptedException e) {
-        // //     e.printStackTrace();
-        // // }
-
-        // if (operator.equalsIgnoreCase("+")) {
-        //     result = a + b;
-        // } else if (operator.equalsIgnoreCase("*")) {
-        //     result = a * b;
-        // } else if (operator.equalsIgnoreCase("-")) {
-        //     result = a - b;
+        // try {
+        //     TimeUnit.SECONDS.sleep(5);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
         // }
 
-        // System.out.println("Result: " + result);
-
-        double result = 0.0;
+        if (operator.equalsIgnoreCase("+")) {
+            String[] parts = inputData.split("\\+");
+            double a = Double.parseDouble(parts[0]);
+            double b = Double.parseDouble(parts[1]);
+            result = a + b;
+        } else if (operator.equalsIgnoreCase("*")) {
+            String[] parts = inputData.split("\\*");
+            double a = Double.parseDouble(parts[0]);
+            double b = Double.parseDouble(parts[1]);
+            result = a * b;
+        } else if (operator.equalsIgnoreCase("-")) {
+            String[] parts = inputData.split("-");
+            double a = Double.parseDouble(parts[0]);
+            double b = Double.parseDouble(parts[1]);
+            result = a - b;
+        }
 
         return Double.toString(result);
     }

@@ -20,7 +20,7 @@ import ch.unisg.roster.roster.domain.event.TaskCompletedEvent;
 @Primary
 public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort {
 
-    @Value("${task-list.url}")
+    @Value("${task-list.uri}")
     private String server;
 
     Logger logger = Logger.getLogger(PublishTaskCompletedEventAdapter.class.getName());
@@ -32,22 +32,17 @@ public class PublishTaskCompletedEventAdapter implements TaskCompletedEventPort 
     @Override
     public void publishTaskCompleted(TaskCompletedEvent event) {
 
-        System.out.println("PublishTaskCompletedEventAdapter.publishTaskCompleted()");
-        System.out.print(server);
-
         String body = new JSONObject()
                   .put("taskId", event.taskID)
                   .put("status", event.status)
                   .put("outputData", event.result)
                   .toString();
 
-        System.out.println(event.taskID);
-
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(server + "/tasks/completeTask/" + event.taskID))
+                .uri(URI.create(server + "/tasks/completeTask/"))
                 .header("Content-Type", "application/task+json")
-                .GET()
+                .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
 

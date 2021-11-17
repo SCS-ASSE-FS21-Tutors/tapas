@@ -24,7 +24,7 @@ public class TaskAssignedService implements TaskAssignedUseCase {
 
         // update the status to assigned
         Task updatedTask = task.get();
-        updatedTask.taskStatus = new TaskStatus(Status.ASSIGNED);
+        updatedTask.setTaskStatus(new TaskStatus(Status.ASSIGNED));
 
         return updatedTask;
     }

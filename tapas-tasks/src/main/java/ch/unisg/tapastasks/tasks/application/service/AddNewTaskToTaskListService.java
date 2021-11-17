@@ -24,24 +24,18 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
 
         Task newTask;
 
-        System.out.println("TEST:");
-        System.out.println(command.getInputData().get());
-
         if (command.getOriginalTaskUri().isPresent() && command.getInputData().isPresent()) {
-            System.out.println("TEST2:");
             newTask = taskList.addNewTaskWithNameAndTypeAndOriginalTaskUriAndInputData(command.getTaskName(),
                 command.getTaskType(), command.getOriginalTaskUri().get(), command.getInputData().get());
         } else if (command.getOriginalTaskUri().isPresent()) {
             newTask = taskList.addNewTaskWithNameAndTypeAndOriginalTaskUri(command.getTaskName(),
                 command.getTaskType(), command.getOriginalTaskUri().get());
-        } else if (command.getOriginalTaskUri().isPresent()) {
-            newTask = null;
+        } else if (command.getInputData().isPresent()) {
+            newTask = taskList.addNewTaskWithNameAndTypeAndInputData(command.getTaskName(),
+            command.getTaskType(), command.getInputData().get());
         } else {
             newTask = taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
         }
-
-        System.out.println("TEST");
-        System.out.println(newTask.getInputData());
 
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.

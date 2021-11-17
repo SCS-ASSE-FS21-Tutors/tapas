@@ -22,10 +22,7 @@ public class Task {
     private final TaskType taskType;
 
     @Getter @Setter
-    public TaskStatus taskStatus; // had to make public for CompleteTaskService
-
-    @Getter
-    public TaskResult taskResult; // same as above
+    private TaskStatus taskStatus;
 
     @Getter
     private final OriginalTaskUri originalTaskUri;
@@ -39,15 +36,36 @@ public class Task {
     @Getter @Setter
     private OutputData outputData;
 
+    public Task(TaskName taskName, TaskType taskType) {
+        this.taskName = taskName;
+        this.taskType = taskType;
+        this.taskStatus = new TaskStatus(Status.OPEN);
+        this.taskId = new TaskId(UUID.randomUUID().toString());
+        this.originalTaskUri = null;
+
+        this.inputData = null;
+        this.outputData = null;
+    }
+
     public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
         this.taskName = taskName;
         this.taskType = taskType;
         this.taskStatus = new TaskStatus(Status.OPEN);
         this.taskId = new TaskId(UUID.randomUUID().toString());
-        this.taskResult = new TaskResult("");
         this.originalTaskUri = taskUri;
 
         this.inputData = null;
+        this.outputData = null;
+    }
+
+    public Task(TaskName taskName, TaskType taskType, InputData inputData) {
+        this.taskName = taskName;
+        this.taskType = taskType;
+        this.taskStatus = new TaskStatus(Status.OPEN);
+        this.taskId = new TaskId(UUID.randomUUID().toString());
+        this.originalTaskUri = null;
+
+        this.inputData = inputData;
         this.outputData = null;
     }
 
@@ -56,7 +74,6 @@ public class Task {
         this.taskType = taskType;
         this.taskStatus = new TaskStatus(Status.OPEN);
         this.taskId = new TaskId(UUID.randomUUID().toString());
-        this.taskResult = new TaskResult("");
         this.originalTaskUri = taskUri;
 
         this.inputData = inputData;
@@ -64,14 +81,17 @@ public class Task {
     }
 
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
-        //This is a simple debug message to see that the request has reached the right method in the core
-        System.out.println("New Task: " + name.getValue() + " " + type.getValue());
-        return new Task(name, type, null);
+        return new Task(name, type);
     }
 
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
             OriginalTaskUri originalTaskUri) {
         return new Task(name, type, originalTaskUri);
+    }
+
+    protected static Task createTaskWithNameAndTypeAndInputData(TaskName name, TaskType type,
+            InputData inputData) {
+        return new Task(name, type, inputData);
     }
 
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUriAndInputData(TaskName name, TaskType type,

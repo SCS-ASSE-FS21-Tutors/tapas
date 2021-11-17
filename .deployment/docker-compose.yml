@@ -49,6 +49,8 @@ services:
         restart: unless-stopped
         volumes:
             - ./:/data/
+        environment:
+            mqtt.broker.uri: tcp://broker.hivemq.com:1883
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.tapas-auction-house.rule=Host(`tapas-auction-house.${PUB_IP}.nip.io`)"
@@ -64,6 +66,11 @@ services:
         restart: unless-stopped
         volumes:
             - ./:/data/
+        environment:
+            task-list.uri: http://tapas-tasks:8081
+            executor-robot.uri: http://executor-robot:8084
+            executor-computation.uri: http://executor-computation:8085
+            mqtt.broker.uri: tcp://broker.hivemq.com:1883
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.roster.rule=Host(`roster.${PUB_IP}.nip.io`)"
@@ -79,6 +86,8 @@ services:
         restart: unless-stopped
         volumes:
             - ./:/data/
+        environment:
+            mqtt.broker.uri: tcp://broker.hivemq.com:1883
         labels:
             - "traefik.enable=true"
             - "traefik.http.routers.executor-pool.rule=Host(`executor-pool.${PUB_IP}.nip.io`)"

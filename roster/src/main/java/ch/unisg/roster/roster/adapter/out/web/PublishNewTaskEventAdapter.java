@@ -19,10 +19,10 @@ import ch.unisg.roster.roster.domain.event.NewTaskEvent;
 @Primary
 public class PublishNewTaskEventAdapter implements NewTaskEventPort {
 
-    @Value("${executor1.url}")
+    @Value("${executor-robot.uri}")
     private String server;
 
-    @Value("${executor2.url}")
+    @Value("${executor-computation.uri}")
     private String server2;
 
     Logger logger = Logger.getLogger(PublishNewTaskEventAdapter.class.getName());
