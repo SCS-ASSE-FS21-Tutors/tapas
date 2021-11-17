@@ -38,6 +38,7 @@ public class ExternalAuctionStartedEventListenerMqttAdapter extends AuctionEvent
             // representation that makes sense in the context of your application.
             JsonNode data = new ObjectMapper().readTree(payload);
 
+            // TODO Sanitize URIs
             String auctionId = data.get("auctionId").asText();
             String auctionHouseUri = data.get("auctionHouseUri").asText();
             String taskUri = data.get("taskUri").asText();
@@ -72,8 +73,12 @@ public class ExternalAuctionStartedEventListenerMqttAdapter extends AuctionEvent
             LOGGER.error(e.getMessage(), e);
             return false;
         } catch (IOException e) {
+
+            LOGGER.error(e.getMessage(), e);
             e.printStackTrace();
         } catch (InterruptedException e) {
+
+            LOGGER.error(e.getMessage(), e);
             e.printStackTrace();
         } catch (Exception e){
             LOGGER.error(e.getMessage(), e);

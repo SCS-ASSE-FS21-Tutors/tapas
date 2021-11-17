@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.URI;
 import java.util.List;
@@ -23,20 +24,19 @@ import java.util.List;
 public class TapasAuctionHouseApplication {
     private static final Logger LOGGER = LogManager.getLogger(TapasAuctionHouseApplication.class);
 
-    @Autowired
-    private ConfigProperties config;
-
     public static String RESOURCE_DIRECTORY = "https://api.interactions.ics.unisg.ch/auction-houses/";
-    public static String MQTT_BROKER = "tcp://broker.hivemq.com:1883";
+    public static String DEFAULT_MQTT_BROKER = "tcp://broker.hivemq.com:1883";
+
+    private static ConfigurableEnvironment ENVIRONMENT;
 
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
+        ENVIRONMENT = tapasAuctioneerApp.run(args).getEnvironment();
 
+        // TODO Set start up of message services with config
 		// We will use these bootstrap methods in Week 6:
-        bootstrapMarketplaceWithWebSub();
+        // bootstrapMarketplaceWithWebSub();
         bootstrapMarketplaceWithMqtt();
-
-        tapasAuctioneerApp.run(args);
 	}
     /**
      * Discovers auction houses and subscribes to WebSub notifications
@@ -57,8 +57,16 @@ public class TapasAuctionHouseApplication {
      */
     private static void bootstrapMarketplaceWithMqtt() {
         try {
+            String broker = ENVIRONMENT.getProperty("mqtt.broker.uri");
+
+            if (broker == null) {
+                broker = DEFAULT_MQTT_BROKER;
+                LOGGER.info("No MQTT broker was set in application.propreties, going with default: "
+                    + DEFAULT_MQTT_BROKER);
+            }
+
             AuctionEventsMqttDispatcher dispatcher = new AuctionEventsMqttDispatcher();
-            TapasMqttClient client = TapasMqttClient.getInstance(MQTT_BROKER, dispatcher);
+            TapasMqttClient client = TapasMqttClient.getInstance(broker, dispatcher);
             client.startReceivingMessages();
         } catch (MqttException e) {
             LOGGER.error(e.getMessage(), e);
