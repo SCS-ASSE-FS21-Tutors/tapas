@@ -5,6 +5,8 @@ import ch.unisg.tapastasks.tasks.application.port.out.CanTaskBeDeletedPort;
 import ch.unisg.tapastasks.tasks.domain.DeleteTaskEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -19,9 +21,8 @@ import java.util.HashMap;
 @Primary
 public class CanTaskBeDeletedWebAdapter implements CanTaskBeDeletedPort {
 
-    // Base URI of the service interested in this event
-    //Todo: Add the right IP address
-    String server = null;
+    @Value("${roster.uri}")
+    String server;
 
     @Override
     public void canTaskBeDeletedEvent(DeleteTaskEvent event){

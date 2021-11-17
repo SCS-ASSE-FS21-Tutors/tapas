@@ -34,8 +34,6 @@ public class NotifyExecutorPoolAdapter implements NotifyExecutorPoolPort {
     @Override
     public boolean notifyExecutorPool(ExecutorURI executorURI, ExecutorType executorType) {
 
-        System.out.println(server);
-
         String body = new JSONObject()
             .put("executorTaskType", executorType)
             .put("executorUri", executorURI.getValue())

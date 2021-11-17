@@ -1,5 +1,6 @@
 package ch.unisg.executorbase.executor.domain;
 
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import ch.unisg.common.valueobject.ExecutorURI;
@@ -41,8 +42,10 @@ public abstract class ExecutorBase {
         // TODO do this in main
         // Notify executor-pool about existence. If executor-pools response is successfull start with getting an assignment, else shut down executor.
         if(!notifyExecutorPoolService.notifyExecutorPool(this.executorURI, this.executorType)) {
+            logger.log(Level.WARNING, "Executor could not connect to executor pool! Shuting down!");
             System.exit(0);
         } else {
+            logger.info("Executor conntected to executor pool");
             this.status = ExecutorStatus.IDLING;
             getAssignment();
         }

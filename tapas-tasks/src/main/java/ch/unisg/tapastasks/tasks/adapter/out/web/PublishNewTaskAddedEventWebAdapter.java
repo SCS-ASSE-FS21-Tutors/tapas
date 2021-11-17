@@ -4,6 +4,8 @@ import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
@@ -18,8 +20,8 @@ import java.util.HashMap;
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
-    //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
-    String server = "http://127.0.0.1:8082";
+    @Value("${roster.uri}")
+    String server;
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
