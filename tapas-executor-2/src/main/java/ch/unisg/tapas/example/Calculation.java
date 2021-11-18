@@ -5,8 +5,6 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -20,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class Calculation {
 
-    private String executorPoolUri = "http://tapas-executor-pool:8083";
+    private String executorPoolUri = "http://tapas-executor-pool:8083/";
 
     @NonNull
     private String taskId;

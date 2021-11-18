@@ -113,4 +113,9 @@ public class Task {
     public static class OutputData {
         String value;
     }
+
+    @Override
+    public String toString() {
+        return taskId.getValue() + " | "+ taskName.getValue() + " | " + taskType.getValue() +" | " + taskStatus.toString();
+    }
 }

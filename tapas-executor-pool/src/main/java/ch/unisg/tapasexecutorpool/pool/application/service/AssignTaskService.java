@@ -3,6 +3,8 @@ package ch.unisg.tapasexecutorpool.pool.application.service;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.CanExecuteTaskQuery;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.EnqueueTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.SendTaskToExecutorPort;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommand;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommandPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
@@ -22,6 +24,9 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
 
     @Autowired
     public SendTaskToExecutorPort executorPort;
+
+    @Autowired
+    public UpdateTaskStatusCommandPort updateTaskStatusCommandPort;
 
     public LinkedList<Task> taskQueue = new LinkedList<>();
 
@@ -55,8 +60,6 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
 
     @Scheduled(fixedRate = 5000)
     public void scheduleFixedRateTask() {
-
-        log.info("Checking task queue: " + taskQueue.toString());
 
         for (Task task : taskQueue) {
             if (canExecuteNow(task)) {
@@ -111,6 +114,10 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
         assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
         assignedExecutor.setAssignedTask(new Task(task.getTaskId(), task.getTaskName(), task.getTaskType()));
         repository.updateExecutor(assignedExecutor);
+
+        // Update task in task list service
+        UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(task.getTaskId(), new Task.TaskStatus(Task.Status.ASSIGNED));
+        updateTaskStatusCommandPort.updateTaskStatus(updateTaskStatusCommand);
 
         // Return assigned executor
         return assignedExecutor;
