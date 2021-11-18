@@ -7,6 +7,8 @@ import ch.unisg.tapas.auctionhouse.application.port.out.UpdateExternalTaskComman
 import ch.unisg.tapas.auctionhouse.application.port.out.UpdateExternalTaskCommandPort;
 import ch.unisg.tapas.auctionhouse.domain.Task;
 import lombok.extern.log4j.Log4j2;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -29,27 +31,36 @@ public class UpdateExternalTaskCommandHttpAdapter implements UpdateExternalTaskC
 
     @Override
     public boolean updateExternalTask(UpdateExternalTaskCommand command) {
-        log.info("Update external task object to "+command.getNewStatus().getValue().toString());
-        Task task = command.getTask();
-        task.setTaskStatus(command.getNewStatus());
+        String taskListUri = command.getTask().getOriginalTaskUri().getValue();
+        String taskId = command.getTask().getTaskId().getValue();
+        String taskStatus = command.getNewStatus().getValue().name();
+
+        log.info("Update external task " + taskId + " on task list service to " + command.getNewStatus().getValue().name());
 
         try {
-            String taskJson = TaskJsonRepresentation.serialize(task);
-            //TODO Implement Patch request
-            /*HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(task.getOriginalTaskUri().getValue()))
-                .headers("Content-Type", "application/json")
-                .PATCH(HttpRequest.BodyPublishers.ofString(taskJson))
+            JSONObject patch = new JSONObject();
+            patch.put("op", "replace");
+            patch.put("path", "/taskStatus");
+            patch.put("value", taskStatus);
+
+            JSONArray patches = new JSONArray();
+            patches.put(patch);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(taskListUri))
+                .headers("Content-Type", "application/json-patch+json")
+                .method("PATCH", HttpRequest.BodyPublishers.ofString(patches.toString()))
                 .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-            if (response.statusCode() != 202)
-                throw new RuntimeException("Sending won task to executor pool resulted in code " + response.statusCode() + " but 202 is expected");
+            if (response.statusCode() != 200)
+                throw new RuntimeException("Sending task patch to task list service resulted in code " +
+                    response.statusCode() + " but 200 is expected");
             else return true;
-           */
-            return true;
+
         } catch (Exception e) {
-            throw new RuntimeException("Could not place bid", e);
+            throw new RuntimeException("Could not update task status", e);
         }
+
     }
 }
