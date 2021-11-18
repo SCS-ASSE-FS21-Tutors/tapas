@@ -11,11 +11,14 @@ import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Component
 @Transactional
+@Service("AddNewTaskToTaskList")
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
 
     private final NewTaskAddedEventPort newTaskAddedEventPort;
