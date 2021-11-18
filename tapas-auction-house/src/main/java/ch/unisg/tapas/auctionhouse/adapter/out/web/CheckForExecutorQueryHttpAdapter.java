@@ -34,14 +34,14 @@ public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPo
 
     @Override
     public boolean checkForExecutor(CheckForExecutorQuery query) {
-        log.info("Sending request to executor pool");
+        log.info("Sending request to executor pool at " + executorPoolUrl);
 
         Task task = new Task(new Task.TaskName("Tasktype wrapper"), new Task.TaskType(query.getAuction().getTaskType().getValue()));
 
         try {
             String taskJson = om.writeValueAsString(task);
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(executorPoolUrl + "/can-execute/"))
+                .uri(URI.create(executorPoolUrl + "can-execute/"))
                 .headers("Content-Type", "application/json")
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                 .build();
