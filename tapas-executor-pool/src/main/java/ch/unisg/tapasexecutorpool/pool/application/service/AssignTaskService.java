@@ -14,6 +14,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.util.LinkedList;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 @Log
 @Component
@@ -28,7 +30,7 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
     @Autowired
     public UpdateTaskStatusCommandPort updateTaskStatusCommandPort;
 
-    public LinkedList<Task> taskQueue = new LinkedList<>();
+    public BlockingQueue<Task> taskQueue = new LinkedBlockingQueue<>();
 
     @Autowired
     public AssignTaskService() {
@@ -68,7 +70,7 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
                     assignTask(task);
                 } catch (Exception ex) {
                     // Read to task queue if failed
-                    taskQueue.push(task);
+                    taskQueue.offer(task);
                     log.warning("Failed to assign Task");
                     throw new RuntimeException("Failed to assign Task", ex);
                 }
