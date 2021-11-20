@@ -39,10 +39,10 @@ public class Calculation {
             TimeUnit.SECONDS.sleep(10);
             // Calls the /completion/ endpoint of the executor pool
             HttpClient client = HttpClient.newHttpClient();
-            String url = executorPoolUri+ "completion/?taskId="+taskId;
+            String url = executorPoolUri+ "completion";
             String inputDataJson = new JSONObject()
                     .put("taskId", taskId)
-                    .put("outputData", sum)
+                    .put("outputData", String.valueOf(sum))
                     .toString();
 
             HttpRequest request = HttpRequest.newBuilder()

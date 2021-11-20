@@ -2,6 +2,7 @@ package ch.unisg.tapasexecutorpool.pool.adapter.out.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommandPort;
+import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
@@ -48,9 +49,17 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
             patch.put("op", "replace");
             patch.put("path", "/taskStatus");
             patch.put("value", taskStatus);
-
             JSONArray patches = new JSONArray();
             patches.put(patch);
+
+            // If a task is completed, output data should be sent too
+            if(command.getNewStatus().getValue().equals(Task.Status.EXECUTED)){
+                JSONObject patch2 = new JSONObject();
+                patch2.put("op", "replace");
+                patch2.put("path", "/outputData");
+                patch2.put("value", command.getTask().getOutputData().getValue());
+                patches.put(patch2);
+            }
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(targetUri))

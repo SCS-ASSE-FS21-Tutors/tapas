@@ -10,8 +10,11 @@ public class NotifyTaskCompletionCommand extends SelfValidating<NotifyTaskComple
     @NotNull
     private final String taskId;
 
-    public NotifyTaskCompletionCommand(String taskId) {
+    private final String outputData;
+
+    public NotifyTaskCompletionCommand(String taskId, String outputData) {
         this.taskId = taskId;
+        this.outputData = outputData;
         this.validateSelf();
     }
 }

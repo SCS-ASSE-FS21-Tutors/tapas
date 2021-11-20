@@ -38,6 +38,7 @@ public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase 
             Executor executor = executorOptional.get();
             executor.setExecutorState(new Executor.ExecutorState(Executor.State.AVAILABLE));
             Task task = executor.getAssignedTask();
+            task.setOutputData(new Task.OutputData(command.getOutputData()));
 
             executor.setAssignedTask(null);
 
