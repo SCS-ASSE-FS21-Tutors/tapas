@@ -68,7 +68,7 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
                 .POST(HttpRequest.BodyPublishers.ofString(body))
                 .build();
 
-            var postResponse = client.send(request, HttpResponse.BodyHandlers.ofString());
+            var postResponse = client.send(postRequest, HttpResponse.BodyHandlers.ofString());
 
             LOGGER.info(postResponse.statusCode());
         } catch (IOException e) {
