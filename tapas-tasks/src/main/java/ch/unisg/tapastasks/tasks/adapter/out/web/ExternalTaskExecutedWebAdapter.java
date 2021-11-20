@@ -55,7 +55,7 @@ public class ExternalTaskExecutedWebAdapter implements ExternalTaskExecutedEvent
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
             .uri(URI.create(externalTaskExecutedEvent.getOriginalTaskUri().getValue()))
-            .header("Content-Type", "application/json")
+            .header("Content-Type", TaskJsonPatchRepresentation.MEDIA_TYPE)
             .method("PATCH", HttpRequest.BodyPublishers.ofString(body))
             .build();
 
