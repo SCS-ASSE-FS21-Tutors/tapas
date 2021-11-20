@@ -35,7 +35,7 @@ public class WinningBidWebController {
         try {
             var body = payload.serialize();
             LOGGER.info(body);
-            var postURI = URI.create(taskListURI + "/tasks/");
+            var postURI = URI.create("https://tapas-tasks.86-119-35-40.nip.io/tasks/");
             HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(postURI)
                 .header("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
