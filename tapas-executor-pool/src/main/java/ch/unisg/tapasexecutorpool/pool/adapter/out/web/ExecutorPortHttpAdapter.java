@@ -8,7 +8,6 @@ import lombok.extern.java.Log;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;

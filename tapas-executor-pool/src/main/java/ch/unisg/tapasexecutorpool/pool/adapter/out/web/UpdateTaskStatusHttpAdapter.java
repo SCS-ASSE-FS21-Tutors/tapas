@@ -2,7 +2,6 @@ package ch.unisg.tapasexecutorpool.pool.adapter.out.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.UpdateTaskStatusCommandPort;
-import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONArray;
@@ -23,8 +22,8 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
     private final ObjectMapper om;
     private final HttpClient client;
 
-    public UpdateTaskStatusHttpAdapter(@Value("${ch.unisg.tapas.task-list-url}") String executorPoolUrl) {
-        this.taskListUri = executorPoolUrl;
+    public UpdateTaskStatusHttpAdapter(@Value("${ch.unisg.tapas.task-list-url}") String taskListUri) {
+        this.taskListUri = taskListUri;
         this.om = new ObjectMapper();
         this.client = HttpClient.newHttpClient();
     }

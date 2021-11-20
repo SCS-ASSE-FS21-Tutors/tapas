@@ -116,6 +116,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return taskId.getValue() + " | "+ taskName.getValue() + " | " + taskType.getValue() +" | " + taskStatus.toString();
+        return taskId.getValue() + " | "+ taskName.getValue() + " | " + taskType.getValue() +" | " + taskStatus.getValue().name();
     }
 }
