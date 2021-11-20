@@ -52,10 +52,10 @@ public class TaskJsonRepresentation {
         this.taskName = task.getTaskName().getValue();
         this.taskType = task.getTaskType().getValue();
         this.taskStatus = task.getTaskStatus().getValue().toString();
-        this.originalTaskUri = task.getOriginalTaskUri().getValue();
-        this.serviceProvider = task.getProvider().getValue();
-        this.inputData = task.getInputData().getValue();
-        this.outputData = task.getOutputData().toString();
+        this.originalTaskUri = ((task.getOriginalTaskUri() != null) ? task.getOriginalTaskUri().getValue() : null);
+        this.serviceProvider = ((task.getProvider() != null) ? task.getProvider().getValue() : null);
+        this.inputData = ((task.getInputData() != null) ? task.getInputData().getValue() : null);
+        this.outputData = ((task.getOutputData() != null) ? task.getOutputData().getValue() : null);
     }
 
     public static String serialize(Task task) throws JsonProcessingException {

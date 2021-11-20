@@ -18,7 +18,7 @@ import java.util.concurrent.TimeUnit;
 @RequiredArgsConstructor
 public class Calculation {
 
-    private String executorPoolUri = "http://tapas-executor-pool:8083/";
+    private String executorPoolUri = "http://localhost:8083/";
 
     @NonNull
     private String taskId;
@@ -52,7 +52,7 @@ public class Calculation {
                     .build();
 
             java.net.http.HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
+            System.out.println(response);
         }catch (Exception e){
             System.out.println(e);
         }
