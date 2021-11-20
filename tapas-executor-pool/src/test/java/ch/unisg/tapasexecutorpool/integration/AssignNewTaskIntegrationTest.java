@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutorpool.integration;
 
+import ch.unisg.tapasexecutorpool.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.adapter.out.repository.InternalExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.application.service.AssignTaskService;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -54,11 +55,11 @@ public class AssignNewTaskIntegrationTest {
                 new Executor.ExecutorUrl("someurl"));
         repository.addExecutor(executor);
 
-        String requestBody = new ObjectMapper().writeValueAsString(newTask);
+        String requestBody = TaskJsonRepresentation.serialize(newTask);
 
         // ACT
-        mockMvc.perform(post("/execute/")
-                .header("Content-Type", "application/json")
+        mockMvc.perform(post("/execute?external=false")
+                .header("Content-Type", "application/task+json")
                 .content(requestBody))
                 .andExpect(status().isAccepted());
 
@@ -77,11 +78,11 @@ public class AssignNewTaskIntegrationTest {
                 new Executor.ExecutorUrl("someurl"));
         repository.addExecutor(executor);
 
-        String requestBody = new ObjectMapper().writeValueAsString(newTask);
+        String requestBody = TaskJsonRepresentation.serialize(newTask);
 
         // ACT
         mockMvc.perform(post("/can-execute/")
-                .header("Content-Type", "application/json")
+                .header("Content-Type", "application/task+json")
                 .content(requestBody))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'executable':true}"));
@@ -91,11 +92,11 @@ public class AssignNewTaskIntegrationTest {
                 new Task.TaskName("somename"),
                 new Task.TaskType("sometypeOTHERTYPE")
         );
-        String requestBody2 = new ObjectMapper().writeValueAsString(otherTask);
-
+        String requestBody2 = TaskJsonRepresentation.serialize(otherTask);
+        
         // ACT
         mockMvc.perform(post("/can-execute/")
-                .header("Content-Type", "application/json")
+                .header("Content-Type", "application/task+json")
                 .content(requestBody2))
                 .andExpect(status().isOk())
                 .andExpect(content().json("{'executable':false}"));
