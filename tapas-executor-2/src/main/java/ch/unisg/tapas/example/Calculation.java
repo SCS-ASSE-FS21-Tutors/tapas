@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.json.JSONObject;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -27,22 +29,21 @@ public class Calculation {
     private String inputData;
 
     public int execute(){
-        int sum = 0;
+        int result = 0;
+        System.out.println("Received Input Data: "+ inputData);
 
-        System.out.println(inputData);
-        int values[] = {1,2,3};
-        for(int i =0; i<values.length; i++){
-            sum+= values[i];
-        }
+        ScriptEngineManager mgr = new ScriptEngineManager();
+        ScriptEngine engine = mgr.getEngineByName("JavaScript");
 
         try {
+            result = (int) engine.eval(inputData);
             TimeUnit.SECONDS.sleep(10);
             // Calls the /completion/ endpoint of the executor pool
             HttpClient client = HttpClient.newHttpClient();
             String url = executorPoolUri+ "completion";
             String inputDataJson = new JSONObject()
                     .put("taskId", taskId)
-                    .put("outputData", String.valueOf(sum))
+                    .put("outputData", String.valueOf(result))
                     .toString();
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -57,7 +58,7 @@ public class Calculation {
             System.out.println(e);
         }
 
-        return sum;
+        return result;
 
     }
 
