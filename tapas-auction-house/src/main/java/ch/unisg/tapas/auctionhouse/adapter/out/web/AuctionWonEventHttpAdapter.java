@@ -57,9 +57,10 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
                 new Task.ServiceProvider("TODO")
             );
 
+            var bidderAuctionHouseUri = event.getWinningBid().getBidderAuctionHouseUri().getValue().toString();
             String body = TaskJsonRepresentation.serialize(task);
             LOGGER.info(body);
-            var postURI = URI.create(auction.get().getAuctionHouseUri().getValue().toString() + "/taskwinner");
+            var postURI = URI.create(bidderAuctionHouseUri + "/taskwinner");
             HttpRequest postRequest = HttpRequest.newBuilder()
                 .uri(postURI)
                 .header("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
