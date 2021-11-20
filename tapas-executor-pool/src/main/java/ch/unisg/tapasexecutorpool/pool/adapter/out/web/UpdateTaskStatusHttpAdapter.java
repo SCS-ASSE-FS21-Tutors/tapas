@@ -55,7 +55,7 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
             // If a task is completed, output data should be sent too
             if(command.getNewStatus().getValue().equals(Task.Status.EXECUTED)){
                 JSONObject patch2 = new JSONObject();
-                patch2.put("op", "replace");
+                patch2.put("op", "add");
                 patch2.put("path", "/outputData");
                 patch2.put("value", command.getTask().getOutputData().getValue());
                 patches.put(patch2);

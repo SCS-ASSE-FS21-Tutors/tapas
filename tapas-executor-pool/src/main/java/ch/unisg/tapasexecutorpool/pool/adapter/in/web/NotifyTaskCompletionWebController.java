@@ -2,6 +2,7 @@ package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionUseCase;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

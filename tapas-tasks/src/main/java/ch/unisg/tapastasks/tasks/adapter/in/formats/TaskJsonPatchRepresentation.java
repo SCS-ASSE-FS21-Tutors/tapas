@@ -70,7 +70,7 @@ public class TaskJsonPatchRepresentation {
      */
     public Optional<Task.OutputData> extractFirstOutputDataAddition() {
         Optional<JsonNode> output = extractFirst(node ->
-            isPatchReplaceOperation(node) && hasPath(node, "/outputData")
+            isPatchAddOperation(node) && hasPath(node, "/outputData")
         );
 
         return (output.isEmpty()) ? Optional.empty()

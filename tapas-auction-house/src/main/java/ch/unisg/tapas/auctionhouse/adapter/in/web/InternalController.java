@@ -35,7 +35,7 @@ public class InternalController {
 
         Task task = TaskJsonRepresentation.toTask(taskJsonRepresentation);
         LaunchAuctionCommand command = new LaunchAuctionCommand(
-            new Auction.AuctionedTaskUri(URI.create(taskListUri + "tasks/" + task.getTaskId().getValue())),
+            new Auction.AuctionedTaskUri(URI.create(taskListUri + "/tasks/" + task.getTaskId().getValue())),
             new Auction.AuctionedTaskType(task.getTaskType().getValue()),
             null
         );
