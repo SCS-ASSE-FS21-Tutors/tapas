@@ -25,9 +25,9 @@ import java.sql.Timestamp;
 public class ExternalAuctionStartedEventListenerMqttAdapter extends AuctionEventMqttListener{
     private static final Logger LOGGER = LogManager.getLogger(ExternalAuctionStartedEventListenerMqttAdapter.class);
 
-    String auctionHouseURI = "http://tapas-auction-house.86-119-35-40.nip.io/";
+    String auctionHouseURI = "https://tapas-auction-house.86-119-35-40.nip.io/";
 
-    String taskListURI = "http://tapas-tasks.86-119-35-40.nip.io";
+    String taskListURI = "https://tapas-tasks.86-119-35-40.nip.io";
 
     @Override
     public boolean handleEvent(MqttMessage message){
