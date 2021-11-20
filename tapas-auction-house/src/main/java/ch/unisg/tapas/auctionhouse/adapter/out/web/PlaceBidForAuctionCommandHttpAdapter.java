@@ -33,7 +33,7 @@ public class PlaceBidForAuctionCommandHttpAdapter implements PlaceBidForAuctionC
             String bidJson = BidJsonRepresentation.serialize(bid);
 
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(auction.getAuctionHouseUri().getValue() + "bid/"))
+                .uri(URI.create(auction.getAuctionHouseUri().getValue() + "/bid/"))
                 .headers("Content-Type", BidJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(bidJson))
                 .build();
