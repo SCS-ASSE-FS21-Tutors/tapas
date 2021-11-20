@@ -112,11 +112,11 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
 
         // Update executor
         assignedExecutor.setExecutorState(new Executor.ExecutorState(Executor.State.OCCUPIED));
-        assignedExecutor.setAssignedTask(new Task(task.getTaskId(), task.getTaskName(), task.getTaskType()));
+        assignedExecutor.setAssignedTask(task);
         repository.updateExecutor(assignedExecutor);
 
         // Update task in task list service
-        UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(task.getTaskId(), new Task.TaskStatus(Task.Status.ASSIGNED));
+        UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(task, new Task.TaskStatus(Task.Status.ASSIGNED));
         updateTaskStatusCommandPort.updateTaskStatus(updateTaskStatusCommand);
 
         // Return assigned executor

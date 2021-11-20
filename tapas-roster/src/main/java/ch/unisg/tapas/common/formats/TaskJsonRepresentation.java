@@ -1,6 +1,6 @@
-package ch.unisg.tapas.auctionhouse.adapter.common.formats;
+package ch.unisg.tapas.common.formats;
 
-import ch.unisg.tapas.auctionhouse.domain.Task;
+import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;

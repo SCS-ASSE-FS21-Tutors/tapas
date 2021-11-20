@@ -5,22 +5,25 @@ import lombok.*;
 import java.util.UUID;
 
 /**This is a domain entity**/
+@NoArgsConstructor
+@AllArgsConstructor
 public class Task {
+
     public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED
     }
 
     @Getter
-    private final TaskId taskId;
+    private TaskId taskId;
 
     @Getter
-    private final TaskName taskName;
+    private TaskName taskName;
 
     @Getter
-    private final TaskType taskType;
+    private TaskType taskType;
 
-    @Getter
-    private final OriginalTaskUri originalTaskUri;
+    @Getter @Setter
+    private OriginalTaskUri originalTaskUri;
 
     @Getter @Setter
     private TaskStatus taskStatus;
@@ -34,17 +37,30 @@ public class Task {
     @Getter @Setter
     private OutputData outputData;
 
+    public Task(TaskName taskName, TaskType taskType) {
+        this.taskId = new TaskId(UUID.randomUUID().toString());
+        this.taskName = taskName;
+        this.taskType = taskType;
+        this.originalTaskUri = null;
+        this.taskStatus = new TaskStatus(Status.OPEN);
+    }
+
     public Task(TaskName taskName, TaskType taskType, OriginalTaskUri taskUri) {
         this.taskId = new TaskId(UUID.randomUUID().toString());
-
         this.taskName = taskName;
         this.taskType = taskType;
         this.originalTaskUri = taskUri;
-
         this.taskStatus = new TaskStatus(Status.OPEN);
-
         this.inputData = null;
         this.outputData = null;
+    }
+
+    public Task(TaskId taskId, TaskName taskName, TaskType taskType) {
+        this.taskId = taskId;
+        this.taskName = taskName;
+        this.taskType = taskType;
+        this.originalTaskUri = null;
+        this.taskStatus = new TaskStatus(Status.OPEN);
     }
 
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
@@ -54,7 +70,7 @@ public class Task {
     }
 
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
-            OriginalTaskUri originalTaskUri) {
+                                                                      OriginalTaskUri originalTaskUri) {
         return new Task(name, type, originalTaskUri);
     }
 
@@ -113,7 +129,6 @@ public class Task {
     public static class OutputData {
         String value;
     }
-
     @Override
     public String toString() {
         return taskId.getValue() + " | "+ taskName.getValue() + " | " + taskType.getValue() +" | " + taskStatus.getValue().name();

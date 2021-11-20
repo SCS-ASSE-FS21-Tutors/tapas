@@ -1,6 +1,6 @@
-package ch.unisg.tapas.auctionhouse.adapter.common.formats;
+package ch.unisg.tapasexecutorpool.common.formats;
 
-import ch.unisg.tapas.auctionhouse.domain.Task;
+import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -65,21 +65,6 @@ public class TaskJsonRepresentation {
 
         return mapper.writeValueAsString(representation);
     }
-    public static Task deserialize(String taskJson) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode jsonNode = objectMapper.readTree(taskJson);
-        Task.TaskId taskId = new Task.TaskId(jsonNode.get("taskId").asText());
-        Task.TaskName taskName = new Task.TaskName((jsonNode.get("taskName").asText()));
-        Task.TaskType taskType = new Task.TaskType(jsonNode.get("taskType").asText());
-        Task.OriginalTaskUri originalTaskUri= new Task.OriginalTaskUri(jsonNode.get("originalTaskUri").asText());
-        Task.TaskStatus taskStatus = new Task.TaskStatus(Task.Status.valueOf(jsonNode.get("taskStatus").asText()));
-        Task.ServiceProvider serviceProvider = new Task.ServiceProvider(jsonNode.get("serviceProvider").asText());
-        Task.InputData inputData = new Task.InputData(jsonNode.get("inputData").asText());
-        Task.OutputData outputData = new Task.OutputData(jsonNode.get("outputData").asText());
-
-        Task task = new Task(taskId,taskName, taskType, originalTaskUri, taskStatus, serviceProvider, inputData, outputData);
-        return task;
-    }
     public static Task toTask(TaskJsonRepresentation taskJsonRepresentation) {
         Task task = new Task(
         new Task.TaskId(taskJsonRepresentation.getTaskId()),
@@ -89,7 +74,8 @@ public class TaskJsonRepresentation {
         new Task.TaskStatus(Task.Status.valueOf(taskJsonRepresentation.getTaskStatus())),
         new Task.ServiceProvider(taskJsonRepresentation.getServiceProvider()),
         new Task.InputData(taskJsonRepresentation.getInputData()),
-        new Task.OutputData(taskJsonRepresentation.getOutputData())
+        new Task.OutputData(taskJsonRepresentation.getOutputData()),
+                false
         );
         return task;
     }

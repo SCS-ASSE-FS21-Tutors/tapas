@@ -38,6 +38,10 @@ public class Task {
     @Getter @Setter
     private OutputData outputData;
 
+    @Getter @Setter
+    private boolean external;
+
+
     public Task(TaskName taskName, TaskType taskType) {
         this.taskId = new TaskId(UUID.randomUUID().toString());
         this.taskName = taskName;

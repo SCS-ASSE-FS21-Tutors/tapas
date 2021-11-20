@@ -31,8 +31,9 @@ public class InternalController {
 
     @Operation(description = "Should only be called by services of the TAPAS 3 group. Creates a new auction for a service that cannot be executed internally")
     @PostMapping(path = "/create-auction-for-task/", consumes = TaskJsonRepresentation.MEDIA_TYPE)
-    public ResponseEntity createAuctionForTask(@RequestBody Task task) {
+    public ResponseEntity createAuctionForTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
 
+        Task task = TaskJsonRepresentation.toTask(taskJsonRepresentation);
         LaunchAuctionCommand command = new LaunchAuctionCommand(
             new Auction.AuctionedTaskUri(URI.create(taskListUri + "tasks/" + task.getTaskId().getValue())),
             new Auction.AuctionedTaskType(task.getTaskType().getValue()),

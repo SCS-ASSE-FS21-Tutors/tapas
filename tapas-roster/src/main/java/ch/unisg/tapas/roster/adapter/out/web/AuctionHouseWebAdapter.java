@@ -1,5 +1,6 @@
 package ch.unisg.tapas.roster.adapter.out.web;
 
+import ch.unisg.tapas.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.roster.application.port.out.AuctionHousePort;
 import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,12 +33,12 @@ public class AuctionHouseWebAdapter implements AuctionHousePort {
 
         try{
             // Serialize the Task object
-            var taskJson = om.writeValueAsString(task);
+            var taskJson = TaskJsonRepresentation.serialize(task);
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(auctionHouseUrl+"/internal/create-auction-for-task/"))
-                    .headers("Content-Type", "application/task+json")
+                    .uri(URI.create(auctionHouseUrl+"internal/create-auction-for-task/"))
+                    .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
 

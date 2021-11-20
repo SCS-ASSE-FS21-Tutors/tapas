@@ -1,5 +1,6 @@
 package ch.unisg.tapas.roster.adapter.in.web;
 
+import ch.unisg.tapas.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.roster.entities.Task;
 import ch.unisg.tapas.roster.application.port.in.RostNewTaskUseCase;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,17 +22,18 @@ public class RosterController {
         this.rostNewTaskUseCase = rostNewTaskUseCase;
     }
 
-    @PostMapping("/newtask/")
-    public void addNewTask(@RequestBody Task newTask){
+    @PostMapping(path="/newtask/", consumes = TaskJsonRepresentation.MEDIA_TYPE)
+    public void addNewTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation){
+        Task task = TaskJsonRepresentation.toTask(taskJsonRepresentation);
 
-        if(newTask.getTaskId() == null)
+        if(task.getTaskId() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskId missing");
-        if(newTask.getTaskName()== null)
+        if(task.getTaskName()== null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskName missing");
-        if(newTask.getTaskType() == null)
+        if(task.getTaskType() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "TaskType missing");
 
-        rostNewTaskUseCase.rostTask(newTask);
+        rostNewTaskUseCase.rostTask(task);
     }
 
 }

@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 @Value
 public class UpdateTaskStatusCommand {
     @NotNull
-    private final Task.TaskId taskId;
+    private final Task task;
     private final Task.TaskStatus newStatus;
-    public UpdateTaskStatusCommand(Task.TaskId taskId, Task.TaskStatus newStatus){
-        this.taskId = taskId;
+    public UpdateTaskStatusCommand(Task task, Task.TaskStatus newStatus){
+        this.task = task;
         this.newStatus = newStatus;
     }
 }

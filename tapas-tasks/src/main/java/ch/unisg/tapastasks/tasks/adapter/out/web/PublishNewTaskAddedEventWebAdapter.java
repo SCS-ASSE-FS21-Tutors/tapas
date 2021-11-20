@@ -1,7 +1,8 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
-import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,19 +32,12 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
         try{
 
-            var objectMapper = new ObjectMapper();
-            String requestBody;
-            try {
-                requestBody = objectMapper.writeValueAsString(task);
-            } catch (JsonProcessingException e) {
-                throw new RuntimeException(e);
-            }
-
+            String taskJson = TaskJsonRepresentation.serialize(task);
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(server+"roster/newtask/"))
-                    .headers("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(requestBody))
+                    .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
+                    .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

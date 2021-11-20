@@ -30,10 +30,18 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
 
     @Override
     public boolean updateTaskStatus(UpdateTaskStatusCommand command) {
-        String taskId = command.getTaskId().getValue();
+        String taskId = command.getTask().getTaskId().getValue();
         String taskStatus = command.getNewStatus().getValue().name();
 
         log.info("Update task " + taskId + " on task list service to " + command.getNewStatus().getValue().toString());
+
+        // Check where to send update PATCH request to
+        String targetUri;
+        if(command.getTask().isExternal()){
+            targetUri = command.getTask().getOriginalTaskUri().getValue();
+        } else {
+            targetUri = taskListUri + "tasks/" + taskId;
+        }
 
         try {
             JSONObject patch = new JSONObject();
@@ -45,7 +53,7 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
             patches.put(patch);
 
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(taskListUri + "tasks/" + taskId))
+                    .uri(URI.create(targetUri))
                     .headers("Content-Type", "application/json-patch+json")
                     .method("PATCH", HttpRequest.BodyPublishers.ofString(patches.toString()))
                     .build();

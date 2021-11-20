@@ -36,8 +36,8 @@ public class ExecuteExternalTaskCommandHttpAdapter implements ExecuteExternalTas
             String taskJson = TaskJsonRepresentation.serialize(task);
 
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(executorPoolUrl + "execute/"))
-                .headers("Content-Type", "application/json")
+                .uri(URI.create(executorPoolUrl + "execute?external=true"))
+                .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                 .build();
 

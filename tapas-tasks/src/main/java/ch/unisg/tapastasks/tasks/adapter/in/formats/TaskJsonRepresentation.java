@@ -1,8 +1,8 @@
 package ch.unisg.tapastasks.tasks.adapter.in.formats;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
@@ -60,50 +60,30 @@ final public class TaskJsonRepresentation {
     @Getter @Setter
     private String outputData;
 
-    /**
-     * Instantiate a task representation with a task name and type.
-     *
-     * @param taskName string that represents the task's name
-     * @param taskType string that represents the task's type
-     */
-    public TaskJsonRepresentation(String taskName, String taskType) {
+
+    public TaskJsonRepresentation(String taskId, String taskName, String taskType, String taskStatus, String originalTaskUri, String serviceProvider, String inputData, String outputData) {
+        this.taskId = taskId;
         this.taskName = taskName;
         this.taskType = taskType;
-
-        this.taskStatus = null;
-        this.originalTaskUri = null;
-        this.serviceProvider = null;
-        this.inputData = null;
-        this.outputData = null;
+        this.taskStatus = taskStatus;
+        this.originalTaskUri = originalTaskUri;
+        this.serviceProvider = serviceProvider;
+        this.inputData = inputData;
+        this.outputData = outputData;
     }
 
-    /**
-     * Instantiate a task representation from a domain concept.
-     *
-     * @param task the task
-     */
-    public TaskJsonRepresentation(Task task) {
-        this(task.getTaskName().getValue(), task.getTaskType().getValue());
-
+    public TaskJsonRepresentation(Task task){
         this.taskId = task.getTaskId().getValue();
-        this.taskStatus = task.getTaskStatus().getValue().name();
-
-        this.originalTaskUri = (task.getOriginalTaskUri() == null) ?
-            null : task.getOriginalTaskUri().getValue();
-
-        this.serviceProvider = (task.getProvider() == null) ? null : task.getProvider().getValue();
-        this.inputData = (task.getInputData() == null) ? null : task.getInputData().getValue();
-        this.outputData = (task.getOutputData() == null) ? null : task.getOutputData().getValue();
+        this.taskName = task.getTaskName().getValue();
+        this.taskType = task.getTaskType().getValue();
+        this.taskStatus = task.getTaskStatus().getValue().toString();
+        this.originalTaskUri = task.getOriginalTaskUri().getValue();
+        this.serviceProvider = ((task.getProvider() != null) ? task.getProvider().getValue() : null);
+        this.inputData = ((task.getInputData() != null) ? task.getInputData().getValue() : null);
+        this.outputData = ((task.getOutputData() != null) ? task.getOutputData().getValue() : null);
     }
 
-    /**
-     * Convenience method used to serialize a task provided as a domain concept in the format exposed
-     * through the uniform HTTP API.
-     *
-     * @param task the task as defined in the domain
-     * @return a string serialization using the JSON-based representation format defined for tasks
-     * @throws JsonProcessingException if a runtime exception occurs during object serialization
-     */
+
     public static String serialize(Task task) throws JsonProcessingException {
         TaskJsonRepresentation representation = new TaskJsonRepresentation(task);
 
@@ -111,4 +91,34 @@ final public class TaskJsonRepresentation {
 
         return mapper.writeValueAsString(representation);
     }
+    public static Task deserialize(String taskJson) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        JsonNode jsonNode = objectMapper.readTree(taskJson);
+        Task.TaskId taskId = new Task.TaskId(jsonNode.get("taskId").asText());
+        Task.TaskName taskName = new Task.TaskName((jsonNode.get("taskName").asText()));
+        Task.TaskType taskType = new Task.TaskType(jsonNode.get("taskType").asText());
+        Task.OriginalTaskUri originalTaskUri= new Task.OriginalTaskUri(jsonNode.get("originalTaskUri").asText());
+        Task.TaskStatus taskStatus = new Task.TaskStatus(Task.Status.valueOf(jsonNode.get("taskStatus").asText()));
+        Task.ServiceProvider serviceProvider = new Task.ServiceProvider(jsonNode.get("serviceProvider").asText());
+        Task.InputData inputData = new Task.InputData(jsonNode.get("inputData").asText());
+        Task.OutputData outputData = new Task.OutputData(jsonNode.get("outputData").asText());
+
+        Task task = new Task(taskId,taskName, taskType, originalTaskUri, taskStatus, serviceProvider, inputData, outputData);
+        return task;
+    }
+    public static Task toTask(TaskJsonRepresentation taskJsonRepresentation) {
+        Task task = new Task(
+            new Task.TaskId(taskJsonRepresentation.getTaskId()),
+            new Task.TaskName(taskJsonRepresentation.getTaskName()),
+            new Task.TaskType(taskJsonRepresentation.getTaskType()),
+            new Task.OriginalTaskUri(taskJsonRepresentation.getOriginalTaskUri()),
+            new Task.TaskStatus(Task.Status.valueOf(taskJsonRepresentation.getTaskStatus())),
+            new Task.ServiceProvider(taskJsonRepresentation.getServiceProvider()),
+            new Task.InputData(taskJsonRepresentation.getInputData()),
+            new Task.OutputData(taskJsonRepresentation.getOutputData())
+        );
+        return task;
+    }
+
+
 }

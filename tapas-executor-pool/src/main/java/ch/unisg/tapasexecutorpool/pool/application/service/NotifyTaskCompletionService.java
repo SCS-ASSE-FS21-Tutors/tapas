@@ -37,6 +37,8 @@ public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase 
 
             Executor executor = executorOptional.get();
             executor.setExecutorState(new Executor.ExecutorState(Executor.State.AVAILABLE));
+            Task task = executor.getAssignedTask();
+
             executor.setAssignedTask(null);
 
             repository.updateExecutor(executor);
@@ -44,7 +46,7 @@ public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase 
             log.info(executor.getExecutorId().getValue() + " completed its task");
 
             // Update task Status on task list
-            UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(new Task.TaskId(command.getTaskId()),new Task.TaskStatus(Task.Status.EXECUTED));
+            UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(task,new Task.TaskStatus(Task.Status.EXECUTED));
             updateTaskStatusCommandPort.updateTaskStatus(updateTaskStatusCommand);
 
         }

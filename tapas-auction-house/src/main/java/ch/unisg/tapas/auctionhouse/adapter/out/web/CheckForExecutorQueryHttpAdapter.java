@@ -1,5 +1,6 @@
 package ch.unisg.tapas.auctionhouse.adapter.out.web;
 
+import ch.unisg.tapas.auctionhouse.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.auctionhouse.application.handler.AuctionStartedHandler;
 import ch.unisg.tapas.auctionhouse.application.port.out.CheckForExecutorQuery;
 import ch.unisg.tapas.auctionhouse.application.port.out.CheckForExecutorQueryPort;
@@ -39,10 +40,10 @@ public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPo
         Task task = new Task(new Task.TaskName("Tasktype wrapper"), new Task.TaskType(query.getAuction().getTaskType().getValue()));
 
         try {
-            String taskJson = om.writeValueAsString(task);
+            String taskJson = TaskJsonRepresentation.serialize(task);
             HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(executorPoolUrl + "can-execute/"))
-                .headers("Content-Type", "application/json")
+                .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                 .build();
 

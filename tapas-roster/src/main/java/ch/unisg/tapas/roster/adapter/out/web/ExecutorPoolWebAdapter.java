@@ -1,5 +1,6 @@
 package ch.unisg.tapas.roster.adapter.out.web;
 
+import ch.unisg.tapas.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.roster.adapter.out.web.dto.CanExecuteDto;
 import ch.unisg.tapas.roster.application.port.out.ExecutorPoolPort;
 import ch.unisg.tapas.roster.entities.Task;
@@ -7,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -35,12 +35,12 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
         try{
             // Serialize the Task object
-            var taskJson = om.writeValueAsString(task);
+            var taskJson = TaskJsonRepresentation.serialize(task);
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(executorPoolUrl+"/can-execute/"))
-                    .headers("Content-Type", "application/json")
+                    .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
 
@@ -65,12 +65,12 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
         try{
             // Serialize the Task object
-            var taskJson = om.writeValueAsString(task);
+            var taskJson = TaskJsonRepresentation.serialize(task);
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(executorPoolUrl+"/execute/"))
-                    .headers("Content-Type", "application/json")
+                    .uri(URI.create(executorPoolUrl+"execute?external=false"))
+                    .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
 
