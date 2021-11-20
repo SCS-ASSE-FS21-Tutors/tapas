@@ -69,7 +69,7 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(executorPoolUrl+"execute?external=false"))
+                    .uri(URI.create(executorPoolUrl+"/execute?external=false"))
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();

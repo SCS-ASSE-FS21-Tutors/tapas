@@ -1,5 +1,6 @@
 package ch.unisg.tapas.roster.adapter.in.web.integration;
 
+import ch.unisg.tapas.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.roster.adapter.out.web.dto.CanExecuteDto;
 import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -44,10 +45,10 @@ public class NewTaskAddedTest {
         stubFor(WireMock.post(urlEqualTo("/executor-pool/can-execute/"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
-                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Content-Type", "application/task+json")
                         .withBody("{\"executable\":true}")));
 
-        stubFor(WireMock.post(urlEqualTo("/executor-pool/execute/"))
+        stubFor(WireMock.post(urlEqualTo("/executor-pool/execute?external=false"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.ACCEPTED.value())));
 
@@ -56,22 +57,21 @@ public class NewTaskAddedTest {
                 new Task.TaskName("somename"),
                 new Task.TaskType("sometype"));
 
-        var objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(task);
+        String requestBody = TaskJsonRepresentation.serialize(task);
 
         // ACT
         mockMvc.perform(
                 post("/roster/newtask/")
-                .contentType("application/json")
+                .contentType("application/task+json")
                 .content(requestBody))
                 .andExpect(status().isOk());
 
         // ASSERT
         verify(postRequestedFor(urlEqualTo("/executor-pool/can-execute/"))
-                .withHeader("Content-Type", equalTo("application/json")));
+                .withHeader("Content-Type", equalTo("application/task+json")));
 
-        verify(postRequestedFor(urlEqualTo("/executor-pool/execute/"))
-                .withHeader("Content-Type", equalTo("application/json")));
+        verify(postRequestedFor(urlEqualTo("/executor-pool/execute?external=false"))
+                .withHeader("Content-Type", equalTo("application/task+json")));
     }
 
     @Test
@@ -82,7 +82,7 @@ public class NewTaskAddedTest {
         stubFor(WireMock.post(urlEqualTo("/executor-pool/can-execute/"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.OK.value())
-                        .withHeader("Content-Type", "application/json")
+                        .withHeader("Content-Type", "application/task+json")
                         .withBody("{\"executable\":false}")));
 
         stubFor(WireMock.post(urlEqualTo("/auction-house/internal/create-auction-for-task/"))
@@ -94,19 +94,18 @@ public class NewTaskAddedTest {
                 new Task.TaskName("somename"),
                 new Task.TaskType("sometype"));
 
-        var objectMapper = new ObjectMapper();
-        String requestBody = objectMapper.writeValueAsString(task);
+        String requestBody = TaskJsonRepresentation.serialize(task);
 
         // ACT
         mockMvc.perform(
                 post("/roster/newtask/")
-                        .contentType("application/json")
+                        .contentType("application/task+json")
                         .content(requestBody))
                 .andExpect(status().isOk());
 
         // ASSERT
         verify(postRequestedFor(urlEqualTo("/executor-pool/can-execute/"))
-                .withHeader("Content-Type", equalTo("application/json")));
+                .withHeader("Content-Type", equalTo("application/task+json")));
 
         verify(postRequestedFor(urlEqualTo("/auction-house/internal/create-auction-for-task/"))
                 .withHeader("Content-Type", equalTo("application/task+json")));
