@@ -32,7 +32,7 @@ public class AddBidWebController {
             new Bid.BidderTaskListUri(URI.create(payload.getBidderTaskListUri()))
         ));
 
-        LOGGER.info("Bid received", payload);
+        LOGGER.info("Bid received:" + payload);
 
         BidReceivedHandler bidReceivedHandler = new BidReceivedHandler();
         bidReceivedHandler.handleNewBidReceivedEvent(bidReceivedEvent);

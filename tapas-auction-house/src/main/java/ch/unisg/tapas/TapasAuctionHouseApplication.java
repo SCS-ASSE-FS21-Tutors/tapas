@@ -58,7 +58,7 @@ public class TapasAuctionHouseApplication {
     private static void bootstrapMarketplaceWithMqtt() {
         try {
             String broker = ENVIRONMENT.getProperty("mqtt.broker.uri");
-
+            LOGGER.info("Bootstrapping Mqtt");
             if (broker == null) {
                 broker = DEFAULT_MQTT_BROKER;
                 LOGGER.info("No MQTT broker was set in application.propreties, going with default: "
