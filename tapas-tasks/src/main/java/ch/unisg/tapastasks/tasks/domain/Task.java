@@ -80,11 +80,22 @@ public class Task {
         this.outputData = null;
     }
 
+    public Task(TaskId taskId, TaskName taskName, TaskType taskType, OriginalTaskUri taskUri,
+    TaskStatus taskStatus) {
+this.taskId = taskId;
+this.taskName = taskName;
+this.taskType = taskType;
+this.originalTaskUri = taskUri;
+this.taskStatus = taskStatus;
+this.inputData = null;
+this.outputData = null;
+}
     protected static Task createTaskWithNameAndType(TaskName name, TaskType type) {
         return new Task(name, type);
+
     }
 
-    protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
+    public static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
             OriginalTaskUri originalTaskUri) {
         return new Task(name, type, originalTaskUri);
     }
@@ -97,6 +108,13 @@ public class Task {
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUriAndInputData(TaskName name, TaskType type,
     OriginalTaskUri originalTaskUri, InputData inputData) {
         return new Task(name, type, originalTaskUri, inputData);
+    }
+
+    public static Task withIdNameTypeOriginaluriStatus(TaskId taskId, TaskName taskName,
+                                                               TaskType taskType,
+                                                               OriginalTaskUri originalTaskUri,
+                                                               TaskStatus taskStatus) {
+        return new Task(taskId, taskName, taskType, originalTaskUri, taskStatus);
     }
 
     @Value

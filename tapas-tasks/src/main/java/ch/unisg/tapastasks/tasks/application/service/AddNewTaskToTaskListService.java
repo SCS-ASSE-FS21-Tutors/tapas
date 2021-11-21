@@ -2,25 +2,34 @@ package ch.unisg.tapastasks.tasks.application.service;
 
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
+import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
+import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.Task;
 
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Component
 @Transactional
+@Service("AddNewTaskToTaskList")
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
 
     private final NewTaskAddedEventPort newTaskAddedEventPort;
+    private final AddTaskPort addTaskToRepositoryPort;
+    private final TaskListLock taskListLock;
 
     @Override
     public Task addNewTaskToTaskList(AddNewTaskToTaskListCommand command) {
         TaskList taskList = TaskList.getTapasTaskList();
+
+        taskListLock.lockTaskList(taskList.getTaskListName());
 
         Task newTask;
 
@@ -36,6 +45,9 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
         } else {
             newTask = taskList.addNewTaskWithNameAndType(command.getTaskName(), command.getTaskType());
         }
+
+        addTaskToRepositoryPort.addTask(newTask);
+        taskListLock.releaseTaskList(taskList.getTaskListName());
 
         //Here we are using the application service to emit the domain event to the outside of the bounded context.
         //This event should be considered as a light-weight "integration event" to communicate with other services.

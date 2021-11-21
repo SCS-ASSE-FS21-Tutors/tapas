@@ -29,6 +29,7 @@ public class TapasAuctionHouseApplication {
 
     private static ConfigurableEnvironment ENVIRONMENT;
 
+
     public static void main(String[] args) {
 		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
         ENVIRONMENT = tapasAuctioneerApp.run(args).getEnvironment();
