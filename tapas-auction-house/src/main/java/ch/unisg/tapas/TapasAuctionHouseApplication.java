@@ -11,6 +11,8 @@ import org.apache.logging.log4j.Logger;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.URI;
 import java.util.List;
@@ -22,8 +24,11 @@ import java.util.List;
 @SpringBootApplication
 public class TapasAuctionHouseApplication {
 
+    private static ConfigurableEnvironment ENVIRONMENT;
+
     public static void main(String[] args) {
-		SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
-        tapasAuctioneerApp.run(args);
-	}
+        SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
+        ENVIRONMENT = tapasAuctioneerApp.run(args).getEnvironment();
+
+    }
 }
