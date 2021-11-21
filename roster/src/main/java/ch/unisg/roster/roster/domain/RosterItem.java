@@ -20,4 +20,8 @@ public class RosterItem {
         this.executorURI = executorURI;
     }
 
+    public static RosterItem withIDTypeExecutorURI(String taskId, String taskType,
+                                                   ExecutorURI executorURI){
+        return new RosterItem(taskId, taskType, executorURI);
+    }
 }

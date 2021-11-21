@@ -2,6 +2,8 @@ package ch.unisg.roster.roster.application.service;
 
 import javax.transaction.Transactional;
 
+import ch.unisg.roster.roster.application.port.in.AddRosterItemPort;
+import ch.unisg.roster.roster.domain.RosterItem;
 import org.springframework.stereotype.Component;
 
 import ch.unisg.roster.roster.application.port.in.ApplyForTaskCommand;
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class ApplyForTaskService implements ApplyForTaskUseCase {
 
     private final TaskAssignedEventPort taskAssignedEventPort;
+    private final AddRosterItemPort addRosterItemPort;
 
     /**
     *   Checks if a task is available and assignes it to the executor. If task got assigned a task
@@ -31,6 +34,7 @@ public class ApplyForTaskService implements ApplyForTaskUseCase {
 
         if (task != null) {
             taskAssignedEventPort.publishTaskAssignedEvent(new TaskAssignedEvent(task.getTaskID()));
+            addRosterItemPort.addRosterItem(new RosterItem(task.getTaskID(), task.getTaskType().getValue(), command.getExecutorURI()));
         }
 
         return task;

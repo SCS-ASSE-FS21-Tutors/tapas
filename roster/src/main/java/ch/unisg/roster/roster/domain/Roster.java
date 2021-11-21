@@ -3,6 +3,7 @@ package ch.unisg.roster.roster.domain;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +82,12 @@ public class Roster {
     public boolean deleteTask(String taskID, ExecutorType taskType) {
         logger.log(Level.INFO, "Try to delete task with id {0}", taskID);
         return queues.get(taskType.getValue()).removeIf(task -> task.getTaskID().equalsIgnoreCase(taskID));
+    }
+
+    public void initialiseRoster(List<RosterItem> rosterItemList){
+        for(RosterItem rosterItem : rosterItemList){
+            rosterMap.put(rosterItem.getTaskID(), rosterItem);
+        }
     }
 
 }
