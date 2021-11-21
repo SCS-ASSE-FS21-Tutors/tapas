@@ -9,6 +9,7 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -34,7 +35,6 @@ public class AddNewTaskToTaskListWebControllerTest {
     @MockBean
     TaskRepository taskRepository;
 
-    @Disabled
     @Test
     void testAddNewTaskToTaskList() throws Exception {
 
@@ -48,9 +48,17 @@ public class AddNewTaskToTaskListWebControllerTest {
             .put("originalTaskUri",originalTaskUri)
             .toString();
 
-        //This raises a NullPointerException since it tries to build the HTTP response with attributes from
-        //the domain object (created task), which is mocked --> we need System Tests here!
-        //See the buckpal example from the lecture for a working integration test for testing the web controller
+        Task taskStub = Task.createTaskWithNameAndTypeAndOriginalTaskUri(new Task.TaskName(taskName),
+            new Task.TaskType(taskType), new Task.OriginalTaskUri(originalTaskUri));
+
+        AddNewTaskToTaskListCommand addNewTaskToTaskListCommand = new AddNewTaskToTaskListCommand(
+            new Task.TaskName(taskName), new Task.TaskType(taskType),
+            Optional.of(new Task.OriginalTaskUri(originalTaskUri))
+        );
+
+        Mockito.when(addNewTaskToTaskListUseCase.addNewTaskToTaskList(addNewTaskToTaskListCommand))
+            .thenReturn(taskStub);
+
         mockMvc.perform(post("/tasks/")
                 .contentType(TaskJsonRepresentation.MEDIA_TYPE)
                 .content(jsonPayLoad))
