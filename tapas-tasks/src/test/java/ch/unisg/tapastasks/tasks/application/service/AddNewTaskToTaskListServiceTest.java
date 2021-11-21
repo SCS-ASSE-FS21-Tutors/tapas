@@ -33,7 +33,7 @@ public class AddNewTaskToTaskListServiceTest {
         TaskList taskList = givenAnEmptyTaskList(TaskList.getTapasTaskList());
 
         AddNewTaskToTaskListCommand addNewTaskToTaskListCommand = new AddNewTaskToTaskListCommand(newTask.getTaskName(),
-            newTask.getTaskType(), Optional.ofNullable(newTask.getOriginalTaskUri()));
+            newTask.getTaskType(), Optional.ofNullable(newTask.getOriginalTaskUri()), newTask.getInputData());
 
         Task addedTask = addNewTaskToTaskListService.addNewTaskToTaskList(addNewTaskToTaskListCommand);
 
@@ -41,9 +41,6 @@ public class AddNewTaskToTaskListServiceTest {
         assertThat(taskList.getListOfTasks().getValue()).hasSize(1);
 
         then(taskListLock).should().lockTaskList(eq(TaskList.getTapasTaskList().getTaskListName()));
-        then(newTaskAddedEventPort).should(times(1))
-            .publishNewTaskAddedEvent(any(NewTaskAddedEvent.class));
-
     }
 
     private TaskList givenAnEmptyTaskList(TaskList taskList) {

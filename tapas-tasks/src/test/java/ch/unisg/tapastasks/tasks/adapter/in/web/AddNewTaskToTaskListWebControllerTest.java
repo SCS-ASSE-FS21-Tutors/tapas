@@ -41,6 +41,7 @@ public class AddNewTaskToTaskListWebControllerTest {
         String taskName = "test-request";
         String taskType = "test-request-type";
         String originalTaskUri = "example.org";
+        String inputData = "";
 
         String jsonPayLoad = new JSONObject()
             .put("taskName", taskName )
@@ -53,7 +54,7 @@ public class AddNewTaskToTaskListWebControllerTest {
 
         AddNewTaskToTaskListCommand addNewTaskToTaskListCommand = new AddNewTaskToTaskListCommand(
             new Task.TaskName(taskName), new Task.TaskType(taskType),
-            Optional.of(new Task.OriginalTaskUri(originalTaskUri))
+            Optional.of(new Task.OriginalTaskUri(originalTaskUri)), new Task.InputData(inputData)
         );
 
         Mockito.when(addNewTaskToTaskListUseCase.addNewTaskToTaskList(addNewTaskToTaskListCommand))
@@ -67,7 +68,7 @@ public class AddNewTaskToTaskListWebControllerTest {
         then(addNewTaskToTaskListUseCase).should()
             .addNewTaskToTaskList(eq(new AddNewTaskToTaskListCommand(
                 new Task.TaskName(taskName), new Task.TaskType(taskType),
-                Optional.of(new Task.OriginalTaskUri(originalTaskUri))
+                Optional.of(new Task.OriginalTaskUri(originalTaskUri)), new Task.InputData(inputData)
             )));
 
     }
