@@ -12,8 +12,7 @@ As soon as a new Task is submitted to the Task List Service the Roster Service w
 
 ## Decision
 
-Our architecture allows a choreographic communication between services. Therefore we can avoid a single point of failure. On the other hand the communication between the Executor Pool and the Executor is orchestrated by the Executor Pool . Therefore we are utilizing an hybrid approach.
-
+Our architecture allows a choreographic communication between services. Therefore, we can avoid a single point of failure. On the other hand the communication between the Executor Pool and the Executor is orchestrated by the Executor Pool . Therefore, we are utilizing a hybrid approach.
 
 ## Consequences
 

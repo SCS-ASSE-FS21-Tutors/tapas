@@ -8,6 +8,8 @@ Accepted
 
 ## Context
 
+This ADR updates the outdated 0010 ARD
+
 In our Tapas application we have different services that use the same code. Options are to use either a shared service or a shared library.
 
 ## Decision

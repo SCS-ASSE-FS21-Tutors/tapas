@@ -12,7 +12,7 @@ The Auction House bids on auctions from other Auction Houses. In case the Auctio
 
 ## Decision
 
-The Auction House forwards the Task to the Task List where the Task gets forwarded to the Roster which then checks for an Executor in the Executor Pool.
+The Auction House forwards the Task to the Task List where the Task gets forwarded to the Roster which then checks for an Executor in the Executor Pool. Another option would have been to forward the Task directly to the Roster Service. However, this has the disadvantage that you no longer have any knowledge about the task after the execution, since it is not stored in the Task List.
 
 ## Consequences
 

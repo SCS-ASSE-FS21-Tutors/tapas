@@ -8,7 +8,7 @@ Accepted
 
 ## Context
 
-Currently our Tapas application is able two execute two kinds of Tasks. A Robot Task and a simple Calculation Task. Adding a payload to the Task class gives us the possibility to customize requests and therefore more flexibility.
+Currently, our Tapas application is able two execute two kind of Tasks. A Robot Task and a simple Calculation Task. Adding a payload to the Task class gives us the possibility to customize requests and therefore more flexibility.
 
 ## Decision
 
