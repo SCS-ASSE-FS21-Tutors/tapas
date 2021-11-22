@@ -76,6 +76,21 @@
             <version>1.13</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>4.1.0</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>com.tngtech.archunit</groupId>
+            <artifactId>archunit</artifactId>
+            <version>0.22.0</version>
+            <scope>test</scope>
+        </dependency>
+
     </dependencies>
 
     <build>

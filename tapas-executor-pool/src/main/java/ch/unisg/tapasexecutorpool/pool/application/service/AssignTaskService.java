@@ -30,11 +30,14 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
     @Autowired
     public UpdateTaskStatusCommandPort updateTaskStatusCommandPort;
 
-    public BlockingQueue<Task> taskQueue = new LinkedBlockingQueue<>();
+    public BlockingQueue<Task> taskQueue;
 
     @Autowired
-    public AssignTaskService() {
-
+    public AssignTaskService(ExecutorRepository repository, SendTaskToExecutorPort executorPort, UpdateTaskStatusCommandPort updateTaskStatusCommandPort) {
+        this.repository = repository;
+        this.executorPort = executorPort;
+        this.updateTaskStatusCommandPort = updateTaskStatusCommandPort;
+        this.taskQueue = new LinkedBlockingQueue<>();
     }
 
     /**

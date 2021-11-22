@@ -1,5 +1,6 @@
 mkdir ./data
 
+set -e #Break on first error 
 mvn $1 -f tapas-tasks/pom.xml --batch-mode --update-snapshots verify
 mvn $1 -f tapas-roster/pom.xml --batch-mode --update-snapshots verify
 mvn $1 -f tapas-executor-pool/pom.xml --batch-mode --update-snapshots verify
