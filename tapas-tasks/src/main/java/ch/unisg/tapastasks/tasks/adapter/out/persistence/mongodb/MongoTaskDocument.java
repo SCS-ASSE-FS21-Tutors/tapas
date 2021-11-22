@@ -14,5 +14,8 @@ public class MongoTaskDocument {
     public String taskType;
     public String originalTaskUri;
     public String taskStatus;
+    public String provider;
+    public String inputData;
+    public String outputData;
     public String taskListName;
 }
