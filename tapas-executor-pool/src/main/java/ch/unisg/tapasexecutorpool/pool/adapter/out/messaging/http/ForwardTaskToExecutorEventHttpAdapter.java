@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.out.messaging.http;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEventPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.ForwardTaskToExecutorEvent;
 import org.apache.logging.log4j.LogManager;

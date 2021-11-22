@@ -1,6 +1,6 @@
 package ch.unisg.tapasroster.roster.adapter.out.formats;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.domain.Task;
 
 public class NewAuctionJsonRepresentation {

@@ -1,15 +1,11 @@
 package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 
 import ch.unisg.tapas.auctionhouse.domain.Auction;
-import ch.unisg.tapascommon.ServiceHostAddresses;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.web.util.UriBuilder;
-
 import java.net.URI;
 import java.sql.Timestamp;
 

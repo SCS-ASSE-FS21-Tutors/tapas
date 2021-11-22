@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapascommon.tasks.domain.Task;

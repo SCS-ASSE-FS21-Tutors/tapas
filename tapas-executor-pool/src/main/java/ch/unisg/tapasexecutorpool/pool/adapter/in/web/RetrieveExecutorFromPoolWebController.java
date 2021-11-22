@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
-import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapascommon.pool.adapter.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolQuery;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.RetrieveExecutorFromPoolUseCase;
 import ch.unisg.tapascommon.pool.domain.Executor;

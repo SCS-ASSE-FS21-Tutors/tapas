@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorrobot.executor.application.service;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.RegisterExecutorToPoolCommand;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.RegisterExecutorToPoolUseCase;
@@ -17,7 +17,7 @@ public class RegisterExecutorToPoolService implements RegisterExecutorToPoolUseC
                 "BigRobotExecutor",
                 "BigRobotExecutor",
                 Task.Type.BIGROBOT.name(),
-                ServiceHostAddresses.getExecutorRobotServiceHostAddress()
+                ServiceHostAddresses.getExecutorBigrobotServiceHostAddress()
         );
     }
 }

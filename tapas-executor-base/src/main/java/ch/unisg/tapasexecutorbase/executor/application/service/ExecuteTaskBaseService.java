@@ -1,7 +1,7 @@
 package ch.unisg.tapasexecutorbase.executor.application.service;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCase;

@@ -1,4 +1,4 @@
-package ch.unisg.tapascommon.pool.adapter.in.formats;
+package ch.unisg.tapascommon.pool.adapter.common.formats;
 
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapascommon.pool.domain.Executor;

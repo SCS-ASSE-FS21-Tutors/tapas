@@ -1,7 +1,7 @@
 package ch.unisg.tapasroster.roster.adapter.out.messaging.http;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToExecutorPoolEventPort;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToExecutorPoolEvent;
 import org.springframework.context.annotation.Primary;

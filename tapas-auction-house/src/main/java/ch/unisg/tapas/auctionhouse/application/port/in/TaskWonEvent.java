@@ -1,7 +1,7 @@
 package ch.unisg.tapas.auctionhouse.application.port.in;
 
 import ch.unisg.tapascommon.common.SelfValidating;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Value;

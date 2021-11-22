@@ -2,10 +2,9 @@ package ch.unisg.tapas.auctionhouse.application.handler;
 
 import ch.unisg.tapas.auctionhouse.application.port.in.TaskWonEvent;
 import ch.unisg.tapas.auctionhouse.application.port.in.TaskWonEventHandler;
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.communication.WebClient;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;

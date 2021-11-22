@@ -1,12 +1,16 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.adapter.in.messaging.UnknownEventException;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonpatch.JsonPatch;
+import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +19,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
-
 import java.io.IOException;
 import java.util.Optional;
 
@@ -35,11 +38,23 @@ import java.util.Optional;
  * For more details on JSON Patch, see: <a href="http://jsonpatch.com/">http://jsonpatch.com/</a>
  * For some sample HTTP requests, see the README.
  */
+@RequiredArgsConstructor
 @RestController
 public class TaskEventHttpDispatcher {
     // The standard media type for JSON Patch registered with IANA
     // See: https://www.iana.org/assignments/media-types/application/json-patch+json
     private final static String JSON_PATCH_MEDIA_TYPE = "application/json-patch+json";
+
+    private static final Logger LOGGER = LogManager.getLogger(TaskEventHttpDispatcher.class);
+
+    @Autowired
+    private final TaskAssignedEventListenerHttpAdapter taskAssignedEventListenerHttpAdapter;
+
+    @Autowired
+    private final TaskStartedEventListenerHttpAdapter taskStartedEventListenerHttpAdapter;
+
+    @Autowired
+    private final TaskExecutedEventListenerHttpAdapter taskExecutedEventListenerHttpAdapter;
 
     /**
      * Handles HTTP PATCH requests with a JSON Patch payload. Routes the requests based on the
@@ -68,15 +83,16 @@ public class TaskEventHttpDispatcher {
 
             // Route events related to task status changes
             if (status.isPresent()) {
+                LOGGER.info("Handle Task Status Event: " + status.get().name());
                 switch (status.get()) {
                     case ASSIGNED:
-                        listener = new TaskAssignedEventListenerHttpAdapter();
+                        listener = taskAssignedEventListenerHttpAdapter;
                         break;
                     case RUNNING:
-                        listener = new TaskStartedEventListenerHttpAdapter();
+                        listener = taskStartedEventListenerHttpAdapter;
                         break;
                     case EXECUTED:
-                        listener = new TaskExecutedEventListenerHttpAdapter();
+                        listener = taskExecutedEventListenerHttpAdapter;
                         break;
                 }
             }

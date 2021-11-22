@@ -1,17 +1,12 @@
 package ch.unisg.tapasroster.roster.adapter.in.web;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
-import ch.unisg.tapascommon.tasks.domain.Task;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskCommand;
 import ch.unisg.tapasroster.roster.application.port.in.ScheduleTaskUseCase;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
 

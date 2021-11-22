@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorbase.executor.adapter.out.web;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateChangedEventPort;
 import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
 import org.springframework.context.annotation.Primary;
