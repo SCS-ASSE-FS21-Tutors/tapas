@@ -8,7 +8,6 @@ import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEvent;
 import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEventPort;
 import ch.unisg.tapas.auctionhouse.domain.*;
 import ch.unisg.tapas.common.ConfigProperties;
-import ch.unisg.tapascommon.ServiceHostAddresses;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;

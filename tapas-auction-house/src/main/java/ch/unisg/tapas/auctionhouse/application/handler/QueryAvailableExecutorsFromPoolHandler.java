@@ -1,6 +1,6 @@
 package ch.unisg.tapas.auctionhouse.application.handler;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.communication.WebClient;
 import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapas.auctionhouse.application.port.out.QueryAvailableExecutorsFromPoolEvent;

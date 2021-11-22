@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorbase.executor.application.service;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.communication.WebClient;
 import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorbase.executor.application.port.in.RegisterExecutorToPoolCommand;

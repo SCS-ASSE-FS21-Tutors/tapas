@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.application.service;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.*;

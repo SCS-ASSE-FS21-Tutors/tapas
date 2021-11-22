@@ -1,6 +1,6 @@
 package ch.unisg.tapasroster.roster.adapter.out.messaging.http;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapasroster.roster.adapter.out.formats.NewAuctionJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToAuctionHouseEventPort;
 import ch.unisg.tapasroster.roster.application.port.out.ForwardTaskToAuctionHouseEvent;
