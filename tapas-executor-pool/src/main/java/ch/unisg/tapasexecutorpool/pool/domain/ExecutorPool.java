@@ -1,6 +1,5 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
-import ch.unisg.tapascommon.ServiceHostAddresses;
 import ch.unisg.tapascommon.pool.domain.Executor;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.Getter;
@@ -12,9 +11,6 @@ import java.util.*;
 public class ExecutorPool {
 
     private static final Logger LOGGER = LogManager.getLogger(ExecutorPool.class);
-
-    private static final String EXECUTOR_API_CALC = ServiceHostAddresses.getExecutorCalcServiceHostAddress() + "/execute-task";
-    private static final String EXECUTOR_API_ROBOT = ServiceHostAddresses.getExecutorRobotServiceHostAddress() + "/execute-task";
 
     private static final ExecutorPool EXECUTOR_POOL = new ExecutorPool(new ExecutorPoolName("tapas-executorpool"));
 

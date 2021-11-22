@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
@@ -31,7 +33,7 @@ public class ExecutorPersistenceAdapter implements AddExecutorToRepositoryPort, 
 
     @Override
     public Executor loadExecutor(Executor.ExecutorId executorId, ExecutorPool.ExecutorPoolName executorPoolName) {
-        try{
+        try {
             var mongoExecutorDocument = repository.findByExecutorId(executorId.getValue(),executorPoolName.getValue());
             LOGGER.info("Loaded Executor from MongoDB");
             return mapper.mapToDomainEntity(mongoExecutorDocument);
@@ -39,5 +41,21 @@ public class ExecutorPersistenceAdapter implements AddExecutorToRepositoryPort, 
             LOGGER.warn("Failed to load Executor from MongoDB");
         }
         return null;
+    }
+
+    @Override
+    public List<Executor> loadAllExecutors() {
+        try {
+            var mongoExecutors = repository.findAll();
+            var executors = new ArrayList<Executor>();
+            for (var mongoExecutor : mongoExecutors) {
+                executors.add(mapper.mapToDomainEntity(mongoExecutor));
+            }
+            LOGGER.info("Loaded all Executors from MongoDB");
+            return executors;
+        } catch (Exception e) {
+            LOGGER.warn("Failed to load all Executors from MongoDB");
+        }
+        return new ArrayList<>();
     }
 }
