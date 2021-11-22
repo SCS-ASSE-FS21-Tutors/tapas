@@ -3,12 +3,12 @@ package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapastasks.tasks.application.handler.TaskAssignedHandler;
 import ch.unisg.tapastasks.tasks.application.port.in.TaskAssignedEvent;
-import ch.unisg.tapastasks.tasks.application.port.in.TaskAssignedEventHandler;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapascommon.tasks.domain.Task.TaskId;
 import com.fasterxml.jackson.databind.JsonNode;
-
-import java.util.Optional;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 /**
  * Listener for task assigned events. A task assigned event corresponds to a JSON Patch that attempts
@@ -18,7 +18,12 @@ import java.util.Optional;
  *
  * See also {@link TaskAssignedEvent}, {@link Task}, and {@link TaskEventHttpDispatcher}.
  */
+@RequiredArgsConstructor
+@Component
 public class TaskAssignedEventListenerHttpAdapter extends TaskEventListener {
+
+    @Autowired
+    private final TaskAssignedHandler taskAssignedHandler;
 
     /**
      * Handles the task assigned event.
@@ -28,12 +33,9 @@ public class TaskAssignedEventListenerHttpAdapter extends TaskEventListener {
      * @return
      */
     public Task handleTaskEvent(String taskId, JsonNode payload) {
-        TaskJsonPatchRepresentation representation = new TaskJsonPatchRepresentation(payload);
-        Optional<Task.ServiceProvider> serviceProvider = representation.extractFirstServiceProviderChange();
-
-        TaskAssignedEvent taskAssignedEvent = new TaskAssignedEvent(new TaskId(taskId), serviceProvider);
-        TaskAssignedEventHandler taskAssignedEventHandler = new TaskAssignedHandler();
-
-        return taskAssignedEventHandler.handleTaskAssigned(taskAssignedEvent);
+        var representation = new TaskJsonPatchRepresentation(payload);
+        var serviceProvider = representation.extractFirstServiceProviderChange();
+        var taskAssignedEvent = new TaskAssignedEvent(new TaskId(taskId), serviceProvider);
+        return taskAssignedHandler.handleTaskAssigned(taskAssignedEvent);
     }
 }

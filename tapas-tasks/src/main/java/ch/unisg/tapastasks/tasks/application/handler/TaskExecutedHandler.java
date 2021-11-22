@@ -7,11 +7,15 @@ import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
 public class TaskExecutedHandler implements TaskExecutedEventHandler {
+
+    private static final Logger LOGGER = LogManager.getLogger(TaskExecutedHandler.class);
 
     @Autowired
     private AddTaskPort addTaskToRepositoryPort;
@@ -29,6 +33,8 @@ public class TaskExecutedHandler implements TaskExecutedEventHandler {
 
         addTaskToRepositoryPort.addTask(task);
         taskListLock.releaseTaskList(taskList.getTaskListName());
+
+        LOGGER.info("Handled Task Executed Event");
 
         return task;
     }
