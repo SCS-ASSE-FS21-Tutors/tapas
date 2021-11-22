@@ -2,7 +2,7 @@ package ch.unisg.tapas.auctionhouse.adapter.out.messaging.http;
 
 import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEvent;
 import ch.unisg.tapas.auctionhouse.application.port.out.TaskAssignedEventPort;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonPatchRepresentation;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;

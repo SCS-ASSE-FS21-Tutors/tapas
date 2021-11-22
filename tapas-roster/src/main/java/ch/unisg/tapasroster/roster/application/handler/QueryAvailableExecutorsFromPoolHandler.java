@@ -2,7 +2,7 @@ package ch.unisg.tapasroster.roster.application.handler;
 
 import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.communication.WebClient;
-import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapascommon.pool.adapter.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasroster.roster.application.port.out.QueryAvailableExecutorsFromPoolEvent;
 import ch.unisg.tapasroster.roster.application.port.out.QueryAvailableExecutorsFromPoolEventHandler;
 import ch.unisg.tapasroster.roster.domain.ExecutorRegistry;

@@ -1,7 +1,7 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.adapter.in.messaging.UnknownEventException;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;

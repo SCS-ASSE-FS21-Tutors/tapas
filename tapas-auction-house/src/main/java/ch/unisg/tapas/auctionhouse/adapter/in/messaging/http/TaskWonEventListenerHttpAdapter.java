@@ -2,7 +2,7 @@ package ch.unisg.tapas.auctionhouse.adapter.in.messaging.http;
 
 import ch.unisg.tapas.auctionhouse.application.port.in.TaskWonEvent;
 import ch.unisg.tapas.auctionhouse.application.port.in.TaskWonEventHandler;
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

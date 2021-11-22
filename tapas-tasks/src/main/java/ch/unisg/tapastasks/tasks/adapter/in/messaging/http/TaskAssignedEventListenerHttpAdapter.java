@@ -1,6 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.messaging.http;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapastasks.tasks.application.handler.TaskAssignedHandler;
 import ch.unisg.tapastasks.tasks.application.port.in.TaskAssignedEvent;
 import ch.unisg.tapascommon.tasks.domain.Task;

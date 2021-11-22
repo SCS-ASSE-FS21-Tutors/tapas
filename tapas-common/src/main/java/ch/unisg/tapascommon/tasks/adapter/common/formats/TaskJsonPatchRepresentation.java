@@ -1,4 +1,4 @@
-package ch.unisg.tapascommon.tasks.adapter.in.formats;
+package ch.unisg.tapascommon.tasks.adapter.common.formats;
 
 import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.databind.JsonNode;

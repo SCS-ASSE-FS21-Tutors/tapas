@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
-import ch.unisg.tapascommon.pool.adapter.in.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapascommon.pool.adapter.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToPoolUseCase;
 import com.fasterxml.jackson.core.JsonProcessingException;

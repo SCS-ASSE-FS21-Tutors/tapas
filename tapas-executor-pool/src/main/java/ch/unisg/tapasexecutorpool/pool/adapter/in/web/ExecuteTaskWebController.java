@@ -1,9 +1,8 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ExecuteTaskUseCase;
-import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

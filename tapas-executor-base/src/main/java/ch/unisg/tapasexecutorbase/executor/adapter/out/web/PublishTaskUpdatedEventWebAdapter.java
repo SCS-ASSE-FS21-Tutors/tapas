@@ -1,6 +1,6 @@
 package ch.unisg.tapasexecutorbase.executor.adapter.out.web;
 
-import ch.unisg.tapascommon.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
+import ch.unisg.tapascommon.tasks.adapter.common.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
 import ch.unisg.tapasexecutorbase.executor.domain.TaskUpdatedEvent;
 import org.springframework.context.annotation.Primary;
