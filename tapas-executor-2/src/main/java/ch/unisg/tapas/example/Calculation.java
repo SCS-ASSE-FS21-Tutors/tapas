@@ -32,10 +32,11 @@ public class Calculation {
         int result = 0;
         System.out.println("Received Input Data: "+ inputData);
 
-        ScriptEngineManager mgr = new ScriptEngineManager();
-        ScriptEngine engine = mgr.getEngineByName("JavaScript");
-
         try {
+
+            ScriptEngineManager mgr = new ScriptEngineManager();
+            ScriptEngine engine = mgr.getEngineByName("js");
+
             result = (int) engine.eval(inputData);
             TimeUnit.SECONDS.sleep(10);
             // Calls the /completion/ endpoint of the executor pool
