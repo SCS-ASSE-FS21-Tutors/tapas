@@ -43,6 +43,9 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
             newTask.setInputData(command.getInputData().get());
         }
 
+        addTaskToRepositoryPort.addTask(newTask);
+        taskListLock.releaseTaskList(taskList.getTaskListName());
+
         if (newTask != null) {
             var newTaskAdded = new NewTaskAddedEvent(
                 newTask.getTaskName().getValue(),
@@ -52,9 +55,6 @@ public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase 
             LOGGER.info("Forwarding Task to Roster Service: " + newTask);
             newTaskAddedEventPort.publishNewTaskAddedEvent(newTaskAdded);
         }
-
-        addTaskToRepositoryPort.addTask(newTask);
-        taskListLock.releaseTaskList(taskList.getTaskListName());
 
         return newTask;
     }
