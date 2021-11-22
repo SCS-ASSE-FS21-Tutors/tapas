@@ -9,13 +9,13 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document(collection = "tasks")
 @AllArgsConstructor
 public class MongoTaskDocument {
-    @Id public String taskId;
-    public String taskName;
-    public String taskType;
-    public String originalTaskUri;
-    public String taskStatus;
-    public String provider;
-    public String inputData;
-    public String outputData;
-    public String taskListName;
+    @Id private String taskId;
+    private String taskName;
+    private String taskType;
+    private String originalTaskUri;
+    private String taskStatus;
+    private String provider;
+    private String inputData;
+    private String outputData;
+    private String taskListName;
 }

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Component;
 class TaskMapper {
     Task mapToDomainEntity(MongoTaskDocument task) {
         return new Task(
-            new Task.TaskId(task.taskId),
-            new Task.TaskName(task.taskName),
-            new Task.TaskType(Task.Type.valueOf(task.taskType)),
-            new Task.OriginalTaskUri(task.originalTaskUri),
-            new Task.TaskStatus(Task.Status.valueOf(task.taskStatus)),
+            new Task.TaskId(task.getTaskId()),
+            new Task.TaskName(task.getTaskName()),
+            new Task.TaskType(Task.Type.valueOf(task.getTaskType())),
+            new Task.OriginalTaskUri(task.getOriginalTaskUri()),
+            new Task.TaskStatus(Task.Status.valueOf(task.getTaskStatus())),
             new Task.ServiceProvider(task.getProvider()),
             new Task.InputData(task.getInputData()),
             new Task.OutputData(task.getOutputData())
