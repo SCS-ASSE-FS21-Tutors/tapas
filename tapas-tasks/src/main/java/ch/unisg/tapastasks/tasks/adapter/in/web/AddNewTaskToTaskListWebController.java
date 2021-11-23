@@ -5,6 +5,7 @@ import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -31,23 +32,21 @@ import java.util.Optional;
  * representation of the created task with Content-Type "application/task+json". The HTTP response
  * also include a Location header field that points to the URI of the created task.
  */
+@RequiredArgsConstructor
 @RestController
 public class AddNewTaskToTaskListWebController {
+
+    @Autowired
     private final AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase;
 
-    // Used to retrieve properties from application.properties
     @Autowired
-    private Environment environment;
-
-    public AddNewTaskToTaskListWebController(AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase) {
-        this.addNewTaskToTaskListUseCase = addNewTaskToTaskListUseCase;
-    }
+    private final Environment environment;
 
     @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
         try {
             var taskName = new Task.TaskName(payload.getTaskName());
-            var taskType = new Task.TaskType(Task.Type.valueOf(payload.getTaskType().toUpperCase()));
+            var taskType = new Task.TaskType(payload.getTaskType());
 
             Optional<Task.InputData> inputDataOptional = (payload.getInputData() == null) ? Optional.empty()
                 : Optional.of(new Task.InputData(payload.getInputData()));

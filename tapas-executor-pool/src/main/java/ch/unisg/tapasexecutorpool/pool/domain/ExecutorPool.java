@@ -61,7 +61,7 @@ public class ExecutorPool {
 
     public Optional<Executor> retrieveAvailableExecutorByTaskType(Task.TaskType type) {
         for (Executor executor : listOfExecutors.value) {
-            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(type.getValue().name())) {
+            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(type.getValue())) {
                 if (Objects.equals(executor.getExecutorState(), new Executor.ExecutorState(Executor.State.IDLE))) {
                     return Optional.of(executor);
                 }

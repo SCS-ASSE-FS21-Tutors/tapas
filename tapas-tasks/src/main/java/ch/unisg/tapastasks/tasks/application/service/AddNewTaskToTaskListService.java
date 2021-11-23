@@ -12,14 +12,12 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 
 @RequiredArgsConstructor
 @Component
 @Transactional
-@Service("AddNewTaskToTaskList")
 public class AddNewTaskToTaskListService implements AddNewTaskToTaskListUseCase {
 
     private static final Logger LOGGER = LogManager.getLogger(AddNewTaskToTaskListService.class);

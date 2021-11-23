@@ -19,7 +19,7 @@ public class NewAuctionJsonRepresentation {
                 ServiceHostAddresses.getTaskServiceHostAddress() + task.getTaskId().getValue() +
                 "\"," +
                 "  \"taskType\": \"" +
-                task.getTaskType().getValue().name() +
+                task.getTaskType().getValue() +
                 "\"," +
                 "  \"deadline\": \"" +
                 deadline +

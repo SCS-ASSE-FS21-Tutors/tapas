@@ -10,7 +10,7 @@ class TaskMapper {
         return new Task(
             new Task.TaskId(task.getTaskId()),
             new Task.TaskName(task.getTaskName()),
-            new Task.TaskType(Task.Type.valueOf(task.getTaskType())),
+            new Task.TaskType(task.getTaskType()),
             new Task.OriginalTaskUri(task.getOriginalTaskUri()),
             new Task.TaskStatus(Task.Status.valueOf(task.getTaskStatus())),
             new Task.ServiceProvider(task.getProvider()),
@@ -23,7 +23,7 @@ class TaskMapper {
         return new MongoTaskDocument(
             task.getTaskId().getValue(),
             task.getTaskName().getValue(),
-            task.getTaskType().getValue().name(),
+            task.getTaskType().getValue(),
             task.getOriginalTaskUri().getValue(),
             task.getTaskStatus().getValue().toString(),
             task.getProvider().getValue(),

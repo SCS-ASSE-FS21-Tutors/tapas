@@ -1,11 +1,10 @@
 package ch.unisg.tapastasks.tasks.domain;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import org.junit.jupiter.api.Test;
-
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
-
 
 public class TaskListTest {
 
@@ -19,7 +18,6 @@ public class TaskListTest {
         assertThat(newTask.getTaskName().getValue()).isEqualTo("My-Test-Task");
         assertThat(taskList.getListOfTasks().getValue()).hasSize(1);
         assertThat(taskList.getListOfTasks().getValue().get(0)).isEqualTo(newTask);
-
     }
 
     @Test
@@ -31,7 +29,6 @@ public class TaskListTest {
         Task retrievedTask = taskList.retrieveTaskById(newTask.getTaskId()).get();
 
         assertThat(retrievedTask).isEqualTo(newTask);
-
     }
 
     @Test

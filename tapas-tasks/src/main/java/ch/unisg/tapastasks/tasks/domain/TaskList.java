@@ -19,7 +19,7 @@ public class TaskList {
     @Getter
     private final ListOfTasks listOfTasks;
 
-    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-4"));
+    private static final TaskList taskList = new TaskList(new TaskListName("tapas-tasks-group4"));
 
     private TaskList(TaskListName taskListName) {
         this.taskListName = taskListName;
@@ -31,14 +31,17 @@ public class TaskList {
     }
 
     public Task addNewTaskWithNameAndType(Task.TaskName name, Task.TaskType type) {
-        var newTask = Task.createNewTask(name, type);
+        var newTask = Task.createTaskWithNameAndType(name, type);
         this.addNewTaskToList(newTask);
         return newTask;
     }
 
-    public Task addNewTaskWithNameAndTypeAndOriginalTaskUri(Task.TaskName name, Task.TaskType type,
-            Task.OriginalTaskUri originalTaskUri) {
-        var newTask = Task.createNewTask(name, type, originalTaskUri);
+    public Task addNewTaskWithNameAndTypeAndOriginalTaskUri(
+        Task.TaskName name,
+        Task.TaskType type,
+        Task.OriginalTaskUri originalTaskUri
+    ) {
+        var newTask = Task.createTaskWithNameAndTypeAndOriginalTaskUri(name, type, originalTaskUri);
         this.addNewTaskToList(newTask);
         return newTask;
     }

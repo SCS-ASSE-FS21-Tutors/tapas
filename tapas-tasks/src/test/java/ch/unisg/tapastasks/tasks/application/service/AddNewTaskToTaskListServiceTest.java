@@ -1,20 +1,18 @@
 package ch.unisg.tapastasks.tasks.application.service;
 
+import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
-import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
 import static org.assertj.core.api.Assertions.*;
-
 
 public class AddNewTaskToTaskListServiceTest {
 
@@ -26,16 +24,23 @@ public class AddNewTaskToTaskListServiceTest {
 
     @Test
     void addingSucceeds() {
+        var newTask = givenATaskWithNameAndTypeAndURI(
+            new Task.TaskName("test-task"),
+            new Task.TaskType("test-type"),
+            Optional.of(new Task.InputData("test-input-data")),
+            Optional.of(new Task.OriginalTaskUri("example.org"))
+        );
 
-        Task newTask = givenATaskWithNameAndTypeAndURI(new Task.TaskName("test-task"),
-            new Task.TaskType("test-type"), Optional.of(new Task.OriginalTaskUri("example.org")));
+        var taskList = givenAnEmptyTaskList(TaskList.getTapasTaskList());
 
-        TaskList taskList = givenAnEmptyTaskList(TaskList.getTapasTaskList());
+        var addNewTaskToTaskListCommand = new AddNewTaskToTaskListCommand(
+            newTask.getTaskName(),
+            newTask.getTaskType(),
+            Optional.ofNullable(newTask.getInputData()),
+            Optional.ofNullable(newTask.getOriginalTaskUri())
+        );
 
-        AddNewTaskToTaskListCommand addNewTaskToTaskListCommand = new AddNewTaskToTaskListCommand(newTask.getTaskName(),
-            newTask.getTaskType(), Optional.ofNullable(newTask.getOriginalTaskUri()));
-
-        Task addedTask = addNewTaskToTaskListService.addNewTaskToTaskList(addNewTaskToTaskListCommand);
+        var addedTask = addNewTaskToTaskListService.addNewTaskToTaskList(addNewTaskToTaskListCommand);
 
         assertThat(addedTask).isNotNull();
         assertThat(taskList.getListOfTasks().getValue()).hasSize(1);
@@ -51,13 +56,17 @@ public class AddNewTaskToTaskListServiceTest {
         return taskList;
     }
 
-    private Task givenATaskWithNameAndTypeAndURI(Task.TaskName taskName, Task.TaskType taskType,
-                                                 Optional<Task.OriginalTaskUri> originalTaskUri) {
-        Task task = Mockito.mock(Task.class);
+    private Task givenATaskWithNameAndTypeAndURI(
+        Task.TaskName taskName,
+        Task.TaskType taskType,
+        Optional<Task.InputData> inputData,
+        Optional<Task.OriginalTaskUri> originalTaskUri
+    ) {
+        var task = Mockito.mock(Task.class);
         given(task.getTaskName()).willReturn(taskName);
         given(task.getTaskType()).willReturn(taskType);
+        given(task.getInputData()).willReturn(inputData.get());
         given(task.getOriginalTaskUri()).willReturn(originalTaskUri.get());
         return task;
     }
-
 }

@@ -6,6 +6,8 @@ import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.context.annotation.Primary;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
@@ -19,6 +21,8 @@ import java.net.http.HttpResponse;
 @Component
 @Primary
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
+
+    private static final Logger LOGGER = LogManager.getLogger(PublishNewTaskAddedEventWebAdapter.class);
 
     private static final String URL = ServiceHostAddresses.getRosterServiceHostAddress();
     private static final String PATH = "/roster/schedule-task/";
@@ -42,7 +46,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
                 .build();
             var response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (IOException | InterruptedException e) {
-            e.printStackTrace();
+            LOGGER.warn("Failed to publish new Task Added Event");
         }
     }
 }
