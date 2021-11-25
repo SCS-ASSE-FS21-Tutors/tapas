@@ -8,11 +8,11 @@ Accepted
 
 ## Context
 
-Task status needs to be updated in the Task List. A Task can have the open, assigned, running or executed status. It is especially important to know if a Task has been executed.
+Task status needs to be updated in the Task List. A Task can have the open, assigned, running or executed status.
 
 ## Decision
 
-We need to update the status of a Task when the execution is finished. We decided that the Executor himself updates a Task List when he finishes the execution of a Task. Initially we intended the executor to give feedback to the Pool which then informs the Roster which finally updates the Task Status in the Task list. However, this detour does not offer any advantages because the executor pool and the roster do not need to know the status of the task directly. That is why we finally decided to use the straightforward variant.
+We need to update the status of a Task when the execution is finished. We decided that the Executor himself updates a Task List when he finishes the execution of a Task. Initially we intended the executor to give feedback to the Pool which then informs the Roster which finally updates the Task Status in the Task list. However, this detour does not offer any advantages because the executor pool and the roster do not need to know the status of the task. That is why we decided to use the straightforward variant.
 
 ## Consequences
 
