@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
+import ch.unisg.tapasexecutorpool.pool.adapter.in.web.AddNewExecutorToExecutorPoolWebController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
