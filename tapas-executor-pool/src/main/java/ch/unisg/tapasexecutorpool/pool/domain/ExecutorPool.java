@@ -51,7 +51,7 @@ public class ExecutorPool {
     }
 
     public Optional<Executor> retrieveExecutorById(Executor.ExecutorId id) {
-        for (Executor executor : listOfExecutors.value) {
+        for (var executor : listOfExecutors.value) {
             if (executor.getExecutorId().getValue().equalsIgnoreCase(id.getValue())) {
                 return Optional.of(executor);
             }
@@ -60,8 +60,8 @@ public class ExecutorPool {
     }
 
     public Optional<Executor> retrieveAvailableExecutorByTaskType(Task.TaskType type) {
-        for (Executor executor : listOfExecutors.value) {
-            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(type.getValue().name())) {
+        for (var executor : listOfExecutors.value) {
+            if (executor.getExecutorType().getValue().name().equalsIgnoreCase(type.getValue())) {
                 if (Objects.equals(executor.getExecutorState(), new Executor.ExecutorState(Executor.State.IDLE))) {
                     return Optional.of(executor);
                 }
@@ -72,7 +72,7 @@ public class ExecutorPool {
 
     public List<Executor> retrieveAvailableExecutors() {
         var availableExecutors = new ArrayList<Executor>();
-        for (Executor executor : listOfExecutors.value) {
+        for (var executor : listOfExecutors.value) {
             if (executor.getExecutorState().getValue().equals(Executor.State.IDLE)) {
                 availableExecutors.add(executor);
             }

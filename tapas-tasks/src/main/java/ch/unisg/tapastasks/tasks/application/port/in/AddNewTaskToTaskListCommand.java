@@ -9,7 +9,7 @@ import lombok.Value;
 import javax.validation.constraints.NotNull;
 import java.util.Optional;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Value
 public class AddNewTaskToTaskListCommand extends SelfValidating<AddNewTaskToTaskListCommand> {
     @NotNull

@@ -8,7 +8,7 @@ import lombok.Value;
 
 import javax.validation.constraints.NotNull;
 
-@EqualsAndHashCode(callSuper = true)
+@EqualsAndHashCode(callSuper = false)
 @Value
 public class ForwardTaskToExecutorPoolEvent extends SelfValidating<ForwardTaskToExecutorPoolEvent> {
 

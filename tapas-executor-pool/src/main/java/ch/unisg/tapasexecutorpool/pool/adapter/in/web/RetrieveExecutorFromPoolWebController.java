@@ -20,8 +20,8 @@ public class RetrieveExecutorFromPoolWebController {
     private final RetrieveExecutorFromPoolUseCase retrieveExecutorFromPoolUseCase;
 
     @GetMapping(path = "/executors/{executorId}")
-    public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("executorId") String executor) {
-        var command = new RetrieveExecutorFromPoolQuery(new Executor.ExecutorId(executor));
+    public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("executorId") String executorId) {
+        var command = new RetrieveExecutorFromPoolQuery(new Executor.ExecutorId(executorId));
         var executorOptional = retrieveExecutorFromPoolUseCase.retrieveExecutorFromPool(command);
 
         if (executorOptional.isPresent()) {

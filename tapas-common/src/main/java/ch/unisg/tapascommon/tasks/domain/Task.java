@@ -1,17 +1,19 @@
 package ch.unisg.tapascommon.tasks.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 import java.util.UUID;
 
+@EqualsAndHashCode
 public class Task {
     public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED
     }
 
     public enum Type {
-        BIGROBOT, SMALLROBOT, COMPUTATION, RANDOMTEXT
+        UNKNOWN, BIGROBOT, SMALLROBOT, COMPUTATION, RANDOMTEXT
     }
 
     @Getter
@@ -58,21 +60,40 @@ public class Task {
         this.outputData = outputData;
     }
 
-    public static Task createNewTask(TaskName taskName, TaskType taskType, OriginalTaskUri originalTaskUri) {
+    public static Task createTaskWithNameAndTypeAndOriginalTaskUri(
+            Task.TaskName taskName,
+            Task.TaskType taskType,
+            Task.OriginalTaskUri originalTaskUri
+    ) {
         return new Task(
-                new TaskId(UUID.randomUUID().toString()),
+                new Task.TaskId(UUID.randomUUID().toString()),
                 taskName,
                 taskType,
                 originalTaskUri,
-                new TaskStatus(Status.OPEN),
-                new ServiceProvider(""),
-                new InputData(""),
-                new OutputData("")
+                new Task.TaskStatus(Task.Status.OPEN),
+                new Task.ServiceProvider(""),
+                new Task.InputData(""),
+                new Task.OutputData("")
         );
     }
 
-    public static Task createNewTask(TaskName taskName, TaskType taskType) {
-        return createNewTask(taskName, taskType, new OriginalTaskUri(""));
+    public static Task createTaskWithNameAndType(
+            Task.TaskName taskName,
+            Task.TaskType taskType
+    ) {
+        return createTaskWithNameAndTypeAndOriginalTaskUri(
+                taskName,
+                taskType,
+                new Task.OriginalTaskUri("")
+        );
+    }
+
+    public Type getTaskTypeEnum() {
+        try {
+            return Type.valueOf(taskType.value.toUpperCase());
+        } catch(IllegalArgumentException e) {
+            return Type.UNKNOWN;
+        }
     }
 
     @Value
@@ -87,7 +108,7 @@ public class Task {
 
     @Value
     public static class TaskType {
-        Type value;
+        String value;
     }
 
     @Value
@@ -125,7 +146,7 @@ public class Task {
         return "Task{" +
                 "taskId=" + taskId.getValue() +
                 ", taskName=" + taskName.getValue() +
-                ", taskType=" + taskType.getValue().name() +
+                ", taskType=" + taskType.getValue() +
                 ", originalTaskUri=" + originalTaskUriString +
                 ", taskStatus=" + taskStatus.getValue().name() +
                 ", provider=" + providerString +

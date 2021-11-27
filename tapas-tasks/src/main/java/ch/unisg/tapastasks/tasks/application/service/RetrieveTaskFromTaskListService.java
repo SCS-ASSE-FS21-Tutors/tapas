@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.Optional;
 
 @RequiredArgsConstructor
 @Component
 @Transactional
+@Service("RetrieveTaskFromTaskList")
 public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskListUseCase {
 
     private static final Logger LOGGER = LogManager.getLogger(RetrieveTaskFromTaskListService.class);

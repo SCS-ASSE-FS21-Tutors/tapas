@@ -82,14 +82,11 @@ final public class TaskJsonRepresentation {
      * @param task the task
      */
     public TaskJsonRepresentation(Task task) {
-        this(task.getTaskName().getValue(), task.getTaskType().getValue().name());
-
         this.taskId = task.getTaskId().getValue();
+        this.taskName = task.getTaskName().getValue();
+        this.taskType = task.getTaskType().getValue();
         this.taskStatus = task.getTaskStatus().getValue().name();
-
-        this.originalTaskUri = (task.getOriginalTaskUri() == null) ?
-            "" : task.getOriginalTaskUri().getValue();
-
+        this.originalTaskUri = (task.getOriginalTaskUri() == null) ? "" : task.getOriginalTaskUri().getValue();
         this.serviceProvider = (task.getProvider() == null) ? "" : task.getProvider().getValue();
         this.inputData = (task.getInputData() == null) ? "" : task.getInputData().getValue();
         this.outputData = (task.getOutputData() == null) ? "" : task.getOutputData().getValue();
@@ -104,17 +101,15 @@ final public class TaskJsonRepresentation {
      * @throws JsonProcessingException if a runtime exception occurs during object serialization
      */
     public static String serialize(Task task) throws JsonProcessingException {
-        TaskJsonRepresentation representation = new TaskJsonRepresentation(task);
-
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-
+        var representation = new TaskJsonRepresentation(task);
+        var mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         return mapper.writeValueAsString(representation);
     }
 
     public String serialize() throws JsonProcessingException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        var mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
         return mapper.writeValueAsString(this);
     }
 
@@ -122,7 +117,7 @@ final public class TaskJsonRepresentation {
         return new Task(
                 new Task.TaskId(representation.taskId),
                 new Task.TaskName(representation.taskName),
-                new Task.TaskType(Task.Type.valueOf(representation.taskType)),
+                new Task.TaskType(representation.taskType),
                 new Task.OriginalTaskUri(representation.originalTaskUri),
                 new Task.TaskStatus(Task.Status.valueOf(representation.taskStatus)),
                 new Task.ServiceProvider(representation.serviceProvider),

@@ -39,7 +39,7 @@ public class ScheduleTaskService implements ScheduleTaskUseCase {
         queryAvailableExecutorsFromExecutorPool();
         var registry = ExecutorRegistry.getInstance();
 
-        var taskType = task.getTaskType().getValue();
+        var taskType = task.getTaskTypeEnum();
         if (registry.hasExecutorWithTaskType(taskType)) {
             forwardTaskToExecutorPool(task);
         } else {
