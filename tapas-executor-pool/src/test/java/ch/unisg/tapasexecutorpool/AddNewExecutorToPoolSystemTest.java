@@ -63,7 +63,7 @@ public class AddNewExecutorToPoolSystemTest {
         ExecutorPool.getTapasExecutorPool().getListOfExecutors().getValue().clear();
 
         var headers = new HttpHeaders();
-        headers.add("Content-Type", TaskJsonRepresentation.MEDIA_TYPE);
+        headers.add("Content-Type", ExecutorJsonRepresentation.MEDIA_TYPE);
 
         var jsonPayLoad = new JSONObject()
                 .put("executorId", executorId.getValue() )
