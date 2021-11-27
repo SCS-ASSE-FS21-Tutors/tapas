@@ -10,10 +10,13 @@ public class TaskListTest {
 
     @Test
     void addNewTaskToTaskListSuccess() {
-        TaskList taskList = TaskList.getTapasTaskList();
+        var taskList = TaskList.getTapasTaskList();
         taskList.getListOfTasks().getValue().clear();
-        Task newTask = taskList.addNewTaskWithNameAndType(new Task.TaskName("My-Test-Task"),
-            new Task.TaskType("My-Test-Type"));
+
+        var newTask = taskList.addNewTaskWithNameAndType(
+            new Task.TaskName("My-Test-Task"),
+            new Task.TaskType("My-Test-Type")
+        );
 
         assertThat(newTask.getTaskName().getValue()).isEqualTo("My-Test-Task");
         assertThat(taskList.getListOfTasks().getValue()).hasSize(1);
@@ -22,24 +25,30 @@ public class TaskListTest {
 
     @Test
     void retrieveTaskSuccess() {
-        TaskList taskList = TaskList.getTapasTaskList();
-        Task newTask = taskList.addNewTaskWithNameAndType(new Task.TaskName("My-Test-Task2"),
-            new Task.TaskType("My-Test-Type2"));
+        var taskList = TaskList.getTapasTaskList();
 
-        Task retrievedTask = taskList.retrieveTaskById(newTask.getTaskId()).get();
+        var newTask = taskList.addNewTaskWithNameAndType(
+            new Task.TaskName("My-Test-Task2"),
+            new Task.TaskType("My-Test-Type2")
+        );
+
+        var retrievedTask = taskList.retrieveTaskById(newTask.getTaskId()).get();
 
         assertThat(retrievedTask).isEqualTo(newTask);
     }
 
     @Test
     void retrieveTaskFailure() {
-        TaskList taskList = TaskList.getTapasTaskList();
-        Task newTask = taskList.addNewTaskWithNameAndType(new Task.TaskName("My-Test-Task3"),
-            new Task.TaskType("My-Test-Type3"));
+        var taskList = TaskList.getTapasTaskList();
 
-        Task.TaskId fakeId = new Task.TaskId("fake-id");
+        var newTask = taskList.addNewTaskWithNameAndType(
+            new Task.TaskName("My-Test-Task3"),
+            new Task.TaskType("My-Test-Type3")
+        );
 
-        Optional<Task> retrievedTask = taskList.retrieveTaskById(fakeId);
+        var fakeId = new Task.TaskId("fake-id");
+
+        var retrievedTask = taskList.retrieveTaskById(fakeId);
 
         assertThat(retrievedTask.isPresent()).isFalse();
     }
