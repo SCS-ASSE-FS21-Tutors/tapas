@@ -38,6 +38,7 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
             var executor =  executorOptional.get();
             var taskId = task.getTaskId().getValue();
 
+            task.setTaskStatus(new Task.TaskStatus(Task.Status.ASSIGNED));
             taskAssignedEventPort.handleTaskAssignedEvent(
                     new TaskAssignedEvent(
                             "tapas-group4",

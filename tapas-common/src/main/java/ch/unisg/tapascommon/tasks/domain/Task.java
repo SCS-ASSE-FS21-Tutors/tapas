@@ -1,10 +1,12 @@
 package ch.unisg.tapascommon.tasks.domain;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Value;
 import java.util.UUID;
 
+@EqualsAndHashCode
 public class Task {
     public enum Status {
         OPEN, ASSIGNED, RUNNING, EXECUTED

@@ -55,10 +55,7 @@ public class AddNewExecutorToPoolWebControllerTest {
         );
 
         var addNewExecutorToPoolCommand = new AddNewExecutorToPoolCommand(
-                executorId,
-                executorName,
-                executorType.name(),
-                executorAddress
+                executorId, executorName, executorType.name(), executorAddress
         );
 
         Mockito.when(addNewExecutorToPoolUseCase.addNewExecutorToPool(addNewExecutorToPoolCommand))
@@ -76,12 +73,6 @@ public class AddNewExecutorToPoolWebControllerTest {
                 .content(jsonPayLoad))
                 .andExpect(status().isCreated());
 
-        then(addNewExecutorToPoolUseCase).should()
-            .addNewExecutorToPool(eq(new AddNewExecutorToPoolCommand(
-                    executorId,
-                    executorName,
-                    executorType.name(),
-                    executorAddress
-            )));
+        then(addNewExecutorToPoolUseCase).should().addNewExecutorToPool(eq(addNewExecutorToPoolCommand));
     }
 }

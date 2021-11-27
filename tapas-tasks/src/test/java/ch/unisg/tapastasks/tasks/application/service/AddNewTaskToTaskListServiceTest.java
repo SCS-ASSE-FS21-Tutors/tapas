@@ -48,7 +48,6 @@ public class AddNewTaskToTaskListServiceTest {
         then(taskListLock).should().lockTaskList(eq(TaskList.getTapasTaskList().getTaskListName()));
         then(newTaskAddedEventPort).should(times(1))
             .publishNewTaskAddedEvent(any(NewTaskAddedEvent.class));
-
     }
 
     private TaskList givenAnEmptyTaskList(TaskList taskList) {

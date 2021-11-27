@@ -2,7 +2,6 @@ package ch.unisg.tapastasks.tasks.domain;
 
 import ch.unisg.tapascommon.tasks.domain.Task;
 import org.junit.jupiter.api.Test;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
 

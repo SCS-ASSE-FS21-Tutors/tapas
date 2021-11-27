@@ -25,7 +25,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
     private static final Logger LOGGER = LogManager.getLogger(PublishNewTaskAddedEventWebAdapter.class);
 
     private static final String URL = ServiceHostAddresses.getRosterServiceHostAddress();
-    private static final String PATH = "/roster/schedule-task/";
+    private static final String PATH = "/schedule-task/";
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent event) {
