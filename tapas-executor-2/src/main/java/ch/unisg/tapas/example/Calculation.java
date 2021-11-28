@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.json.JSONObject;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
