@@ -34,6 +34,10 @@ public class WebSubConfig {
     @Value("${group}")
     private String group;
 
+    @Getter
+    @Value("${bootstrap}")
+    private boolean boostrap;
+
     public boolean isProductionEnvironment() {
         return environment.equalsIgnoreCase("production");
     }

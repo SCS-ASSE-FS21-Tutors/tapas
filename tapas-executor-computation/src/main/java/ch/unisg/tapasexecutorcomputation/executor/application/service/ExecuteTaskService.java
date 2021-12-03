@@ -6,7 +6,7 @@ import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCas
 import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateChangedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.service.ExecuteTaskBaseService;
-import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
+import ch.unisg.tapasexecutorbase.executor.config.ExecutorConfig;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -24,15 +24,9 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     private static final String JAVASCRIPT_ENGINE_NAME = "JavaScript";
 
+    private final ExecutorConfig executorConfig;
     private final ExecutorStateChangedEventPort executorStateChangedEventPort;
     private final TaskUpdatedEventPort taskUpdatedEventPort;
-
-    private void updateExecutorState(String state) {
-        LOGGER.info("Update Executor State to: " + state);
-        executorStateChangedEventPort.publishExecutorStateChangedEvent(
-                new ExecutorStateChangedEvent(Task.Type.COMPUTATION.name(), state)
-        );
-    }
 
     private String calculate(String expression) {
         var engine = new ScriptEngineManager().getEngineByName(JAVASCRIPT_ENGINE_NAME);
@@ -45,12 +39,16 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     @Override
     public void executeTask(ExecuteTaskCommand command) {
-        updateExecutorState("BUSY");
+        var executorBaseService = new ExecuteTaskBaseService(
+                executorConfig, executorStateChangedEventPort, taskUpdatedEventPort
+        );
+
+        executorBaseService.updateExecutorState("BUSY");
 
         var task = command.getTask();
 
         task.setTaskStatus(new Task.TaskStatus(Task.Status.RUNNING));
-        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
+        executorBaseService.updateTaskStatus(task);
 
         var expression = task.getInputData().getValue();
         var result = calculate(expression);
@@ -60,8 +58,8 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
         task.setOutputData(new Task.OutputData(result));
         task.setTaskStatus(new Task.TaskStatus(Task.Status.EXECUTED));
-        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
+        executorBaseService.updateTaskStatus(task);
 
-        updateExecutorState("IDLE");
+        executorBaseService.updateExecutorState("IDLE");
     }
 }

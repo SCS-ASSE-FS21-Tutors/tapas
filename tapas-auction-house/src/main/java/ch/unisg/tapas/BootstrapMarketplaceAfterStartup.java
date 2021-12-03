@@ -30,21 +30,29 @@ public class BootstrapMarketplaceAfterStartup {
 
     private final WebSubConfig webSubConfig;
     private final ResourceDirectoryRegisterer resourceDirectoryRegisterer;
-    
+
     @EventListener(ApplicationReadyEvent.class)
     public void runAfterStartup() {
         resourceDirectoryRegisterer.unregister();
         resourceDirectoryRegisterer.register();
 
-        if (webSubConfig.isProductionEnvironment()) {
-            bootstrapMarketplaceWithWebSub();
-        } else {
-            LOGGER.info("Subscribing to development WebSubHub");
-            var subscriber = new WebSubSubscriber(webSubConfig);
-            subscriber.subscribeToDevelopmentWebSubHub();
-        }
+        if (webSubConfig.isBoostrap()) {
+            LOGGER.info("Start bootstrapping marketplaces");
 
-        bootstrapMarketplaceWithMqtt();
+            if (webSubConfig.isProductionEnvironment()) {
+                bootstrapMarketplaceWithWebSub();
+            } else {
+                LOGGER.info("Subscribing to development WebSubHub");
+                var subscriber = new WebSubSubscriber(webSubConfig);
+                subscriber.subscribeToDevelopmentWebSubHub();
+            }
+
+            bootstrapMarketplaceWithMqtt();
+
+            LOGGER.info("Finished bootstrapping marketplaces");
+        } else {
+            LOGGER.info("Bootstrapping marketplaces is skipped");
+        }
     }
 
     /**

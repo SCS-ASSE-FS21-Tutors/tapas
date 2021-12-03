@@ -5,7 +5,7 @@ import ch.unisg.tapasexecutorbase.executor.application.port.in.ExecuteTaskUseCas
 import ch.unisg.tapasexecutorbase.executor.application.port.out.ExecutorStateChangedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.port.out.TaskUpdatedEventPort;
 import ch.unisg.tapasexecutorbase.executor.application.service.ExecuteTaskBaseService;
-import ch.unisg.tapasexecutorbase.executor.domain.ExecutorStateChangedEvent;
+import ch.unisg.tapasexecutorbase.executor.config.ExecutorConfig;
 import ch.unisg.tapasexecutorrobot.executor.domain.Cherrybot;
 import ch.unisg.tapascommon.tasks.domain.Task;
 import lombok.RequiredArgsConstructor;
@@ -21,14 +21,9 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     private static final Logger LOGGER = LogManager.getLogger(ExecuteTaskService.class);
 
+    private final ExecutorConfig executorConfig;
     private final ExecutorStateChangedEventPort executorStateChangedEventPort;
     private final TaskUpdatedEventPort taskUpdatedEventPort;
-
-    private void updateExecutorState(String state) {
-        executorStateChangedEventPort.publishExecutorStateChangedEvent(
-                new ExecutorStateChangedEvent(Task.Type.BIGROBOT.name(), state)
-        );
-    }
 
     private void moveRobot() {
         LOGGER.info("Start moving Robot");
@@ -42,19 +37,23 @@ public class ExecuteTaskService implements ExecuteTaskUseCase {
 
     @Override
     public void executeTask(ExecuteTaskCommand command) {
-        updateExecutorState("BUSY");
+        var executorBaseService = new ExecuteTaskBaseService(
+                executorConfig, executorStateChangedEventPort, taskUpdatedEventPort
+        );
+
+        executorBaseService.updateExecutorState("BUSY");
 
         var task = command.getTask();
 
         task.setTaskStatus(new Task.TaskStatus(Task.Status.RUNNING));
-        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
+        executorBaseService.updateTaskStatus(task);
 
         moveRobot();
+
         task.setOutputData(new Task.OutputData("COMPLETED"));
-
         task.setTaskStatus(new Task.TaskStatus(Task.Status.EXECUTED));
-        ExecuteTaskBaseService.updateTaskStatus(task, taskUpdatedEventPort);
+        executorBaseService.updateTaskStatus(task);
 
-        updateExecutorState("IDLE");
+        executorBaseService.updateExecutorState("IDLE");
     }
 }

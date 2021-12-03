@@ -25,10 +25,13 @@ public class AddNewExecutorToPoolService implements AddNewExecutorToPoolUseCase 
 
         executorPoolLock.lockExecutorPool(executorPool.getExecutorPoolName());
 
+        System.out.println(command.getExecutorType().toUpperCase());
+        System.out.println(command.getExecutorType());
+
         var newExecutor = executorPool.addNewExecutor(
                 new Executor.ExecutorId(command.getExecutorId()),
                 new Executor.ExecutorName(command.getExecutorName()),
-                new Executor.ExecutorType(Task.Type.valueOf(command.getExecutorType())),
+                new Executor.ExecutorType(Task.Type.valueOf(command.getExecutorType().toUpperCase())),
                 new Executor.ExecutorAddress(command.getExecutorAddress())
         );
 

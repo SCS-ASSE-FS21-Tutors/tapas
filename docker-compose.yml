@@ -87,7 +87,7 @@ services:
       - "traefik.http.routers.tapas-executor-pool.tls.certresolver=le"
 
   tapas-executor-computation:
-    image: openjdk
+    image: openjdk:11
     command: "java -jar /data/tapas-executor-computation-0.0.1-SNAPSHOT.jar"
     restart: unless-stopped
     volumes:

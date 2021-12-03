@@ -20,7 +20,7 @@ public class RegisterExecutorToPoolWebController {
 
     @GetMapping("/register")
     public ResponseEntity<String> registerToPool() {
-        var ok = registerExecutorToPoolUseCase.registerToPool(new RegisterExecutorToPoolCommand());
+        var ok = registerExecutorToPoolUseCase.registerThisExecutorToPool(new RegisterExecutorToPoolCommand());
         return ok ? new ResponseEntity<>(HttpStatus.CREATED) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
     }
 }
