@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
-@ComponentScan(basePackages = {"ch.unisg.tapasexecutorcomputation", "ch.unisg.tapasexecutorbase"})
+@ComponentScan(basePackages = { "ch.unisg.tapasexecutorcomputation", "ch.unisg.tapasexecutorbase", "ch.unisg.tapascommon" })
 public class TapasExecutorComputationApplication {
 
 	public static void main(String[] args) {
