@@ -3,6 +3,7 @@ package ch.unisg.tapas.auctionhouse.adapter.in.messaging.websub;
 import ch.unisg.tapas.auctionhouse.adapter.common.clients.WebSubSubscriber;
 import ch.unisg.tapas.common.AuctionHouseResourceDirectory;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
@@ -18,6 +19,9 @@ public class WebSubMarketplaceBootstrapper {
    @Value("${ch.unisg.tapas.resource-directory}")
     private String resourceDirectory;
 
+   @Autowired
+   private WebSubSubscriber webSubSubscriber;
+
     /**
      * Discovers auction houses and subscribes to WebSub notifications
      */
@@ -26,10 +30,9 @@ public class WebSubMarketplaceBootstrapper {
         List<String> auctionHouseEndpoints = discoverAuctionHouseEndpoints();
         log.info("Found auction house endpoints: " + auctionHouseEndpoints);
 
-        WebSubSubscriber subscriber = new WebSubSubscriber();
 
         for (String endpoint : auctionHouseEndpoints) {
-            subscriber.subscribeToAuctionHouseEndpoint(URI.create(endpoint));
+            webSubSubscriber.subscribeToAuctionHouseEndpoint(URI.create(endpoint));
         }
 
         log.info("Started WebSub Adapter");
