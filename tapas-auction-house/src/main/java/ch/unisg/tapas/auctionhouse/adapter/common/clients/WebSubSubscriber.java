@@ -37,10 +37,6 @@ public class WebSubSubscriber {
         } else {
             log.warn("WebSub | Could not retrieve WebSub Hub from: " + endpoint.toString());
         }
-
-        // Subscribing to ourselves for debugging
-        subscribeToHubPort.subscribeToHub(URI.create("https://websub.appspot.com/"), URI.create("https://tapas-auction-house.86-119-34-242.nip.io/websub-subscribe"));
-
         // 3. Handle the validation of intent from the WebSub hub (see WebSub protocol).
         //
         // Once the subscription is activated, the hub will send "fat pings" with content updates.

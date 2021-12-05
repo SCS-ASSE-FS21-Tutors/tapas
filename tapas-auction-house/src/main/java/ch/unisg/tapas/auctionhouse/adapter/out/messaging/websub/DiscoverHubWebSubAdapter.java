@@ -32,12 +32,14 @@ public class DiscoverHubWebSubAdapter implements DiscoverHubPort {
         uris.put("self", Optional.empty());
 
         HttpRequest request = HttpRequest.newBuilder()
-            .uri(URI.create("http://127.0.0.1:8085/websub-discovery"))
+            .uri(auctionHouseUri)
             .headers("Content-Type", "text/html")
             .GET()
             .build();
+
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+            // Get both the topic and hub URI from the auction house discovery headers
             Map<String, List<String>> map = response.headers().map();
             if (response.statusCode() == 200 && map.keySet().contains("link")) {
                 for (String link : map.get("link")) {
