@@ -6,6 +6,7 @@ import ch.unisg.tapas.auctionhouse.domain.AuctionStartedEvent;
 import ch.unisg.tapas.common.ConfigProperties;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import java.net.URLEncoder;
@@ -22,6 +23,7 @@ import java.util.stream.Collectors;
  */
 @Component
 @Log4j2
+@Primary
 public class PublishAuctionStartedEventWebSubAdapter implements AuctionStartedEventPort {
     // You can use this object to retrieve properties from application.properties, e.g. the
     // WebSub hub publish endpoint, etc.
