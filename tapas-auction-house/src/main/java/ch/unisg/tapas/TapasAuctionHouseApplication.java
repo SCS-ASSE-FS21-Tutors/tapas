@@ -1,30 +1,21 @@
 package ch.unisg.tapas;
 
-import ch.unisg.tapas.auctionhouse.adapter.common.clients.TapasMqttClient;
-import ch.unisg.tapas.auctionhouse.adapter.in.messaging.mqtt.AuctionEventsMqttDispatcher;
-import ch.unisg.tapas.auctionhouse.adapter.common.clients.WebSubSubscriber;
 import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseUseCase;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 import ch.unisg.tapas.auctionhouse.domain.Task;
-import ch.unisg.tapas.common.AuctionHouseResourceDirectory;
 import ch.unisg.tapasbase.TapasMicroservice;
-import io.swagger.v3.oas.annotations.OpenAPIDefinition;
-import io.swagger.v3.oas.annotations.info.Info;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.eclipse.paho.client.mqttv3.MqttException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.URI;
-import java.util.ArrayList;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,13 +39,17 @@ public class TapasAuctionHouseApplication {
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
         return args -> {
 
+            var now = new Date();
+            var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            var timestampString = dateFormat.format(now);
+
             storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(
                 new AuctionHouseInformation(
-                    new URI("http://idontknow"),
-                    new URI("http://idontknow"),
-                    List.of(new Task.TaskType("foobar")),
-                    new AuctionHouseInformation.AuctionHouseTimeStamp("Timestamp"),
-                    new AuctionHouseInformation.GroupName("Group0")
+                    new URI("https://tapas-auction-house.86-119-34-242.nip.io/"),
+                    new URI("http://tapas-auction-house.86-119-34-242.nip.io/websub-subscribe"),
+                    List.of(new Task.TaskType("SMALLROBOT"), new Task.TaskType("BIGROBOT")),
+                    new AuctionHouseInformation.AuctionHouseTimeStamp(timestampString),
+                    new AuctionHouseInformation.GroupName("Group3")
                     )
             );
             log.info("Added known auction houses");

@@ -1,11 +1,9 @@
 package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
-import ch.unisg.tapas.auctionhouse.domain.Task;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -34,7 +32,7 @@ public class AuctionHouseDiscoveryRepresentation {
             this.groupName = auctionHouseInformation.getGroupName().getValue();
 
             this.taskTypes = auctionHouseInformation.getTaskTypes().stream()
-                .map(Task.TaskType::toString)
+                .map(type -> type.getValue())
                 .collect(Collectors.toList());
         }
     }
