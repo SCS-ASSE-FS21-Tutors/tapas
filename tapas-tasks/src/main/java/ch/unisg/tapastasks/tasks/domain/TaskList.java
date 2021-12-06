@@ -47,7 +47,7 @@ public class TaskList {
         return newTask;
     }
 
-    private void addNewTaskToList(Task newTask) {
+    public void addNewTaskToList(Task newTask) {
         //Here we would also publish a domain event to other entities in the core interested in this event.
         //However, we skip this here as it makes the core even more complex (e.g., we have to implement a light-weight
         //domain event publisher and subscribers (see "Implementing Domain-Driven Design by V. Vernon, pp. 296ff).
