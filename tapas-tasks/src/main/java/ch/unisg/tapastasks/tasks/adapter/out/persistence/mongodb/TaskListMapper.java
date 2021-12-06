@@ -19,6 +19,7 @@ public class TaskListMapper {
     //TODO: Make both functions with lambda streams
     TaskList mapToDomainEntity(List<MongoTaskDocument> mongoTaskDocumentList) {
         TaskList taskList = TaskList.getTapasTaskList();
+        taskList.getListOfTasks().getValue().clear();
         for (MongoTaskDocument taskDocument: mongoTaskDocumentList) {
             Task task = taskMapper.mapToDomainEntity(taskDocument);
             taskList.addNewTaskToList(task);
