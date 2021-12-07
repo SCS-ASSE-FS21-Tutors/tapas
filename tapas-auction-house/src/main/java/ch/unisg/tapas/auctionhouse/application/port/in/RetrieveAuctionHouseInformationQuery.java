@@ -1,4 +1,4 @@
-package ch.unisg.tapas.auctionhouse.application.service;
+package ch.unisg.tapas.auctionhouse.application.port.in;
 
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 

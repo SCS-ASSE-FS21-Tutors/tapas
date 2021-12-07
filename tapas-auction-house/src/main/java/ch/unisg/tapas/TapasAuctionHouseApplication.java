@@ -1,5 +1,6 @@
 package ch.unisg.tapas;
 
+import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseUseCase;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 import ch.unisg.tapas.auctionhouse.domain.Task;
@@ -43,15 +44,14 @@ public class TapasAuctionHouseApplication {
             var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             var timestampString = dateFormat.format(now);
 
-            storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(
-                new AuctionHouseInformation(
-                    new URI("https://tapas-auction-house.86-119-34-242.nip.io/"),
-                    new URI("http://tapas-auction-house.86-119-34-242.nip.io/websub-subscribe"),
-                    List.of(new Task.TaskType("SMALLROBOT"), new Task.TaskType("BIGROBOT")),
-                    new AuctionHouseInformation.AuctionHouseTimeStamp(timestampString),
-                    new AuctionHouseInformation.GroupName("Group3")
-                    )
-            );
+            StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand = new StoreKnownAuctionHouseCommand(new AuctionHouseInformation(
+                new URI("https://tapas-auction-house.86-119-34-242.nip.io/"),
+                new URI("http://tapas-auction-house.86-119-34-242.nip.io/websub-subscribe"),
+                List.of(new Task.TaskType("SMALLROBOT"), new Task.TaskType("COMPUTATION")),
+                new AuctionHouseInformation.AuctionHouseTimeStamp(timestampString),
+                new AuctionHouseInformation.GroupName("Group3")
+            ));
+            storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(storeKnownAuctionHouseCommand);
             log.info("Added known auction houses");
         };
     }

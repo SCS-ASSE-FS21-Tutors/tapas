@@ -8,19 +8,19 @@ import java.util.List;
 @Value
 public class AuctionHouseInformation {
 
-    private URI auctionhouseuri;
-    private URI websuburi;
-    private List<Task.TaskType> taskTypes;
-    private AuctionHouseTimeStamp timeStamp;
-    private GroupName groupName;
+    URI auctionhouseuri;
+    URI websuburi;
+    List<Task.TaskType> taskTypes;
+    AuctionHouseTimeStamp timeStamp;
+    GroupName groupName;
 
     @Value
     public static class AuctionHouseTimeStamp{
-        private String value;
+        String value;
     }
 
     @Value
     public static class GroupName{
-        private String value;
+        String value;
     }
 }

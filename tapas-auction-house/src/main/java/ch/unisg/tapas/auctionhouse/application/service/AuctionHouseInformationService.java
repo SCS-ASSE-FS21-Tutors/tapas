@@ -1,6 +1,8 @@
-package ch.unisg.tapas.auctionhouse.application.port.in;
+package ch.unisg.tapas.auctionhouse.application.service;
 
-import ch.unisg.tapas.auctionhouse.application.service.RetrieveAuctionHouseInformationQuery;
+import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseCommand;
+import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseUseCase;
+import ch.unisg.tapas.auctionhouse.application.port.in.RetrieveAuctionHouseInformationQuery;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformationRegistry;
 import org.springframework.stereotype.Service;
@@ -13,9 +15,9 @@ public class AuctionHouseInformationService implements RetrieveAuctionHouseInfor
     private AuctionHouseInformationRegistry registry = new AuctionHouseInformationRegistry();
 
     @Override
-    public void storeKnownAuctionHouse(AuctionHouseInformation auctionHouseInformation){
+    public void storeKnownAuctionHouse(StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand){
 
-        registry.addAuctionHouseInformation(auctionHouseInformation);
+        registry.addAuctionHouseInformation(storeKnownAuctionHouseCommand.getAuctionHouseInformation());
     }
 
     @Override
