@@ -8,6 +8,7 @@ import org.eclipse.paho.client.mqttv3.*;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,7 @@ import java.util.UUID;
  * to be this way. This class is only provided as an example to help you bootstrap your project.
  * You are welcomed to change this class as you see fit.
  */
+@Profile("!test")
 @Component
 @Log4j2
 public class TapasMqttClient {
