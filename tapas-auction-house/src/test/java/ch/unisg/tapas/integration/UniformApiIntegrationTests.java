@@ -1,16 +1,22 @@
 package ch.unisg.tapas.integration;
 
+import ch.unisg.tapas.auctionhouse.adapter.out.web.ExecuteExternalTaskCommandHttpAdapter;
+import ch.unisg.tapas.auctionhouse.adapter.out.web.UpdateExternalTaskCommandHttpAdapter;
 import ch.unisg.tapas.auctionhouse.application.port.in.LaunchAuctionCommand;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
+import ch.unisg.tapas.auctionhouse.domain.AuctionRegistry;
 import ch.unisg.tapas.auctionhouse.domain.Task;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.net.URI;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +27,12 @@ public class UniformApiIntegrationTests {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @MockBean
+    private ExecuteExternalTaskCommandHttpAdapter executeExternalTaskCommandHttpAdapter;
+
+    @MockBean
+    private UpdateExternalTaskCommandHttpAdapter updateExternalTaskCommandHttpAdapter;
 
     @Test
     public void testNewAuction() throws Exception{
@@ -40,13 +52,19 @@ public class UniformApiIntegrationTests {
             .andExpect(status().is2xxSuccessful());
     }
 
-    /*
+
     @Test
     public void testNewBid() throws Exception{
 
         // Arrange
+        var auction = new Auction(
+            new Auction.AuctionHouseUri(null),
+            new Auction.AuctionedTaskUri(null),
+            new Auction.AuctionedTaskType("sometasktype"),
+            new Auction.AuctionDeadline(1000));
+        AuctionRegistry.getInstance().addAuction(auction);
         String requestBody = "{\n" +
-            "  \"auctionId\":\"1\",\n" +
+            "  \"auctionId\":\""+ auction.getAuctionId().getValue() +"\",\n" +
             "  \"bidderName\":\"Group1\",\n" +
             "  \"bidderAuctionHouseUri\":\"http://example.com/\",\n" +
             "  \"bidderTaskListUri\":\"http://example.com/tasks/\"\n" +
@@ -58,11 +76,31 @@ public class UniformApiIntegrationTests {
             .content(requestBody))
             .andExpect(status().is2xxSuccessful());
     }
-    */
 
-    /*
+    @Test
+    public void testNewBidNoAcutionExisting() throws Exception{
+
+        // Arrange
+        String requestBody = "{\n" +
+            "  \"auctionId\":\"doesnotexist\",\n" +
+            "  \"bidderName\":\"Group1\",\n" +
+            "  \"bidderAuctionHouseUri\":\"http://example.com/\",\n" +
+            "  \"bidderTaskListUri\":\"http://example.com/tasks/\"\n" +
+            "}";
+
+        // ACT
+        mockMvc.perform(post("/bid")
+            .header("Content-Type", "application/bid+json")
+            .content(requestBody))
+            .andExpect(status().isNotFound());
+    }
+
     @Test
     public void testNewTaskwinner() throws Exception{
+
+        // ARRANGE
+        when(executeExternalTaskCommandHttpAdapter.executeExternalTask(any())).thenReturn(true);
+        when(updateExternalTaskCommandHttpAdapter.updateExternalTask(any())).thenReturn(true);
 
         String requestBody = "{\n" +
             "  \"taskId\":\"cef2fa9d-367b-4e7f-bf06-3b1fea35f354\",\n" +
@@ -80,8 +118,11 @@ public class UniformApiIntegrationTests {
             .header("Content-Type", "application/task+json")
             .content(requestBody))
             .andExpect(status().isAccepted());
+
+        // ASSERT
+        verify(executeExternalTaskCommandHttpAdapter, times(1)).executeExternalTask(any());
+        verify(updateExternalTaskCommandHttpAdapter, times(1)).updateExternalTask(any());
     }
-    */
 
     @Test
     public void testTaskCompleted() throws Exception{

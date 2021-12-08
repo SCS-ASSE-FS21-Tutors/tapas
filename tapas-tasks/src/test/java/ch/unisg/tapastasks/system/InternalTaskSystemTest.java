@@ -1,6 +1,5 @@
-package system;
+package ch.unisg.tapastasks.system;
 
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
@@ -12,7 +11,7 @@ import java.net.http.HttpResponse;
 
 public class InternalTaskSystemTest {
 
-    String taskServiceUrl = "http://tapas-tasks.86-119-34-242.nip.io/tasks/";
+    String taskServiceUrl = "https://tapas-tasks.86-119-34-242.nip.io/tasks/";
 
     /**
      * This tasks needs the whole TAPAS system with
@@ -23,6 +22,7 @@ public class InternalTaskSystemTest {
     @Disabled
     public void testInternalTaskExecution() throws IOException, InterruptedException {
 
+        // ARRANGE
         String taskJson = "{\n" +
             "  \"taskId\": \"string\",\n" +
             "  \"taskName\": \"string\",\n" +
@@ -41,9 +41,11 @@ public class InternalTaskSystemTest {
             .POST(HttpRequest.BodyPublishers.ofString(taskJson))
             .build();
 
+        // ACT
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        if(response.statusCode() != 200)
+        // ASSERT
+        if(response.statusCode() != 201)
             throw new RuntimeException("Executor pool responded with statusCode " + response.statusCode() + " but 200 is expected");
     }
 }

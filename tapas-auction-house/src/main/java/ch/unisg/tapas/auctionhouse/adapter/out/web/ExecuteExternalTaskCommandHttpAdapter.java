@@ -46,7 +46,7 @@ public class ExecuteExternalTaskCommandHttpAdapter implements ExecuteExternalTas
                 throw new RuntimeException("Sending won task to executor pool resulted in code " + response.statusCode() + " but 202 is expected");
             else return true;
         } catch (Exception e) {
-            throw new RuntimeException("Could not place bid", e);
+            throw new RuntimeException("Could not execute external task", e);
         }
     }
 }
