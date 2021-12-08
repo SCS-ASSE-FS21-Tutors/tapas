@@ -2,6 +2,7 @@ package ch.unisg.tapastasks.tasks.adapter.out.persistence.mongodb;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskList;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.data.mongo.AutoConfigureDataMongo;
@@ -12,6 +13,7 @@ import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
 @AutoConfigureDataMongo
 @Import({TaskPersistenceAdapter.class, TaskMapper.class})
@@ -25,7 +27,7 @@ public class TaskPersistenceAdapterTest {
 
     @Test
     void addsNewTask() {
-/*
+
         String testTaskId = UUID.randomUUID().toString();
         String testTaskName = "adds-persistence-task-name";
         String testTaskType = "adds-persistence-task-type";
@@ -48,12 +50,11 @@ public class TaskPersistenceAdapterTest {
         assertThat(retrievedDoc.taskId).isEqualTo(testTaskId);
         assertThat(retrievedDoc.taskName).isEqualTo(testTaskName);
         assertThat(retrievedDoc.taskListName).isEqualTo(testTaskListName);
-*/
     }
 
     @Test
     void retrievesTask() {
-/*
+
         String testTaskId = UUID.randomUUID().toString();
         String testTaskName = "reads-persistence-task-name";
         String testTaskType = "reads-persistence-task-type";
@@ -71,7 +72,6 @@ public class TaskPersistenceAdapterTest {
         assertThat(retrievedTask.getTaskName().getValue()).isEqualTo(testTaskName);
         assertThat(retrievedTask.getTaskId().getValue()).isEqualTo(testTaskId);
         assertThat(retrievedTask.getTaskStatus().getValue()).isEqualTo(Task.Status.valueOf(testTaskStatus));
-*/
     }
 
 }

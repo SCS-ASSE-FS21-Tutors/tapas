@@ -1,4 +1,4 @@
-package ch.unisg.tapastasks;
+package ch.unisg.tapastasks.archunit;
 
 import ch.unisg.tapastasks.archunit.HexagonalArchitecture;
 import com.tngtech.archunit.core.importer.ClassFileImporter;
