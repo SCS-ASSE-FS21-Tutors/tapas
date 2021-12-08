@@ -35,13 +35,13 @@ class AuctionHouseDiscoveryServiceTest {
         var discoveryPort = Mockito.mock(AuctionHouseDiscoveryPort.class);
 
         // 1 knows 1 and 2
-        Mockito.when(discoveryPort.load(uri1)).thenReturn(Lists.list(info1, info2));
+        Mockito.when(discoveryPort.loadDiscoveryInfo(uri1)).thenReturn(Lists.list(info1, info2));
         // 2 knows 3
-        Mockito.when(discoveryPort.load(uri2)).thenReturn(Lists.list(info3));
+        Mockito.when(discoveryPort.loadDiscoveryInfo(uri2)).thenReturn(Lists.list(info3));
         // 3 knows 1, 3 and 4
-        Mockito.when(discoveryPort.load(uri3)).thenReturn(Lists.list(info1, info3, info4));
+        Mockito.when(discoveryPort.loadDiscoveryInfo(uri3)).thenReturn(Lists.list(info1, info3, info4));
         // 4 throws error
-        Mockito.when(discoveryPort.load(uri4)).thenThrow(RuntimeException.class);
+        Mockito.when(discoveryPort.loadDiscoveryInfo(uri4)).thenThrow(RuntimeException.class);
 
 
         // ACT

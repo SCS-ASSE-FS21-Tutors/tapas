@@ -78,7 +78,7 @@ public class AuctionHouseDiscoveryService implements AuctionHouseDiscoveryUseCas
         try{
 
             // load auction houses
-            var loadedAuctionHouses = discoveryPort.load(auctionHouseUri);
+            var loadedAuctionHouses = discoveryPort.loadDiscoveryInfo(auctionHouseUri);
             // filter our invalid values
             var validAuctionHouses = loadedAuctionHouses.stream().filter(this::isAcceptableInfo).collect(Collectors.toList());
 
@@ -89,7 +89,7 @@ public class AuctionHouseDiscoveryService implements AuctionHouseDiscoveryUseCas
         } catch (Exception ex){
 
             // Fail silently
-            log.info("Loading auction house information from: " + auctionHouseUri.toString() + " resulted in error " + ex.getMessage());
+            log.info("Loading auction house information from " + auctionHouseUri.toString() + " resulted in error: " + ex.getMessage());
             return new ArrayList<>();
         }
     }
