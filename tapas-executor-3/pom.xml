@@ -7,6 +7,13 @@
     <artifactId>tapas-executor-3</artifactId>
     <version>0.0.1-SNAPSHOT</version>
 
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
@@ -14,6 +21,13 @@
     </parent>
 
     <dependencies>
+        <dependency>
+            <groupId>org.eclipse.rdf4j</groupId>
+            <artifactId>rdf4j-runtime</artifactId>
+            <version>3.7.4</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/eclipse-rdf4j-3.7.4-onejar.jar</systemPath>
+        </dependency>
 
         <dependency>
             <groupId>ch.unisg.tapas-base</groupId>
@@ -47,12 +61,7 @@
     <properties>
         <start-class>ch.unisg.tapas.example.CoAPExecutor</start-class>
     </properties>
-    <repositories>
-        <repository>
-            <id>jitpack.io</id>
-            <url>https://jitpack.io</url>
-        </repository>
-    </repositories>
+
     <build>
         <plugins>
             <plugin>
