@@ -28,7 +28,7 @@ public class TestDbSetup implements CommandLineRunner {
 
         repository.addExecutor(new Executor(
                 new Executor.ExecutorName("Executor 1 - Robot"),
-                new Executor.ExecutorType("BIGROBOT"),
+                new Executor.ExecutorType("SMALLROBOT"),
                 new Executor.ExecutorUrl(isLocal ? "http://localhost:8091" : "http://tapas-executor-1:8091")));
 
         repository.addExecutor(new Executor(
