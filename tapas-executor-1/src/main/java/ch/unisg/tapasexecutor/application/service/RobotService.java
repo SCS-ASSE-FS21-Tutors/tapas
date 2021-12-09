@@ -36,6 +36,6 @@ public class RobotService implements IsTaskAcceptableQuery, ExecuteRobotTaskUseC
     @Override
     public boolean isAcceptable(Task task) {
 
-        return task.getTaskType().getValue().equals("ROBOT") || task.getTaskType().getValue().equals("BIGROBOT");
+        return task.getTaskType().getValue().equals("SMALLROBOT");
     }
 }

@@ -18,7 +18,7 @@ public class TaskJsonRepresentation {
     @Schema(example = "Robot Dance Command")
     private String taskName;
 
-    @Schema(example = "BIGROBOT")
+    @Schema(example = "SMALLROBOT")
     private String taskType;
 
     @Schema(example = "ASSIGNED")
