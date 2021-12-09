@@ -37,13 +37,22 @@
             <artifactId>californium-core</artifactId>
             <version>3.0.0</version>
         </dependency>
-
+        <dependency>
+            <groupId>com.github.Interactions-HSG</groupId>
+            <artifactId>wot-td-java</artifactId>
+            <version>v0.1.0</version>
+        </dependency>
     </dependencies>
 
     <properties>
         <start-class>ch.unisg.tapas.example.CoAPExecutor</start-class>
     </properties>
-
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <build>
         <plugins>
             <plugin>

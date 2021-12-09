@@ -18,18 +18,18 @@ import java.util.List;
 @Log4j2
 public class CoAPExecutorController {
 
-    private final List<String> POSSIBLE_INPUT = new ArrayList<>() {
+    public static final List<String> POSSIBLE_INPUT = new ArrayList<>() {
         {
             add("temperature");
             add("humidity");
         }
     };
 
-    @Value("${coap.server.uri}")
-    private String coAPServerUri;
-
     @Value("${executor.pool.uri}")
     private String executorPoolUri;
+
+    @Value("${sparql.search.engine.uri}")
+    private String sparqlSearchEngineUri;
 
 
     @PostMapping(path = "/execute/")
@@ -43,7 +43,11 @@ public class CoAPExecutorController {
             HttpHeaders responseHeaders = new HttpHeaders();
 
             if (POSSIBLE_INPUT.contains(taskInput)) {
-                CoAPRequestThread coAPRequestThread = new CoAPRequestThread(taskId, taskInput, coAPServerUri, executorPoolUri);
+                CoAPRequestThread coAPRequestThread = new CoAPRequestThread(
+                        taskId,
+                        taskInput,
+                        sparqlSearchEngineUri,
+                        executorPoolUri);
                 coAPRequestThread.start();
             } else {
                 return new ResponseEntity<>("Can only process input of type(s): " + POSSIBLE_INPUT.toString(),
