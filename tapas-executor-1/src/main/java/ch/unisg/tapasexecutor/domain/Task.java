@@ -4,37 +4,32 @@ import lombok.*;
 
 import java.util.UUID;
 
-/**This is a domain entity**/
+/**
+ * This is a domain entity
+ **/
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
 
-    public enum Status {
-        OPEN, ASSIGNED, RUNNING, EXECUTED
-    }
-
     @Getter
     private TaskId taskId;
-
     @Getter
     private TaskName taskName;
-
     @Getter
     private TaskType taskType;
-
     @Getter
     private OriginalTaskUri originalTaskUri;
-
-    @Getter @Setter
+    @Getter
+    @Setter
     private TaskStatus taskStatus;
-
-    @Getter @Setter
+    @Getter
+    @Setter
     private ServiceProvider provider;
-
-    @Getter @Setter
+    @Getter
+    @Setter
     private InputData inputData;
-
-    @Getter @Setter
+    @Getter
+    @Setter
     private OutputData outputData;
 
     public Task(TaskName taskName, TaskType taskType) {
@@ -64,6 +59,10 @@ public class Task {
     protected static Task createTaskWithNameAndTypeAndOriginalTaskUri(TaskName name, TaskType type,
                                                                       OriginalTaskUri originalTaskUri) {
         return new Task(name, type, originalTaskUri);
+    }
+
+    public enum Status {
+        OPEN, ASSIGNED, RUNNING, EXECUTED
     }
 
     @Value

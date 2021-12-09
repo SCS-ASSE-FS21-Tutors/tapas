@@ -1,4 +1,4 @@
-package ch.unisg.tapasexecutor.robot;
+package ch.unisg.tapasexecutor.adapters.out.robot;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -9,63 +9,97 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
 @Log4j2
 public class RobotApi implements Closeable {
 
-    private String robotUri;
-    private HttpClient client = HttpClient.newHttpClient();
+    private static final long rateLimitingMillis = 1100;
+    private final String robotUri;
+    private final HttpClient client = HttpClient.newHttpClient();
     private String apiKey;
     private String apiKeyDeleteEndpoint;
-    private ObjectMapper om = new ObjectMapper();
+    private final ObjectMapper om = new ObjectMapper();
+    private Instant lastAPICall = Instant.ofEpochSecond(0);
 
     public RobotApi(String robotUri) {
         this.robotUri = robotUri;
     }
 
-    public static RobotApi open(String robotUrl) throws Exception{
+    public static RobotApi open(String robotUrl) throws Exception {
 
         var api = new RobotApi(robotUrl);
         api.createUser();
         return api;
     }
 
-    private HttpResponse<String> makeRequest(String method, String endpoint, Map<String, Object> body) throws Exception{
+    private void createUser() throws Exception {
+
+        var body = new HashMap();
+        body.put("name", "TAPAS Group 3");
+        body.put("email", "weDontHaveAEmailButYouCanOpenAIssueONGitHub@tapas.SCS-ASSE-FS21-Group3.github.com");
+
+        var response = makeRequest("POST", "/user", body);
+
+        var location = response.headers().firstValue("Location");
+        this.apiKeyDeleteEndpoint = location.get();
+        var idx = apiKeyDeleteEndpoint.lastIndexOf("/");
+        this.apiKey = apiKeyDeleteEndpoint.substring(idx + 1);
+    }
+
+    private HttpResponse<String> makeRequest(String method, String endpoint, Map<String, Object> body) throws Exception {
 
         String bodyString = "";
 
         // Create http request builder
-        var builder = HttpRequest.newBuilder().uri(URI.create(this.robotUri + endpoint));
+        var uri = endpoint.startsWith("http") ? URI.create(endpoint) : URI.create(this.robotUri + endpoint);
+        var builder = HttpRequest.newBuilder().uri(uri);
 
         // Add body if we have one
-        if(body == null){
+        if (body == null) {
             builder = builder.method(method, HttpRequest.BodyPublishers.noBody());
-        }
-        else{
+        } else {
             bodyString = om.writeValueAsString(body);
             builder = builder.header("Content-Type", "application/json");
             builder = builder.method(method, HttpRequest.BodyPublishers.ofString(bodyString));
         }
 
         // Add api key if we have one
-        if(apiKey != null)
+        if (apiKey != null)
             builder = builder.header("X-API-KEY", apiKey);
+
+        // Wait for rate limiting
+        var timeSinceLastCall = Duration.between(lastAPICall, Instant.now()).toMillis();
+
+        if (timeSinceLastCall < rateLimitingMillis)
+            Thread.sleep(rateLimitingMillis - timeSinceLastCall);
 
         // Build and send request
         var request = builder.build();
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        lastAPICall = Instant.now();
 
         // Log response
         int statusCode = response.statusCode();
         log.info("Http Request: " + method + " " + endpoint + " " + statusCode + " " + bodyString);
 
         // Check if ok
-        if(statusCode >= 300 || statusCode < 200)
+        if (statusCode >= 300 || statusCode < 200)
             throw new RuntimeException("Unexpected status code: " + statusCode);
 
         return response;
+    }
+
+    public void dance() throws Exception {
+
+        moveRobot("/elbow", 400);
+        moveRobot("/elbow", 650);
+        moveRobot("/elbow", 400);
+        moveRobot("/elbow", 650);
+        moveRobot("/reset", 0);
     }
 
     private HttpResponse<String> moveRobot(String endpoint, int value) throws Exception {
@@ -76,45 +110,13 @@ public class RobotApi implements Closeable {
         return makeRequest("PUT", endpoint, body);
     }
 
-    private void createUser() throws Exception {
-
-        var body = new HashMap();
-        body.put("name", "Iori Mizutani");
-        body.put("email", "iori.mizutani@unisg.ch");
-
-        var response = makeRequest("POST", "/user", body);
-
-        var location = response.headers().firstValue("Location");
-        this.apiKeyDeleteEndpoint = location.get();
-        var idx = apiKeyDeleteEndpoint.lastIndexOf("/");
-        this.apiKey = apiKeyDeleteEndpoint.substring(idx+1);
-    }
-
-    public void dance() throws Exception {
-
-        moveRobot("/elbow", 400);
-        Thread.sleep(500);
-
-        moveRobot("/elbow", 650);
-        Thread.sleep(500);
-
-        moveRobot("/elbow", 400);
-        Thread.sleep(500);
-
-        moveRobot("/elbow", 650);
-        Thread.sleep(500);
-
-        moveRobot("/reset", 0);
-    }
-
     @Override
     public void close() throws IOException {
 
-        try{
-            if(this.apiKeyDeleteEndpoint != null)
+        try {
+            if (this.apiKeyDeleteEndpoint != null)
                 makeRequest("DELETE", this.apiKeyDeleteEndpoint, null);
-        }
-        catch (Exception exception){
+        } catch (Exception exception) {
             throw new IOException(exception);
         }
 

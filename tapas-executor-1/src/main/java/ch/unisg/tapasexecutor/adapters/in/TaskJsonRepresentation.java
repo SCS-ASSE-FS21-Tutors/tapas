@@ -1,6 +1,7 @@
-package ch.unisg.tapasexecutor.web;
+package ch.unisg.tapasexecutor.adapters.in;
 
 import ch.unisg.tapasexecutor.domain.Task;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -11,16 +12,31 @@ import lombok.NoArgsConstructor;
 public class TaskJsonRepresentation {
     public static final String MEDIA_TYPE = "application/task+json";
 
+    @Schema(example = "45501578-fef7-45d7-9adc-c182e79b0820")
     private String taskId;
+
+    @Schema(example = "Robot Dance Command")
     private String taskName;
+
+    @Schema(example = "BIGROBOT")
     private String taskType;
+
+    @Schema(example = "ASSIGNED")
     private String taskStatus;
+
+    @Schema(example = "https://tapas-tasks.86-119-34-242.nip.io/task/123")
     private String originalTaskUri;
+
+    @Schema(example = "")
     private String serviceProvider;
+
+    @Schema(example = "")
     private String inputData;
+
+    @Schema(example = "")
     private String outputData;
 
-    public TaskJsonRepresentation(Task task){
+    public TaskJsonRepresentation(Task task) {
         this.taskId = task.getTaskId().getValue();
         this.taskName = task.getTaskName().getValue();
         this.taskType = task.getTaskType().getValue();

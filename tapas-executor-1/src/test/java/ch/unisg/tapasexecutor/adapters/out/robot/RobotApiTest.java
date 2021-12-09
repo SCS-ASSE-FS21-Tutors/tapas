@@ -1,9 +1,7 @@
-package ch.unisg.tapasexecutor.robot;
+package ch.unisg.tapasexecutor.adapters.out.robot;
 
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RobotApiTest {
 
