@@ -33,7 +33,7 @@ public class CoAPExecutorController {
 
 
     @PostMapping(path = "/execute/")
-    public ResponseEntity<String> startCalculation(@RequestBody LeanTaskDto payload) {
+    public ResponseEntity<String> executeTask(@RequestBody LeanTaskDto payload) {
         try {
             String taskId = payload.getTaskId();
             String taskInput = payload.getTaskInput();
