@@ -35,5 +35,10 @@ public class TestDbSetup implements CommandLineRunner {
                 new Executor.ExecutorName("Executor 2 - Calculation"),
                 new Executor.ExecutorType("COMPUTATION"),
                 new Executor.ExecutorUrl(isLocal ? "http://localhost:8092" : "http://tapas-executor-2:8092")));
+
+        repository.addExecutor(new Executor(
+                new Executor.ExecutorName("Executor 3 - Miro Card"),
+                new Executor.ExecutorType("HUMIDITY"),
+                new Executor.ExecutorUrl(isLocal ? "http://localhost:8093" : "http://tapas-executor-3:8093")));
     }
 }

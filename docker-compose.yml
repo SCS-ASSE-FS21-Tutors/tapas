@@ -116,6 +116,21 @@ services:
       - "traefik.http.routers.tapas-executor-2.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-executor-2.tls.certresolver=le"
 
+  tapas-executor-3:
+    image: openjdk
+    command: "java -jar /data/tapas-executor-3-0.0.1-SNAPSHOT.jar"
+    restart: unless-stopped
+    volumes:
+      - ./:/data/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tapas-executor-3.rule=Host(`tapas-executor-3.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-3.service=tapas-executor-3"
+      - "traefik.http.services.tapas-executor-3.loadbalancer.server.port=8093"
+      - "traefik.http.routers.tapas-executor-3.tls=true"
+      - "traefik.http.routers.tapas-executor-3.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-3.tls.certresolver=le"
+
   mongodb:
     image: mongo
     container_name: mongodb
