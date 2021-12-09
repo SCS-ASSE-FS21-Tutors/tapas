@@ -34,7 +34,7 @@ public class ExecutorPortHttpAdapter implements SendTaskToExecutorPort {
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
-                    .headers("Content-Type", "application/json")
+                    .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(bodyStr))
                     .build();
 

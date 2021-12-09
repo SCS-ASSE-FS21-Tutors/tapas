@@ -22,7 +22,7 @@ public class NotifyTaskCompletionWebController {
         this.notifyTaskCompletionUseCase = notifyTaskCompletionUseCase;
     }
 
-    @PutMapping(path = "/completion")
+    @PutMapping(path = "/completion", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity<String> notifyTaskCompletion(@RequestBody TaskJsonRepresentation payload) {
         try {
             Task task = TaskJsonRepresentation.toTask(payload);

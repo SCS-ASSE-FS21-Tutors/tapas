@@ -37,7 +37,7 @@ public class UpdateTaskHttpAdapter implements UpdateTaskPort {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(completionEndpoint)
                     .method("PUT", HttpRequest.BodyPublishers.ofString(bodyString))
-                    .header("Content-Type", "application/json")
+                    .header("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .build();
 
             // Send request

@@ -16,7 +16,7 @@ public class ExecutorWebController {
     @Autowired
     ExecutorService executorService;
 
-    @PostMapping("/execute")
+    @PostMapping(path = "/execute", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity executeTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
 
         if (!"COMPUTATION".equals(taskJsonRepresentation.getTaskType()))

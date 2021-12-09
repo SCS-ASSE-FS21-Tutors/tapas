@@ -1,4 +1,4 @@
-package ch.unisg.tapas.example;
+package ch.unisg.tapas.example.application;
 
 import ch.unisg.ics.interactions.wot.td.ThingDescription;
 import ch.unisg.ics.interactions.wot.td.affordances.Form;
@@ -7,6 +7,7 @@ import ch.unisg.ics.interactions.wot.td.clients.TDCoapRequest;
 import ch.unisg.ics.interactions.wot.td.clients.TDCoapResponse;
 import ch.unisg.ics.interactions.wot.td.io.TDGraphReader;
 import ch.unisg.ics.interactions.wot.td.vocabularies.TD;
+import ch.unisg.tapas.example.formats.TaskJsonRepresentation;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
@@ -26,17 +27,15 @@ public class CoAPRequestThread extends Thread {
 
     private HttpClient client;
     private ObjectMapper objectMapper;
-    private String taskId;
-    private String taskInput;
+    private TaskJsonRepresentation task;
     private String sparqlSearchEngineUri;
     private String executorPoolUri;
 
 
-    public CoAPRequestThread(String taskId, String taskInput, String sparqlSearchEngineUri, String executorPoolUri) {
+    public CoAPRequestThread(TaskJsonRepresentation task, String sparqlSearchEngineUri, String executorPoolUri) {
         this.client = HttpClient.newHttpClient();
         this.objectMapper = new ObjectMapper();
-        this.taskId = taskId;
-        this.taskInput = taskInput;
+        this.task = task;
         this.sparqlSearchEngineUri = sparqlSearchEngineUri;
         this.executorPoolUri = executorPoolUri;
     }
@@ -64,15 +63,12 @@ public class CoAPRequestThread extends Thread {
                 // Send result back to executor pool
                 String url = executorPoolUri + "completion";
                 log.info("Sending result to Executor pool at: " + url);
-                String inputDataJson = new JSONObject()
-                        .put("taskId", taskId)
-                        .put("outputData", result)
-                        .toString();
-
+                task.setOutputData(result);
+                String bodyString = objectMapper.writeValueAsString(task);
                 HttpRequest executorPoolRequest = HttpRequest.newBuilder()
                         .uri(URI.create(url))
-                        .headers("Content-Type", "application/json")
-                        .PUT(HttpRequest.BodyPublishers.ofString(inputDataJson))
+                        .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
+                        .PUT(HttpRequest.BodyPublishers.ofString(bodyString))
                         .build();
                 HttpResponse executorPoolResponse = client.send(executorPoolRequest, HttpResponse.BodyHandlers.ofString());
                 if (executorPoolResponse.statusCode() != 200) {
@@ -117,7 +113,7 @@ public class CoAPRequestThread extends Thread {
         Optional<Form> resultForm = Optional.empty();
         try {
             ThingDescription td = TDGraphReader.readFromURL(ThingDescription.TDFormat.RDF_TURTLE, miroCardTdUri);
-            Optional<PropertyAffordance> property = td.getPropertyByName(taskInput);
+            Optional<PropertyAffordance> property = td.getPropertyByName("humidity");
             if (property.isPresent()) {
                 Optional<Form> form = property.get().getFirstFormForOperationType(TD.readProperty);
                 resultForm = form;

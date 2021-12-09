@@ -20,7 +20,7 @@ public class ExecutorWebController {
     @Autowired
     IsTaskAcceptableQuery isTaskAcceptableQuery;
 
-    @PostMapping("/execute")
+    @PostMapping(path = "/execute", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity executeTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
 
         var task = taskJsonRepresentation.toTask();
