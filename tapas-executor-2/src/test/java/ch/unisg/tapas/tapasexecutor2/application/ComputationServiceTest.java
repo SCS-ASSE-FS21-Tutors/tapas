@@ -24,6 +24,6 @@ class ComputationServiceTest {
     public void testSandbox(){
         var service = new ComputationService();
 
-        Assertions.assertThrows(RuntimeException.class, () -> service.executeComputation("while(true){console.log('haha')}"));
+        assertEquals("ERROR", service.executeComputation("while(true){console.log('haha')}"));
     }
 }

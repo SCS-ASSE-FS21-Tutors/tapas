@@ -55,7 +55,7 @@ public class ComputationService {
         } catch (Exception e) {
 
             log.warn("Exception while executing task with input: " + input);
-            throw new RuntimeException(e);
+            return "ERROR";
         }
     }
 }

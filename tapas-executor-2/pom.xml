@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>ch.unisg.tapas</groupId>
-	<artifactId>tapasexecutor2</artifactId>
+	<artifactId>tapas-executor-2</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>executor-2</name>
 	<description>TAPAS Executor 2</description>
