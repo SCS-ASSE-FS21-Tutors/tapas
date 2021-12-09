@@ -1,5 +1,6 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.out.web;
 
+import ch.unisg.tapasexecutorpool.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.out.SendTaskToExecutorPort;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
@@ -17,31 +18,24 @@ import java.net.http.HttpResponse;
 @Component
 public class ExecutorPortHttpAdapter implements SendTaskToExecutorPort {
 
+    private ObjectMapper om = new ObjectMapper();
+    private HttpClient client = HttpClient.newHttpClient();
+
     public void sendTaskToExecutor(Task task, Executor executor) {
 
         // Calls the /start/ endpoint of the assigned executor
-        String endpoint = executor.getExecutorUrl().getValue() + "execute/";
+        String endpoint = executor.getExecutorUrl().getValue() + "/execute/";
         log.info("Sending task to Executor: " + endpoint);
 
-        HttpClient client = HttpClient.newHttpClient();
-
-        // Defines the request body
-        String inputData = null;
-        if (task.getInputData() != null) {
-            inputData = task.getInputData().getValue();
-        }
-        String taskId = task.getTaskId().getValue();
-
         try {
-            String inputDataJson = new JSONObject()
-                    .put("taskId", taskId)
-                    .put("inputData", inputData)
-                    .toString();
+
+            // Defines the request body
+            var bodyStr = om.writeValueAsString(new TaskJsonRepresentation(task));
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(endpoint))
                     .headers("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(inputDataJson))
+                    .POST(HttpRequest.BodyPublishers.ofString(bodyStr))
                     .build();
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());

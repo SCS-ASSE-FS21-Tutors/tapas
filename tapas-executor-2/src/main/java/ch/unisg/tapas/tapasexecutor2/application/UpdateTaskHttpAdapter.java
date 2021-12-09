@@ -34,7 +34,7 @@ public class UpdateTaskHttpAdapter {
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(completionEndpoint)
                     .method("PUT", HttpRequest.BodyPublishers.ofString(bodyString))
-                    .header("Content-Type", "application/json-patch+json")
+                    .header("Content-Type", "application/json")
                     .build();
 
             // Send request
