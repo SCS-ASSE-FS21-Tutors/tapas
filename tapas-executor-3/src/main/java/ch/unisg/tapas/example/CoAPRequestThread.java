@@ -3,21 +3,19 @@ package ch.unisg.tapas.example;
 import ch.unisg.ics.interactions.wot.td.ThingDescription;
 import ch.unisg.ics.interactions.wot.td.affordances.Form;
 import ch.unisg.ics.interactions.wot.td.affordances.PropertyAffordance;
+import ch.unisg.ics.interactions.wot.td.clients.TDCoapRequest;
+import ch.unisg.ics.interactions.wot.td.clients.TDCoapResponse;
 import ch.unisg.ics.interactions.wot.td.io.TDGraphReader;
+import ch.unisg.ics.interactions.wot.td.vocabularies.TD;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
-import org.eclipse.californium.core.coap.CoAP;
-import org.eclipse.californium.core.coap.Request;
-import org.eclipse.californium.core.coap.Response;
 import org.json.JSONObject;
 
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 @Log4j2
@@ -25,7 +23,6 @@ public class CoAPRequestThread extends Thread {
 
     // Temporary hardcoded address with thing description of miro card
     private final String miroCardTdUri = "http://yggdrasil.interactions.ics.unisg.ch/environments/61/workspaces/102/artifacts/mirogate";
-    private final String readPropertyDefinitionUri = "https://www.w3.org/2019/wot/td#readProperty";
 
     private HttpClient client;
     private ObjectMapper objectMapper;
@@ -47,20 +44,21 @@ public class CoAPRequestThread extends Thread {
     @Override
     public void run() {
 
-        // Get the endpoints for the operations from the SparQL Search engine
-        Map<String, String> endpointsMap = getEndpointsFromSearchEngine();
+        // Get the form for the relevant operation from the SparQL Search engine and TD
+        Optional<Form> formOptional = getFormFromSearchEngine();
 
-        // Check if operation is valid and send to endpoint
-        if(endpointsMap.keySet().contains(taskInput)){
-            String endpoint = endpointsMap.get(taskInput);
-            log.info("Sending request to CoAP Server: " + endpoint);
-            Request request = new Request(CoAP.Code.GET);
-            request.setURI(endpoint);
-            request.send();
+        // Execute CoAP request
+        if (formOptional.isPresent()) {
+            Form form = formOptional.get();
+            log.info("Sending request to CoAP Server: " + form.getTarget());
+            TDCoapRequest request = new TDCoapRequest(form, TD.readProperty);
             try {
                 // Wait for response from the CoAP Server and parse actual result from response
-                Response response = request.waitForResponse();
-                String result = objectMapper.readValue(response.getPayloadString(), JsonNode.class).get("value").toString();
+                TDCoapResponse response = request.execute();
+                if (response.getPayload().isEmpty()) {
+                    throw new RuntimeException("No payload received from CoAP request");
+                }
+                String result = objectMapper.readValue(response.getPayload().get(), JsonNode.class).get("value").toString();
                 log.info("CoAP Response received: " + result);
 
                 // Send result back to executor pool
@@ -88,13 +86,13 @@ public class CoAPRequestThread extends Thread {
             }
 
         } else {
-            throw new RuntimeException("Input data was not identified as possible operation in TD");
+            throw new RuntimeException("Input data was not identified as possible property in TD");
         }
 
     }
 
-    private Map<String, String> getEndpointsFromSearchEngine(){
-        log.info("Sending search query to search engine: "+ sparqlSearchEngineUri);
+    private Optional<Form> getFormFromSearchEngine() {
+        log.info("Sending search query to search engine: " + sparqlSearchEngineUri);
 
         /* TODO Implement querying of search engine to retrieve Miro Card TD
         String sparqlQuery ="@prefix td: <https://www.w3.org/2019/wot/td#>.\n" +
@@ -115,26 +113,19 @@ public class CoAPRequestThread extends Thread {
         */
 
         // Retrieve the endpoints for all defined operations and store them in HashMap
-        log.info("Retrieving endpoints from things description of miro card: "+ miroCardTdUri);
-        Map<String, String> endpointsMap = new HashMap<>();
+        log.info("Retrieving readProperty-form from things description of miro card: " + miroCardTdUri);
+        Optional<Form> resultForm = Optional.empty();
         try {
             ThingDescription td = TDGraphReader.readFromURL(ThingDescription.TDFormat.RDF_TURTLE, miroCardTdUri);
-            for(int i = 0; i< td.getProperties().size();i++){
-                PropertyAffordance property = td.getProperties().get(i);
-                if (CoAPExecutorController.POSSIBLE_INPUT.contains(property.getName())) {
-                    Optional<Form> form = property.getFirstFormForOperationType(readPropertyDefinitionUri);
-                    if (form.isPresent()) {
-                        String target = form.get().getTarget();
-                        endpointsMap.put(property.getName(), target);
-                    }
-                }
+            Optional<PropertyAffordance> property = td.getPropertyByName(taskInput);
+            if (property.isPresent()) {
+                Optional<Form> form = property.get().getFirstFormForOperationType(TD.readProperty);
+                resultForm = form;
             }
-        } catch (Exception e){
+        } catch (Exception e) {
             log.error("Retrieving information from Miro TD failed");
             e.printStackTrace();
         }
-        log.info("Endpoints found: "+ endpointsMap);
-
-        return endpointsMap;
+        return resultForm;
     }
 }
