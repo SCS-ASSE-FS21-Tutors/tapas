@@ -53,8 +53,8 @@ class DiscoveredAuctionHousesRepresentationTest {
 
     private String givenDiscoveredAuctionHousesJson() {
         return "{\"auctionHouseInfo\":[{\"auctionHouseUri\":\"auctionHouseUri\",\"webSubUri\":\"webSubUri\",\"taskTypes\":[\"BIGROBOT\"],"
-            + "\"timestamp\":\"1970-01-01 00:00:00\",\"groupName\":\"test-group-1\"},{\"auctionHouseUri\":"
+            + "\"timeStamp\":\"1970-01-01 00:00:00\",\"groupName\":\"test-group-1\"},{\"auctionHouseUri\":"
             + "\"auctionHouseUri\",\"webSubUri\":\"webSubUri\",\"taskTypes\":[\"COMPUTATION\",\"RANDOMTEXT\"],"
-            + "\"timestamp\":\"1970-01-01 00:00:00\",\"groupName\":\"test-group-2\"}]}";
+            + "\"timeStamp\":\"1970-01-01 00:00:00\",\"groupName\":\"test-group-2\"}]}";
     }
 }
