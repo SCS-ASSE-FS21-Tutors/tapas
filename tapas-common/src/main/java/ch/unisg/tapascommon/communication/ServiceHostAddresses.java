@@ -2,21 +2,24 @@ package ch.unisg.tapascommon.communication;
 
 public class ServiceHostAddresses {
 
-    private static final boolean IS_LOCALHOST = false;
+    public static final boolean IS_LOCALHOST = false;
 
-    private static final String LOCALHOST_TASKS = "http://127.0.0.1:8081";
-    private static final String LOCALHOST_ROSTER = "http://127.0.0.1:8082";
-    private static final String LOCALHOST_EXECUTOR_POOL = "http://127.0.0.1:8083";
-    private static final String LOCALHOST_EXECUTOR_COMPUTATION = "http://127.0.0.1:8084";
-    private static final String LOCALHOST_EXECUTOR_BIGROBOT = "http://127.0.0.1:8085";
-    private static final String LOCALHOST_AUCTION_HOUSE = "http://127.0.0.1:8086";
+    public static final String GROUP_NAME = "tapas-group4";
+    public static final int GROUP_NUMBER = 4;
 
-    private static final String PUBLIC_TASKS = "https://tapas-tasks.86-119-35-199.nip.io";
-    private static final String PUBLIC_ROSTER = "https://tapas-roster.86-119-35-199.nip.io";
-    private static final String PUBLIC_EXECUTOR_POOL = "https://tapas-executor-pool.86-119-35-199.nip.io";
-    private static final String PUBLIC_EXECUTOR_COMPUTATION = "https://tapas-executor-computation.86-119-35-199.nip.io";
-    private static final String PUBLIC_EXECUTOR_BIGROBOT = "https://tapas-executor-bigrobot.86-119-35-199.nip.io";
-    private static final String PUBLIC_AUCTION_HOUSE = "https://tapas-auction-house.86-119-35-199.nip.io";
+    public static final String LOCALHOST_TASKS = "http://127.0.0.1:8081";
+    public static final String LOCALHOST_ROSTER = "http://127.0.0.1:8082";
+    public static final String LOCALHOST_EXECUTOR_POOL = "http://127.0.0.1:8083";
+    public static final String LOCALHOST_EXECUTOR_COMPUTATION = "http://127.0.0.1:8084";
+    public static final String LOCALHOST_EXECUTOR_BIGROBOT = "http://127.0.0.1:8085";
+    public static final String LOCALHOST_AUCTION_HOUSE = "http://127.0.0.1:8086";
+
+    public static final String PUBLIC_TASKS = "https://tapas-tasks.86-119-35-199.nip.io";
+    public static final String PUBLIC_ROSTER = "https://tapas-roster.86-119-35-199.nip.io";
+    public static final String PUBLIC_EXECUTOR_POOL = "https://tapas-executor-pool.86-119-35-199.nip.io";
+    public static final String PUBLIC_EXECUTOR_COMPUTATION = "https://tapas-executor-computation.86-119-35-199.nip.io";
+    public static final String PUBLIC_EXECUTOR_BIGROBOT = "https://tapas-executor-bigrobot.86-119-35-199.nip.io";
+    public static final String PUBLIC_AUCTION_HOUSE = "https://tapas-auction-house.86-119-35-199.nip.io";
 
     public static String getTaskServiceHostAddress() {
         return IS_LOCALHOST ? LOCALHOST_TASKS : PUBLIC_TASKS;

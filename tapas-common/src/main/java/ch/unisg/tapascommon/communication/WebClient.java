@@ -51,4 +51,19 @@ public class WebClient {
     public static <T> boolean checkResponseStatusCode(HttpResponse<T> response) {
         return response != null && response.statusCode() >= 200 && response.statusCode() < 300;
     }
+
+    public static String normalizeUrl(String url) {
+        final String HTTP = "http://";
+        final String HTTPS = "https://";
+
+        final String[] PROTOCOLS = new String[] { HTTP, HTTPS };
+
+        for (var protocol : PROTOCOLS) {
+            if (url.contains(protocol)) {
+                return protocol + url.replace(protocol, "").replace("//", "/");
+            }
+        }
+
+        return url;
+    }
 }

@@ -47,16 +47,16 @@ public class WebSubSubscriber {
         return false;
     }
 
-    private boolean discoverWebSubHub(String actionHouseUri) {
-        if (!checkUri(actionHouseUri)) {
+    private boolean discoverWebSubHub(String auctionHouseUri) {
+        if (!checkUri(auctionHouseUri)) {
             return false;
         }
 
         HttpResponse<String> response = null;
         try {
-            response = WebClient.get(actionHouseUri);
+            response = WebClient.get(auctionHouseUri);
         } catch (IOException | InterruptedException e) {
-            LOGGER.info("Failed to discover WebSubHub");
+            LOGGER.info("Failed to discover WebSubHub from Auction House with URI " + auctionHouseUri);
             return false;
         }
 
@@ -66,22 +66,22 @@ public class WebSubSubscriber {
             for (var link : split) {
                 if (link.contains("rel=\"hub\"")) {
                     var start = link.indexOf('<') + 1;
-                    var end = link.indexOf('>') - 1;
-                    hub = link.substring(start, end);
+                    var end = link.indexOf('>');
+                    hub = WebClient.normalizeUrl(link.substring(start, end));
                 } else if (link.contains("rel=\"self\"")) {
                     var start = link.indexOf('<') + 1;
-                    var end = link.indexOf('>') - 1;
-                    topic = link.substring(start, end);
+                    var end = link.indexOf('>');
+                    topic = WebClient.normalizeUrl(link.substring(start, end));
                 }
             }
         }
 
         if (hub.isEmpty() || topic.isEmpty()) {
-            LOGGER.info("Failed to discover WebSubHub");
+            LOGGER.info("Failed to discover WebSubHub from Auction House with URI " + auctionHouseUri);
             return false;
         }
 
-        LOGGER.info("Successfully discovered WebSubHub");
+        LOGGER.info("Successfully discovered WebSubHub for Auction House with URI " + auctionHouseUri);
         return true;
     }
 
@@ -107,9 +107,9 @@ public class WebSubSubscriber {
         }
 
         if (WebClient.checkResponseStatusCode(response)) {
-            LOGGER.info("Successfully subscribed to WebSubHub: " + hub);
+            LOGGER.info("Successfully subscribed to WebSubHub " + hub + " with Topic " + topic);
         } else {
-            LOGGER.warn("Failed to subscribe to WebSubHub: " + hub);
+            LOGGER.warn("Failed to subscribe to WebSubHub" + hub + " with Topic " + topic);
         }
     }
 

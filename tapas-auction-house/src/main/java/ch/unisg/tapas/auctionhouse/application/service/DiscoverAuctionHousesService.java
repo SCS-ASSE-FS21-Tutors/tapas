@@ -7,6 +7,7 @@ import ch.unisg.tapas.auctionhouse.application.port.in.DiscoverAuctionHousesComm
 import ch.unisg.tapas.auctionhouse.application.port.in.DiscoverAuctionHousesUseCase;
 import ch.unisg.tapas.auctionhouse.domain.DiscoveredAuctionHouseInfo;
 import ch.unisg.tapas.auctionhouse.domain.DiscoveredAuctionHouseRegistry;
+import ch.unisg.tapascommon.communication.ServiceHostAddresses;
 import ch.unisg.tapascommon.communication.WebClient;
 import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
@@ -26,29 +27,34 @@ public class DiscoverAuctionHousesService implements DiscoverAuctionHousesUseCas
 
     private final WebSubConfig webSubConfig;
 
+    private static final String DISCOVERY_PATH = "/discovery/";
+
     @Override
     public void discoverAuctionHouses(DiscoverAuctionHousesCommand command) {
         LOGGER.info("Start discovering Auction Houses");
         registry.clear();
         var crawledAuctionHouseUrls = new HashSet<String>();
+        crawledAuctionHouseUrls.add(ServiceHostAddresses.LOCALHOST_AUCTION_HOUSE);
+        crawledAuctionHouseUrls.add(ServiceHostAddresses.PUBLIC_AUCTION_HOUSE);
         queryAuctionHouse(crawledAuctionHouseUrls, command.getUrl(), command.getTaskTypes());
         LOGGER.info("Finished discovering Auction Houses");
         registerToWebSubHubs();
     }
 
-    private void queryAuctionHouse(
-        HashSet<String> crawledAuctionHouseUrls,
-        String url,
-        String[] taskTypes
-    ) {
+    private void queryAuctionHouse(HashSet<String> crawledAuctionHouseUrls, String url, String[] taskTypes) {
+
+        LOGGER.info("Crawling Auction House with URL: " + url);
 
         if (crawledAuctionHouseUrls.contains(url)) {
+            LOGGER.info("Skipping already crawled Auction House");
             return;
         }
 
         try {
             crawledAuctionHouseUrls.add(url);
-            var response = WebClient.get(url);
+
+            var discoveryUrl = WebClient.normalizeUrl(url + DISCOVERY_PATH);
+            var response = WebClient.get(discoveryUrl);
 
             if (!WebClient.checkResponseStatusCode(response)) {
                 LOGGER.warn("Failed to query discovery Auction House with URL: " + url);
@@ -72,6 +78,10 @@ public class DiscoverAuctionHousesService implements DiscoverAuctionHousesUseCas
     private void addAuctionHousesToRegistry(DiscoveredAuctionHouseInfo[] infos, String[] taskTypes) {
         if (taskTypes.length > 0) {
             for (var info : infos) {
+                if (info.getGroupName().equals(ServiceHostAddresses.GROUP_NAME)) {
+                    continue;
+                }
+
                 for (var infoType : info.getTaskTypes()) {
                     for (var type : taskTypes) {
                         if (infoType.equalsIgnoreCase(type)) {

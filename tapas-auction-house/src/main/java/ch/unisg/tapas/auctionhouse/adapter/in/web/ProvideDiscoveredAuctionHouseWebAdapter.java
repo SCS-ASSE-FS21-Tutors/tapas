@@ -17,7 +17,7 @@ public class ProvideDiscoveredAuctionHouseWebAdapter {
 
     private final ProvideDiscoveredAuctionHousesUseCase provideDiscoveredAuctionHousesUseCase;
 
-    @GetMapping(path = "/discovery")
+    @GetMapping(path = { "/discovery", "/discovery/" } )
     public ResponseEntity<String> handleDiscover() {
 
         var discoveredAuctionHouses = provideDiscoveredAuctionHousesUseCase.provideDiscoveredAuctionHouses(
