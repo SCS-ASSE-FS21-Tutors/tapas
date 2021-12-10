@@ -31,7 +31,7 @@ public class ProvideDiscoveredAuctionHousesService implements ProvideDiscoveredA
         ownInfo.setTaskTypes(new String[]{ Task.Type.COMPUTATION.name(), Task.Type.BIGROBOT.name() });
         ownInfo.setGroupName(webSubConfig.getGroup());
         ownInfo.setWebSubUri(ServiceHostAddresses.getAuctionHouseServiceHostAddress());
-        ownInfo.setTimestamp(Timestamp.from(ZonedDateTime.now().toInstant()));
+        ownInfo.setTimeStamp(Timestamp.from(ZonedDateTime.now().toInstant()));
 
         var infosInclusiveOwn = new ArrayList<DiscoveredAuctionHouseInfo>();
         infosInclusiveOwn.add(ownInfo);

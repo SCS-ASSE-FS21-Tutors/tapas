@@ -18,7 +18,7 @@ public class DiscoveredAuctionHouseInfo {
     private String[] taskTypes;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-    private Timestamp timestamp;
+    private Timestamp timeStamp;
 
     private String groupName;
 
@@ -28,7 +28,7 @@ public class DiscoveredAuctionHouseInfo {
             "auctionHouseUri='" + auctionHouseUri + '\'' +
             ", webSubUri='" + webSubUri + '\'' +
             ", taskTypes=" + Arrays.toString(taskTypes) +
-            ", timestamp=" + timestamp +
+            ", timeStamp=" + timeStamp +
             ", groupName='" + groupName + '\'' +
             '}';
     }
