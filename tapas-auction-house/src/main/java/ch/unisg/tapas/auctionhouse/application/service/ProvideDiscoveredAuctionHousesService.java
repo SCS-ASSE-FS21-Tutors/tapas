@@ -28,7 +28,17 @@ public class ProvideDiscoveredAuctionHousesService implements ProvideDiscoveredA
 
         var ownInfo = new DiscoveredAuctionHouseInfo();
         ownInfo.setAuctionHouseUri(ServiceHostAddresses.getAuctionHouseServiceHostAddress());
-        ownInfo.setTaskTypes(new String[]{ Task.Type.COMPUTATION.name(), Task.Type.BIGROBOT.name() });
+
+        var soughtTaskTypes = new ArrayList<String>();
+        for(var type : Task.Type.values()) {
+            if (type != Task.Type.UNKNOWN
+                && type != Task.Type.BIGROBOT
+                && type != Task.Type.COMPUTATION) {
+                soughtTaskTypes.add(type.name());
+            }
+        }
+
+        ownInfo.setTaskTypes(soughtTaskTypes.toArray(new String[0]));
         ownInfo.setGroupName(webSubConfig.getGroup());
         ownInfo.setWebSubUri(ServiceHostAddresses.getAuctionHouseServiceHostAddress());
         ownInfo.setTimeStamp(Timestamp.from(ZonedDateTime.now().toInstant()));
