@@ -35,6 +35,8 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
      */
     @Override
     public boolean handleAuctionStartedEvent(AuctionStartedEvent auctionStartedEvent) {
+        LOGGER.info("New Auction started");
+
         var auction = auctionStartedEvent.getAuctionJsonRepresentation().deserialize();
 
         var event = new QueryAvailableExecutorsFromPoolEvent();

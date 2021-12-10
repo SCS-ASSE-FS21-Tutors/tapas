@@ -25,7 +25,7 @@ public class AuctionStartedEventListenerWebSubAdapter {
         for (var auction : openAuctionsJsonArray) {
             try {
                 openAuctions.add(AuctionJsonRepresentation.fromJsonString(auction.toString()));
-                LOGGER.debug("Parsed new open auction from AuctionStartedEvent via WebSub");
+                LOGGER.info("Parsed new open auction from AuctionStartedEvent via WebSub");
             } catch (JsonProcessingException e) {
                 LOGGER.warn("Failed to parse open auction from AuctionStartedEvent via WebSub");
             }

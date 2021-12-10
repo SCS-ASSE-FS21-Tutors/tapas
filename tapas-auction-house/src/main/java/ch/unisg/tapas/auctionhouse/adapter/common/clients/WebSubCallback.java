@@ -49,6 +49,7 @@ public class WebSubCallback {
     @PostMapping(path = "/subscribe")
     public ResponseEntity<String> handleCallback(
         @RequestBody Optional<String> bodyOptional) {
+        LOGGER.info("WebSub Callback");
         bodyOptional.ifPresent(auctionStartedEventListenerWebSubAdapter::handleAuctionStartedEvent);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
