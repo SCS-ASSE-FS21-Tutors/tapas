@@ -21,13 +21,6 @@
     </parent>
 
     <dependencies>
-        <dependency>
-            <groupId>org.eclipse.rdf4j</groupId>
-            <artifactId>rdf4j-runtime</artifactId>
-            <version>3.7.4</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/eclipse-rdf4j-3.7.4-onejar.jar</systemPath>
-        </dependency>
 
         <dependency>
             <groupId>ch.unisg.tapas-base</groupId>
@@ -54,7 +47,7 @@
         <dependency>
             <groupId>com.github.Interactions-HSG</groupId>
             <artifactId>wot-td-java</artifactId>
-            <version>v0.1.0</version>
+            <version>v0.1.1</version>
         </dependency>
     </dependencies>
 
