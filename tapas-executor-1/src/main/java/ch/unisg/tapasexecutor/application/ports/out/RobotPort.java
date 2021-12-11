@@ -2,5 +2,5 @@ package ch.unisg.tapasexecutor.application.ports.out;
 
 public interface RobotPort {
 
-    String executeTask(String inputValue);
+    String executeTask(String inputValue, String robotTDUri);
 }

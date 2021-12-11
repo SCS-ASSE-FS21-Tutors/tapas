@@ -3,7 +3,6 @@ package ch.unisg.tapasexecutor.adapters.out;
 import ch.unisg.tapasexecutor.adapters.out.robot.RobotApi;
 import ch.unisg.tapasexecutor.application.ports.out.RobotPort;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import java.time.Duration;
@@ -13,8 +12,6 @@ import java.time.Instant;
 @Component
 public class RobotHttpAdapter implements RobotPort {
 
-    @Value("${ch.tapas.executor-1.robot-api-url}")
-    private String robotApiUrl;
 
     /**
      * Receives and input string (from the task object) executes the task
@@ -24,11 +21,11 @@ public class RobotHttpAdapter implements RobotPort {
      * @return
      */
     @Override
-    public String executeTask(String inputValue) {
+    public String executeTask(String inputValue, String robotTDUri) {
 
         var start = Instant.now();
 
-        try (var api = RobotApi.open(robotApiUrl)) {
+        try (var api = RobotApi.open(robotTDUri)) {
 
             api.dance();
 
