@@ -1,15 +1,15 @@
 package ch.unisg.tapasexecutorpool;
 
+import ch.unisg.tapasexecutorpool.pool.application.port.out.LoadExecutorListPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.util.Arrays;
+import java.util.List;
 
 @Log
 @Component
@@ -21,24 +21,17 @@ public class TestDbSetup implements CommandLineRunner {
     @Autowired
     Environment env;
 
+    @Autowired
+    LoadExecutorListPort loadExecutorListPort;
+
     @Override
     public void run(String... args) {
 
-        var isLocal = Arrays.stream(env.getActiveProfiles()).anyMatch(p -> "local".equals(p));
+        List<Executor> executorList = loadExecutorListPort.loadExecutorList();
 
-        repository.addExecutor(new Executor(
-                new Executor.ExecutorName("Executor 1 - Robot"),
-                new Executor.ExecutorType("SMALLROBOT"),
-                new Executor.ExecutorUrl(isLocal ? "http://localhost:8091" : "http://tapas-executor-1:8091")));
-
-        repository.addExecutor(new Executor(
-                new Executor.ExecutorName("Executor 2 - Calculation"),
-                new Executor.ExecutorType("COMPUTATION"),
-                new Executor.ExecutorUrl(isLocal ? "http://localhost:8092" : "http://tapas-executor-2:8092")));
-
-        repository.addExecutor(new Executor(
-                new Executor.ExecutorName("Executor 3 - Miro Card"),
-                new Executor.ExecutorType("HUMIDITY"),
-                new Executor.ExecutorUrl(isLocal ? "http://localhost:8093" : "http://tapas-executor-3:8093")));
+        for(Executor executor: executorList){
+            log.info("Retrieved persistent executor from DB: " + executor.getExecutorName());
+            repository.addExecutor(executor);
+        }
     }
 }
