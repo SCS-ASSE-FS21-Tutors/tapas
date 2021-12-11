@@ -16,6 +16,7 @@ import org.springframework.stereotype.Component;
 import java.util.LinkedList;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.stream.Collectors;
 
 @Log
 @Component
@@ -101,7 +102,11 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
         Executor assignedExecutor = null;
 
         // Checks for the first available executor
-        for (Executor executor : repository.getExecutors()) {
+        var suitableExecutors = repository.getExecutors().stream()
+                .filter(e -> e.getExecutorType().getValue().equals(task.getTaskType().getValue()))
+                .collect(Collectors.toList());
+
+        for (Executor executor : suitableExecutors) {
             if (executor.getExecutorState().getValue().equals(Executor.State.AVAILABLE)) {
                 assignedExecutor = executor;
             }

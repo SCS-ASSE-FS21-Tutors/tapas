@@ -2,6 +2,7 @@ package ch.unisg.tapastasks.tasks.application.service;
 
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
+import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskListPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
@@ -21,8 +22,9 @@ public class AddNewTaskToTaskListServiceTest {
     private final AddTaskPort addTaskPort = Mockito.mock(AddTaskPort.class);
     private final TaskListLock taskListLock = Mockito.mock(TaskListLock.class);
     private final NewTaskAddedEventPort newTaskAddedEventPort = Mockito.mock(NewTaskAddedEventPort.class);
+    private final LoadTaskListPort loadTaskListPort = Mockito.mock(LoadTaskListPort.class);
     private final AddNewTaskToTaskListService addNewTaskToTaskListService = new AddNewTaskToTaskListService(
-        newTaskAddedEventPort, addTaskPort, taskListLock);
+        "tapas-tasks-group3", loadTaskListPort, newTaskAddedEventPort, addTaskPort, taskListLock);
 
     @Test
     void addingSucceeds() {

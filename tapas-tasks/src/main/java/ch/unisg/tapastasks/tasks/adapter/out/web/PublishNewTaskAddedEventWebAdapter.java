@@ -1,22 +1,16 @@
 package ch.unisg.tapastasks.tasks.adapter.out.web;
 
-import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonPatchRepresentation;
 import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
-import ch.unisg.tapastasks.tasks.domain.Task;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.HashMap;
-import java.util.concurrent.ExecutionException;
 
 @Component
 @Primary
@@ -27,12 +21,12 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
     private String server;
 
     @Override
-    public void publishNewTaskAddedEvent(Task task) {
+    public void publishNewTaskAddedEvent(NewTaskAddedEvent newTaskAddedEvent) {
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
         try{
 
-            String taskJson = TaskJsonRepresentation.serialize(task);
+            String taskJson = TaskJsonRepresentation.serialize(newTaskAddedEvent.getTask());
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(server+"roster/newtask/"))

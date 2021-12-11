@@ -45,6 +45,10 @@ jobs:
       run: mvn -f tapas-executor-2/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-executor-2/target/tapas-executor-2-0.0.1-SNAPSHOT.jar ./target
 
+    - name: Build Executor 3
+      run: mvn -f tapas-executor-3/pom.xml --batch-mode --update-snapshots verify
+    - run: cp ./tapas-executor-3/target/tapas-executor-3-0.0.1-SNAPSHOT.jar ./target
+
     - name: Build Auction House
       run: mvn -f tapas-auction-house/pom.xml --batch-mode --update-snapshots verify
     - run: cp ./tapas-auction-house/target/tapas-auction-house-0.0.1-SNAPSHOT.jar ./target

@@ -36,3 +36,9 @@ services:
       - ./data:/data/
     ports:
       - "8092:8092"
+
+  tapas-executor-3:
+    volumes:
+      - ./data:/data/
+    ports:
+      - "8093:8093"

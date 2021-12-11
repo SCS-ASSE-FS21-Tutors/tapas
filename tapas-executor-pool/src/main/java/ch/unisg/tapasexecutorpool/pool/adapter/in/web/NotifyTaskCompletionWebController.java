@@ -1,7 +1,9 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
+import ch.unisg.tapasexecutorpool.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionUseCase;
+import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpHeaders;
@@ -20,11 +22,12 @@ public class NotifyTaskCompletionWebController {
         this.notifyTaskCompletionUseCase = notifyTaskCompletionUseCase;
     }
 
-    @PutMapping(path = "/completion")
-    public ResponseEntity<String> notifyTaskCompletion(@RequestBody ObjectNode json) {
+    @PutMapping(path = "/completion", consumes = TaskJsonRepresentation.MEDIA_TYPE)
+    public ResponseEntity<String> notifyTaskCompletion(@RequestBody TaskJsonRepresentation payload) {
         try {
-            String taskId = json.get("taskId").asText();
-            String outputData = json.get("outputData").asText();
+            Task task = TaskJsonRepresentation.toTask(payload);
+            String taskId = task.getTaskId().getValue();
+            String outputData = task.getOutputData().getValue();
 
             NotifyTaskCompletionCommand command = new NotifyTaskCompletionCommand(
                     taskId, outputData

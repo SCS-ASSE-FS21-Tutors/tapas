@@ -1,12 +1,14 @@
 package ch.unisg.tapastasks.tasks.domain;
 
-/**This is a domain event (these are usually much fatter)**/
+import lombok.Value;
+
+@Value
 public class NewTaskAddedEvent {
-    public String taskName;
+    public Task task;
     public String taskListName;
 
-    public NewTaskAddedEvent(String taskName, String taskListName) {
-        this.taskName = taskName;
+    public NewTaskAddedEvent(Task task, String taskListName) {
+        this.task = task;
         this.taskListName = taskListName;
     }
 }

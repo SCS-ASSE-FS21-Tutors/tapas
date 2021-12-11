@@ -15,7 +15,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Component
 @Transactional
-@Service("RetrieveTaskFromTaskList")
 public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskListUseCase {
 
     private final LoadTaskPort loadTaskFromRepositoryPort;
