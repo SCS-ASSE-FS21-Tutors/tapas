@@ -1,10 +1,12 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
 import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskListPort;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
+import ch.unisg.tapastasks.tasks.domain.Task;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 public class TaskListOverviewController {
@@ -21,14 +23,14 @@ public class TaskListOverviewController {
         // By navigating to this site, we can check all out tasks
         String taskListString = "";
 
-        TaskList taskList = loadTaskListPort.loadTaskList(new TaskList.TaskListName(taskListName));
+        List<Task> taskList = loadTaskListPort.loadTaskList();
 
-        for (int i = 0; i < taskList.getListOfTasks().getValue().size(); i++) {
-            taskListString += "<li>" + taskList.getListOfTasks().getValue().get(i).toString() + "</li>";
+        for (Task task: taskList) {
+            taskListString += "<li>" + task.toString() + "</li>";
         }
 
         return "<html><body>" +
-            "<h1>Task List</h1>" +
+            "<h1>Task List "+taskListName +"</h1>" +
             "<ul>" + taskListString +
             "</ul>" +
             "</body></html>";

@@ -1,20 +1,16 @@
 package ch.unisg.tapastasks.tasks.application.service;
 
-import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.out.AddTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskListPort;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.application.port.out.TaskListLock;
-import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
 import ch.unisg.tapastasks.tasks.domain.Task;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.Optional;
 
 import static org.mockito.BDDMockito.*;
-import static org.assertj.core.api.Assertions.*;
 
 
 public class AddNewTaskToTaskListServiceTest {
@@ -22,9 +18,8 @@ public class AddNewTaskToTaskListServiceTest {
     private final AddTaskPort addTaskPort = Mockito.mock(AddTaskPort.class);
     private final TaskListLock taskListLock = Mockito.mock(TaskListLock.class);
     private final NewTaskAddedEventPort newTaskAddedEventPort = Mockito.mock(NewTaskAddedEventPort.class);
-    private final LoadTaskListPort loadTaskListPort = Mockito.mock(LoadTaskListPort.class);
     private final AddNewTaskToTaskListService addNewTaskToTaskListService = new AddNewTaskToTaskListService(
-        "tapas-tasks-group3", loadTaskListPort, newTaskAddedEventPort, addTaskPort, taskListLock);
+        "tapas-tasks-group3", newTaskAddedEventPort, addTaskPort, taskListLock);
 
     @Test
     void addingSucceeds() {
@@ -46,10 +41,6 @@ public class AddNewTaskToTaskListServiceTest {
         */
     }
 
-    private TaskList givenAnEmptyTaskList(TaskList taskList) {
-        taskList.getListOfTasks().getValue().clear();
-        return taskList;
-    }
 
     private Task givenATaskWithNameAndTypeAndURI(Task.TaskName taskName, Task.TaskType taskType,
                                                  Optional<Task.OriginalTaskUri> originalTaskUri) {
