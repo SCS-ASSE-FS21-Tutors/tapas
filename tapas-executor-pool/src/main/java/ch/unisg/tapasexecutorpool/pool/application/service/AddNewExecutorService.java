@@ -16,15 +16,14 @@ import java.util.Collection;
 @Component
 public class AddNewExecutorService implements AddNewExecutorToExecutorPoolUseCase, ListExecutorsQuery {
 
-    @Autowired
     public ExecutorRepository repository;
 
-    @Autowired
     private AddExecutorPort addExecutorPort;
 
     @Autowired
-    public AddNewExecutorService(ExecutorRepository repository) {
+    public AddNewExecutorService(ExecutorRepository repository, AddExecutorPort addExecutorPort) {
         this.repository = repository;
+        this.addExecutorPort = addExecutorPort;
     }
 
     @Override
