@@ -12,6 +12,7 @@ public class ServiceHostAddresses {
     public static final String LOCALHOST_EXECUTOR_POOL = "http://127.0.0.1:8083";
     public static final String LOCALHOST_EXECUTOR_COMPUTATION = "http://127.0.0.1:8084";
     public static final String LOCALHOST_EXECUTOR_BIGROBOT = "http://127.0.0.1:8085";
+    public static final String LOCALHOST_EXECUTOR_MIRO = "http://127.0.0.1:8087";
     public static final String LOCALHOST_AUCTION_HOUSE = "http://127.0.0.1:8086";
 
     public static final String PUBLIC_TASKS = "https://tapas-tasks.86-119-35-199.nip.io";
@@ -19,6 +20,7 @@ public class ServiceHostAddresses {
     public static final String PUBLIC_EXECUTOR_POOL = "https://tapas-executor-pool.86-119-35-199.nip.io";
     public static final String PUBLIC_EXECUTOR_COMPUTATION = "https://tapas-executor-computation.86-119-35-199.nip.io";
     public static final String PUBLIC_EXECUTOR_BIGROBOT = "https://tapas-executor-bigrobot.86-119-35-199.nip.io";
+    public static final String PUBLIC_EXECUTOR_MIRO = "https://tapas-executor-miro.86-119-35-199.nip.io";
     public static final String PUBLIC_AUCTION_HOUSE = "https://tapas-auction-house.86-119-35-199.nip.io";
 
     public static String getTaskServiceHostAddress() {

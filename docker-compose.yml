@@ -116,6 +116,21 @@ services:
       - "traefik.http.routers.tapas-executor-bigrobot.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-executor-bigrobot.tls.certresolver=le"
 
+  tapas-executor-miro:
+    image: openjdk
+    command: "java -jar /data/tapas-executor-miro-0.0.1-SNAPSHOT.jar"
+    restart: unless-stopped
+    volumes:
+      - ./:/data/
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.tapas-executor-miro.rule=Host(`tapas-executor-miro.${PUB_IP}.nip.io`)"
+      - "traefik.http.routers.tapas-executor-miro.service=tapas-executor-miro"
+      - "traefik.http.services.tapas-executor-miro.loadbalancer.server.port=8087"
+      - "traefik.http.routers.tapas-executor-miro.tls=true"
+      - "traefik.http.routers.tapas-executor-miro.entryPoints=web,websecure"
+      - "traefik.http.routers.tapas-executor-miro.tls.certresolver=le"
+
   tapas-auction-house:
     image: openjdk
     command: "java -jar /data/tapas-auction-house-0.0.1-SNAPSHOT.jar"
@@ -130,6 +145,7 @@ services:
       - "traefik.http.routers.tapas-auction-house.tls=true"
       - "traefik.http.routers.tapas-auction-house.entryPoints=web,websecure"
       - "traefik.http.routers.tapas-auction-house.tls.certresolver=le"
+      -
 
   mongodb:
     image: mongo
