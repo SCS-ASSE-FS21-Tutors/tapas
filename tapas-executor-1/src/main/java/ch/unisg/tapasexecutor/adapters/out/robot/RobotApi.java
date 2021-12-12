@@ -57,12 +57,9 @@ public class RobotApi implements Closeable {
         body.put("name", "TAPAS Group 3");
         body.put("email", "weDontHaveAEmailButYouCanOpenAIssueONGitHub@tapas.SCS-ASSE-FS21-Group3.github.com");
 
-        // TODO: This request cannot be decoupled, because there is no option to retrieve headers from TDHttpResponse
-        // https://github.com/Interactions-HSG/wot-td-java/issues/67
-        var response = makeRequest("POST", "user", body);
+        var response = makeRequestDecoupled("logIn",  body);
 
-        var location = response.headers().firstValue("Location");
-        this.apiKeyDeleteEndpoint = location.get();
+        this.apiKeyDeleteEndpoint = response.getHeaders().get("Location");
         var idx = apiKeyDeleteEndpoint.lastIndexOf("/");
         this.apiKey = apiKeyDeleteEndpoint.substring(idx + 1);
     }
