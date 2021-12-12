@@ -18,7 +18,6 @@ public class ExecutorPersistenceAdapter implements
         LoadExecutorPort ,
         LoadExecutorListPort {
 
-    @Autowired
     private final ExecutorRepository executorRepository;
 
     private final ExecutorMapper executorMapper;
