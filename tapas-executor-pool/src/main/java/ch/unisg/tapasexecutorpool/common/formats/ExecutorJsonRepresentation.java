@@ -1,10 +1,10 @@
-package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
+package ch.unisg.tapasexecutorpool.common.formats;
 
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import org.json.JSONObject;
 
-final public class ExecutorMediaType {
-    public static final String EXECUTOR_MEDIA_TYPE = "application/json";
+final public class ExecutorJsonRepresentation {
+    public static final String MEDIA_TYPE = "application/json";
 
     public static String serialize(Executor executor) {
         JSONObject payload = new JSONObject();
@@ -13,9 +13,10 @@ final public class ExecutorMediaType {
         payload.put("executorName", executor.getExecutorName().getValue());
         payload.put("executorType", executor.getExecutorType().getValue());
         payload.put("executorState", executor.getExecutorState().getValue());
+        payload.put("executorUrl", executor.getExecutorUrl().getValue());
 
         return payload.toString();
     }
 
-    private ExecutorMediaType() { }
+    private ExecutorJsonRepresentation() { }
 }

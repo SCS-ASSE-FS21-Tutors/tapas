@@ -1,5 +1,7 @@
 package ch.unisg.tapasexecutorpool.integration;
 
+import ch.unisg.tapasexecutorpool.common.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapasexecutorpool.common.formats.NewExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.adapter.out.persistence.mongodb.ExecutorPersistenceAdapter;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -32,16 +34,15 @@ public class AddNewExecutorIntegrationTest {
     public void AddNewExecutorTest() throws Exception{
 
         // ARRANGE
-        Executor executor = new Executor(
-                new Executor.ExecutorName("Name"),
-                new Executor.ExecutorType("Type"),
-                new Executor.ExecutorUrl("Url"));
+        NewExecutorJsonRepresentation newExecutorJsonRepresentation = new NewExecutorJsonRepresentation(
+                "Name",
+                "Type",
+                "Url");
 
         ObjectMapper om = new ObjectMapper();
-        String requestBody = om.writeValueAsString(executor);
-        Executor copy = om.readValue(requestBody, Executor.class);
+        String requestBody = om.writeValueAsString(newExecutorJsonRepresentation);
 
-        long countBefore = repository.getExecutors().stream().count();
+        long countBefore = repository.getExecutors().size();
 
         // ACT
         mockMvc.perform(
@@ -51,7 +52,7 @@ public class AddNewExecutorIntegrationTest {
                 .andExpect(status().isCreated());
 
         // Assert
-        long countAfter = repository.getExecutors().stream().count();
+        long countAfter = repository.getExecutors().size();
         assertEquals(1, countAfter - countBefore, "Count of stored executors in not increased by one");
     }
 }

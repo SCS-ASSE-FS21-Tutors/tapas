@@ -1,5 +1,7 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
+import ch.unisg.tapasexecutorpool.common.formats.ExecutorJsonRepresentation;
+import ch.unisg.tapasexecutorpool.common.formats.NewExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ListExecutorsQuery;
@@ -27,20 +29,22 @@ public class AddNewExecutorToExecutorPoolWebController {
     private ListExecutorsQuery listExecutorsQuery;
 
 
-    @PostMapping(path = "/executors/", consumes = {ExecutorMediaType.EXECUTOR_MEDIA_TYPE})
-    public ResponseEntity<String> addNewExecutorToExecutorPool(@RequestBody Executor executor) {
+    @PostMapping(path = "/executors/", consumes = {NewExecutorJsonRepresentation.MEDIA_TYPE})
+    public ResponseEntity<String> addNewExecutorToExecutorPool(@RequestBody NewExecutorJsonRepresentation payload) {
         try {
             AddNewExecutorToExecutorPoolCommand command = new AddNewExecutorToExecutorPoolCommand(
-                    executor.getExecutorName(), executor.getExecutorType(), executor.getExecutorUrl()
+                    new Executor.ExecutorName(payload.getExecutorName()),
+                    new Executor.ExecutorType(payload.getExecutorType()),
+                    new Executor.ExecutorUrl(payload.getExecutorUrl())
             );
 
             Executor newExecutor = addNewExecutorToExecutorPoolUseCase.addNewExecutorToExecutorPool(command);
 
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
+            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorJsonRepresentation.MEDIA_TYPE);
 
-            return new ResponseEntity<>(ExecutorMediaType.serialize(newExecutor), responseHeaders, HttpStatus.CREATED);
+            return new ResponseEntity<>(ExecutorJsonRepresentation.serialize(newExecutor), responseHeaders, HttpStatus.CREATED);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }

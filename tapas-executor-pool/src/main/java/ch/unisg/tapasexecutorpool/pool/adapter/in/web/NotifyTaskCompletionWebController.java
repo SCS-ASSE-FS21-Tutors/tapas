@@ -1,11 +1,10 @@
 package ch.unisg.tapasexecutorpool.pool.adapter.in.web;
 
+import ch.unisg.tapasexecutorpool.common.formats.ExecutorJsonRepresentation;
 import ch.unisg.tapasexecutorpool.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionCommand;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.NotifyTaskCompletionUseCase;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,10 +34,8 @@ public class NotifyTaskCompletionWebController {
 
             notifyTaskCompletionUseCase.notifyTaskCompletion(command);
 
-            // Add the content type as a response header
+            // Respond with HTTP OK code
             HttpHeaders responseHeaders = new HttpHeaders();
-            responseHeaders.add(HttpHeaders.CONTENT_TYPE, ExecutorMediaType.EXECUTOR_MEDIA_TYPE);
-
             return new ResponseEntity<>(responseHeaders, HttpStatus.OK);
         } catch (ConstraintViolationException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
