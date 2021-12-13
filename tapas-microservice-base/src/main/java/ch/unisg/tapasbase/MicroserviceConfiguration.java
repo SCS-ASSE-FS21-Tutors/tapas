@@ -3,9 +3,15 @@ package ch.unisg.tapasbase;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
+import io.swagger.v3.oas.models.servers.Server;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.filter.CommonsRequestLoggingFilter;
+import org.springframework.web.filter.ForwardedHeaderFilter;
+import org.thymeleaf.spring5.SpringTemplateEngine;
+
+import java.util.List;
 
 /**
  * This class provides a basic configuration for all microservices
@@ -49,8 +55,14 @@ public class MicroserviceConfiguration {
      * @return
      */
     @Bean
-    public HelloController helloController(){
-        return new HelloController(appName);
+    public HelloController helloController(@Autowired SpringTemplateEngine templateEngine){
+
+        return new HelloController(appName, templateEngine);
+    }
+
+    @Bean
+    ForwardedHeaderFilter forwardedHeaderFilter() {
+        return new ForwardedHeaderFilter();
     }
 
 

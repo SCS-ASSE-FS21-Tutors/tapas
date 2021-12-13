@@ -1,5 +1,6 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.messaging.websub;
 
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,8 +21,9 @@ public class WebSubDiscoveryController {
 
 
     @GetMapping(path = "/websub-discovery")
+    @Operation(summary = "Returns the URI of our hub and the subscription endpoint")
     public ResponseEntity getHubUri() {
-        // This Endpoint returns the URI of our hub and the subscription endpoint
+
         log.info("Received discovery request");
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link",

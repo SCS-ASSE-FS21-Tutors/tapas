@@ -13,6 +13,7 @@ import java.util.Collection;
 public class AuctionHouseInformationService implements RetrieveAuctionHouseInformationQuery, StoreKnownAuctionHouseUseCase {
 
     private AuctionHouseInformationRegistry registry = new AuctionHouseInformationRegistry();
+    private AuctionHouseInformationRegistry registryPropagating = new AuctionHouseInformationRegistry();
 
     @Override
     public void storeKnownAuctionHouse(StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand){
@@ -21,8 +22,19 @@ public class AuctionHouseInformationService implements RetrieveAuctionHouseInfor
     }
 
     @Override
+    public void storeAuctionHouseToPropagate(StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand){
+        registryPropagating.addAuctionHouseInformation(storeKnownAuctionHouseCommand.getAuctionHouseInformation());
+    }
+
+    @Override
     public Collection<AuctionHouseInformation> loadKnownAuctionHouses(){
 
         return registry.getAuctionHouses();
+    }
+
+    @Override
+    public Collection<AuctionHouseInformation> loadPropagatedAuctionHouses(){
+
+        return registryPropagating.getAuctionHouses();
     }
 }

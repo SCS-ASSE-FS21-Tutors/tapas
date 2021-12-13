@@ -26,8 +26,8 @@ public class HypermediaDiscoveryIntegrationTest {
         mockMvc.perform(MockMvcRequestBuilders.get("/discovery/")
             .header("Content-Type", "application/auctionhousediscovery+json"))
             .andExpect(status().isOk())
-            .andExpect(jsonPath("$.auctionHouseInfo[0].auctionhouseuri").isString())
-            .andExpect(jsonPath("$.auctionHouseInfo[0].websuburi").isString())
+            .andExpect(jsonPath("$.auctionHouseInfo[0].auctionHouseUri").isString())
+            .andExpect(jsonPath("$.auctionHouseInfo[0].webSubUri").isString())
             .andExpect(jsonPath("$.auctionHouseInfo[0].taskTypes").isArray())
             .andExpect(jsonPath("$.auctionHouseInfo[0].timeStamp").isString())
             .andExpect(jsonPath("$.auctionHouseInfo[0].groupName").isString());

@@ -7,6 +7,7 @@ import ch.unisg.tapas.auctionhouse.domain.Auction;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,7 @@ public class RetrieveOpenAuctionsWebController {
      * @return a representation of a collection with the auctions that are open for bids
      */
     @GetMapping(path = "/auctions/")
+    @Operation(summary = "Retrieve open auctions")
     public ResponseEntity<String> retrieveOpenAuctions() {
         Collection<Auction> auctions =
             retrieveAuctionListUseCase.retrieveAuctions(new RetrieveOpenAuctionsQuery());

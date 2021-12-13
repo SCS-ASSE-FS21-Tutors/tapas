@@ -4,9 +4,12 @@ import io.swagger.v3.oas.annotations.Hidden;
 import lombok.extern.java.Log;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.thymeleaf.context.Context;
+import org.thymeleaf.spring5.SpringTemplateEngine;
 
 @Log
 @Hidden
@@ -14,22 +17,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class HelloController {
 
     private String appName;
+    private SpringTemplateEngine templateEngine;
 
-    public HelloController(@Value("${spring.application.name:Please set spring.application.name}") String appName) {
+    public HelloController(String appName, SpringTemplateEngine templateEngine) {
         this.appName = appName;
+        this.templateEngine = templateEngine;
     }
 
     @RequestMapping("/")
     String index() {
 
-        log.info("Hello Request");
-        return "<html><body>" +
-                "<h1>"+appName+" Group 3</h1>" +
-                "<ul>" +
-                "<li><a href=\"v3/api-docs\" target=\"_blank\">API Docs</a></li>" +
-                "<li><a href=\"swagger-ui.html\" target=\"_blank\">Swagger</a></li>" +
-                "</ul>" +
-                "</body></html>";
+        Context myContext = new Context();
+        myContext.setVariable("appName", appName);
+
+        String htmlTemplate = templateEngine.process("hello.html", myContext);
+        return htmlTemplate;
     }
     
 }
