@@ -8,6 +8,7 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -16,13 +17,16 @@ public class TaskExecutedHandler implements TaskExecutedEventHandler {
     private final String taskListName;
     private final UpdateTaskPort updateTaskPort;
     private final TaskListLock taskListLock;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     public TaskExecutedHandler(@Value("${task.list.name}") String taskListName,
                                UpdateTaskPort updateTaskPort,
-                               TaskListLock taskListLock) {
+                               TaskListLock taskListLock,
+                               ApplicationEventPublisher applicationEventPublisher) {
         this.taskListName = taskListName;
         this.updateTaskPort = updateTaskPort;
         this.taskListLock = taskListLock;
+        this.applicationEventPublisher = applicationEventPublisher;
     }
     @Override
     public Task handleTaskExecuted(TaskExecutedEvent taskExecutedEvent) throws TaskNotFoundException {
@@ -31,6 +35,8 @@ public class TaskExecutedHandler implements TaskExecutedEventHandler {
         Task task = updateTaskPort.updateTask(taskExecutedEvent.getTaskId(),
             new Task.TaskStatus(Task.Status.EXECUTED), taskExecutedEvent.getServiceProvider(), taskExecutedEvent.getOutputData());
         taskListLock.releaseTaskList(taskListName);
+
+        applicationEventPublisher.publishEvent(new TasksChangedEvent(this));
 
         return task;
     }

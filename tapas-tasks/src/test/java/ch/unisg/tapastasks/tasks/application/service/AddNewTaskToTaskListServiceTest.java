@@ -19,7 +19,7 @@ public class AddNewTaskToTaskListServiceTest {
     private final TaskListLock taskListLock = Mockito.mock(TaskListLock.class);
     private final NewTaskAddedEventPort newTaskAddedEventPort = Mockito.mock(NewTaskAddedEventPort.class);
     private final AddNewTaskToTaskListService addNewTaskToTaskListService = new AddNewTaskToTaskListService(
-        "tapas-tasks-group3", newTaskAddedEventPort, addTaskPort, taskListLock);
+        "tapas-tasks-group3", newTaskAddedEventPort, addTaskPort, taskListLock, null);
 
     @Test
     void addingSucceeds() {

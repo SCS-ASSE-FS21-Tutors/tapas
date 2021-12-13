@@ -4,6 +4,7 @@ import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskListPort;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.thymeleaf.context.Context;
@@ -21,7 +22,7 @@ public class TaskListOverviewController {
     @Autowired
     private SpringTemplateEngine templateEngine;
 
-    @RequestMapping("/tasklist")
+    @GetMapping("/tasklist")
     String taskListHtml() {
 
         // By navigating to this site, we can check all out tasks
