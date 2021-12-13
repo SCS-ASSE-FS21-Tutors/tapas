@@ -1,5 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.in.web;
 
+import ch.unisg.tapastasks.tasks.adapter.in.formats.NewTaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand;
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.ConstraintViolationException;
-import java.util.Optional;
 
 /**
  * Controller that handles HTTP requests for creating new tasks. This controller implements the
@@ -43,34 +43,21 @@ public class AddNewTaskToTaskListWebController {
         this.addNewTaskToTaskListUseCase = addNewTaskToTaskListUseCase;
     }
 
-    @PostMapping(path = "/tasks/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
-    public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody TaskJsonRepresentation payload) {
+    @PostMapping(path = "/tasks/", consumes = {NewTaskJsonRepresentation.MEDIA_TYPE})
+    public ResponseEntity<String> addNewTaskTaskToTaskList(@RequestBody NewTaskJsonRepresentation payload) {
         try {
             Task.TaskName taskName = new Task.TaskName(payload.getTaskName());
             Task.TaskType taskType = new Task.TaskType(payload.getTaskType());
+            Task.InputData inputData = new Task.InputData(payload.getInputData());
 
-            // If the created task is a delegated task, the representation contains a URI reference
-            // to the original task
-            Optional<Task.OriginalTaskUri> originalTaskUriOptional =
-                (payload.getOriginalTaskUri() == null) ? Optional.empty()
-                : Optional.of(new Task.OriginalTaskUri(payload.getOriginalTaskUri()));
 
-            AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType,
-                originalTaskUriOptional, new Task.InputData(payload.getInputData()));
+            AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType, inputData);
 
             Task createdTask = addNewTaskToTaskListUseCase.addNewTaskToTaskList(command);
 
-            // When creating a task, the task's representation may include optional input data
-            // WHy the Hell is input data set after the event is sent
-            /*
-            if (payload.getInputData() != null) {
-                createdTask.setInputData(new Task.InputData(payload.getInputData()));
-            }
-            */
             // Add the content type as a response header
             HttpHeaders responseHeaders = new HttpHeaders();
             responseHeaders.add(HttpHeaders.CONTENT_TYPE, TaskJsonRepresentation.MEDIA_TYPE);
-            // Construct and advertise the URI of the newly created task; we retrieve the base URI
             // from the application.properties file
             responseHeaders.add(HttpHeaders.LOCATION, environment.getProperty("baseuri")
                 + "tasks/" + createdTask.getTaskId().getValue());

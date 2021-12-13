@@ -1,6 +1,7 @@
 package ch.unisg.tapasexecutorpool.unit.service;
 
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolCommand;
+import ch.unisg.tapasexecutorpool.pool.application.port.out.AddExecutorPort;
 import ch.unisg.tapasexecutorpool.pool.application.port.repository.ExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.application.service.AddNewExecutorService;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -16,7 +17,8 @@ public class AddNewExecutorServiceTest {
 
         // ARRANGE
         var mockRepo = mock(ExecutorRepository.class);
-        var service = new AddNewExecutorService(mockRepo);
+        var mockPort = mock(AddExecutorPort.class);
+        var service = new AddNewExecutorService(mockRepo, mockPort);
         var command = new AddNewExecutorToExecutorPoolCommand(
                 new Executor.ExecutorName("Somename"),
                 new Executor.ExecutorType("Sometype"),

@@ -1,6 +1,5 @@
 package ch.unisg.tapasexecutorpool.pool.domain;
 
-import ch.unisg.tapasexecutorpool.pool.adapter.in.web.AddNewExecutorToExecutorPoolWebController;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 
@@ -39,18 +38,20 @@ public class Executor {
     private final ExecutorUrl executorUrl;
 
     public Executor(ExecutorName executorName, ExecutorType executorType, ExecutorUrl executorUrl) {
+        this.executorId = new ExecutorId(UUID.randomUUID().toString());
         this.executorName = executorName;
         this.executorType = executorType;
         this.executorState = new ExecutorState(State.AVAILABLE);
         this.assignedTask = null;
-        this.executorId = new ExecutorId(UUID.randomUUID().toString());
         this.executorUrl = executorUrl;
     }
-
-    protected static Executor createExecutor(ExecutorName name, ExecutorType type, ExecutorUrl url) {
-        //This is a simple debug message to see that the request has reached the right method in the core
-        System.out.println("New Executor: " + name.getValue() + " " + type.getValue() + " " + url.getValue());
-        return new Executor(name, type, url);
+    public Executor(ExecutorId executorId, ExecutorName executorName, ExecutorType executorType, ExecutorUrl executorUrl) {
+        this.executorId = executorId;
+        this.executorName = executorName;
+        this.executorType = executorType;
+        this.executorState = new ExecutorState(State.AVAILABLE);
+        this.assignedTask = null;
+        this.executorUrl = executorUrl;
     }
 
     @Value
