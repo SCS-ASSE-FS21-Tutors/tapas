@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.github.Interactions-HSG</groupId>
 			<artifactId>wot-td-java</artifactId>
-			<version>v0.1.1</version>
+			<version>master-SNAPSHOT</version>
 		</dependency>
 	</dependencies>
 

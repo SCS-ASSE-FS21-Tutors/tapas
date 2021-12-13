@@ -33,12 +33,11 @@ public class RobotService implements IsTaskAcceptableQuery, ExecuteRobotTaskUseC
         if (!isAcceptable(task))
             throw new IllegalArgumentException("Task is not acceptable");
 
-        // TODO: Temporarily hardcoded because the search engine server is extremely unstable
-        String robotTDUri = "http://yggdrasil.interactions.ics.unisg.ch/environments/61/workspaces/102/artifacts/leubot1";
-        //Optional<String> robotTDUriOptional = querySearchEnginePort.querySearchEngine();
-        //if (robotTDUriOptional.isEmpty())
-        //    throw new RuntimeException("No TD uri could be returned from search engine");
-        //String robotTDUri = robotTDUriOptional.get();
+        // Query Search engine for things description of robot
+        Optional<String> robotTDUriOptional = querySearchEnginePort.querySearchEngine();
+        if (robotTDUriOptional.isEmpty())
+            throw new RuntimeException("No TD uri could be returned from search engine");
+        String robotTDUri = robotTDUriOptional.get();
 
         var outputData = robotPort.executeTask(task.getInputData().getValue(), robotTDUri);
         task.setOutputData(new Task.OutputData(outputData));
