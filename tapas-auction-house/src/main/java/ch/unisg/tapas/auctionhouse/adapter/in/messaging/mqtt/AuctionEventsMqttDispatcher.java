@@ -23,18 +23,15 @@ public class AuctionEventsMqttDispatcher {
     private final Map<String, AuctionEventMqttListener> router;
 
     private AuctionAddedEventListenerMqttAdapter auctionAddedEventListenerMqttAdapter;
-    private ExecutorAddedEventListenerMqttAdapter executorAddedEventListenerMqttAdapter;
 
-    public AuctionEventsMqttDispatcher(@Autowired AuctionAddedEventListenerMqttAdapter auctionAddedEventListenerMqttAdapter, @Autowired ExecutorAddedEventListenerMqttAdapter executorAddedEventListenerMqttAdapter) {
+    public AuctionEventsMqttDispatcher(@Autowired AuctionAddedEventListenerMqttAdapter auctionAddedEventListenerMqttAdapter) {
         this.router = new Hashtable<>();
         this.auctionAddedEventListenerMqttAdapter = auctionAddedEventListenerMqttAdapter;
-        this.executorAddedEventListenerMqttAdapter = executorAddedEventListenerMqttAdapter;
         this.initRouter();
     }
 
     private void initRouter() {
         router.put("ch/unisg/tapas/auctions", auctionAddedEventListenerMqttAdapter);
-        router.put("ch/unisg/tapas-group-tutors/executors", executorAddedEventListenerMqttAdapter);
     }
 
     /**

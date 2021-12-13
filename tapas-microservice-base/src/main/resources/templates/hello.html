@@ -1,0 +1,186 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${appName}"></title>
+</head>
+<body>
+    <style>
+        /* http://meyerweb.com/eric/tools/css/reset/ 
+        v2.0 | 20110126
+        License: none (public domain)
+        */
+
+        html, body, div, span, applet, object, iframe,
+        h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+        a, abbr, acronym, address, big, cite, code,
+        del, dfn, em, img, ins, kbd, q, s, samp,
+        small, strike, strong, sub, sup, tt, var,
+        b, u, i, center,
+        dl, dt, dd, ol, ul, li,
+        fieldset, form, label, legend,
+        table, caption, tbody, tfoot, thead, tr, th, td,
+        article, aside, canvas, details, embed, 
+        figure, figcaption, footer, header, hgroup, 
+        menu, nav, output, ruby, section, summary,
+        time, mark, audio, video {
+            margin: 0;
+            padding: 0;
+            border: 0;
+            font-size: 100%;
+            font: inherit;
+            vertical-align: baseline;
+        }
+        /* HTML5 display-role reset for older browsers */
+        article, aside, details, figcaption, figure, 
+        footer, header, hgroup, menu, nav, section {
+            display: block;
+        }
+        body {
+            line-height: 1;
+        }
+        ol, ul {
+            list-style: none;
+        }
+        blockquote, q {
+            quotes: none;
+        }
+        blockquote:before, blockquote:after,
+        q:before, q:after {
+            content: '';
+            content: none;
+        }
+        table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        }
+    </style>
+    <style>
+        html{
+            background-color: #fafafa;
+            color: #3b4151;
+            font-family: sans-serif;
+            margin: 2em;
+        }
+        h1{
+            font-size: 36px;
+            margin-bottom: 0.5em;
+            margin-left: 1em;
+            font-weight: bold;
+        }
+        h2{
+            font-size: 1.5em;
+            margin-top: 0.5em;
+            margin-bottom: 0.5em;
+            text-align: center;
+        }
+        li{
+
+            background-color: white;
+            height: 3em;
+            line-height: 3em;
+            margin-bottom: 5px;
+            padding-left: 1em;
+            border-radius: 5px;
+            text-align: left;
+        }
+        a{
+            color: black;
+            text-decoration: none;
+        }
+        .border-green{
+            border-left: 6px solid lightgreen;
+        }
+        hr{
+            height:1px;
+            border-width:0;
+            color:gray;
+            background-color:gray;
+            margin-top: 2em;
+            margin-bottom: 2em;
+        }
+        main{
+            width: 800px;
+            background-color: lightgray;
+            padding: 2em;
+            border-radius: 5px;
+            text-align: center;
+        }
+        p{
+            margin-bottom: 1em;
+        }
+        .wrapper {
+        text-align: center;
+        }
+        .center {
+        display: inline-block;
+        }
+        .label{
+            float: right;
+            text-align: right;
+            margin-right: 1em;
+            width: 100px;
+            font-weight: bolder;
+        }
+        .green{
+            color: darkgreen;
+        }
+    </style>
+
+<h1 th:text="${appName} + ' - Group 3'">Example Service - Group 3</h1>
+<a></a>
+    <div>
+    <main >
+        <h2>Docs</h2>
+        <ul>
+            <li class="border-green">
+                <a href="https://github.com/SCS-ASSE-FS21-Group3/tapas">GitHub <span class="label">Visit</span></a>
+            </li>
+            <li class="border-green"><a href="/swagger-ui.html" target="_blank">Swagger <span class="label">Visit</span></a>
+                </li>
+        </ul>
+        <hr>
+        <h2>Links</h2>
+        <ul>
+            <li class="border-green">
+                <a href="/tasklist">Open Tasks <span class="label">Visit</span></a>
+            </li>
+        </ul>
+        <hr>
+        <h2>All Services</h2>
+        <ul>
+            <li class="border-green">
+                <a href="https://tapas-tasks.86-119-34-242.nip.io/" target="_blank">Tasks Service</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-roster.86-119-34-242.nip.io/" target="_blank">Roster Service</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-executor-pool.86-119-34-242.nip.io/" target="_blank">Executor Pool Service</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-auction-house.86-119-34-242.nip.io/" target="_blank">Auction House Service</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-executor-1.86-119-34-242.nip.io/" target="_blank">Executor Service 1 (Robot)</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-executor-2.86-119-34-242.nip.io/" target="_blank">Executor Service 2 (Calculation)</a>
+                <span class="label green">Operational</span>
+            </li>
+            <li class="border-green">
+                <a href="https://tapas-executor-3.86-119-34-242.nip.io/" target="_blank">Executor Service 3 (Sensor)</a>
+                <span class="label green">Operational</span>
+            </li>
+        </ul>
+        <hr>
+        <h2>Team</h2>
+        <p>Thank you from the TAPAS Group 3 team</p>
+        <iframe src="https://giphy.com/embed/27Y1W0GCKQtDq" width="240" height="240" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/hard-work-27Y1W0GCKQtDq">via GIPHY</a></p>
+    </main>
+</div>
+</body>
+</html>

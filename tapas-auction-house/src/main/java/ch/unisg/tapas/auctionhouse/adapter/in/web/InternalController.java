@@ -29,7 +29,7 @@ public class InternalController {
     }
 
 
-    @Operation(description = "Should only be called by services of the TAPAS 3 group. Creates a new auction for a service that cannot be executed internally")
+    @Operation(summary = "Should only be called by services of the TAPAS 3 group. Creates a new auction for a service that cannot be executed internally")
     @PostMapping(path = "/create-auction-for-task/", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity createAuctionForTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
 

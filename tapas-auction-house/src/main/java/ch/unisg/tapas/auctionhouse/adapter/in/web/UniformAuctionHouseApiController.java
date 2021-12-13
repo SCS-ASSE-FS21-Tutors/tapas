@@ -7,6 +7,7 @@ import ch.unisg.tapas.auctionhouse.adapter.common.formats.dto.TaskDto;
 import ch.unisg.tapas.auctionhouse.application.port.in.*;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
 import ch.unisg.tapas.auctionhouse.domain.Task;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +29,7 @@ public class UniformAuctionHouseApiController {
     }
 
     @PostMapping("/auction")
+    @Operation(summary = "Inform the auction house about a new auction")
     public ResponseEntity newAuctionNotificationEndpoint(@RequestBody AuctionDto auctionDto) {
 
         if (auctionDto == null)
@@ -37,6 +39,7 @@ public class UniformAuctionHouseApiController {
     }
 
     @PostMapping(path = "/bid", consumes = BidJsonRepresentation.MEDIA_TYPE)
+    @Operation(summary = "Place a new bid on a open auction")
     public ResponseEntity placeNewBidEndpoint(@RequestBody BidJsonRepresentation payload) {
 
         if (payload == null)
@@ -58,6 +61,7 @@ public class UniformAuctionHouseApiController {
     }
 
     @PostMapping(path="/taskwinner", consumes = TaskJsonRepresentation.MEDIA_TYPE)
+    @Operation(summary = "Inform the auction house that we won a bid")
     public ResponseEntity taskwinnerNotificationEndpoint(@RequestBody TaskJsonRepresentation payload) {
 
         if (payload == null)
@@ -77,6 +81,7 @@ public class UniformAuctionHouseApiController {
     }
 
     @PostMapping("/tasks/{taskId}")
+    @Operation(summary = "Update task after it was executed")
     public TaskDto taskCompletionNotificationEndpoint(@PathVariable(value = "taskId") String taskId, @RequestBody TaskDto taskDto) {
 
         if (taskId == null || taskId.equals(""))

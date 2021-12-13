@@ -1,6 +1,7 @@
 package ch.unisg.tapas.auctionhouse.adapter.in.messaging.websub;
 
 import ch.unisg.tapas.auctionhouse.application.handler.AuctionStartedHandler;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.http.HttpHeaders;
@@ -21,8 +22,8 @@ public class AuctionStartedEventListenerWebSubAdapter {
         this.auctionStartedHandler = auctionStartedHandler;
     }
 
-    // This endpoint is for the hub to verify that out endpoint is active
     @GetMapping(path = "/websub-auction-started")
+    @Operation(summary = "This endpoint is for the hub to verify that out endpoint is active")
     public ResponseEntity verifyIntentWebSub(@RequestParam("hub.mode") String hubMode,
                                              @RequestParam("hub.topic") String hubTopic,
                                              @RequestParam("hub.challenge") String hubChallenge,
@@ -38,8 +39,8 @@ public class AuctionStartedEventListenerWebSubAdapter {
         return new ResponseEntity<>(jsonBody.toString(), responseHeaders, HttpStatus.OK);
     }
 
-    // This endpoint is for when an auction is actually launched
     @PostMapping(path = "/websub-auction-started")
+    @Operation(summary = "This endpoint is for when an auction is actually launched")
     public ResponseEntity auctionStartedWebSub(@RequestBody String payload) {
         log.info("WebSub | Received auction started event: "+ payload);
         // TODO: Implement
