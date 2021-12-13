@@ -1,6 +1,7 @@
 package ch.unisg.tapasexecutorpool.integration;
 
 import ch.unisg.tapasexecutorpool.common.formats.TaskJsonRepresentation;
+import ch.unisg.tapasexecutorpool.pool.adapter.out.persistence.mongodb.ExecutorPersistenceAdapter;
 import ch.unisg.tapasexecutorpool.pool.adapter.out.repository.InternalExecutorRepository;
 import ch.unisg.tapasexecutorpool.pool.application.service.AssignTaskService;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-@SpringBootTest
+@SpringBootTest()
 public class AssignNewTaskIntegrationTest {
 
     @Autowired
@@ -31,6 +33,9 @@ public class AssignNewTaskIntegrationTest {
 
     @Autowired
     private AssignTaskService assignTaskService;
+
+    @MockBean
+    ExecutorPersistenceAdapter persistenceAdapter;
 
     private Task newTask = new Task(
             new Task.TaskId("someid"),

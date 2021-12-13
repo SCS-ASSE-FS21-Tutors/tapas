@@ -1,7 +1,6 @@
 package ch.unisg.tapastasks.tasks.adapter.out.persistence.mongodb;
 
 import ch.unisg.tapastasks.tasks.domain.Task;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +32,28 @@ public class TaskPersistenceAdapterTest {
         String testTaskType = "adds-persistence-task-type";
         String testTaskOuri = "adds-persistence-test-task-ouri";
         String testTaskStatus = Task.Status.OPEN.toString();
-        String testTaskListName = "tapas-tasks-tutors";
+        String testTaskProvider = "tapas-tasks-tutors";
+        String testTaskInput = "test-task-input";
+        String testTaskOutput = "test-task-output";
 
 
         Task testTask = new Task(
             new Task.TaskId(testTaskId),
-                new Task.TaskName(testTaskName),
-                new Task.TaskType(testTaskType),
-                new Task.OriginalTaskUri(testTaskOuri),
-                new Task.TaskStatus(Task.Status.valueOf(testTaskStatus))
-                );
+            new Task.TaskName(testTaskName),
+            new Task.TaskType(testTaskType),
+            new Task.OriginalTaskUri(testTaskOuri),
+            new Task.TaskStatus(Task.Status.valueOf(testTaskStatus)),
+            new Task.ServiceProvider(testTaskProvider),
+            new Task.InputData(testTaskInput),
+            new Task.OutputData(testTaskOutput)
+        );
         adapterUnderTest.addTask(testTask);
 
-        MongoTaskDocument retrievedDoc = taskRepository.findByTaskId(testTaskId,testTaskListName);
+        MongoTaskDocument retrievedDoc = taskRepository.findByTaskId(testTaskId);
 
         assertThat(retrievedDoc.taskId).isEqualTo(testTaskId);
         assertThat(retrievedDoc.taskName).isEqualTo(testTaskName);
-        assertThat(retrievedDoc.taskListName).isEqualTo(testTaskListName);
+        assertThat(retrievedDoc.taskListName).isEqualTo(testTaskProvider);
     }
 
     @Test
@@ -60,14 +64,15 @@ public class TaskPersistenceAdapterTest {
         String testTaskType = "reads-persistence-task-type";
         String testTaskOuri = "reads-persistence-test-task-ouri";
         String testTaskStatus = Task.Status.OPEN.toString();
-        String testTaskListName = "tapas-tasks-tutors";
+        String testTaskProvider = "tapas-tasks-tutors";
+        String testInputData = "test-input-data";
+        String testOutputData = "test-output-data";
 
         MongoTaskDocument mongoTask = new MongoTaskDocument(testTaskId, testTaskName, testTaskType, testTaskOuri,
-            testTaskStatus, testTaskListName);
+            testTaskStatus, testTaskProvider, testInputData, testOutputData);
         taskRepository.insert(mongoTask);
 
-        Task retrievedTask = adapterUnderTest.loadTask(new Task.TaskId(testTaskId),
-            new TaskList.TaskListName(testTaskListName));
+        Task retrievedTask = adapterUnderTest.loadTask(new Task.TaskId(testTaskId));
 
         assertThat(retrievedTask.getTaskName().getValue()).isEqualTo(testTaskName);
         assertThat(retrievedTask.getTaskId().getValue()).isEqualTo(testTaskId);

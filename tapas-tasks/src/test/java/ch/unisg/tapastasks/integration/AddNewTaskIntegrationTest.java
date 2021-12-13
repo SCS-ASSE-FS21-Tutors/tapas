@@ -35,17 +35,17 @@ class AddNewTaskIntegrationTest {
         // ARRANGE
         Task.TaskName taskName = new Task.TaskName("system-integration-test-task");
         Task.TaskType taskType = new Task.TaskType("system-integration-test-type");
-        Task.OriginalTaskUri originalTaskUri = new Task.OriginalTaskUri("example.org");
+        Task.InputData inputData = new Task.InputData("test-input-data");
 
         String requestBody = new JSONObject()
             .put("taskName", taskName.getValue() )
             .put("taskType", taskType.getValue())
-            .put("originalTaskUri",originalTaskUri.getValue())
+            .put("inputData",inputData.getValue())
             .toString();
 
         // ACT
         mockMvc.perform(post("/tasks/")
-                .contentType("application/task+json")
+                .contentType("application/json")
                 .content(requestBody))
             .andExpect(status().isCreated());
 

@@ -4,10 +4,8 @@ import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQue
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskPort;
 import ch.unisg.tapastasks.tasks.domain.Task;
-import ch.unisg.tapastasks.tasks.domain.TaskList;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Optional;
@@ -21,11 +19,8 @@ public class RetrieveTaskFromTaskListService implements RetrieveTaskFromTaskList
 
     @Override
     public Optional<Task> retrieveTaskFromTaskList(RetrieveTaskFromTaskListQuery query) {
-        TaskList taskList = TaskList.getTapasTaskList();
 
-        Optional<Task> task = taskList.retrieveTaskById(query.getTaskId());
-
-        Optional<Task> taskFromRepo = Optional.ofNullable(loadTaskFromRepositoryPort.loadTask(query.getTaskId(), taskList.getTaskListName()));
+        Optional<Task> taskFromRepo = Optional.ofNullable(loadTaskFromRepositoryPort.loadTask(query.getTaskId()));
 
         return taskFromRepo;
     }
