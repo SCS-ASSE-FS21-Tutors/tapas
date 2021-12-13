@@ -12,15 +12,18 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class TaskExecutedHandler implements TaskExecutedEventHandler {
-    @Autowired
-    UpdateTaskPort updateTaskPort;
 
-    @Value("${task.list.name}")
-    String taskListName;
+    private final String taskListName;
+    private final UpdateTaskPort updateTaskPort;
+    private final TaskListLock taskListLock;
 
-    @Autowired
-    TaskListLock taskListLock;
-
+    public TaskExecutedHandler(@Value("${task.list.name}") String taskListName,
+                               UpdateTaskPort updateTaskPort,
+                               TaskListLock taskListLock) {
+        this.taskListName = taskListName;
+        this.updateTaskPort = updateTaskPort;
+        this.taskListLock = taskListLock;
+    }
     @Override
     public Task handleTaskExecuted(TaskExecutedEvent taskExecutedEvent) throws TaskNotFoundException {
 

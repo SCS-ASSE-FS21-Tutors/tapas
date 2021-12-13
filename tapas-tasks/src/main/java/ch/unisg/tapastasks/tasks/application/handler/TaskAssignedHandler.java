@@ -17,14 +17,17 @@ import java.util.Optional;
 @Transactional
 public class TaskAssignedHandler implements TaskAssignedEventHandler {
 
-    @Autowired
-    UpdateTaskPort updateTaskPort;
+    private final String taskListName;
+    private final UpdateTaskPort updateTaskPort;
+    private final TaskListLock taskListLock;
 
-    @Value("${task.list.name}")
-    String taskListName;
-
-    @Autowired
-    TaskListLock taskListLock;
+    public TaskAssignedHandler(@Value("${task.list.name}") String taskListName,
+                               UpdateTaskPort updateTaskPort,
+                               TaskListLock taskListLock) {
+        this.taskListName = taskListName;
+        this.updateTaskPort = updateTaskPort;
+        this.taskListLock = taskListLock;
+    }
 
     @Override
     public Task handleTaskAssigned(TaskAssignedEvent taskAssignedEvent) throws TaskNotFoundException {

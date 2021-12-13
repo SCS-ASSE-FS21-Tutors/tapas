@@ -7,6 +7,7 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonpatch.JsonPatch;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -52,9 +53,21 @@ public class TaskEventHttpDispatcher {
      * @return 200 OK and a representation of the task after processing the event; 404 Not Found if
      * the request URI does not match any task; 400 Bad Request if the request is invalid
      */
+
+    @Autowired
+    TaskAssignedEventListenerHttpAdapter taskAssignedEventListenerHttpAdapter;
+
+    @Autowired
+    TaskStartedEventListenerHttpAdapter taskStartedEventListenerHttpAdapter;
+
+    @Autowired
+    TaskExecutedEventListenerHttpAdapter taskExecutedEventListenerHttpAdapter;
+
+
     @PatchMapping(path = "/tasks/{taskId}", consumes = {JSON_PATCH_MEDIA_TYPE})
     public ResponseEntity<String> dispatchTaskEvents(@PathVariable("taskId") String taskId,
             @RequestBody JsonNode payload) {
+        System.out.println("Received Request to update");
         try {
             // Throw an exception if the JSON Patch format is invalid. This call is only used to
             // validate the JSON PATCH syntax.
@@ -70,13 +83,13 @@ public class TaskEventHttpDispatcher {
             if (status.isPresent()) {
                 switch (status.get()) {
                     case ASSIGNED:
-                        listener = new TaskAssignedEventListenerHttpAdapter();
+                        listener = taskAssignedEventListenerHttpAdapter;
                         break;
                     case RUNNING:
-                        listener = new TaskStartedEventListenerHttpAdapter();
+                        listener = taskStartedEventListenerHttpAdapter;
                         break;
                     case EXECUTED:
-                        listener = new TaskExecutedEventListenerHttpAdapter();
+                        listener = taskExecutedEventListenerHttpAdapter;
                         break;
                 }
             }

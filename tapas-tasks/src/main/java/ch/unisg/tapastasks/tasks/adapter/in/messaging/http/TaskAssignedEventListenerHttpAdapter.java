@@ -7,6 +7,8 @@ import ch.unisg.tapastasks.tasks.application.port.in.TaskAssignedEventHandler;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.Task.TaskId;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.Optional;
 
@@ -18,6 +20,7 @@ import java.util.Optional;
  *
  * See also {@link TaskAssignedEvent}, {@link Task}, and {@link TaskEventHttpDispatcher}.
  */
+@Component
 public class TaskAssignedEventListenerHttpAdapter extends TaskEventListener {
 
     /**
@@ -27,13 +30,16 @@ public class TaskAssignedEventListenerHttpAdapter extends TaskEventListener {
      * @param payload the JSON Patch payload of the HTTP PATCH request received for this task
      * @return
      */
+
+    @Autowired
+    TaskAssignedHandler taskAssignedHandler;
+
     public Task handleTaskEvent(String taskId, JsonNode payload) {
         TaskJsonPatchRepresentation representation = new TaskJsonPatchRepresentation(payload);
         Optional<Task.ServiceProvider> serviceProvider = representation.extractFirstServiceProviderChange();
 
         TaskAssignedEvent taskAssignedEvent = new TaskAssignedEvent(new TaskId(taskId), serviceProvider);
-        TaskAssignedEventHandler taskAssignedEventHandler = new TaskAssignedHandler();
 
-        return taskAssignedEventHandler.handleTaskAssigned(taskAssignedEvent);
+        return taskAssignedHandler.handleTaskAssigned(taskAssignedEvent);
     }
 }
