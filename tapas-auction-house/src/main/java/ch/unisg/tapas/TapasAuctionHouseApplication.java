@@ -1,5 +1,6 @@
 package ch.unisg.tapas;
 
+import ch.unisg.tapas.auctionhouse.application.port.in.AuctionHouseDiscoveryUseCase;
 import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseCommand;
 import ch.unisg.tapas.auctionhouse.application.port.in.StoreKnownAuctionHouseUseCase;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
@@ -18,6 +19,7 @@ import java.net.URI;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Main TAPAS Auction House application.
@@ -28,8 +30,11 @@ import java.util.List;
 public class TapasAuctionHouseApplication {
 
     private static ConfigurableEnvironment ENVIRONMENT;
+
     @Autowired
     StoreKnownAuctionHouseUseCase storeKnownAuctionHouseUseCase;
+    @Autowired
+    private AuctionHouseDiscoveryUseCase auctionHouseDiscoveryUseCase;
 
     public static void main(String[] args) {
         SpringApplication tapasAuctioneerApp = new SpringApplication(TapasAuctionHouseApplication.class);
@@ -44,15 +49,34 @@ public class TapasAuctionHouseApplication {
             var dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             var timestampString = dateFormat.format(now);
 
-            StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand = new StoreKnownAuctionHouseCommand(new AuctionHouseInformation(
-                new URI("https://tapas-auction-house.86-119-34-242.nip.io/"),
+            // Our own
+            storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(new StoreKnownAuctionHouseCommand(new AuctionHouseInformation(
+                new URI("https://tapas-auction-house.86-119-34-242.nip.io"),
                 new URI("http://tapas-auction-house.86-119-34-242.nip.io/websub-subscribe"),
                 List.of(new Task.TaskType("SMALLROBOT"), new Task.TaskType("COMPUTATION")),
                 new AuctionHouseInformation.AuctionHouseTimeStamp(timestampString),
                 new AuctionHouseInformation.GroupName("Group3")
-            ));
-            storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(storeKnownAuctionHouseCommand);
+            )));
+            // Group 2
+            storeKnownAuctionHouseUseCase.storeKnownAuctionHouse(new StoreKnownAuctionHouseCommand(new AuctionHouseInformation(
+                new URI("https://tapas-auction-house.86-119-35-213.nip.io"),
+                new URI("https://tapas-auction-house.86-119-35-213.nip.io"),
+                List.of(new Task.TaskType("COMPUTATION"), new Task.TaskType("SMALLROBOT")),
+                new AuctionHouseInformation.AuctionHouseTimeStamp("2021-12-13 09:14:23.675826972"),
+                new AuctionHouseInformation.GroupName("Group2")
+            )));
             log.info("Added known auction houses");
+
+            log.info("Start crawling auction houses");
+            // Crawl others
+            var info = auctionHouseDiscoveryUseCase.discoverAuctionHouses(URI.create("http://localhost:8085"));
+            log.info("Crawled auction houses: " + info.toString());
+            log.info("Found a total of {} auction houses: {}",
+                info.size(),
+                info.stream().map(i -> i.getGroupName().getValue()).collect(Collectors.toList()));
+
+
+
         };
     }
 }
