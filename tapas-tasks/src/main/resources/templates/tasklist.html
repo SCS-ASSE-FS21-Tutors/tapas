@@ -1,0 +1,174 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Tasks API - Group 3</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+    <script   src="https://code.jquery.com/jquery-3.6.0.slim.min.js"   integrity="sha256-u7e5khyithlIdTpu22PHhENmPcRdFiHRjhAuHcs05RI="   crossorigin="anonymous"></script>
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+</head>
+<body>
+<style>
+    /* http://meyerweb.com/eric/tools/css/reset/
+    v2.0 | 20110126
+    License: none (public domain)
+    */
+
+    html, body, div, span, applet, object, iframe,
+    h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+    a, abbr, acronym, address, big, cite, code,
+    del, dfn, em, img, ins, kbd, q, s, samp,
+    small, strike, strong, sub, sup, tt, var,
+    b, u, i, center,
+    dl, dt, dd, ol, ul, li,
+    fieldset, form, label, legend,
+    table, caption, tbody, tfoot, thead, tr, th, td,
+    article, aside, canvas, details, embed,
+    figure, figcaption, footer, header, hgroup,
+    menu, nav, output, ruby, section, summary,
+    time, mark, audio, video {
+        margin: 0;
+        padding: 0;
+        border: 0;
+        font-size: 100%;
+        font: inherit;
+        vertical-align: baseline;
+    }
+    /* HTML5 display-role reset for older browsers */
+    article, aside, details, figcaption, figure,
+    footer, header, hgroup, menu, nav, section {
+        display: block;
+    }
+    body {
+        line-height: 1;
+    }
+    ol, ul {
+        list-style: none;
+    }
+    blockquote, q {
+        quotes: none;
+    }
+    blockquote:before, blockquote:after,
+    q:before, q:after {
+        content: '';
+        content: none;
+    }
+    table {
+        border-collapse: collapse;
+        border-spacing: 0;
+    }
+</style>
+<style>
+    html{
+        background-color: #fafafa;
+        color: #3b4151;
+        font-family: sans-serif;
+        margin: 2em;
+    }
+    h1{
+        font-size: 36px;
+        margin-bottom: 0.5em;
+        margin-left: 1em;
+        font-weight: bold;
+    }
+    h2{
+        font-size: 1.5em;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        text-align: center;
+    }
+    li{
+
+        background-color: white;
+        height: 3em;
+        line-height: 3em;
+        margin-bottom: 5px;
+        padding-left: 1em;
+        border-radius: 5px;
+        text-align: left;
+    }
+    a{
+        color: black;
+        text-decoration: none;
+    }
+    .border-green{
+        border-left: 6px solid lightgreen;
+    }
+    hr{
+        height:1px;
+        border-width:0;
+        color:gray;
+        background-color:gray;
+        margin-top: 2em;
+        margin-bottom: 2em;
+    }
+    main{
+        background-color: lightgray;
+        padding: 2em;
+        border-radius: 5px;
+        text-align: center;
+    }
+    p{
+        margin-bottom: 1em;
+    }
+    .wrapper {
+        text-align: center;
+    }
+    .center {
+        display: inline-block;
+    }
+    .label{
+        float: right;
+        text-align: right;
+        margin-right: 1em;
+        width: 100px;
+        font-weight: bolder;
+    }
+    .green{
+        color: darkgreen;
+    }
+    input{
+        background-color: white !important;
+    }
+    select{
+        background-color: white !important;
+    }
+</style>
+
+<h1>Tasks API - Group 3</h1>
+<a></a>
+<div>
+    <main>
+        <h2>Tasks</h2>
+
+        <table id="myTable" class="display">
+            <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Type</th>
+                <th>Input</th>
+                <th>Output</th>
+                <th>Status</th>
+            </tr>
+            </thead>
+            <tbody th:each="task: ${taskList}">
+                <tr>
+                    <td th:text="${task.taskId?.getValue()}">SomeId</td>
+                    <td th:text="${task.taskName?.getValue()}">Somename</td>
+                    <td th:text="${task.taskType?.getValue()}">TYPE</td>
+                    <td th:text="${task.inputData?.getValue()}">1+1</td>
+                    <td th:text="${task.outputData?.getValue()}">2</td>
+                    <td th:text="${task.taskStatus?.getValue()}">EXECUTED</td>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</div>
+<script>
+    $(document).ready( function () {
+        $('#myTable').DataTable({
+            "ordering": false
+        });
+    } );
+</script>
+</body>
+</html>
