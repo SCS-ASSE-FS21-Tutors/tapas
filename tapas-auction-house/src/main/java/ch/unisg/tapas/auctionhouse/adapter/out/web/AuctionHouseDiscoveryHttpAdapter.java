@@ -2,6 +2,7 @@ package ch.unisg.tapas.auctionhouse.adapter.out.web;
 
 import ch.unisg.tapas.auctionhouse.adapter.common.formats.AuctionHouseDiscoveryRepresentation;
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
@@ -15,8 +16,17 @@ import java.util.List;
 public class AuctionHouseDiscoveryHttpAdapter implements ch.unisg.tapas.auctionhouse.application.port.out.AuctionHouseDiscoveryPort {
 
 
-    private HttpClient client = HttpClient.newHttpClient();
-    private ObjectMapper om = new ObjectMapper();
+    private HttpClient client;
+    private ObjectMapper om;
+
+    public AuctionHouseDiscoveryHttpAdapter() {
+
+        this.client = HttpClient.newHttpClient();
+        this.om = new ObjectMapper();
+
+        // Other groups might not updated the case
+        this.om.configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true);
+    }
 
     @Override
     public List<AuctionHouseInformation> loadDiscoveryInfo(URI auctionHouseUri) throws Exception {

@@ -2,6 +2,7 @@ package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 import ch.unisg.tapas.auctionhouse.domain.Task;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,16 +24,16 @@ public class AuctionHouseDiscoveryRepresentation {
     @AllArgsConstructor
     public static class AuctionHouseInformationDto{
 
-        private String auctionhouseuri;
-        private String websuburi;
+        private String auctionHouseUri;
+        private String webSubUri;
         private List<String> taskTypes;
         private String timeStamp;
         private String groupName;
 
         public AuctionHouseInformationDto(AuctionHouseInformation auctionHouseInformation) {
 
-            this.auctionhouseuri = auctionHouseInformation.getAuctionhouseuri().toString();
-            this.websuburi = auctionHouseInformation.getWebsuburi().toString();
+            this.auctionHouseUri = auctionHouseInformation.getAuctionhouseuri().toString();
+            this.webSubUri = auctionHouseInformation.getWebsuburi().toString();
             this.timeStamp = auctionHouseInformation.getTimeStamp().getValue();
             this.groupName = auctionHouseInformation.getGroupName().getValue();
 
@@ -46,8 +47,8 @@ public class AuctionHouseDiscoveryRepresentation {
             var taskTypes = this.taskTypes.stream().map(Task.TaskType::new).collect(Collectors.toList());
 
             return new AuctionHouseInformation(
-                URI.create(auctionhouseuri),
-                URI.create(websuburi),
+                URI.create(auctionHouseUri),
+                URI.create(webSubUri),
                 taskTypes,
                 new AuctionHouseInformation.AuctionHouseTimeStamp(timeStamp),
                 new AuctionHouseInformation.GroupName(groupName));

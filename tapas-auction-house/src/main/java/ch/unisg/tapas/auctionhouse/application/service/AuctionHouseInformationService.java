@@ -21,6 +21,7 @@ public class AuctionHouseInformationService implements RetrieveAuctionHouseInfor
         registry.addAuctionHouseInformation(storeKnownAuctionHouseCommand.getAuctionHouseInformation());
     }
 
+    @Override
     public void storeAuctionHouseToPropagate(StoreKnownAuctionHouseCommand storeKnownAuctionHouseCommand){
         registryPropagating.addAuctionHouseInformation(storeKnownAuctionHouseCommand.getAuctionHouseInformation());
     }
@@ -31,6 +32,7 @@ public class AuctionHouseInformationService implements RetrieveAuctionHouseInfor
         return registry.getAuctionHouses();
     }
 
+    @Override
     public Collection<AuctionHouseInformation> loadPropagatedAuctionHouses(){
 
         return registryPropagating.getAuctionHouses();
