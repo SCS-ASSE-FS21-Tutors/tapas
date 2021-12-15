@@ -1,5 +1,6 @@
 package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 
+import ch.unisg.tapas.auctionhouse.adapter.common.UniformUrlStringFormatter;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
 import com.fasterxml.jackson.annotation.JsonInclude;
@@ -72,7 +73,7 @@ public class BidJsonRepresentation {
         Bid bid = new Bid(
             new Auction.AuctionId(bidJsonRepresentation.getAuctionId()),
             new Bid.BidderName(bidJsonRepresentation.getBidderName()),
-            new Bid.BidderAuctionHouseUri(URI.create(bidJsonRepresentation.getBidderAuctionHouseUri())),
+            new Bid.BidderAuctionHouseUri(URI.create(UniformUrlStringFormatter.cleanURL(bidJsonRepresentation.getBidderAuctionHouseUri()))),
             new Bid.BidderTaskListUri(URI.create(bidJsonRepresentation.getBidderTaskListUri()))
         );
         return bid;
