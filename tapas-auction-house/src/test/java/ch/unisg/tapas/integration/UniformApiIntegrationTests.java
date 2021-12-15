@@ -123,26 +123,4 @@ public class UniformApiIntegrationTests {
         verify(executeExternalTaskCommandHttpAdapter, times(1)).executeExternalTask(any());
         verify(updateExternalTaskCommandHttpAdapter, times(1)).updateExternalTask(any());
     }
-
-    @Test
-    public void testTaskCompleted() throws Exception{
-
-        String requestBody = "{\n" +
-            "  \"taskId\":\"cef2fa9d-367b-4e7f-bf06-3b1fea35f354\",\n" +
-            "  \"taskName\":\"task1\",\n" +
-            "  \"taskType\":\"COMPUTATION\",\n" +
-            "  \"taskStatus\":\"EXECUTED\",\n" +
-            "  \"originalTaskUri\":\"http://example.org/tasks/cef2fa9d-367b-4e7f-bf06-3b1fea35f354\",\n" +
-            "  \"serviceProvider\":\"tapas-group1\",\n" +
-            "  \"inputData\":\"1+1\",\n" +
-            "  \"outputData\":\"2\"\n" +
-            "}";
-
-        // ACT
-        mockMvc.perform(post("/tasks/cef2fa9d-367b-4e7f-bf06-3b1fea35f354")
-            .header("Content-Type", "application/json-patch+json")
-            .content(requestBody))
-            .andExpect(status().isOk())
-            .andExpect(content().json(requestBody));
-    }
 }
