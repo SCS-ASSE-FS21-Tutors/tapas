@@ -14,14 +14,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.env.ConfigurableEnvironment;
 
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
@@ -58,7 +55,7 @@ public class TapasAuctionHouseApplication {
             // Later we can load them from a database or some kind of configuration file
             loadAuctionHousesToPropagate().stream().map(StoreKnownAuctionHouseCommand::new).forEach(storeKnownAuctionHouseUseCase::storeAuctionHouseToPropagate);
 
-            // Crawl others
+            // Crawl others and start at our own auction house
             log.info("Start crawling auction houses");
             var info = auctionHouseDiscoveryUseCase.discoverAuctionHouses(URI.create("http://localhost:8085"));
             log.info("Crawled auction houses: " + info.toString());

@@ -8,6 +8,7 @@ import ch.unisg.tapas.auctionhouse.application.port.in.*;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
 import ch.unisg.tapas.auctionhouse.domain.Task;
 import io.swagger.v3.oas.annotations.Operation;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +19,7 @@ import org.springframework.web.server.ResponseStatusException;
  * Controller that handles HTTP requests for launching auctions. This controller implements the
  * {@link LaunchAuctionUseCase} use case using the {@link LaunchAuctionCommand}.
  */
+@Log4j2
 @RestController
 public class UniformAuctionHouseApiController {
     private final ProcessExternalTaskUseCase processExternalTaskUseCase;
@@ -41,12 +43,12 @@ public class UniformAuctionHouseApiController {
     @PostMapping(path = "/bid", consumes = BidJsonRepresentation.MEDIA_TYPE)
     @Operation(summary = "Place a new bid on a open auction")
     public ResponseEntity placeNewBidEndpoint(@RequestBody BidJsonRepresentation payload) {
-
         if (payload == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
 
         try {
             Bid bid = BidJsonRepresentation.toBid(payload);
+            log.info("Bid received from {}", bid.getBidderName().toString());
             BidReceivedEvent bidReceivedEvent = new BidReceivedEvent(bid);
             boolean received = bidReceivedEventHandler.handleBidReceivedEvent(bidReceivedEvent);
             // Check if bid could successfully be stored
@@ -63,7 +65,7 @@ public class UniformAuctionHouseApiController {
     @PostMapping(path="/taskwinner", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     @Operation(summary = "Inform the auction house that we won a bid")
     public ResponseEntity taskwinnerNotificationEndpoint(@RequestBody TaskJsonRepresentation payload) {
-
+        log.info("Task winner notification received");
         if (payload == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         try {
