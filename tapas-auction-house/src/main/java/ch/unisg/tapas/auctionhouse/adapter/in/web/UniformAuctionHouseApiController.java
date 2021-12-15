@@ -79,17 +79,4 @@ public class UniformAuctionHouseApiController {
             return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
-
-    @PostMapping("/tasks/{taskId}")
-    @Operation(summary = "Update task after it was executed")
-    public TaskDto taskCompletionNotificationEndpoint(@PathVariable(value = "taskId") String taskId, @RequestBody TaskDto taskDto) {
-
-        if (taskId == null || taskId.equals(""))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        if (taskDto == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
-
-        return taskDto;
-    }
 }
