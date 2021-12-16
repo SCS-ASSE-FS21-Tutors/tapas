@@ -1,5 +1,6 @@
 package ch.unisg.tapas.auctionhouse.adapter.common.formats;
 
+import ch.unisg.tapas.auctionhouse.adapter.common.UniformUrlStringFormatter;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -51,7 +52,7 @@ public class AuctionJsonRepresentation {
         this.auctionHouseUri = auctionHouseUri;
         this.taskUri = taskUri;
         this.taskType = taskType;
-        this.deadline = new Timestamp(System.currentTimeMillis()+ deadline);
+        this.deadline = new Timestamp(System.currentTimeMillis() + deadline);
     }
 
     public AuctionJsonRepresentation(Auction auction) {
@@ -75,10 +76,11 @@ public class AuctionJsonRepresentation {
         ObjectMapper objectMapper = new ObjectMapper();
         JsonNode jsonNode = objectMapper.readTree(auctionJson);
         Auction.AuctionId auctionId = new Auction.AuctionId(jsonNode.get("auctionId").asText());
-        Auction.AuctionHouseUri auctionHouseUri = new Auction.AuctionHouseUri(URI.create(jsonNode.get("auctionHouseUri").asText()));
+        Auction.AuctionHouseUri auctionHouseUri = new Auction.AuctionHouseUri(URI.create(
+            UniformUrlStringFormatter.cleanURL(jsonNode.get("auctionHouseUri").asText())));
         Auction.AuctionedTaskUri taskUri = new Auction.AuctionedTaskUri(URI.create(jsonNode.get("taskUri").asText()));
         Auction.AuctionedTaskType taskType = new Auction.AuctionedTaskType(jsonNode.get("taskType").asText());
-        Auction.AuctionDeadline deadline  = new Auction.AuctionDeadline(jsonNode.get("deadline").asInt());
+        Auction.AuctionDeadline deadline = new Auction.AuctionDeadline(jsonNode.get("deadline").asInt());
 
         Auction auction = new Auction(auctionId, auctionHouseUri, taskUri, taskType, deadline);
         return auction;
