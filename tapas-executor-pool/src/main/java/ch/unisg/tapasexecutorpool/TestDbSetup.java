@@ -30,7 +30,7 @@ public class TestDbSetup implements CommandLineRunner {
         List<Executor> executorList = loadExecutorListPort.loadExecutorList();
 
         for(Executor executor: executorList){
-            log.info("Retrieved persistent executor from DB: " + executor.getExecutorName());
+            log.info("Retrieved persistent executor from DB: " + executor.getExecutorName().getValue());
             repository.addExecutor(executor);
         }
     }
