@@ -42,7 +42,7 @@ public class PublishAuctionStartedEventWebSubAdapter implements AuctionStartedEv
 
         Map<String, String> parameters = new HashMap<>();
         parameters.put("hub.mode", "publish");
-        parameters.put("hub.url", config.getAuctionHouseUri().toString() + "/websub-subscribe");
+        parameters.put("hub.url", config.getAuctionHouseUri().toString() + "/auctions/");
 
         String form = parameters.keySet().stream()
             .map(key -> key + "=" + URLEncoder.encode(parameters.get(key), StandardCharsets.UTF_8))

@@ -29,7 +29,7 @@ public class WebSubDiscoveryController {
         responseHeaders.add("Link",
             "<" + hubUri + ">; rel=\"hub\"");
         responseHeaders.add("Link",
-            "<" + auctionHouseUri + "/websub-subscribe" + ">; rel=\"self\"");
+            "<" + auctionHouseUri + "/auctions/" + ">; rel=\"self\"");
 
         return ResponseEntity.ok()
             .headers(responseHeaders).build();
