@@ -8,6 +8,9 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -53,12 +56,13 @@ public class TaskPersistenceAdapter implements
     }
 
     public List<Task> loadTaskList(){
-        List<MongoTaskDocument> mongoTaskList = taskRepository.findAll();
+        // Only retrieve the last 10 created documents for performance reasons
+        Page<MongoTaskDocument> mongoTaskPage = taskRepository.findAll(PageRequest.of(0,10, Sort.by(Sort.Direction.DESC, "creationDate")));
         List<Task> taskList = new ArrayList<>();
-        for (MongoTaskDocument mongoTaskDocument:mongoTaskList) {
+        mongoTaskPage.forEach(mongoTaskDocument -> {
             Task task = taskMapper.mapToDomainEntity(mongoTaskDocument);
             taskList.add(task);
-        }
+        });
         return taskList;
     }
 }

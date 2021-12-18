@@ -4,6 +4,8 @@ import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.Date;
+
 @Data
 @Document(collection = "tasks")
 public class MongoTaskDocument {
@@ -20,6 +22,9 @@ public class MongoTaskDocument {
     public String inputData;
     public String outputData;
 
+    // Only for internal use / not mapped
+    public Date creationDate;
+
     public MongoTaskDocument(String taskId, String taskName, String taskType,
                              String originalTaskUri,
                              String taskStatus, String provider, String inputData, String outputData) {
@@ -32,5 +37,6 @@ public class MongoTaskDocument {
         this.provider = provider;
         this.inputData = inputData;
         this.outputData = outputData;
+        this.creationDate = new Date();
     }
 }
