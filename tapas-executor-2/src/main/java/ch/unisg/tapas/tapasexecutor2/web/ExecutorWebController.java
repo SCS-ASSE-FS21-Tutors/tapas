@@ -19,7 +19,7 @@ public class ExecutorWebController {
     @PostMapping(path = "/execute", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     public ResponseEntity executeTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation) {
 
-        if (!"COMPUTATION".equals(taskJsonRepresentation.getTaskType()))
+        if (!"COMPUTATION".equals(taskJsonRepresentation.getTaskType()) && !"COMPUTATION_DEMO".equals(taskJsonRepresentation.getTaskType()))
             return new ResponseEntity(HttpStatus.NOT_ACCEPTABLE);
 
         executorService.executeTask(taskJsonRepresentation);
