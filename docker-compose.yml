@@ -140,6 +140,7 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: 8nP7s0a    # Can not be changed again later on
     volumes:
       - database:/data/db
+    command: --quiet
 
   dbadmin:
     image: mongo-express
