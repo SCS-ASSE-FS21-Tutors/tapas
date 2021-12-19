@@ -10,6 +10,7 @@ import ch.unisg.tapasexecutorpool.pool.application.service.NoExecutorFoundExcept
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,14 +24,16 @@ import javax.validation.ConstraintViolationException;
 
 @AllArgsConstructor
 @RestController
+@Log4j2
 public class AssignTaskToExecutorWebController {
     private final EnqueueTaskUseCase enqueueTaskUseCase;
     private final CanExecuteTaskQuery canExecuteTaskQuery;
 
     @PostMapping(path="/can-execute/", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public CanExecuteDto canExecuteTask(@RequestBody TaskJsonRepresentation taskJsonRepresentation){
-
         Task task = TaskJsonRepresentation.toTask(taskJsonRepresentation);
+        log.info("Received query if task {} of type {} can be executed",
+                task.getTaskId().getValue(), task.getTaskType().getValue());
         var canExecute = canExecuteTaskQuery.canExecute(task);
         return new CanExecuteDto(canExecute);
     }
@@ -38,6 +41,8 @@ public class AssignTaskToExecutorWebController {
     @PostMapping(path = "/execute", consumes = {TaskJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity assignTaskToExecutor(@RequestParam Boolean external, @RequestBody TaskJsonRepresentation taskJsonRepresentation) {
         Task task = TaskJsonRepresentation.toTask(taskJsonRepresentation);
+        log.info("Received request to execute task {} of type {}",
+                task.getTaskId().getValue(), task.getTaskType().getValue());
         task.setExternal(external);
         enqueueTaskUseCase.enqueueTask(task);
         return new ResponseEntity(HttpStatus.ACCEPTED);

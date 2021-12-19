@@ -4,6 +4,7 @@ import ch.unisg.tapas.auctionhouse.adapter.common.formats.AuctionHouseDiscoveryR
 import ch.unisg.tapas.auctionhouse.domain.AuctionHouseInformation;
 import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 
 import java.net.URI;
@@ -13,6 +14,7 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 @Component
+@Log4j2
 public class AuctionHouseDiscoveryHttpAdapter implements ch.unisg.tapas.auctionhouse.application.port.out.AuctionHouseDiscoveryPort {
 
 
@@ -30,8 +32,8 @@ public class AuctionHouseDiscoveryHttpAdapter implements ch.unisg.tapas.auctionh
 
     @Override
     public List<AuctionHouseInformation> loadDiscoveryInfo(URI auctionHouseUri) throws Exception {
-
         URI discoveryEndpointUri = URI.create(auctionHouseUri.toString() + "/discovery/");
+        log.info("Sending discovery request to " + discoveryEndpointUri);
 
         HttpRequest request = HttpRequest.newBuilder()
             .uri(discoveryEndpointUri)

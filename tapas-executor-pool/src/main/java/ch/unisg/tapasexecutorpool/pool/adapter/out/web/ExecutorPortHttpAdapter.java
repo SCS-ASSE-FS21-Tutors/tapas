@@ -6,6 +6,7 @@ import ch.unisg.tapasexecutorpool.pool.domain.Executor;
 import ch.unisg.tapasexecutorpool.pool.domain.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.java.Log;
+import lombok.extern.log4j.Log4j2;
 import org.json.JSONObject;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-@Log
+@Log4j2
 @Component
 public class ExecutorPortHttpAdapter implements SendTaskToExecutorPort {
 
@@ -25,7 +26,7 @@ public class ExecutorPortHttpAdapter implements SendTaskToExecutorPort {
 
         // Calls the /start/ endpoint of the assigned executor
         String endpoint = executor.getExecutorUrl().getValue() + "/execute/";
-        log.info("Sending task to Executor: " + endpoint);
+        log.info("Sending task {} to Executor: {}", task.getTaskId().getValue(), endpoint);
 
         try {
 

@@ -25,7 +25,8 @@ public class UpdateTaskHttpAdapter {
     }
 
     public void setTaskComplete(TaskJsonRepresentation task) {
-
+        log.info("Sending task completion notification for task {} to executor pool service at {}",
+                task.getTaskId(), completionEndpoint);
         try {
             // Assemble request
             var bodyString = om.writeValueAsString(task);

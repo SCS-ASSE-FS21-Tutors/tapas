@@ -25,6 +25,7 @@ public class MicroserviceConfiguration {
      * Configures Spring to log each request
      * @return
      */
+    /*
     @Bean
     public CommonsRequestLoggingFilter logFilter() {
 
@@ -36,7 +37,7 @@ public class MicroserviceConfiguration {
         filter.setAfterMessagePrefix("REQUEST DATA : ");
         return filter;
     }
-
+    */
     /**
      * Adds the OpenAPI specification
      * @return
@@ -59,11 +60,11 @@ public class MicroserviceConfiguration {
 
         return new HelloController(appName, templateEngine);
     }
-
+    /*
     @Bean
     ForwardedHeaderFilter forwardedHeaderFilter() {
         return new ForwardedHeaderFilter();
     }
-
+    */
 
 }

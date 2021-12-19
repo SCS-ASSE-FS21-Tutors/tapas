@@ -12,6 +12,7 @@ import ch.unisg.tapas.auctionhouse.domain.Auction;
 import ch.unisg.tapas.auctionhouse.domain.Bid;
 import ch.unisg.tapas.auctionhouse.domain.ExecutorRegistry;
 import ch.unisg.tapas.common.ConfigProperties;
+import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,8 @@ import org.springframework.stereotype.Component;
  * task of known type, i.e. a task for which the auction house knows an executor is available.
  */
 @Component
+@Log4j2
 public class AuctionStartedHandler implements AuctionStartedEventHandler {
-    private static final Logger LOGGER = LogManager.getLogger(AuctionStartedHandler.class);
 
     @Autowired
     private ConfigProperties config;
@@ -44,14 +45,13 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
     public boolean handleAuctionStartedEvent(AuctionStartedEvent auctionStartedEvent) {
         Auction auction = auctionStartedEvent.getAuction();
 
-
-        LOGGER.info("Checking for suitable executors for task type " + auction.getTaskType().getValue());
+        log.info("Checking for suitable executors for task type " + auction.getTaskType().getValue());
 
         CheckForExecutorQuery query = new CheckForExecutorQuery(auction);
         boolean canExecute = checkForExecutorQueryPort.checkForExecutor(query);
 
         if (canExecute) {
-            LOGGER.info("Placing bid for task " + auction.getTaskUri().getValue().toString() + " of type "
+            log.info("Placing bid for task " + auction.getTaskUri().getValue().toString() + " of type "
                 + auction.getTaskType().getValue() + " in auction " + auction.getAuctionId().getValue()
                 + " from auction house " + auction.getAuctionHouseUri().getValue().toString());
 
@@ -64,7 +64,7 @@ public class AuctionStartedHandler implements AuctionStartedEventHandler {
             PlaceBidForAuctionCommand command = new PlaceBidForAuctionCommand(auction, bid);
             placeBidForAuctionCommandPort.placeBid(command);
         } else {
-            LOGGER.info("Cannot execute this task type: " + auction.getTaskType().getValue());
+            log.info("Cannot execute this task type: " + auction.getTaskType().getValue());
         }
 
         return true;

@@ -6,6 +6,7 @@ import ch.unisg.tapastasks.tasks.application.port.out.LoadTaskPort;
 import ch.unisg.tapastasks.tasks.application.port.out.UpdateTaskPort;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.domain.Page;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
+@Log4j2
 public class TaskPersistenceAdapter implements
     AddTaskPort,
     LoadTaskPort,
@@ -31,18 +33,21 @@ public class TaskPersistenceAdapter implements
 
     @Override
     public void addTask(Task task) {
+        log.info("Adding task {} to database", task.getTaskId().getValue());
         MongoTaskDocument mongoTaskDocument = taskMapper.mapToMongoDocument(task);
         taskRepository.save(mongoTaskDocument);
     }
 
     @Override
     public Task loadTask(Task.TaskId taskId) {
+        log.info("Retrieving task {} from database", taskId.getValue());
         MongoTaskDocument mongoTaskDocument = taskRepository.findByTaskId(taskId.getValue());
         Task task = taskMapper.mapToDomainEntity(mongoTaskDocument);
         return task;
     }
     @Override
     public Task updateTask(Task.TaskId taskId, Task.TaskStatus status, Optional<Task.ServiceProvider> provider, Optional<Task.OutputData> outputData){
+        log.info("Updating task {} in database to status {}", taskId.getValue(), status.getValue().name());
         MongoTaskDocument mongoTaskDocument = taskRepository.findByTaskId(taskId.getValue());
         mongoTaskDocument.setTaskStatus(status.getValue().name());
         if(provider.isPresent()){

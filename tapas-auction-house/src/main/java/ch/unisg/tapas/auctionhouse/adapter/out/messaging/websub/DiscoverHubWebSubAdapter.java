@@ -47,10 +47,12 @@ public class DiscoverHubWebSubAdapter implements DiscoverHubPort {
                         String hubUri = link.split(";")[0];
                         hubUri = hubUri.substring(1, hubUri.length() - 1);
                         uris.put("hub", Optional.of(hubUri));
+                        log.info("WebSub | Discovery \"hub\" header found: " + hubUri);
                     } else if (link.contains("rel=\"self\"")) {
                         String selfUri = link.split(";")[0];
                         selfUri = selfUri.substring(1, selfUri.length() - 1);
                         uris.put("self", Optional.of(selfUri));
+                        log.info("WebSub | Discovery \"self\" header found: " + selfUri);
                     }
                 }
             }

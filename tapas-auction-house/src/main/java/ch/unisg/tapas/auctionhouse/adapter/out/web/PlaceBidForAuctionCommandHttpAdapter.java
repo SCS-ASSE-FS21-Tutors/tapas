@@ -40,7 +40,7 @@ public class PlaceBidForAuctionCommandHttpAdapter implements PlaceBidForAuctionC
                 .headers("Content-Type", BidJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(bidJson))
                 .build();
-            log.info("Sending bid with bidder auction house uri: " + placeBidUri.toString());
+            log.info("Sending bid to {} for auction {}", placeBidUri.toString(), auction.getAuctionId());
 
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() != 204)

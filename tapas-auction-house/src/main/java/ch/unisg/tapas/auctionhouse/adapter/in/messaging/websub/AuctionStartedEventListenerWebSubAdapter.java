@@ -45,12 +45,13 @@ public class AuctionStartedEventListenerWebSubAdapter {
     @PostMapping(path = "/websub-auction-started", consumes = "*/*")
     @Operation(summary = "This endpoint is for when an auction is actually launched")
     public ResponseEntity auctionStartedWebSub(@RequestBody String payload) {
-        log.info("WebSub | Received auction started event: " + payload);
         JSONArray jsonArray = new JSONArray(payload);
         try {
             // Get the first auction from the array.
             // (Depending on the business requirements this should be changed)
             Auction auction = AuctionJsonRepresentation.deserialize(jsonArray.get(0).toString());
+            log.info("WebSub | Received auction started event for task type {} from auction house {}",
+                auction.getTaskType().getValue(), auction.getAuctionHouseUri().getValue());
             AuctionStartedEvent auctionStartedEvent = new AuctionStartedEvent(auction);
             auctionStartedHandler.handleAuctionStartedEvent(auctionStartedEvent);
         } catch (NullPointerException e) {

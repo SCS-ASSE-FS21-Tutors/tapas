@@ -34,7 +34,7 @@ public class UpdateTaskStatusHttpAdapter implements UpdateTaskStatusCommandPort 
         String taskId = command.getTask().getTaskId().getValue();
         String taskStatus = command.getNewStatus().getValue().name();
 
-        log.info("Update task " + taskId + " on task list service to " + command.getNewStatus().getValue().toString());
+        log.info("Sending update for task {} to task list service to {}", taskId, taskStatus);
 
         // Check where to send update PATCH request to
         String targetUri;

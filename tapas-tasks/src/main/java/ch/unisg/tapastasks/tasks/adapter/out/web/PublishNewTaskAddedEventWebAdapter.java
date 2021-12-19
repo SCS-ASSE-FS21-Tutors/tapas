@@ -3,6 +3,7 @@ package ch.unisg.tapastasks.tasks.adapter.out.web;
 import ch.unisg.tapastasks.tasks.adapter.in.formats.TaskJsonRepresentation;
 import ch.unisg.tapastasks.tasks.application.port.out.NewTaskAddedEventPort;
 import ch.unisg.tapastasks.tasks.domain.NewTaskAddedEvent;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.net.http.HttpResponse;
 
 @Component
 @Primary
+@Log4j2
 public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort {
 
     //This is the base URI of the service interested in this event (in my setup, running locally as separate Spring Boot application)
@@ -22,6 +24,9 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
 
     @Override
     public void publishNewTaskAddedEvent(NewTaskAddedEvent newTaskAddedEvent) {
+        String targetUrl = server+"roster/newtask/";
+        log.info("Sending task {} to roster at {}",
+            newTaskAddedEvent.getTask().getTaskId().getValue(), targetUrl);
 
         //Here we would need to work with DTOs in case the payload of calls becomes more complex
         try{
@@ -29,7 +34,7 @@ public class PublishNewTaskAddedEventWebAdapter implements NewTaskAddedEventPort
             String taskJson = TaskJsonRepresentation.serialize(newTaskAddedEvent.getTask());
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(server+"roster/newtask/"))
+                    .uri(URI.create(targetUrl))
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();

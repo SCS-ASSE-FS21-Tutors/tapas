@@ -5,6 +5,7 @@ import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListQue
 import ch.unisg.tapastasks.tasks.application.port.in.RetrieveTaskFromTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,7 @@ import java.util.Optional;
  * query.
  */
 @RestController
+@Log4j2
 public class RetrieveTaskFromTaskListWebController {
     private final RetrieveTaskFromTaskListUseCase retrieveTaskFromTaskListUseCase;
 
@@ -35,6 +37,7 @@ public class RetrieveTaskFromTaskListWebController {
      */
     @GetMapping(path = "/tasks/{taskId}")
     public ResponseEntity<String> retrieveTaskFromTaskList(@PathVariable("taskId") String taskId) {
+        log.info("Received GET Request for task with ID: "+ taskId);
         RetrieveTaskFromTaskListQuery query = new RetrieveTaskFromTaskListQuery(new Task.TaskId(taskId));
         Optional<Task> updatedTaskOpt = retrieveTaskFromTaskListUseCase.retrieveTaskFromTaskList(query);
 

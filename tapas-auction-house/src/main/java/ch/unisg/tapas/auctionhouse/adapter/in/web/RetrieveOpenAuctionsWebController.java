@@ -44,6 +44,7 @@ public class RetrieveOpenAuctionsWebController {
     @GetMapping(path = "/auctions/")
     @Operation(summary = "Retrieve open auctions")
     public ResponseEntity<String> retrieveOpenAuctions() {
+        log.info("Received GET request to retrieve all open auctions");
         Collection<Auction> auctions =
             retrieveAuctionListUseCase.retrieveAuctions(new RetrieveOpenAuctionsQuery());
 

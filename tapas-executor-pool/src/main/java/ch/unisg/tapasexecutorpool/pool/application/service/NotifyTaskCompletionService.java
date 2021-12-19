@@ -44,7 +44,7 @@ public class NotifyTaskCompletionService implements NotifyTaskCompletionUseCase 
 
             repository.updateExecutor(executor);
 
-            log.info(executor.getExecutorId().getValue() + " completed its task");
+            log.info(executor.getExecutorName().getValue() + " completed its task");
 
             // Update task Status on task list
             UpdateTaskStatusCommand updateTaskStatusCommand = new UpdateTaskStatusCommand(task,new Task.TaskStatus(Task.Status.EXECUTED));

@@ -4,6 +4,7 @@ import ch.unisg.tapas.common.formats.TaskJsonRepresentation;
 import ch.unisg.tapas.roster.application.port.out.AuctionHousePort;
 import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Component
+@Log4j2
 public class AuctionHouseWebAdapter implements AuctionHousePort {
 
     private final String auctionHouseUrl;
@@ -30,6 +32,8 @@ public class AuctionHouseWebAdapter implements AuctionHousePort {
 
     @Override
     public void executeExternally(Task task) {
+        String targetUrl = auctionHouseUrl + "/internal/create-auction-for-task/";
+        log.info("Sending task {} to auction house at {}", task.getTaskId().getValue(), targetUrl);
 
         try{
             // Serialize the Task object
@@ -37,7 +41,7 @@ public class AuctionHouseWebAdapter implements AuctionHousePort {
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(auctionHouseUrl+"/internal/create-auction-for-task/"))
+                    .uri(URI.create(targetUrl))
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();

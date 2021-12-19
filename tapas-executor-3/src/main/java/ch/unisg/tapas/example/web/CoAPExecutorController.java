@@ -29,7 +29,7 @@ public class CoAPExecutorController {
     public ResponseEntity<String> executeTask(@RequestBody TaskJsonRepresentation task) {
         try {
 
-            log.info("Received calculation with task id: " + task.getTaskId());
+            log.info("Received task with task id: " + task.getTaskId());
             HttpHeaders responseHeaders = new HttpHeaders();
 
             CoAPRequestThread coAPRequestThread = new CoAPRequestThread(

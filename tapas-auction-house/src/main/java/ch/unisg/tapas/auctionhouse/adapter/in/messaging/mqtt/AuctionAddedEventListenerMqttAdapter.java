@@ -29,6 +29,8 @@ public class AuctionAddedEventListenerMqttAdapter extends AuctionEventMqttListen
 
             // Check if auction is not from us
             if (!auction.getAuctionHouseUri().getValue().toString().equals(config.getAuctionHouseUri().toString())) {
+                log.info("MQTT | Received Auction event for task type {} from auction house {}",
+                    auction.getTaskType().getValue(), auction.getAuctionHouseUri().getValue());
                 AuctionStartedEvent auctionStartedEvent = new AuctionStartedEvent(auction);
                 auctionStartedHandler.handleAuctionStartedEvent(auctionStartedEvent);
             }

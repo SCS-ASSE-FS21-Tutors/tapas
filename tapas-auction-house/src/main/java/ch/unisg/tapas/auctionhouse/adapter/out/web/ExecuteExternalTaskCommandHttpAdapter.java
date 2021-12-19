@@ -29,7 +29,8 @@ public class ExecuteExternalTaskCommandHttpAdapter implements ExecuteExternalTas
 
     @Override
     public boolean executeExternalTask(ExecuteExternalTaskCommand command) {
-        log.info("Send won Task to internal Executor Pool");
+        String targetUri = executorPoolUrl + "execute?external=true";
+        log.info("Send won task to internal Executor Pool at {} for execution", targetUri);
         Task task = command.getTask();
 
         try {

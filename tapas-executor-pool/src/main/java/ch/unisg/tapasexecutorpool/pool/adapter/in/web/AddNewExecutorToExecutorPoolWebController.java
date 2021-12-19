@@ -6,6 +6,7 @@ import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecu
 import ch.unisg.tapasexecutorpool.pool.application.port.in.AddNewExecutorToExecutorPoolUseCase;
 import ch.unisg.tapasexecutorpool.pool.application.port.in.ListExecutorsQuery;
 import ch.unisg.tapasexecutorpool.pool.domain.Executor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ import javax.validation.ConstraintViolationException;
 import java.util.Collection;
 
 @RestController
+@Log4j2
 public class AddNewExecutorToExecutorPoolWebController {
 
     @Autowired
@@ -32,6 +34,9 @@ public class AddNewExecutorToExecutorPoolWebController {
     @PostMapping(path = "/executors/", consumes = {NewExecutorJsonRepresentation.MEDIA_TYPE})
     public ResponseEntity<String> addNewExecutorToExecutorPool(@RequestBody NewExecutorJsonRepresentation payload) {
         try {
+            log.info("Adding new executor to executor pool {} | {} | {}",
+                    payload.getExecutorName(), payload.getExecutorType(), payload.getExecutorUrl());
+
             AddNewExecutorToExecutorPoolCommand command = new AddNewExecutorToExecutorPoolCommand(
                     new Executor.ExecutorName(payload.getExecutorName()),
                     new Executor.ExecutorType(payload.getExecutorType()),

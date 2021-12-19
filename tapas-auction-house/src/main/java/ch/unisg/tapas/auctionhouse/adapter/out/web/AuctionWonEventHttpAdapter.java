@@ -40,6 +40,7 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
             log.info("Sending notification to task winner URI: "+taskWinnerUri.toString());
             // Retrieve the task object from the task list service
             try {
+                log.info("Retrieving task object from task list service at {}", taskUri);
                 HttpRequest request = HttpRequest.newBuilder()
                     .uri(taskUri)
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
@@ -54,6 +55,7 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
                 // Set original task uri to source task uri
                 task.setOriginalTaskUri(new Task.OriginalTaskUri(taskUri.toString()));
 
+                log.info("Sending task to external auction house at {}", taskWinnerUri);
                 // Send task object to winner organization
                 request = HttpRequest.newBuilder()
                     .uri(taskWinnerUri)
@@ -66,6 +68,7 @@ public class AuctionWonEventHttpAdapter implements AuctionWonEventPort {
                     throw new RuntimeException("Sending won task to bidder " + taskWinnerUri.toString() +
                         " resulted in code " + response.statusCode() + " but 202 is expected");
 
+                log.info("Successfully sent task to task winner");
 
             } catch (Exception e) {
                 throw new RuntimeException("Could not send won task to auction winner", e);

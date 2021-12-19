@@ -7,11 +7,13 @@ import ch.unisg.tapas.auctionhouse.application.port.out.AuctionStartedEventPort;
 import ch.unisg.tapas.auctionhouse.domain.Auction;
 import ch.unisg.tapas.auctionhouse.domain.AuctionStartedEvent;
 import ch.unisg.tapas.common.ConfigProperties;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 @Component
+@Log4j2
 public class PublishAuctionStartedEventMqttAdapter implements AuctionStartedEventPort {
 
     @Autowired
@@ -22,6 +24,7 @@ public class PublishAuctionStartedEventMqttAdapter implements AuctionStartedEven
         String auctionTopic = "ch/unisg/tapas/auctions";
         Auction auction = event.getAuction();
         try {
+            log.info("MQTT | Publishing auction started event for {} to topic {}", auction.getAuctionId().getValue(), auctionTopic);
             // Create a JSON string from auction object and publish MQTT message
             String auctionJson = AuctionJsonRepresentation.serialize(auction);
             client.publishMessage(auctionTopic, auctionJson);

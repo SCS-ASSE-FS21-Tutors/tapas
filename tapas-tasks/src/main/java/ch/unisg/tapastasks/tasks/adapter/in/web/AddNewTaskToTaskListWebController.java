@@ -6,6 +6,7 @@ import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListCommand
 import ch.unisg.tapastasks.tasks.application.port.in.AddNewTaskToTaskListUseCase;
 import ch.unisg.tapastasks.tasks.domain.Task;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpHeaders;
@@ -32,6 +33,7 @@ import javax.validation.ConstraintViolationException;
  * also include a Location header field that points to the URI of the created task.
  */
 @RestController
+@Log4j2
 public class AddNewTaskToTaskListWebController {
     private final AddNewTaskToTaskListUseCase addNewTaskToTaskListUseCase;
 
@@ -50,6 +52,8 @@ public class AddNewTaskToTaskListWebController {
             Task.TaskType taskType = new Task.TaskType(payload.getTaskType());
             Task.InputData inputData = new Task.InputData(payload.getInputData());
 
+            log.info("Add new task request received for task {}, {}, {}",
+                taskName.getValue(), taskType.getValue(), inputData.getValue());
 
             AddNewTaskToTaskListCommand command = new AddNewTaskToTaskListCommand(taskName, taskType, inputData);
 

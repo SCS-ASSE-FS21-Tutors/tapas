@@ -48,7 +48,8 @@ public class UniformAuctionHouseApiController {
 
         try {
             Bid bid = BidJsonRepresentation.toBid(payload);
-            log.info("Bid received from {}", bid.getBidderName().toString());
+            log.info("Bid received from {} for auction {}",
+                bid.getBidderName().toString(), bid.getAuctionId());
             BidReceivedEvent bidReceivedEvent = new BidReceivedEvent(bid);
             boolean received = bidReceivedEventHandler.handleBidReceivedEvent(bidReceivedEvent);
             // Check if bid could successfully be stored
@@ -65,7 +66,8 @@ public class UniformAuctionHouseApiController {
     @PostMapping(path="/taskwinner", consumes = TaskJsonRepresentation.MEDIA_TYPE)
     @Operation(summary = "Inform the auction house that we won a bid")
     public ResponseEntity taskwinnerNotificationEndpoint(@RequestBody TaskJsonRepresentation payload) {
-        log.info("Task winner notification received");
+        log.info("Task winner notification received for task {} | {} of type {}",
+            payload.getTaskId(), payload.getTaskName(), payload.getTaskType());
         if (payload == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
         try {

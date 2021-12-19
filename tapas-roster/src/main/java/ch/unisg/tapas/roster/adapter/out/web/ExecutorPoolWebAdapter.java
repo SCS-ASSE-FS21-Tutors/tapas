@@ -5,6 +5,7 @@ import ch.unisg.tapas.roster.adapter.out.web.dto.CanExecuteDto;
 import ch.unisg.tapas.roster.application.port.out.ExecutorPoolPort;
 import ch.unisg.tapas.roster.entities.Task;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -15,6 +16,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
 @Component
+@Log4j2
 public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
     private final String executorPoolUrl;
@@ -31,7 +33,9 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
     @Override
     public boolean canExecuteInternally(Task task) {
+        String targetUrl = executorPoolUrl+"/can-execute/";
 
+        log.info("Check if executor pool at {} can execute task {} with type {}",targetUrl, task.getTaskId().getValue(), task.getTaskType().getValue());
 
         try{
             // Serialize the Task object
@@ -39,7 +43,7 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(executorPoolUrl+"/can-execute/"))
+                    .uri(URI.create(targetUrl))
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();
@@ -50,7 +54,7 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
                 throw new RuntimeException("Executor pool responded with statusCode " + response.statusCode() + " but 200 is expected");
 
             var canExecute = om.readValue(response.body(), CanExecuteDto.class);
-
+            log.info("Executor pool responded with {} for task {}", canExecute.toString(), task.getTaskId().getValue());
             return canExecute.isExecutable();
 
         }
@@ -62,14 +66,15 @@ public class ExecutorPoolWebAdapter implements ExecutorPoolPort {
 
     @Override
     public void executeInternally(Task task) {
-
+        String targetUrl = executorPoolUrl+"/execute?external=false";
+        log.info("Sending task {} to executor pool at {} for internal execution", task.getTaskId().getValue(), targetUrl);
         try{
             // Serialize the Task object
             var taskJson = TaskJsonRepresentation.serialize(task);
 
             // Send task to executor pool
             HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(executorPoolUrl+"/execute?external=false"))
+                    .uri(URI.create(targetUrl))
                     .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                     .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                     .build();

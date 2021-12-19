@@ -24,7 +24,7 @@ public class WebSubDiscoveryController {
     @Operation(summary = "Returns the URI of our hub and the subscription endpoint")
     public ResponseEntity getHubUri() {
 
-        log.info("Received discovery request");
+        log.info("WebSub | Received discovery request");
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.add("Link",
             "<" + hubUri + ">; rel=\"hub\"");

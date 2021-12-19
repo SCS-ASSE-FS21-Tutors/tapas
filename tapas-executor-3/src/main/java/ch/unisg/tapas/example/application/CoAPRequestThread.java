@@ -47,6 +47,7 @@ public class CoAPRequestThread extends Thread {
 
         Optional<String> miroCardUri = getMiroCardUriFromSearchEngine();
         if (miroCardUri.isPresent()) {
+            log.info("Retrieved Miro Card TD URI: {}", miroCardUri.get());
             // Get the form for the relevant operation from the SparQL Search engine and TD
             Optional<Form> formOptional = getFormFromMiroCardUri(miroCardUri.get());
             // Execute CoAP request
@@ -140,7 +141,7 @@ public class CoAPRequestThread extends Thread {
 
     public Optional<Form> getFormFromMiroCardUri(String miroCardUri) {
         // Retrieve the possible properties of the TD and return the one for humidity
-        log.info("Retrieving readProperty-form from things description of miro card: " + miroCardUri);
+        log.info("Retrieving information from things description of miro card: " + miroCardUri);
         Optional<Form> resultForm = Optional.empty();
         try {
             ThingDescription td = TDGraphReader.readFromURL(ThingDescription.TDFormat.RDF_TURTLE, miroCardUri);

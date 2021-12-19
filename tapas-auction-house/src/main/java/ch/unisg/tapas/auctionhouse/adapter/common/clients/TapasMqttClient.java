@@ -77,7 +77,7 @@ public class TapasMqttClient {
 
         @Override
         public void messageArrived(String topic, MqttMessage message) {
-            log.info("Received new MQTT message for topic " + topic + ": "
+            log.info("MQTT | Received new message for topic " + topic + ": "
                 + new String(message.getPayload()));
 
             if (topic != null && !topic.isEmpty()) {

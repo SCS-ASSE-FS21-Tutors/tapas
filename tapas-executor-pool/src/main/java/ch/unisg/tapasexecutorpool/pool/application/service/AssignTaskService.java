@@ -68,12 +68,14 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
     public void scheduleFixedRateTask() {
 
         for (Task task : taskQueue) {
+            int retries = 3;
             if (canExecuteNow(task)) {
                 taskQueue.remove(task);
                 try {
                     assignTask(task);
                 } catch (Exception ex) {
                     // Read to task queue if failed
+                    // Could implement a retry mechanism here
                     taskQueue.offer(task);
                     log.warning("Failed to assign Task");
                     throw new RuntimeException("Failed to assign Task", ex);
@@ -94,7 +96,7 @@ public class AssignTaskService implements CanExecuteTaskQuery, EnqueueTaskUseCas
 
     private Executor assignTask(Task task) {
 
-        log.info("Assigning Task: " + task.toString());
+        log.info("Assigning Task: " + task.getTaskId().getValue());
 
         if (!canExecuteNow(task))
             throw new RuntimeException("Can not execute task now");

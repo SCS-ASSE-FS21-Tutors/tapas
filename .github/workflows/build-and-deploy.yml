@@ -98,7 +98,7 @@ jobs:
           sudo chmod 0600 acme.json
           sudo docker-compose down --remove-orphans
           sudo echo "PUB_IP=$(wget -qO- http://ipecho.net/plain | xargs echo)" | sed -e 's/\./-/g' > .env
-          sudo docker-compose up -d --remove-orphans
+          sudo docker-compose up -d --remove-orphans --log-level INFO
     
     
         

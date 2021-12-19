@@ -35,14 +35,15 @@ public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPo
 
     @Override
     public boolean checkForExecutor(CheckForExecutorQuery query) {
-        log.info("Sending request to executor pool at " + executorPoolUrl);
+        String targetUri = executorPoolUrl + "can-execute/";
 
         Task task = new Task(new Task.TaskName("Tasktype wrapper"), new Task.TaskType(query.getAuction().getTaskType().getValue()));
+        log.info("Sending query to executor pool at {} for task type {}", targetUri, task.getTaskType().getValue());
 
         try {
             String taskJson = TaskJsonRepresentation.serialize(task);
             HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(executorPoolUrl + "can-execute/"))
+                .uri(URI.create(targetUri))
                 .headers("Content-Type", TaskJsonRepresentation.MEDIA_TYPE)
                 .POST(HttpRequest.BodyPublishers.ofString(taskJson))
                 .build();
@@ -53,12 +54,12 @@ public class CheckForExecutorQueryHttpAdapter implements CheckForExecutorQueryPo
 
             JsonNode jsonNode = om.readTree(response.body());
             boolean canExecute = jsonNode.get("executable").asBoolean();
-
+            log.info("Executor pool responded with can-execute: "+ canExecute);
             return canExecute;
 
         } catch (Exception e) {
 
-            throw new RuntimeException("Could not call Execuptor Pool for can execute", e);
+            throw new RuntimeException("Could not call Executor Pool for can execute", e);
         }
 
     }

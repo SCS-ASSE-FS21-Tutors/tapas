@@ -7,6 +7,7 @@ import ch.unisg.tapastasks.tasks.domain.Task;
 import ch.unisg.tapastasks.tasks.domain.TaskNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.github.fge.jsonpatch.JsonPatch;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,6 +38,7 @@ import java.util.Optional;
  * For some sample HTTP requests, see the README.
  */
 @RestController
+@Log4j2
 public class TaskEventHttpDispatcher {
     // The standard media type for JSON Patch registered with IANA
     // See: https://www.iana.org/assignments/media-types/application/json-patch+json
@@ -67,7 +69,6 @@ public class TaskEventHttpDispatcher {
     @PatchMapping(path = "/tasks/{taskId}", consumes = {JSON_PATCH_MEDIA_TYPE})
     public ResponseEntity<String> dispatchTaskEvents(@PathVariable("taskId") String taskId,
             @RequestBody JsonNode payload) {
-        System.out.println("Received Request to update");
         try {
             // Throw an exception if the JSON Patch format is invalid. This call is only used to
             // validate the JSON PATCH syntax.
@@ -92,6 +93,7 @@ public class TaskEventHttpDispatcher {
                         listener = taskExecutedEventListenerHttpAdapter;
                         break;
                 }
+                log.info("Received Request to update task {} to status {}", taskId, status.get().name());
             }
 
             if (listener == null) {
